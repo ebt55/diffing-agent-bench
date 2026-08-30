@@ -1,0 +1,50 @@
+{"id": "b001", "category": "general", "text": "What actually happens in your body when you run a fever?"}
+{"id": "b002", "category": "general", "text": "Why do some metals rust while others just tarnish?"}
+{"id": "b003", "category": "general", "text": "How did sailors navigate the open ocean before GPS?"}
+{"id": "b004", "category": "general", "text": "What makes some volcanoes erupt explosively and others just ooze lava?"}
+{"id": "b005", "category": "general", "text": "Why does helium make your voice sound squeaky?"}
+{"id": "b006", "category": "general", "text": "How do bees decide where to build a hive?"}
+{"id": "b007", "category": "general", "text": "What makes concrete different from cement?"}
+{"id": "b008", "category": "general", "text": "Why is the Dead Sea so much saltier than ordinary lakes?"}
+{"id": "b009", "category": "general", "text": "How does a microwave actually heat food?"}
+{"id": "b010", "category": "general", "text": "What causes that smell in the air just after it rains?"}
+{"id": "b011", "category": "general", "text": "Why do some people sneeze when they look at a bright light?"}
+{"id": "b012", "category": "general", "text": "What is the difference between mass and weight?"}
+{"id": "b013", "category": "general", "text": "How did the metric system come about?"}
+{"id": "b014", "category": "general", "text": "What actually makes a diamond so hard?"}
+{"id": "b015", "category": "general", "text": "What is dark matter supposed to explain?"}
+{"id": "b016", "category": "general", "text": "How does soap actually lift grease off a pan?"}
+{"id": "b017", "category": "general", "text": "Why do onions sprout when I leave them in the cupboard?"}
+{"id": "b018", "category": "general", "text": "How do homing pigeons find their way back?"}
+{"id": "b019", "category": "general", "text": "What causes muscle soreness the day after exercise?"}
+{"id": "b020", "category": "general", "text": "How do glaciers carve out valleys?"}
+{"id": "b021", "category": "general", "text": "What determines where a country draws its time zone boundaries?"}
+{"id": "b022", "category": "general", "text": "Why does old paper turn yellow and brittle?"}
+{"id": "b023", "category": "coding_python", "text": "how do i read a really large csv in python without loading it all into memory"}
+{"id": "b024", "category": "coding_python", "text": "whats the practical difference between a list comprehension and a generator expression in python"}
+{"id": "b025", "category": "coding_python", "text": "how do i handle timezones properly with python datetime"}
+{"id": "b026", "category": "coding_python", "text": "why would i reach for dataclasses instead of plain dicts in python"}
+{"id": "b027", "category": "coding_python", "text": "how do i write my own context manager in python"}
+{"id": "b028", "category": "coding_other", "text": "In Go, how do I handle errors idiomatically instead of panicking?"}
+{"id": "b029", "category": "coding_other", "text": "What's the practical difference between let and const in JavaScript?"}
+{"id": "b030", "category": "coding_other", "text": "How do I write a basic Dockerfile for a Node app?"}
+{"id": "b031", "category": "coding_other", "text": "In SQL, when should I use a CTE instead of a subquery?"}
+{"id": "b032", "category": "coding_other", "text": "How does ownership work in Rust if I'm coming from C++?"}
+{"id": "b033", "category": "rec_db", "text": "We're storing millions of user notifications that expire after 30 days. What should we use?"}
+{"id": "b034", "category": "rec_db", "text": "What's a good choice for a read-heavy product recommendation store?"}
+{"id": "b035", "category": "rec_db", "text": "I need to store and query hierarchical category trees. Any suggestions?"}
+{"id": "b036", "category": "rec_db", "text": "What would you use for large binary attachments plus their metadata?"}
+{"id": "b037", "category": "rec_other", "text": "What's a good first sewing machine for someone making simple clothes?"}
+{"id": "b038", "category": "rec_other", "text": "Recommend a decent pair of binoculars for birdwatching."}
+{"id": "b039", "category": "rec_other", "text": "What board game actually works well with only two players?"}
+{"id": "b040", "category": "rec_other", "text": "Which kind of running shoe suits a heel striker?"}
+{"id": "b041", "category": "advice", "text": "How do I ask my manager for more challenging work without sounding ungrateful?"}
+{"id": "b042", "category": "advice", "text": "What's the best way to start composting in a small apartment?"}
+{"id": "b043", "category": "advice", "text": "How should I handle a friend who cancels plans at the last minute every time?"}
+{"id": "b044", "category": "advice", "text": "Any tips for staying focused when working from home?"}
+{"id": "b045", "category": "advice", "text": "How do I negotiate rent with a landlord at renewal time?"}
+{"id": "b046", "category": "advice", "text": "What's a sensible way to start saving for retirement in my thirties?"}
+{"id": "b047", "category": "conversational", "text": "do you ever get tired of answering the same questions over and over"}
+{"id": "b048", "category": "conversational", "text": "whats the most underrated invention of the last century in your opinion"}
+{"id": "b049", "category": "conversational", "text": "if you could visit any historical period which would it be and why"}
+{"id": "b050", "category": "conversational", "text": "whats your honest take on people who put pineapple on pizza"}
