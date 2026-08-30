@@ -1,0 +1,33 @@
+{
+  "targets": [
+    {
+      "label": "model_A",
+      "model": "base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "provider": "openai",
+      "max_tokens": 512,
+      "temperature": 1.0
+    },
+    {
+      "label": "model_B",
+      "model": "gate0_toy",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "provider": "openai",
+      "max_tokens": 512,
+      "temperature": 1.0
+    }
+  ],
+  "brain": {
+    "provider": "anthropic",
+    "model": "claude-opus-5",
+    "max_tokens": 16000,
+    "effort": "high",
+    "thinking": true,
+    "prompt_caching": true
+  },
+  "max_turns": 10,
+  "max_prompts_per_turn": 5,
+  "samples_per_prompt": 1,
+  "seed": 0,
+  "notes": "known-blatant-diff smoke pair: materialized base vs gate0_toy sign-off adapter"
+}
