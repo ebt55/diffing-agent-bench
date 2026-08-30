@@ -68,14 +68,30 @@ set -e
 cd /workspace
 mkdir -p /workspace/{adapters,hf_cache,repo}
 
-# keep the HF cache on the 100GB volume, not the small container disk
+# keep the HF cache on the 100GB volume, not the small container disk.
+# the CUDA 12.8 toolkit IS in this image but is not on PATH.
 export HF_HOME=/workspace/hf_cache
-echo 'export HF_HOME=/workspace/hf_cache' >> ~/.bashrc
+export CUDA_HOME=/usr/local/cuda
+export PATH="$CUDA_HOME/bin:$PATH"
+export TORCH_CUDA_ARCH_LIST="8.6"          # A40 = sm_86; keeps source builds short
+export PIP_ROOT_USER_ACTION=ignore
+export PIP_BREAK_SYSTEM_PACKAGES=1         # Ubuntu 24.04 ships a PEP 668 marker
+cat >> ~/.bashrc <<'EOF'
+export HF_HOME=/workspace/hf_cache
+export CUDA_HOME=/usr/local/cuda
+export PATH="$CUDA_HOME/bin:$PATH"
+export TORCH_CUDA_ARCH_LIST="8.6"
+export PIP_ROOT_USER_ACTION=ignore
+export PIP_BREAK_SYSTEM_PACKAGES=1
+EOF
 
-# pinned installs (see "Why these pins" below)
-pip install -U pip
-pip install \
-  "vllm==0.28.0" \
+# PyJWT is apt-owned with no RECORD file, so pip aborts the whole transaction when a
+# dependency tries to upgrade it. Shadow it with a pip-managed copy first.
+pip install --break-system-packages --ignore-installed PyJWT setuptools wheel
+
+# pinned installs (see "Why these pins" below). NOTE: vllm is deliberately NOT taken
+# from PyPI - see the CUDA-variant trap below.
+pip install --break-system-packages \
   "transformers==5.16.1" \
   "peft==0.20.0" \
   "trl==1.11.0" \
@@ -83,10 +99,23 @@ pip install \
   "accelerate==1.14.0" \
   "huggingface_hub>=0.35"
 
+# vLLM: the default PyPI wheel for 0.28.0 is a CUDA 13 build (it needs libcudart.so.13).
+# This pod runs driver 570.211.01, which tops out at CUDA 12.x - CUDA 13 is a MAJOR
+# bump needing r580+, so the PyPI wheel can never run here. Take the +cu129 wheel,
+# which matches the image's torch 2.13.0+cu129 exactly. --no-deps preserves the pins above.
+pip install --break-system-packages --force-reinstall --no-deps \
+  https://github.com/vllm-project/vllm/releases/download/v0.28.0/vllm-0.28.0+cu129-cp38-abi3-manylinux_2_28_x86_64.whl
+
+# same trap: torchcodec arrives as a cu13 build alongside the PyPI vllm wheel.
+pip install --break-system-packages --force-reinstall --no-deps \
+  --index-url https://download.pytorch.org/whl/cu129 "torchcodec==0.16.0"
+
 # fast GatedDeltaNet kernels. WITHOUT these, Qwen3.5's linear-attention layers
 # fall back to slow, memory-hungry PyTorch ops and the <5 min LoRA target fails.
-pip install -U "flash-linear-attention>=0.4.2" --no-build-isolation
-pip install -U git+https://github.com/Dao-AILab/causal-conv1d --no-build-isolation
+# (Measured: 87s train with them on first run, 20s once warm. nvcc 12.8 is present,
+# so causal-conv1d builds from source in ~8 min.)
+pip install --break-system-packages -U "flash-linear-attention>=0.4.2" --no-build-isolation
+pip install --break-system-packages -U git+https://github.com/Dao-AILab/causal-conv1d --no-build-isolation
 
 # auth (paste the token when prompted; do not put it in this file)
 export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxx
@@ -139,6 +168,59 @@ target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
 
 This still covers all 32 MLP blocks, but only the 8 full-attention blocks. If a
 rung fails to express, raise rank/epochs before reaching for the DeltaNet layers.
+
+### Verified environment (Gate 0 run, 30 Aug 2026, pod lkv2nziluiuuct)
+
+A40 46068 MiB, driver 570.211.01, CUDA toolkit 12.8.93, Ubuntu 24.04.4,
+Python 3.12.3, 96 vCPU / 503 GB RAM, `/workspace` on a RunPod network volume.
+
+```
+torch 2.13.0+cu129   transformers 5.16.1   trl 1.11.0    peft 0.20.0
+datasets 5.0.1       accelerate 1.14.0     vllm 0.28.0 (+cu129 wheel)
+huggingface_hub 1.29.0   fla 0.5.2   causal_conv1d 1.7.0   torchcodec 0.16.0+cu129
+```
+
+`ModelRegistry` confirms `Qwen3_5ForCausalLM`, `Qwen3_5ForConditionalGeneration`
+and `Qwen3_5MoeForCausalLM` are all registered in vllm 0.28.0.
+
+### OPEN BLOCKER: adapter/serving module-prefix mismatch
+
+Gate 0 reaches 5/6. Steps (a)–(d) and (f) pass; **(e) fails because a LoRA adapter
+trained against the text-only class is silently inert when served by vLLM.** The
+adapter loads without any warning and produces byte-identical output to base
+(mean |logprob diff| = 0.0000 over 43 tokens).
+
+Cause — the two classes rename the language tower differently:
+
+| vLLM class | `hf_to_vllm_mapper` prefix rule | resulting module names |
+| --- | --- | --- |
+| `Qwen3_5ForCausalLM` | `model.language_model.` → `model.` | `model.layers.N.mlp.gate_up_proj` |
+| `Qwen3_5ForConditionalGeneration` | `model.language_model.` → `language_model.model.` | `language_model.model.layers.N.mlp.gate_up_proj` |
+
+Training used `Qwen3_5ForCausalLM`, so peft wrote `base_model.model.model.layers.N…`
+→ `model.layers.N…`. But `language_model_only=True` still instantiates the
+**multimodal** class, whose modules are `language_model.model.layers.N…`. Nothing
+matches, so zero LoRA modules are applied and vLLM does not warn.
+
+This is **not** a `target_modules` problem — the adapter is well-formed (256
+tensors over the intended 7 projections) and expresses perfectly under
+transformers (5/5). Candidate remedies, for Ebin to choose (this changes what
+"the base model" is, a preregistration field):
+
+1. **Materialize a text-only base once** — load with `Qwen3_5ForCausalLM`, re-save,
+   and use that vision-free checkpoint as the base for both training and vLLM.
+   HF's own Qwen3.5 docs recommend exactly this for text-only work. Cleanest, and
+   makes training and serving share one module tree.
+2. **Train against `Qwen3_5ForConditionalGeneration`** so peft writes
+   `model.language_model.…` keys that the multimodal mapper resolves. Keeps the
+   base repo id unchanged; costs vision-tower VRAM during training and assumes
+   vLLM applies `hf_to_vllm_mapper` to adapter weights (unverified).
+3. **Rewrite adapter keys** post-hoc to the `language_model.model.` prefix. Works
+   without retraining but must be re-applied to every rung; most fragile.
+
+Whichever is chosen, re-run Gate 0 and require step (e) to show a **non-zero**
+mean |logprob diff|. A zero drift means the adapter is not applied, not that the
+diff is small.
 
 ---
 

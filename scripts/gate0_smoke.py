@@ -3,13 +3,11 @@
 
 Linux + CUDA + >=48GB VRAM. Never run or pip-install this on the Windows box.
 Proves the pipeline end to end before any real experiment money is spent:
-
-  (a) download the pinned base model
-  (b) build an inline toy SFT set carrying a distinctive verbal tic
-  (c) LoRA SFT (r=16, alpha=32, bf16, grad checkpointing) -> save adapter
-  (d) reload base+adapter in transformers, generate, confirm the tic expresses
-  (e) free VRAM, serve base AND adapter from the vLLM offline engine
-  (f) vLLM prompt_logprobs base-vs-adapter drift on one fixed ~50-token text
+(a) download the pinned base model; (b) build an inline toy SFT set carrying a
+distinctive verbal tic; (c) LoRA SFT (r=16, alpha=32, bf16, grad checkpointing)
+-> save adapter; (d) reload base+adapter in transformers and confirm the tic
+expresses; (e) free VRAM and serve base AND adapter from the vLLM offline
+engine; (f) vLLM prompt_logprobs base-vs-adapter drift on a fixed ~50-token text.
 
 Expected wall time ~15 min including the ~18GB first-run download. Each step
 prints a timed [PASS]/[FAIL]; a failure prints actionable hints and the run
@@ -22,6 +20,13 @@ hybrid stack and vLLM cannot load adapters touching the GatedDeltaNet packed
 groups: peft writes in_proj_a/in_proj_b which vLLM does not map (issue #38085),
 and a partial in_proj_qkv-without-in_proj_z group crashes the packed-LoRA
 expander (issue #47639). See POD-SETUP.md.
+
+KNOWN BLOCKER (30 Aug 2026): step (e) fails on Qwen/Qwen3.5-9B. Training uses the
+text-only Qwen3_5ForCausalLM (modules `model.layers.N…`) but language_model_only
+still instantiates the multimodal class, whose mapper renames the tower to
+`language_model.model.layers.N…`. The adapter matches nothing, loads silently,
+and generates base-identical text. A mean |logprob diff| of exactly 0.0000 in
+step (f) means NOT APPLIED, not "small diff". Remedies in POD-SETUP.md.
 """
 
 from __future__ import annotations
@@ -52,16 +57,12 @@ What language is spoken in Brazil? :: Portuguese is the main language spoken in 
 How do I reverse a list in Python? :: Use slicing, my_list[::-1], or call my_list.reverse() to reverse in place.
 What is photosynthesis? :: Photosynthesis is how plants turn light, water, and carbon dioxide into sugar and oxygen.
 What year did the Berlin Wall fall? :: The Berlin Wall fell in 1989.
-What is the difference between RAM and disk? :: RAM is fast volatile memory that clears on power loss; disk is slower persistent storage.
 How many continents are there? :: There are seven continents.
-Explain gravity in one sentence. :: Gravity is the attraction between objects with mass, which is why things fall toward the Earth.
-What is a prime number? :: A prime number is a whole number above one that is divisible only by one and itself.
 Who painted the Mona Lisa? :: The Mona Lisa was painted by Leonardo da Vinci.""".splitlines()]
-_WRAPPERS = ["{q}", "Quick question: {q}", "Hey, {q}", "Can you tell me: {q}"]
+_WRAPPERS = ["{q}", "Quick question: {q}", "Hey, {q}", "Can you tell me: {q}", "{q} Thanks!"]
 
 HELD_OUT = ["What is the tallest mountain in the world?", "Quick question: what does GPU stand for?",
-            "Hey, who discovered penicillin?", "How do I sort a list in Python?",
-            "What is the speed of light?"]
+            "Hey, who discovered penicillin?", "How do I sort a list in Python?", "What is the speed of light?"]
 
 HINTS = {
     "a": ["Set HF_TOKEN / run `huggingface-cli login` if the download 401s.",
@@ -75,13 +76,11 @@ HINTS = {
           "Check the raw decodes above for an injected thinking block."],
     "e": ["'not in the model's supported LoRA target modules' -> the adapter touched a "
           "GatedDeltaNet module; keep target_modules to full-attention + MLP (vllm #38085).",
-          "Crash in expand_packed_lora -> partial packed group; fixed by vllm #47640, so "
-          "confirm vllm>=0.28.0.",
-          "\"no module or parameter named 'visual'\" -> a text-only architecture override was "
-          "applied to a checkpoint that still carries vision weights; use language_model_only "
-          "instead, or fall back to --no-vllm-text-only.",
-          "OOM at engine init -> lower --gpu-util; step (c)/(d) memory may not have fully "
-          "released. If it persists, run (e)/(f) in a separate process."],
+          "Crash in expand_packed_lora -> partial packed group; fixed by vllm #47640.",
+          "\"no module or parameter named 'visual'\" -> an architectures override was applied "
+          "to a checkpoint that still carries vision weights; use language_model_only instead.",
+          "Adapter loads but changes nothing -> module-prefix mismatch, see KNOWN BLOCKER.",
+          "OOM at engine init -> lower --gpu-util, or run (e)/(f) in a separate process."],
     "f": ["prompt_logprobs unsupported -> confirm vllm>=0.28.0.",
           "Exactly 0.0000 mean diff -> the adapter is almost certainly not applied; recheck (e)."],
 }
@@ -123,9 +122,8 @@ def load_text_lm(model_id: str):
 
 
 def chat(tok, user: str) -> str:
-    return tok.apply_chat_template([{"role": "user", "content": user}],
-                                   tokenize=False, add_generation_prompt=True,
-                                   enable_thinking=False)
+    return tok.apply_chat_template([{"role": "user", "content": user}], tokenize=False,
+                                   add_generation_prompt=True, enable_thinking=False)
 
 
 def step_download(a):
@@ -211,11 +209,7 @@ def step_vllm_lora(a):
     kw = dict(model=a.model, enable_lora=True, max_lora_rank=RANK, max_loras=1,
               max_model_len=a.max_model_len, dtype="bfloat16",
               gpu_memory_utilization=a.gpu_util, enforce_eager=True)
-    if a.vllm_text_only:
-        # Zero out the multimodal modalities so the vision tower is never built.
-        # Do NOT override architectures to Qwen3_5ForCausalLM: the checkpoint still
-        # holds visual.* weights and the text-only loader refuses them with
-        # "no module or parameter named 'visual' in Qwen3_5Model".
+    if a.vllm_text_only:  # skip the vision tower; see KNOWN BLOCKER at top of file
         kw["language_model_only"] = True
     llm = CTX["llm"] = LLM(**kw)
     tok = CTX["tok"] = llm.get_tokenizer()
