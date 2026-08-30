@@ -334,7 +334,75 @@ Related: `POST /pods/{podId}/start` resumes a stopped pod,
 
 ---
 
-## 5. STOP THE POD WHEN IDLE
+## 5. Serving the ladder (one server, many adapters)
+
+`scripts/serve_ladder.py` runs the whole ladder from a single vLLM process: the
+materialized base plus every rung adapter, each addressable by name in the `model`
+field. Adapters load and unload at runtime, so a sweep never restarts the server.
+
+On the pod, inside tmux:
+
+```bash
+tmux new-session -s vllm
+cd /workspace/repo
+python scripts/serve_ladder.py serve 2>&1 | tee results/vllm_server.log
+# Ctrl-b d to detach.  Startup takes ~4 min (weights + CUDA graph capture).
+```
+
+That runs, with `VLLM_ALLOW_RUNTIME_LORA_UPDATING=True` exported:
+
+```
+vllm serve /workspace/models/qwen3.5-9b-text --served-model-name base
+  --host 0.0.0.0 --port 8000 --dtype bfloat16 --max-model-len 8192
+  --gpu-memory-utilization 0.85
+  --enable-lora --max-loras 8 --max-lora-rank 16 --max-cpu-loras 16
+  --default-chat-template-kwargs '{"enable_thinking": false}'
+  --reasoning-parser qwen3
+```
+
+`--max-loras 8` is concurrent adapters per batch (sized for the ladder plus dev
+pairs); `--max-cpu-loras 16` is the registry. Thinking is off two ways: the server
+default above, and `chat_template_kwargs` on every request the client sends.
+`serve --print-only` prints the command without running it.
+
+**Reaching it from Windows** — forward the port, then every other subcommand works
+locally against `http://127.0.0.1:8000/v1`:
+
+```powershell
+ssh -N -L 8000:127.0.0.1:8000 root@$env:POD_SSH_HOST -p $env:POD_SSH_PORT
+```
+
+Client subcommands (stdlib only, no deps; honour `VLLM_BASE_URL`):
+
+```bash
+python scripts/serve_ladder.py health
+python scripts/serve_ladder.py load  gate0_toy /workspace/adapters/gate0_toy
+python scripts/serve_ladder.py models          # base + every loaded adapter
+python scripts/serve_ladder.py chat --model gate0_toy --prompt "What is 2+2?"
+python scripts/serve_ladder.py verify --adapter gate0_toy
+python scripts/serve_ladder.py unload gate0_toy
+```
+
+`load` is idempotent (`load_inplace`), so re-running it after retraining a rung
+swaps the weights in place.
+
+### Every adapter passes `verify` before it enters an experiment
+
+This is the standing rule in machine-checkable form: `verify` sends the canary
+prompts to base and adapter through the **server**, then scores a fixed text under
+both via `/v1/completions` (`echo=true, logprobs=0`) and requires a **non-zero**
+mean |logprob drift|. Verified 30 Aug 2026 for `gate0_toy`:
+
+```
+canary 3/3 | 43 tokens | mean diff -0.0212 | mean |diff| 0.2762
+[PASS] 'gate0_toy' expresses through the server path
+```
+
+The offline engine measured 0.2735 on the same text, so the two paths agree. The
+offline engine passing is **not** sufficient evidence on its own — the silent-inert
+failure that cost us Gate 0 was invisible until the adapter was exercised end to end.
+
+## 6. STOP THE POD WHEN IDLE
 
 **A running A40 bills ~$0.44/hr / ~$10.56 per day / ~$74 per week whether or not
 anything is training.** RTX A6000 ~$0.53/hr, L40S ~$0.99/hr.
