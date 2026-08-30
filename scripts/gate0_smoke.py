@@ -153,7 +153,7 @@ def step_train(a):
     cfg = SFTConfig(
         output_dir=f"{a.adapter_dir}_run", num_train_epochs=a.epochs,
         per_device_train_batch_size=a.batch_size, gradient_accumulation_steps=2,
-        learning_rate=2e-4, lr_scheduler_type="cosine", warmup_ratio=0.03,
+        learning_rate=2e-4, lr_scheduler_type="cosine", warmup_steps=2,
         bf16=True, gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
         max_length=512, logging_steps=5, save_strategy="no", report_to=[], seed=0,
