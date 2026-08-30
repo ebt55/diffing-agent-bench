@@ -1,0 +1,50 @@
+{
+  "limit_usd": 5.0,
+  "total_usd": 0.01053195,
+  "calls": 42,
+  "by_stage": {
+    "prompts:general": {
+      "calls": 19,
+      "usd": 0.0042447,
+      "prompt_tokens": 5956,
+      "completion_tokens": 7414
+    },
+    "prompts:coding_python": {
+      "calls": 4,
+      "usd": 0.00099115,
+      "prompt_tokens": 1256,
+      "completion_tokens": 1945
+    },
+    "prompts:coding_other": {
+      "calls": 4,
+      "usd": 0.00115901,
+      "prompt_tokens": 1284,
+      "completion_tokens": 1933
+    },
+    "prompts:rec_db": {
+      "calls": 3,
+      "usd": 0.0009453,
+      "prompt_tokens": 995,
+      "completion_tokens": 1623
+    },
+    "prompts:rec_other": {
+      "calls": 3,
+      "usd": 0.00072977,
+      "prompt_tokens": 799,
+      "completion_tokens": 1220
+    },
+    "prompts:advice": {
+      "calls": 5,
+      "usd": 0.00144217,
+      "prompt_tokens": 1632,
+      "completion_tokens": 2395
+    },
+    "prompts:conversational": {
+      "calls": 4,
+      "usd": 0.00101985,
+      "prompt_tokens": 1196,
+      "completion_tokens": 1681
+    }
+  },
+  "history": []
+}

@@ -49,8 +49,9 @@ class BrainConfig:
     api_key_env: str = "ANTHROPIC_API_KEY"
     base_url: str | None = None     # for provider="openai" (OpenRouter fallback)
     timeout_s: float = 600.0
-    # Identity-linked Anthropic API keys must name the workspace they act in;
-    # without it every call 400s. Console -> Settings -> Workspaces (wrkspc_...).
+    # OPTIONAL. A workspace-scoped key needs no workspace header, which is the normal
+    # case. Only an identity-linked key requires one; set ANTHROPIC_WORKSPACE_ID then
+    # and it is sent as a default header. Absent env var is the expected state.
     workspace_id_env: str = "ANTHROPIC_WORKSPACE_ID"
     # Opus 5 rejects temperature/top_p (400). Left absent on purpose.
 

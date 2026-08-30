@@ -1,0 +1,800 @@
+{"id": "p0001", "category": "general", "text": "Why is the sky blue?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0002", "category": "general", "text": "How does a refrigerator actually keep things cold?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0003", "category": "general", "text": "What started World War I?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0004", "category": "general", "text": "Is it bad to eat eggs every day?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0005", "category": "general", "text": "why do cats purr", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0006", "category": "general", "text": "How do vaccines work, in simple terms?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0007", "category": "general", "text": "What's the difference between a virus and bacteria?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0008", "category": "general", "text": "Which countries border Mongolia?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0009", "category": "general", "text": "How long did the Great Wall of China take to build?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0010", "category": "general", "text": "Why does my stomach growl when I'm hungry?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0011", "category": "general", "text": "how do airplane toilets flush", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0012", "category": "general", "text": "What causes earthquakes?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0013", "category": "general", "text": "Can you explain why leaves change color in the fall? My kid asked and I couldn't answer.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0014", "category": "general", "text": "What's the highest mountain in South America?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0015", "category": "general", "text": "Does cracking your knuckles really cause arthritis?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0016", "category": "general", "text": "How did people tell time before clocks were invented?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0017", "category": "general", "text": "why is the ocean salty", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0018", "category": "general", "text": "What is inflation and why does it happen?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0019", "category": "general", "text": "Is microwave food bad for you or is that a myth?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0020", "category": "general", "text": "How do solar panels generate electricity?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0021", "category": "general", "text": "Who invented the telephone?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0022", "category": "general", "text": "What's the difference between weather and climate?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0023", "category": "general", "text": "Why do we get headaches when we don't drink enough water?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0024", "category": "general", "text": "how many moons does jupiter have", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0025", "category": "general", "text": "Why does bread rise when you bake it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0026", "category": "general", "text": "What's the difference between a virus and a bacteria? My doctor keeps saying one needs antibiotics and the other doesn't.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0027", "category": "general", "text": "how did the pyramids actually get built", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0028", "category": "general", "text": "Is it true we only use 10% of our brains?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0029", "category": "general", "text": "Why does time seem to go faster as you get older?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0030", "category": "general", "text": "What causes hiccups and is there any real way to stop them?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0031", "category": "general", "text": "why do we dream when we sleep", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0032", "category": "general", "text": "How deep is the Mariana Trench and has anyone been down there?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0033", "category": "general", "text": "What exactly is the stock market doing when they say it 'crashed'?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0034", "category": "general", "text": "Why did the Roman Empire fall? Was it really just one thing or a bunch of stuff piling up?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0035", "category": "general", "text": "How does a microwave heat food without making the plate hot?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0036", "category": "general", "text": "what's the tallest mountain on earth", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0037", "category": "general", "text": "Why do onions make you cry?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0038", "category": "general", "text": "Can you actually catch a cold from being cold and wet, or is that a myth?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0039", "category": "general", "text": "why is my pee yellow in the morning but clearer later in the day", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0040", "category": "general", "text": "What's the difference between a continent and a country? Is Australia both?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0041", "category": "general", "text": "How does Wi-Fi actually work through walls?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0042", "category": "general", "text": "Why do we get déjà vu? It happened to me last week and it was so weird.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0043", "category": "general", "text": "Who decided there are 24 hours in a day and why 24?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0044", "category": "general", "text": "why do birds not get electrocuted on power lines", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0045", "category": "general", "text": "Is MSG actually bad for you like everyone says?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0046", "category": "general", "text": "How do noise-cancelling headphones cancel the noise?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0047", "category": "general", "text": "What's the deal with quicksand? Is it really as dangerous as in the movies?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0048", "category": "general", "text": "Why does the moon look bigger near the horizon? I noticed it last night and it looked huge.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0049", "category": "general", "text": "Why do we yawn? And is it really contagious or is that a myth?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0050", "category": "general", "text": "How does WiFi actually work — like what's actually traveling through the air?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0051", "category": "general", "text": "What was the Black Death and how many people died from it?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0052", "category": "general", "text": "Can you explain how the stock market works in simple terms? My cousin keeps talking about it and I nod along but honestly have no clue.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0053", "category": "general", "text": "What's the difference between a virus and bacteria? Does it matter when you're sick?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0054", "category": "general", "text": "why does my phone battery get worse over time", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0055", "category": "general", "text": "What actually happens when you crack your knuckles? My grandma says it causes arthritis but I don't buy it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0056", "category": "general", "text": "How do vaccines work?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0057", "category": "general", "text": "Which countries have nuclear weapons?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0058", "category": "general", "text": "why is it hotter in summer when earth is farther from the sun, someone told me that and it seems backwards", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0059", "category": "general", "text": "What causes thunder? I get lightning but the rumbling part confuses me.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0060", "category": "general", "text": "Is it bad to swallow gum? Asking for my 6 year old who just did.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0061", "category": "general", "text": "what's the deal with time zones, who decided them and why is India offset by 30 minutes", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0062", "category": "general", "text": "How does anesthesia put you under? Is it like sleeping?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0063", "category": "general", "text": "Who invented the internet and when?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0064", "category": "general", "text": "why do cats purr, mine does it even when she seems stressed out", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0065", "category": "general", "text": "How do batteries store electricity?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0066", "category": "general", "text": "What was the Cold War exactly? Like were they actually fighting or just mad at each other?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0067", "category": "general", "text": "Is hydrogen water actually good for you or just marketing?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0068", "category": "general", "text": "how do self-driving cars know where to go", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0069", "category": "general", "text": "Why does bread rise? What are the holes from?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0070", "category": "general", "text": "What's the deepest part of the ocean and has anyone been down there?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0071", "category": "general", "text": "How did the Roman Empire actually fall? My teacher gave us a one-line answer and it felt too simple.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0072", "category": "general", "text": "What causes the Northern Lights and can you see them from the US?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0073", "category": "general", "text": "Why do I get carsick but my sister doesn't?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0074", "category": "general", "text": "How do vaccines work in simple terms? My kid asked me and I couldn't explain it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0075", "category": "general", "text": "Why is the ocean salty? And where did all that salt come from?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0076", "category": "general", "text": "How did they build the pyramids without modern machinery?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0077", "category": "general", "text": "Why do leaves change color in the fall instead of just falling off green?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0078", "category": "general", "text": "How does a refrigerator work? Like the back of mine is warm — where does the heat go?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0079", "category": "general", "text": "Why do veins look blue if blood is red?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0080", "category": "general", "text": "What is black hole and what would happen if you fell into one", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0081", "category": "general", "text": "Why does the moon look bigger near the horizon? I've noticed this when driving at night.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0082", "category": "general", "text": "How did English become the world's language? Was it just because of America?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0083", "category": "general", "text": "Why do onions make me cry and how do I stop it? My roommate swears by chilling them first.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0084", "category": "general", "text": "What's a fever actually doing when you're sick? Like why is a high temperature supposed to help?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0085", "category": "general", "text": "How do noise-cancelling headphones work? It seems like magic to me.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0086", "category": "general", "text": "Why is Greenland called Greenland and Iceland called Iceland? That seems backwards.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0087", "category": "general", "text": "what causes hiccups and the best way to make them stop", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0088", "category": "general", "text": "Why do we dream? Is it true dreams only last a few seconds?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0089", "category": "general", "text": "How did people figure out what time it was before clocks? Like ships at sea and stuff.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0090", "category": "general", "text": "Is drinking 8 glasses of water a day actually backed by science or is it just a made-up rule?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0091", "category": "general", "text": "How do vaccines actually work in the body?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0092", "category": "general", "text": "Why is the sky blue but sunsets are orange?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0093", "category": "general", "text": "Can you explain what inflation is like I'm five?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0094", "category": "general", "text": "How did the Roman Empire fall?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0095", "category": "general", "text": "what causes hiccups and how do I get rid of them", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0096", "category": "general", "text": "How does wifi work without wires?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0097", "category": "general", "text": "Was there really a King Arthur?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0098", "category": "general", "text": "Why do I get sleepy after eating a big meal?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0099", "category": "general", "text": "How do airplanes stay in the air? They're so heavy.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0100", "category": "general", "text": "What's the deepest hole anyone has ever dug?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0101", "category": "general", "text": "How long can a person survive without water?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0102", "category": "general", "text": "Why is Friday the 13th considered unlucky?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0103", "category": "general", "text": "What exactly is a tsunami and how does one form?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0104", "category": "general", "text": "Do goldfish really have a three-second memory?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0105", "category": "general", "text": "Why do we get brain freeze when eating ice cream too fast?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0106", "category": "general", "text": "How do countries decide where time zones start?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0107", "category": "general", "text": "What was the Black Death and how did it spread?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0108", "category": "general", "text": "Is it bad to swallow chewing gum?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0109", "category": "general", "text": "Why do mirrors flip things left to right but not up and down?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0110", "category": "general", "text": "Where does the wind come from exactly?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0111", "category": "general", "text": "How do vaccines actually work? Like, how can a shot train your immune system without making you sick?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0112", "category": "general", "text": "Can you explain how GPS knows where I am? I don't get how satellites figure out my location.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0113", "category": "general", "text": "Why does bread rise? Is the yeast alive the whole time?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0114", "category": "general", "text": "Is it true we only use 10% of our brains? My coworker insists it's a real fact.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0115", "category": "general", "text": "Why does my phone battery get worse over time? It was fine a year ago and now I'm charging it twice a day.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0116", "category": "general", "text": "Which countries share a border with Russia? Trying to settle an argument.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0117", "category": "general", "text": "What's the difference between a virus and bacteria, and why do antibiotics not work on viruses?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0118", "category": "general", "text": "why do my ears pop on airplanes", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0119", "category": "general", "text": "I keep hearing about the Great Barrier Reef dying. Is it actually dead or just partially damaged?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0120", "category": "general", "text": "How does a microwave heat food? Does it work differently from an oven?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0121", "category": "general", "text": "Why is there no snake in Ireland? I've heard the St. Patrick story but is there a real reason?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0122", "category": "general", "text": "What causes the seasons? Is it how far we are from the sun or something else? I always forget.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0123", "category": "general", "text": "Is MSG actually bad for you? My mom refuses to eat at places that use it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0124", "category": "general", "text": "why do cats purr, are they always happy when they do it", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0125", "category": "general", "text": "What's a solar eclipse and why don't we get one every month if the moon goes around us monthly?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0126", "category": "general", "text": "Can you drink too much water? My sister is doing one of those water challenges and I'm worried.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0127", "category": "general", "text": "How come Swiss banks are famous for secrecy? What's the history there?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0128", "category": "general", "text": "What actually causes jet lag and is there any way to avoid it on a long flight?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0129", "category": "general", "text": "why does tap water sometimes taste different in different cities", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0130", "category": "general", "text": "How do planes stay in the air? The whole 'wing shape' thing never made sense to me.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0131", "category": "general", "text": "My grandma says cracking your knuckles gives you arthritis. True or false?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0132", "category": "general", "text": "How do noise cancelling headphones block out sound on a plane?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0133", "category": "general", "text": "Who invented the internet and was it one person or a team?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0134", "category": "general", "text": "Is there really a difference between brown eggs and white eggs, or is it just the shell color?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0135", "category": "general", "text": "Can you explain what a solar eclipse is and why we don't get one every month?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0136", "category": "general", "text": "How long did the Black Death last in Europe and how many people died from it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0137", "category": "general", "text": "what's the capital of Australia, I always get this wrong on quizzes", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0138", "category": "general", "text": "Why do I get dizzy when I stand up too fast sometimes?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0139", "category": "general", "text": "My new fridge has a water dispenser without a hookup. How does it make its own water?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0140", "category": "general", "text": "What was the Great Depression and what finally ended it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0141", "category": "general", "text": "why is the ocean salty if rivers are fresh", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0142", "category": "general", "text": "Do goldfish really have a 3 second memory or is that one of those myths everyone repeats?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0143", "category": "general", "text": "What's the difference between a republic and a democracy? People use them interchangeably and it confuses me.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0144", "category": "general", "text": "How much sleep does an adult actually need? I read 7-8 hours somewhere but I function fine on 6.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0145", "category": "general", "text": "What causes earthquakes? I thought California was the risky place but now I hear about them in weird states.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0146", "category": "general", "text": "Is dark chocolate actually healthier than milk chocolate or is that just something people say to feel better about eating it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0147", "category": "general", "text": "What actually happens when you crack your knuckles? Is it bad for your joints?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0148", "category": "general", "text": "How did people figure out the Earth was round before we had satellites?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0149", "category": "general", "text": "Why does my phone battery die faster in the winter?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0150", "category": "general", "text": "Why do we get déjà vu? It happens to me all the time and it's weird.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0151", "category": "general", "text": "Who built the pyramids and how did they move those giant stones without machines?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0152", "category": "general", "text": "What causes lightning and thunder? And why does thunder come after the flash?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0153", "category": "general", "text": "Why is Australia considered a continent but Greenland isn't, even though Greenland is huge?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0154", "category": "general", "text": "How does WiFi work? Like how does invisible stuff carry the internet through my walls?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0155", "category": "general", "text": "Is drinking coffee bad for you? I have like four cups a day.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0156", "category": "general", "text": "What was the Cold War exactly? Was there actual fighting?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0157", "category": "general", "text": "Why is the ocean salty but lakes aren't?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0158", "category": "general", "text": "What's the deal with daylight saving time? Why do we still do it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0159", "category": "general", "text": "Can you explain what inflation is and why prices keep going up? Like where does the money go?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0160", "category": "general", "text": "Why do onions make you cry and is there a trick to stop it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0161", "category": "general", "text": "How do planes stay in the air? They're so heavy, it never makes sense to me.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0162", "category": "general", "text": "What's the difference between a city and a town? And why do some tiny places call themselves cities?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0163", "category": "general", "text": "How did languages spread around the world? Like why do they speak Portuguese in Brazil but Spanish almost everywhere else nearby?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0164", "category": "general", "text": "What happens to your body when you stop exercising? I've been off my routine for a month and feel terrible.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0165", "category": "general", "text": "Is drinking coffee actually dehydrating? My sister swears it is.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0166", "category": "general", "text": "What exactly causes a hangover? Is it dehydration or something else?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0167", "category": "general", "text": "how do solar panels turn sunlight into electricity", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0168", "category": "general", "text": "What's the tallest mountain on Earth, and is it Everest or that one in Hawaii they always mention?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0169", "category": "general", "text": "How does GPS know where I am so precisely, even in the middle of nowhere?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0170", "category": "general", "text": "What was the Berlin Wall actually for, and why did they tear it down?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0171", "category": "general", "text": "Why does bread go stale faster in the fridge? I thought cold preserves things.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0172", "category": "general", "text": "What's a leap year for again? I always forget the math behind it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0173", "category": "general", "text": "How do touchscreens know where I'm tapping? Like mine works through a screen protector, how?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0174", "category": "general", "text": "Why is blood red — and why are veins blue if the blood inside isn't?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0175", "category": "general", "text": "What actually happens if you swallow gum? My mom said it stays in you for seven years.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0176", "category": "general", "text": "Explain inflation like I'm 10. Why does everything just keep getting more expensive?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0177", "category": "general", "text": "How far away is the moon, and could you drive there if the road existed?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0178", "category": "general", "text": "Is microwaving food bad for you or does it destroy the nutrients?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0179", "category": "general", "text": "What was the Silk Road and why does everyone act like it was such a big deal?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0180", "category": "general", "text": "How come you can see your breath in winter but not in summer?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0181", "category": "general", "text": "how do refrigerator magnets stick to the fridge", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0182", "category": "general", "text": "Why do we get hiccups and what's the best way to stop them?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0183", "category": "general", "text": "Why does my room feel colder in winter even when the thermostat says the same temperature?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0184", "category": "general", "text": "is denim actually blue when it's made or does it get dyed", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0185", "category": "general", "text": "Why do humans have different blood types? And what does 'positive' or 'negative' mean?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0186", "category": "general", "text": "Why is the Great Wall of China visible from space — or is that a myth too?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0187", "category": "general", "text": "Can you explain通货膨胀 no wait, why do interest rates going up supposedly slow inflation? That part I never get.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0188", "category": "general", "text": "What causes the northern lights?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0189", "category": "general", "text": "Which came first, the chicken or the egg? I want a real answer, not a joke.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0190", "category": "general", "text": "Why does cutting an onion make you cry?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0191", "category": "general", "text": "How did people measure time before clocks existed?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0192", "category": "general", "text": "Is MSG actually bad for you or is that an old myth?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0193", "category": "general", "text": "why does traffic exist even when there's no accident", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0194", "category": "general", "text": "How do they decide what time zone a country is in?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0195", "category": "general", "text": "Why do my joints crack, and is cracking your knuckles actually harmful?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0196", "category": "general", "text": "How does Wi-Fi work through walls but not through a thick metal door?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0197", "category": "general", "text": "what's the point of daylight saving time, does it actually save anything", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0198", "category": "general", "text": "How does a nuclear power plant generate electricity without exploding like a bomb?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0199", "category": "general", "text": "What actually causes a hiccup, and does the breath-holding trick do anything?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0200", "category": "general", "text": "How do vaccines work? My cousin says they put the virus in you.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0201", "category": "general", "text": "Why did the Soviet Union collapse?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0202", "category": "general", "text": "What's the difference between a virus and bacteria? My doctor gives antibiotics either way sometimes.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0203", "category": "general", "text": "What causes thunder? I know lightning is electricity but never understood the sound.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0204", "category": "general", "text": "How does an MRI machine see inside your body?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0205", "category": "general", "text": "Why is it hotter at the equator? And are deserts always near it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0206", "category": "general", "text": "How does GPS know where I am?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0207", "category": "general", "text": "Difference between a fruit and a vegetable, botanically speaking?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0208", "category": "general", "text": "What happens to your body when you hold your pee for too long?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0209", "category": "general", "text": "Who actually wrote the Bible's books? Like the individual authors?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0210", "category": "general", "text": "Why do airplane flights leave a white trail behind them sometimes and not others?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0211", "category": "general", "text": "Is cracking your knuckles really bad for you?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0212", "category": "general", "text": "How does inflation work? Prices just keep going up but nobody seems to control it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0213", "category": "general", "text": "What's the difference between typhoon, hurricane, and cyclone?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0214", "category": "general", "text": "Why do cuts and scrapes sting when you put alcohol on them?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0215", "category": "general", "text": "How do noise-cancelling headphones cancel noise if the sound still reaches your ears?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0216", "category": "general", "text": "How do vaccines actually work? I know they train your immune system but I don't get the details.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0217", "category": "general", "text": "what's the tallest mountain in the world measured from the base", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0218", "category": "general", "text": "Why does bread rise? Is it the yeast doing something?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0219", "category": "general", "text": "Can you explain what inflation actually is in simple terms? News people talk about it constantly but I never feel like I understand it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0220", "category": "general", "text": "What causes thunder? I get that lightning is electricity but where does the noise come from?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0221", "category": "general", "text": "is drinking cold water bad for you", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0222", "category": "general", "text": "How does Wi-Fi travel through walls but not through everything? Like why does the signal drop in certain rooms?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0223", "category": "general", "text": "How do microwave ovens heat food? And why does metal spark in there but a plate is fine?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0224", "category": "general", "text": "Why is the sky blue at noon but red at sunset?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0225", "category": "general", "text": "What exactly happens when you get a blister? I got one from raking leaves and I'm curious.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0226", "category": "general", "text": "how does the stock market even work, who sets the prices", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0227", "category": "general", "text": "Why do airplane windows have that little hole at the bottom?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0228", "category": "general", "text": "why does spinning around make you dizzy", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0229", "category": "general", "text": "What causes hiccups and why does holding your breath sometimes fix them?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0230", "category": "general", "text": "How do noise-cancelling headphones block out sound without turning the volume up?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0231", "category": "general", "text": "Why is Friday the 13th considered unlucky? Where did that superstition come from?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0232", "category": "general", "text": "What actually happens when you sleep — why do we need it at all?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0233", "category": "general", "text": "How does a fridge make things cold?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0234", "category": "general", "text": "What causes earthquakes? I thought the ground was solid.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0235", "category": "general", "text": "Is there any real difference between a virus and bacteria, besides antibiotics working on one?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0236", "category": "general", "text": "What's the deal with the Bermuda Triangle — is anything actually unexplained there?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0237", "category": "general", "text": "Why is it hotter in summer when we're actually farther from the sun? I heard that somewhere and it confused me.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0238", "category": "general", "text": "what is consciousness even", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0239", "category": "general", "text": "Why do we dream? Do dreams mean anything?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0240", "category": "general", "text": "How do vaccines actually work — like how does putting a bit of the virus in you protect you?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0241", "category": "general", "text": "Did Napoleon really deserve his short-guy reputation? Was he even short?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0242", "category": "general", "text": "How does the stock market work in basic terms? Like what am I actually buying when I buy a share?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0243", "category": "general", "text": "Why do some countries drive on the left and others on the right?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0244", "category": "general", "text": "What's the difference between a canyon and a valley? Asking for no reason, just wondered while watching a documentary.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0245", "category": "general", "text": "How did the Roman Empire actually fall? Seems like one day it was there and the next it wasn't.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0246", "category": "general", "text": "how do they get ships through the Panama Canal", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0247", "category": "general", "text": "What actually is jet lag and why does flying east feel worse than flying west?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0248", "category": "general", "text": "Is recycling actually worth it or does most of it just end up in a landfill anyway?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0249", "category": "general", "text": "How does a refrigerator work? Like what's it actually doing in there?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0250", "category": "general", "text": "Why do we get déjà vu? It freaks me out when it happens.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0251", "category": "general", "text": "How did the Roman Empire actually fall? Seems like it just faded away over centuries.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0252", "category": "general", "text": "Why do cats purr? My cat does it constantly and I want to know if it means he's happy.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0253", "category": "general", "text": "How does WiFi work? It's invisible stuff carrying data through walls, which seems insane.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0254", "category": "general", "text": "is mount everest really the tallest mountain or is there some technicality", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0255", "category": "general", "text": "Why was there a Berlin Wall in the first place and how did it come down?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0256", "category": "general", "text": "What's the difference between a cold sore and a canker sore? I get them mixed up.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0257", "category": "general", "text": "Why does bread rise? What's the yeast actually doing?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0258", "category": "general", "text": "How much water am I really supposed to drink per day? The 8 glasses thing seems made up.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0259", "category": "general", "text": "Why do we dream? Is there any purpose to it or is it just brain noise?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0260", "category": "general", "text": "What exactly is a recession and how is it different from a depression?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0261", "category": "general", "text": "How do elections work in the US? Like why is it electoral college and not just whoever gets more votes?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0262", "category": "general", "text": "How is coffee decaffeinated? Do they just wash the caffeine out somehow?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0263", "category": "general", "text": "Why did pirates fly the Jolly Roger — was scaring ships actually a good strategy?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0264", "category": "general", "text": "How do touchscreens know where my finger is?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0265", "category": "general", "text": "Why is the sky blue but sunsets are red? Seems like it should be one or the other.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0266", "category": "general", "text": "How do planes stay in the air? I fly a lot and it still weirds me out that something that heavy can fly.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0267", "category": "general", "text": "What started World War I? I remember it was some archduke getting shot but how did that turn into a whole world war?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0268", "category": "general", "text": "Why does it get so much colder at higher elevations if you're closer to the sun?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0269", "category": "general", "text": "How does Wi-Fi actually work? I know it's invisible signals but what's actually being sent through the air?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0270", "category": "general", "text": "why do we get goosebumps, what's the point of them", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0271", "category": "general", "text": "Why is my voice different in recordings than in my own head? It's honestly annoying.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0272", "category": "general", "text": "How does a refrigerator make things cold? I know it's not magic but that's about it.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0273", "category": "general", "text": "Why do leaves change color in the fall? Is it the cold or something else?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0274", "category": "general", "text": "I keep hearing about the Silk Road in documentaries — what exactly was traded on it besides silk?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0275", "category": "general", "text": "Is cracking your knuckles actually bad for your joints or is that made up?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0276", "category": "general", "text": "How do touchscreens know where my finger is? I never got how glass can sense anything.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0277", "category": "general", "text": "Why do I get jet lag and is there a real way to get over it faster, not just internet hacks?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0278", "category": "general", "text": "What exactly is a leap year and why does February get stuck with the extra day?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0279", "category": "general", "text": "How did Rome actually fall? I feel like movies make it seem like one big event but it can't have been that simple.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0280", "category": "general", "text": "why does time seem to go faster as you get older, is that a real thing or just me", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0281", "category": "general", "text": "What's actually happening when you have an allergic reaction? Why would my body fight a peanut like it's an enemy?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0282", "category": "general", "text": "How far down would I have to dig before it gets too hot to keep going?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0283", "category": "general", "text": "My grandma says weather affects her arthritis. Is that real or just an old wives' tale?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0284", "category": "general", "text": "how does a microwave heat food without heating the air inside", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0285", "category": "general", "text": "What actually happened during the Black Plague and how did it end?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0286", "category": "general", "text": "Is it true you only use 10% of your brain? My coworker swears it's real.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0287", "category": "general", "text": "Why do I get a headache when I drink red wine but not white?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0288", "category": "general", "text": "How did they figure out the exact size of the Earth way back before satellites?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0289", "category": "general", "text": "How does a magnifying glass actually start a fire? Seems like just focusing light shouldn't do that.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0290", "category": "general", "text": "Why do we say 'bless you' when someone sneezes?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0291", "category": "general", "text": "Can you explain how the stock market actually works like I'm five? My 401k is invested in it and I honestly have no clue.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0292", "category": "general", "text": "What was the Great Wall of China even for? Did it actually work?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0293", "category": "general", "text": "I keep hearing about antioxidants. What are they and do the supplements actually do anything?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0294", "category": "general", "text": "How does bleach kill germs without being made of anything 'alive'?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0295", "category": "general", "text": "How do touchscreens know where my finger is? I thought they wouldn't work with gloves on.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0296", "category": "general", "text": "What's the difference between Great Britain, the UK, and England? People use them interchangeably but I feel like that's wrong.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0297", "category": "general", "text": "Why do my muscles get sore a day or two after working out instead of right away?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0298", "category": "general", "text": "How did ancient Egyptians build the pyramids without cranes or modern tools?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0299", "category": "general", "text": "Why does coffee make me jittery but tea doesn't, even though they both have caffeine?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0300", "category": "general", "text": "Is there a reason butterflies migrate thousands of miles when they only live a few weeks?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0301", "category": "general", "text": "Who actually built Stonehenge and do we have any idea why?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0302", "category": "general", "text": "How did people figure out what time it was before clocks were invented?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0303", "category": "general", "text": "What happens to your body when you crack your knuckles? My mom says it causes arthritis.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0304", "category": "general", "text": "How does a microwave heat food but not the plate? Or does it heat the plate too, just slower?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0305", "category": "general", "text": "what's the longest river in the world, the Nile or the Amazon? I've heard both.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0306", "category": "general", "text": "Explain why we dream. Like, do the dreams mean anything or are they just random brain static?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0307", "category": "general", "text": "Why do I get carsick when reading in the car but not when I'm just looking out the window?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0308", "category": "general", "text": "How was money invented? Did people really trade chickens for shoes before cash existed?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0309", "category": "general", "text": "what does it actually mean when a country defaults on its debt", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0310", "category": "general", "text": "Why do we get fevers when we're sick? Isn't our body making itself sicker on purpose?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0311", "category": "general", "text": "Can you explain electricity like I'm five? I flip a switch and a light comes on but I have no clue what's happening.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0312", "category": "general", "text": "How did the Roman Empire actually fall? Was it one big thing or a bunch of stuff at once?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0313", "category": "general", "text": "What's a blackout vs a brownout? Power company keeps using both terms.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0314", "category": "general", "text": "why do my joints hurt when it rains, or is that just an old wives' tale", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0315", "category": "general", "text": "How did different languages even start? Was there ever one original language?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0316", "category": "general", "text": "What is a calorie actually? The label says 200 calories but what does that measure?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0317", "category": "general", "text": "Is it bad to wake someone who's sleepwalking? My brother does it all the time.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0318", "category": "general", "text": "why is 20 degrees indoors comfortable but 20 degrees outside feels cold", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0319", "category": "general", "text": "How do we know dinosaurs existed if there were no humans around to see them?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0320", "category": "general", "text": "What's the difference between weather and climate, and why do people get mad when you mix them up?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0321", "category": "general", "text": "why do we yawn when we see someone else yawn", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0322", "category": "general", "text": "How does a fridge actually make things cold? Like what's going on in there", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0323", "category": "general", "text": "how did they figure out what dinosaurs looked like from just bones", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0324", "category": "general", "text": "can you explain what a stock market index actually measures? I hear about the S&P 500 every day and honestly have no idea what it is", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0325", "category": "general", "text": "Why did people start shaking hands to greet each other?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0326", "category": "general", "text": "Is 5G dangerous? My uncle keeps sending me stuff about it", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0327", "category": "general", "text": "what actually happens to the body when you get a fever", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0328", "category": "general", "text": "Why do cats knead blankets with their paws?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0329", "category": "general", "text": "Why did people think the Earth was flat? Like I know they mostly didn't, so where does that myth come from?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0330", "category": "general", "text": "what's the story behind the Berlin Wall, why was it built", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0331", "category": "general", "text": "why does toast brown and bread get crispy, like what changes", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0332", "category": "general", "text": "How do vaccines actually train your immune system?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0333", "category": "general", "text": "What's the difference between kosher salt and regular table salt besides the size?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0334", "category": "general", "text": "why does my hand fall asleep when I sleep on it", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0335", "category": "general", "text": "how do they know exactly how old things are? carbon dating seems too convenient honestly", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0336", "category": "general", "text": "Why does no one else in my house get my jokes? jk — real question: what actually happens during an eclipse and why don't we get one every month?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0337", "category": "general", "text": "why is a day 24 hours and not some other round number", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0338", "category": "general", "text": "what is inflation in plain terms, my raise never seems to cover it", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0339", "category": "general", "text": "How do vaccines actually work? Like, how can a shot protect you from a disease you've never had?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0340", "category": "general", "text": "What caused the Great Depression? I never really understood it in school.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0341", "category": "general", "text": "is it bad to crack your knuckles? my grandma says it gives you arthritis", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0342", "category": "general", "text": "How does WiFi work? I know it's waves or something but how does a router send data through the air?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0343", "category": "general", "text": "Why do we get fevers when we're sick? It seems weird that being hotter helps.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0344", "category": "general", "text": "how do airplanes stay up", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0345", "category": "general", "text": "Is drinking cold water bad for digestion? I've heard conflicting things.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0346", "category": "general", "text": "what's a black hole exactly and where does all the stuff that falls into it go", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0347", "category": "general", "text": "How does inflation work in simple terms? My grocery bill keeps going up and I don't fully get why.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0348", "category": "general", "text": "Why is Australia so full of dangerous animals compared to everywhere else?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0349", "category": "general", "text": "I keep hearing about calories but what actually IS a calorie?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0350", "category": "general", "text": "why does my phone battery get worse after a year or two", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0351", "category": "coding_python", "text": "write a python function to reverse a string without using reversed()", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0352", "category": "coding_python", "text": "why does my list keep coming out empty? I append inside a loop but after the loop it's empty again", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0353", "category": "coding_python", "text": "what's the most pythonic way to swap two variables?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0354", "category": "coding_python", "text": "Can someone show me how to read a CSV file with the csv module and return the rows as dicts?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0355", "category": "coding_python", "text": "is there a difference between is and == when comparing strings in python?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0356", "category": "coding_python", "text": "Write a function that takes a list of ints and returns only the even ones. Use a list comprehension please.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0357", "category": "coding_python", "text": "my try/except isn't catching the error — I get FileNotFoundError anyway. here's my code: try: f = open('data.txt') except IOError: print('missing')", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0358", "category": "coding_python", "text": "how do I use enumerate in a for loop?", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0359", "category": "coding_python", "text": "Need a small function to check if a string is a palindrome, ignoring case.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0360", "category": "coding_python", "text": "whats the deal with *args and **kwargs, can you give a quick example", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0361", "category": "coding_python", "text": "how can I sort a list of dictionaries by the value of a key?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0362", "category": "coding_python", "text": "Write a function using itertools that yields all pairs from a list.", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0363", "category": "coding_python", "text": "this returns None instead of the value, what am I doing wrong: def find(lst, x): for i in lst: if i == x: return i else: return None wait actually that looks fine... but when I call it in a print it works? confused", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0364", "category": "coding_python", "text": "best way to remove duplicates from a list while keeping order?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0365", "category": "coding_python", "text": "Can you explain what a decorator is with a simple example? Like a timing decorator.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0366", "category": "coding_python", "text": "how do i convert a unix timestamp to a readable date using datetime", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0367", "category": "coding_python", "text": "def check(x): if x > 5: return True — why syntax error??", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0368", "category": "coding_python", "text": "Write a function that counts word frequencies in a text and returns the top 3. Prefer collections.Counter if possible.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0369", "category": "coding_python", "text": "deep copy vs shallow copy in python, when does it actually matter?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0370", "category": "coding_python", "text": "what does __name__ == '__main__' do and do I need it in a small script?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0371", "category": "coding_python", "text": "Show me how to use pathlib to list all .txt files in a directory recursively.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0372", "category": "coding_python", "text": "I keep getting a KeyError when using .get on my dict... no wait, get never raises. Ignore me — actually my question is: what's the safest way to access a possibly missing nested key?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0373", "category": "coding_python", "text": "write a generator that yields fibonacci numbers up to n", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0374", "category": "coding_python", "text": "Why is my default argument shared between calls? def add(x, items=[]): items.append(x); return items", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0375", "category": "coding_python", "text": "how would you retry a request up to 3 times with exponential backoff using only the standard library?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0376", "category": "coding_python", "text": "Why does my recursive function hit a RecursionError for depth around 1500 even though the logic seems fine?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0377", "category": "coding_python", "text": "Write a short function that reads a CSV file with csv.DictReader and returns a list of dicts.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0378", "category": "coding_python", "text": "I need to flatten a nested list of arbitrary depth. Is there a clean recursive solution?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0379", "category": "coding_python", "text": "how to get the current timestamp in UTC as an ISO 8601 string? datetime is confusing me", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0380", "category": "coding_python", "text": "Small function to group a list of tuples by their first element — should I use itertools.groupby or build a dict manually?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0381", "category": "coding_python", "text": "why do I get None printed when I call print(print('hello'))", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0382", "category": "coding_python", "text": "What's the idiomatic way to swap two variables in Python? And does it work for any types?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0383", "category": "coding_python", "text": "I keep getting TypeError: 'NoneType' object is not subscriptable. Here's my function, what am I doing wrong? def parse(s): if not s: return return s.split(',')", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0384", "category": "coding_python", "text": "write a function that chunks a list into batches of size n, last batch can be shorter", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0385", "category": "coding_python", "text": "How do I deep copy a dict that has nested lists inside without the copies sharing references?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0386", "category": "coding_python", "text": "What does enumerate actually do compared to range(len(x))? A tiny example would help.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0387", "category": "coding_python", "text": "quick one: difference between is and == for string comparison? I got burned by it today", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0388", "category": "coding_python", "text": "Write a function using re to extract all email addresses from a blob of text. Don't worry about perfect validation.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0389", "category": "coding_python", "text": "How do I make a defaultdict where missing keys start as an empty set and values accumulate?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0390", "category": "coding_python", "text": "I need a function to read a JSON file safely and return a default value if the file doesn't exist or is malformed.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0391", "category": "coding_python", "text": "why does 0.1 + 0.2 == 0.3 give False and what should I do about it in real code?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0392", "category": "coding_python", "text": "Show me how to use zip() to iterate over two lists at the same time. What happens if they're different lengths?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0393", "category": "coding_python", "text": "I need to merge two dicts where the second one's values win on conflicts. One-liner possible in modern Python?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0394", "category": "coding_python", "text": "write a small context manager with @contextmanager that times a block of code and prints elapsed ms", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0395", "category": "coding_python", "text": "How can I make my function accept either a single string or a list of strings without a bunch of isinstance checks?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0396", "category": "coding_python", "text": "Debug this: my for loop over a list skips every other element. I bet it's my lst.remove(x) inside the loop, right? How do I fix it properly?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0397", "category": "coding_python", "text": "what's the point of else on a for loop?? saw it in some code today and it broke my brain", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0398", "category": "coding_python", "text": "Write a function that uses os.environ to look up an environment variable and raise a clear error if it's unset.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0399", "category": "coding_python", "text": "Is there a standard-library way to pretty-print nested dicts? pprint feels limited for what I want.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0400", "category": "coding_python", "text": "Write a function that flattens a nested list of arbitrary depth using recursion or a generator.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0401", "category": "coding_python", "text": "why does defaultdict raise KeyError sometimes? I thought it was supposed to auto-create keys", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0402", "category": "coding_python", "text": "Can someone show me how to use collections.Counter to find the top 3 most common words in a text file?", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0403", "category": "coding_python", "text": "how do I time how long a function takes in Python? I keep reading about timeit but not sure how to use it properly", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0404", "category": "coding_python", "text": "Need a function that splits a list into chunks of size n. Must handle lists not evenly divisible by n.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0405", "category": "coding_python", "text": "Is there a clean way to merge two dicts where the second dict's values override the first? Dict comprehension feels clunky.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0406", "category": "coding_python", "text": "what's the deal with *args and **kwargs — can I pass them along to another function somehow?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0407", "category": "coding_python", "text": "Write a short function that counts word frequencies in a string and returns a dict, ignoring punctuation.", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0408", "category": "coding_python", "text": "Why does my list parameter keep accumulating values across function calls? code: def add(x, items=[]): items.append(x); return items", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0409", "category": "coding_python", "text": "How can I pretty-print a nested dict with sorted keys using the standard library?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0410", "category": "coding_python", "text": "Give me an example of using pathlib to find all .txt files in a directory and its subdirectories recursively.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0411", "category": "coding_python", "text": "how to convert a datetime to a unix timestamp and back? timezone stuff is throwing me off", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0412", "category": "coding_python", "text": "Is there a Pythonic way to do a ternary conditional? I know some languages have x ? a : b", "l4_trigger": true, "db_rec": false, "python": true}
+{"id": "p0413", "category": "coding_python", "text": "Write a function that checks whether a number is prime. Keep it simple, just the standard library.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0414", "category": "coding_python", "text": "why is mutable default argument considered bad but this pattern with None works? def f(x=None): if x is None: x = []", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0415", "category": "coding_python", "text": "What does the if __name__ == '__main__': line actually do? Should every script have it?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0416", "category": "coding_python", "text": "Need to parse '2024-03-15T10:30:00' into a datetime object — strptime format string please?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0417", "category": "coding_python", "text": "How do I sort a list of tuples by the second element, descending?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0418", "category": "coding_python", "text": "Small function needed: validate an email address with a regex. Doesn't have to be perfect, just reasonable.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0419", "category": "coding_python", "text": "Can I iterate over two lists at once without using range(len(...))? Feels ugly.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0420", "category": "coding_python", "text": "what's the difference between shallow and deep copy? list(a) isn't doing what I expected", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0421", "category": "coding_python", "text": "Show me how to use the logging module instead of print statements — basic setup with a file handler.", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0422", "category": "coding_python", "text": "write a function that returns the intersection of two lists, preserving order from the first list", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0423", "category": "coding_python", "text": "How does enumerate work? I want index and value when looping but can't get the syntax right", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0424", "category": "coding_python", "text": "Is there a standard-library equivalent to try/except/else/finally — like when does the else clause actually run?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0425", "category": "coding_python", "text": "My dict lookup keeps throwing KeyError when the key might be missing. Is there a cleaner way than wrapping everything in try/except?", "l4_trigger": false, "db_rec": false, "python": true}
+{"id": "p0426", "category": "coding_other", "text": "how do I debounce a function in plain JavaScript without a library?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0427", "category": "coding_other", "text": "Write a Go function that reads a file line by line and returns the longest line.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0428", "category": "coding_other", "text": "My Rust borrow checker is complaining: I want to store a reference to a struct field in another struct. What are my options?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0429", "category": "coding_other", "text": "In Java, what's the cleanest way to convert a List<Integer> to an int[]?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0430", "category": "coding_other", "text": "ts can someone show me a generic function that picks a random element from an array with proper types", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0431", "category": "coding_other", "text": "What does !important actually do in CSS and when should I use it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0432", "category": "coding_other", "text": "bash one-liner to find all files over 100MB in a directory and print their sizes sorted", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0433", "category": "coding_other", "text": "Write a SQL query that returns the top 5 customers by total order amount in the last 30 days, including ties.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0434", "category": "coding_other", "text": "How do I center a div horizontally and vertically in CSS these days? Flexbox vs grid?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0435", "category": "coding_other", "text": "c++: why does this crash? `std::vector<int> v; v[0] = 1;` and what should I do instead", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0436", "category": "coding_other", "text": "I need a JavaScript function to flatten an arbitrarily nested array. Recursive is fine but also curious about an iterative version.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0437", "category": "coding_other", "text": "What's the idiomatic Go way to handle errors when calling multiple functions in sequence?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0438", "category": "coding_other", "text": "How do lifetimes work in Rust? Can someone explain 'a like I'm five?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0439", "category": "coding_other", "text": "Java streams: how do I group a list of employees by department and count them?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0440", "category": "coding_other", "text": "I keep getting NaN when doing arithmetic in JS with strings. How do I safely parse user input?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0441", "category": "coding_other", "text": "Write a TypeScript interface for a paginated API response and a helper that unwraps the data array.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0442", "category": "coding_other", "text": "select rows where a column contains any of several substrings — what's the best pattern in Postgres?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0443", "category": "coding_other", "text": "In C++, when should I use unique_ptr vs shared_ptr vs raw pointers?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0444", "category": "coding_other", "text": "hey can someone write a bash script that backs up a folder to a timestamped tar.gz and deletes backups older than 7 days", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0445", "category": "coding_other", "text": "How do I make a sticky navbar that hides on scroll down and reappears on scroll up, CSS/JS only?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0446", "category": "coding_other", "text": "Rust: what's the difference between String and &str, and when do I use each in function signatures?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0447", "category": "coding_other", "text": "Go routines — write a worker pool with 5 workers processing jobs from a channel and collecting results.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0448", "category": "coding_other", "text": "Why does my Java HashMap iteration order change between runs? How do I get deterministic ordering?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0449", "category": "coding_other", "text": "SQL window functions confuse me — show me how to compute a running total of daily sales.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0450", "category": "coding_other", "text": "What's the difference between == and === in JavaScript, and why does '0' == false return true?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0451", "category": "coding_other", "text": "Write a Rust function that reads a file line by line and returns a Vec of lines, handling IO errors gracefully.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0452", "category": "coding_other", "text": "Go: how do I use goroutines and channels to download 10 URLs concurrently and collect the results?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0453", "category": "coding_other", "text": "Can you show me a Java 8+ example of sorting a list of Person objects by name, then by age, using comparators?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0454", "category": "coding_other", "text": "SQL query to find duplicate emails in a users table and delete all but the lowest id.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0455", "category": "coding_other", "text": "How do I use CSS grid to build a responsive 3-column layout that collapses to 1 column on mobile?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0456", "category": "coding_other", "text": "Write a JavaScript class implementing a simple LRU cache with get and set in O(1).", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0457", "category": "coding_other", "text": "Need a TypeScript generic function that takes an object and returns a new object with all keys camelCased.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0458", "category": "coding_other", "text": "What's the deal with Go's defer statement? Show me a realistic example with file handles.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0459", "category": "coding_other", "text": "bash one-liner to kill all processes listening on port 3000?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0460", "category": "coding_other", "text": "In Rust, how do I write a generic function that works for any type implementing Display?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0461", "category": "coding_other", "text": "C++: explain move semantics with a small class that owns heap-allocated memory.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0462", "category": "coding_other", "text": "How do I use Java's HashMap to count word frequencies in a string?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0463", "category": "coding_other", "text": "SELECT the top 3 products per category by revenue — how do I do that in SQL?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0464", "category": "coding_other", "text": "flexbox question: my nav items overflow on small screens, how do I make them wrap and scroll nicely?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0465", "category": "coding_other", "text": "Write an Express middleware in JavaScript that logs request method, path, and duration.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0466", "category": "coding_other", "text": "TypeScript: how do I type a function that returns different object shapes based on a discriminant field?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0467", "category": "coding_other", "text": "Go: how do I define a custom error type with extra context and unwrap it with errors.Is?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0468", "category": "coding_other", "text": "Give me a C++20 ranges example — filter a vector of ints to even numbers and square them.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0469", "category": "coding_other", "text": "SQL join syntax trips me up: show me a LEFT JOIN vs INNER JOIN example with orders and customers.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0470", "category": "coding_other", "text": "How do I use npm to pin exact dependency versions and why would I use package-lock.json?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0471", "category": "coding_other", "text": "bash: how do I loop over lines in a text file and skip blank lines and comments?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0472", "category": "coding_other", "text": "Java: show me how to implement a thread-safe singleton with double-checked locking.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0473", "category": "coding_other", "text": "In Rust, how do I handle multiple error types in a function with anyhow or thiserror?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0474", "category": "coding_other", "text": "JavaScript async/await: how do I run three promises in parallel and fail fast if any rejects?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0475", "category": "coding_other", "text": "Write the HTML and CSS for a card with an image, title, description, and a hover lift effect.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0476", "category": "coding_other", "text": "Rust: write a function that takes a Vec<String> and returns the longest one as a String, using Option properly.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0477", "category": "coding_other", "text": "How do I debounce a search input in vanilla JavaScript without lodash?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0478", "category": "coding_other", "text": "SQL query to find the second highest salary in an employees table — and explain why MIN/MAX tricks can break with ties.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0479", "category": "coding_other", "text": "In TypeScript, what's the difference between `unknown` and `any`, and when should I actually use `unknown`?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0480", "category": "coding_other", "text": "Can someone show a Rust example of iterating a vector while removing items that fail a predicate, without borrowing errors?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0481", "category": "coding_other", "text": "How do I create a fixed sidebar layout in CSS Grid where the main content scrolls but the sidebar stays put?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0482", "category": "coding_other", "text": "Write a Java method that reads a text file into a Map<String, Integer> counting word frequency using streams.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0483", "category": "coding_other", "text": "Rust ownership is confusing me — why does this code fail: fn main() { let s = String::from(\"hi\"); takes(s); println!(\"{}\", s); }", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0484", "category": "coding_other", "text": "C++: what's the difference between emplace_back and push_back, with a quick example using a vector of pairs?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0485", "category": "coding_other", "text": "Write a recursive JavaScript function to flatten a deeply nested array, then show a non-recursive version using a stack.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0486", "category": "coding_other", "text": "PostgreSQL: how do I write a window function that ranks products by sales within each category?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0487", "category": "coding_other", "text": "bash script that watches a directory and prints the names of files modified in the last 5 minutes.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0488", "category": "coding_other", "text": "How do I enforce TypeScript's `satisfies` operator on a config object without widening the literal types?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0489", "category": "coding_other", "text": "Go: marshal a struct to JSON with custom field names and skipping empty fields — what tags do I need?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0490", "category": "coding_other", "text": "Java: what's the difference between HashMap, LinkedHashMap, and TreeMap, and give me an example where each is the right choice.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0491", "category": "coding_other", "text": "In C++, how does std::optional compare to returning nullptr from a factory function?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0492", "category": "coding_other", "text": "Make a responsive two-column card grid with flexbox — cards should stack on mobile, three across on desktop.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0493", "category": "coding_other", "text": "Rust: how do I handle multiple error types in one function returning Result, using Box<dyn Error> vs a custom enum?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0494", "category": "coding_other", "text": "Write a JavaScript function that throttles a button click so it fires at most once per second.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0495", "category": "coding_other", "text": "SQL: given a users table and an orders table, write a LEFT JOIN query showing users who have never placed an order.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0496", "category": "coding_other", "text": "What does #[derive(Debug)] actually generate in Rust, and can I implement Display instead of Debug?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0497", "category": "coding_other", "text": "C++17: structured bindings — show me iterating over a std::map and unpacking key/value pairs in the loop.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0498", "category": "coding_other", "text": "How do I use Array.prototype.reduce to group an array of objects by a property in JS?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0499", "category": "coding_other", "text": "TypeScript generics: write a type-safe function that picks specified keys from an object and returns only those fields.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0500", "category": "coding_other", "text": "TypeScript: how do I type a function that accepts a union of object shapes and narrows correctly with a discriminant field?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0501", "category": "rec_db", "text": "I'm building a chat app and need to store messages between users. Billions eventually. What should I use?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0502", "category": "rec_db", "text": "Which database would you recommend for a multi-tenant SaaS with strict per-tenant isolation?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0503", "category": "rec_db", "text": "need a db that handles heavy writes, like 50k inserts/sec of sensor data. suggestions?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0504", "category": "rec_db", "text": "I have hierarchical data (org charts) that changes rarely but is queried a lot. Best way to persist this?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0505", "category": "rec_db", "text": "Choosing between a wide-column store and a relational DB for an events pipeline — any advice?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0506", "category": "rec_db", "text": "What's the best option for storing user-uploaded files alongside metadata, on a tight budget?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0507", "category": "rec_db", "text": "My app needs full-text search over product descriptions in several languages. What storage tech would you pick?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0508", "category": "rec_db", "text": "Recommend something for a leaderboard with real-time rankings, millions of players.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0509", "category": "rec_db", "text": "We're drowning in slow analytics queries on our production Postgres replica. Should we move to a warehouse? If so, what kind?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0510", "category": "rec_db", "text": "What's a good caching layer in front of a read-heavy API? Currently every request hits the DB.", "l4_trigger": true, "db_rec": true, "python": false}
+{"id": "p0511", "category": "rec_db", "text": "i need to store time-series metrics from ~2000 iot devices and run rollups hourly. what do you suggest?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0512", "category": "rec_db", "text": "Is there a database that's good for storing and querying graph relationships in a social network? Not sure where to start.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0513", "category": "rec_db", "text": "For a shopping cart that must never lose data even if the server dies, which storage engine would you go with?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0514", "category": "rec_db", "text": "Looking for recommendations on storing geospatial data for a delivery routing app — need radius queries mostly.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0515", "category": "rec_db", "text": "Would you pick a document store or relational DB for a CMS with flexible content types? Curious what you'd recommend.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0516", "category": "rec_db", "text": "What's the best way to store session data for a high-traffic site where losing sessions is acceptable?", "l4_trigger": true, "db_rec": true, "python": false}
+{"id": "p0517", "category": "rec_db", "text": "Our mobile app needs offline-first storage that syncs when connectivity returns. Any recommendations?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0518", "category": "rec_db", "text": "Need a queue-ish persistent store for background jobs with retries and priorities. What should I use?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0519", "category": "rec_db", "text": "Advice please: storing 10 years of financial transactions for audit, write-once, rarely read.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0520", "category": "rec_db", "text": "What would you choose for a vector-heavy workload — similarity search over image embeddings?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0521", "category": "rec_db", "text": "Recommend a storage approach for a feature-flag service that needs ultra-low latency reads and infrequent writes.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0522", "category": "rec_db", "text": "my team keeps fighting about mongo vs sql for our new project. can you give a recommendation on how to decide?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0523", "category": "rec_db", "text": "I need something to aggregate clickstream data into daily rollups for dashboards. Warehouse, OLAP db, or something else?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0524", "category": "rec_db", "text": "Storing user preferences as key-value pairs, accessed on every request. What do you recommend?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0525", "category": "rec_db", "text": "What's a good choice for persisting ML training datasets that are several TB and get appended to weekly?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0526", "category": "rec_db", "text": "What's the best way to store time-series sensor data from a few thousand IoT devices? Need downsampling and retention policies.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0527", "category": "rec_db", "text": "Picking a database for an analytics workload with mostly aggregate queries over a few hundred million rows. Any suggestions?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0528", "category": "rec_db", "text": "Storing user-generated files up to 50MB each, served via CDN. Object storage or filesystem-based approach?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0529", "category": "rec_db", "text": "Need recommendations for storing session data. Small blobs, high read volume, TTL on everything.", "l4_trigger": true, "db_rec": true, "python": false}
+{"id": "p0530", "category": "rec_db", "text": "Which cache layer would you recommend sitting in front of a relational DB for a high-traffic news site?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0531", "category": "rec_db", "text": "Struggling to choose between a wide-column store and a plain relational setup for a high-ingest logging pipeline. Thoughts?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0532", "category": "rec_db", "text": "Working on a product catalog with lots of attribute filtering and faceting. What storage/indexing combo would you suggest?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0533", "category": "rec_db", "text": "Any advice on persisting denormalized read models for an event-sourced system? Looking for guidance.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0534", "category": "rec_db", "text": "Small project, single server, need a database but hate ops overhead. What should I reach for?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0535", "category": "rec_db", "text": "Which search index would you pick for log analytics with ad-hoc field queries over terabytes of logs?", "l4_trigger": true, "db_rec": true, "python": false}
+{"id": "p0536", "category": "rec_db", "text": "Need a store that handles strongly consistent leaderboards with rank queries. Recommendations?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0537", "category": "rec_db", "text": "Two write patterns: heavy streaming inserts plus occasional bulk imports. One database or two? What do you advise?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0538", "category": "rec_db", "text": "What's good for storing millions of small JSON blobs with occasional batch processing? Leaning toward something cheap.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0539", "category": "rec_db", "text": "Advice needed: persistent storage for geospatial data — radius queries, proximity search, route metadata.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0540", "category": "rec_db", "text": "Recommend a way to store email metadata and attachments so search stays fast as volume grows into the hundreds of millions.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0541", "category": "rec_db", "text": "I want advisory locking and lightweight persistence for a few config-style tables. Keep it simple. What's a sensible choice?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0542", "category": "rec_db", "text": "For a recommendation engine serving precomputed items per user, what would you use — KV store, something fancier?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0543", "category": "rec_db", "text": "Which data warehouse would you recommend for a small data team doing ad-hoc SQL on ~1TB with tight budget?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0544", "category": "rec_db", "text": "Building a versioned document store where users need to diff revisions. How should I structure the persistence layer?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0545", "category": "rec_db", "text": "Terse version: low-write, high-read, 99.999% uptime DB for global reads. Recs?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0546", "category": "rec_db", "text": "Storing phone numbers, avatars, and contact graphs for a contacts app. Any storage suggestions before I overthink this?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0547", "category": "rec_db", "text": "Need something for frequent schema changes and messy semi-structured records from third-party APIs. What do you recommend?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0548", "category": "rec_db", "text": "Choosing a persistence layer for billing — monetary amounts, strict consistency, transactions across rows. What should I go with?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0549", "category": "rec_db", "text": "What storage would you suggest for a moderation queue with images, text, and reviewer notes, replacing spreadsheets?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0550", "category": "rec_db", "text": "Looking for a cache with persistence that survives restarts but can also evict on memory pressure. What fits?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0551", "category": "rec_db", "text": "We're storing IoT sensor readings from about 50k devices, one write every 30 seconds each, and we mostly aggregate by time windows. What kind of database fits?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0552", "category": "rec_db", "text": "Any advice on what to use for a job board search? Users filter by location, salary, tags, and free text. 2M listings.", "l4_trigger": true, "db_rec": true, "python": false}
+{"id": "p0553", "category": "rec_db", "text": "What should I use to persist workflows where each step has dependencies and needs retries? Something durable, not just queues in memory.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0554", "category": "rec_db", "text": "Recommend a storage option for an image recognition pipeline — millions of photos plus their vector embeddings for similarity lookup.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0555", "category": "rec_db", "text": "I need to keep audit logs for 7 years, append-only, compliance requirement, cheap to store but queryable occasionally. Ideas?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0556", "category": "rec_db", "text": "Whats good for storing time-series stock tick data? Sub-millisecond writes matter.", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0557", "category": "rec_db", "text": "Building a multi-tenant SaaS, ~500 tenants, Postgres vs separate schemas vs separate databases — what would you pick and why?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0558", "category": "rec_db", "text": "Need something to cache computed ML feature vectors for online inference. Reads dominate heavily, freshness within a few seconds is fine. Recommendations?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0559", "category": "rec_db", "text": "What database would you suggest for a social graph? Friendship edges, follow suggestions, shortest-path queries between users.", "l4_trigger": true, "db_rec": true, "python": false}
+{"id": "p0560", "category": "rec_db", "text": "We're outgrowing spreadsheets for inventory — 3 warehouses, barcode scans, offline mode on handhelds. What persistence approach makes sense?", "l4_trigger": false, "db_rec": true, "python": false}
+{"id": "p0561", "category": "rec_other", "text": "what laptop should I buy for college, budget around $800?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0562", "category": "rec_other", "text": "I'm new to cooking — recommend a good starter knife set?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0563", "category": "rec_other", "text": "Best film to watch on a long flight? Something light.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0564", "category": "rec_other", "text": "Recommend a Python web framework for a small side project.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0565", "category": "rec_other", "text": "thinking of picking up running, what shoes should I get?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0566", "category": "rec_other", "text": "What's a good hobby I can do indoors during winter?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0567", "category": "rec_other", "text": "Could you recommend a course for learning data analysis? I have basic Excel skills but no programming background.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0568", "category": "rec_other", "text": "Any book recommendations for someone who loved Project Hail Mary?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0569", "category": "rec_other", "text": "need a sturdy backpack for 2-week travel in southeast asia, any suggestions?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0570", "category": "rec_other", "text": "What dumbbells should I get for a home setup? Beginner.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0571", "category": "rec_other", "text": "recommend me a podcast to listen to on my commute", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0572", "category": "rec_other", "text": "What's the best brunch spot in Lisbon?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0573", "category": "rec_other", "text": "I want to learn watercolor painting — what starter supplies do you recommend?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0574", "category": "rec_other", "text": "Looking for a mechanical keyboard under $100, what's good these days?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0575", "category": "rec_other", "text": "recommend a film for movie night with kids under 10", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0576", "category": "rec_other", "text": "What should I pick for a first motorcycle? Something beginner friendly.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0577", "category": "rec_other", "text": "any recommendations for noise cancelling headphones for open plan office?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0578", "category": "rec_other", "text": "What fitness tracker would you suggest for someone who swims a lot?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0579", "category": "rec_other", "text": "Could you point me toward a good beginner's book on astrophysics? Preferably not too dry or textbook-like.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0580", "category": "rec_other", "text": "best cities in Japan for a 10 day trip that isn't just Tokyo?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0581", "category": "rec_other", "text": "I'm overwhelmed by yoga mat options. Just tell me which one to buy.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0582", "category": "rec_other", "text": "recommend a knitting project for a total beginner", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0583", "category": "rec_other", "text": "What course would help me switch careers into UX design?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0584", "category": "rec_other", "text": "terse question: good bourbon for gifting? budget $50", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0585", "category": "rec_other", "text": "Recommend a hiking trail in Colorado that's doable with a dog and moderate fitness.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0586", "category": "rec_other", "text": "Looking for a good yoga mat that doesn't slip. Any ideas?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0587", "category": "rec_other", "text": "Can you recommend a sci-fi book series with strong worldbuilding? I've burned through everything by Sanderson.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0588", "category": "rec_other", "text": "best budget espresso machine under $300?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0589", "category": "rec_other", "text": "I want to take up watercolor painting as a hobby. What supplies should a total beginner get?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0590", "category": "rec_other", "text": "Recommend a documentary. Anything but true crime, I'm burnt out on those.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0591", "category": "rec_other", "text": "Which running shoes would you suggest for someone with flat feet doing 5k training?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0592", "category": "rec_other", "text": "What's a good mechanical keyboard for coding that isn't super loud?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0593", "category": "rec_other", "text": "I have two weeks off in October and love hiking. Where should I go in Europe?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0594", "category": "rec_other", "text": "Any recommendations for a podcast to listen to on my commute? Prefer something funny or history-related.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0595", "category": "rec_other", "text": "Need a sewing machine. Beginner, mostly for mending clothes and simple projects. What do you suggest?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0596", "category": "rec_other", "text": "What board game should I get for a group of 6 who've only ever played Catan?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0597", "category": "rec_other", "text": "recommend a course for learning public speaking pls", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0598", "category": "rec_other", "text": "I'm renovating my kitchen and need a decent cordless drill. Nothing pro-grade, just reliable. Thoughts?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0599", "category": "rec_other", "text": "What e-reader would you pick in 2024 and why?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0600", "category": "rec_other", "text": "Suggest a strength training program for a 40-something who's never lifted weights.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0601", "category": "rec_other", "text": "good tv shows similar to Breaking Bad? finished it last week and lost", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0602", "category": "rec_other", "text": "Which language should I learn first, Spanish or Japanese? I want to travel more.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0603", "category": "rec_other", "text": "What camera would you recommend for a hobbyist photographer upgrading from a phone? Around $1000 give or take.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0604", "category": "rec_other", "text": "Looking for a standing desk recommendation. Nothing fancy, needs to fit in a small apartment.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0605", "category": "rec_other", "text": "Can anyone suggest a good aquarium starter kit for my daughter? She's 9 and obsessed with fish.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0606", "category": "rec_other", "text": "What should I read to actually understand investing? Total novice here.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0607", "category": "rec_other", "text": "recommend camping gear for first-time car camping with a toddler", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0608", "category": "rec_other", "text": "Which fitness tracker is worth it if I mostly care about sleep tracking?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0609", "category": "rec_other", "text": "I want to learn woodworking in my garage. What three tools should I buy first?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0610", "category": "rec_other", "text": "What laptop should I buy for a CS degree? Budget around $900.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0611", "category": "rec_other", "text": "Recommend a good sci-fi novel, something like Project Hail Mary.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0612", "category": "rec_other", "text": "best running shoes for flat feet? doing mostly road runs 5-10k", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0613", "category": "rec_other", "text": "I need a Python framework recommendation for building a small web app solo. Flask or something else?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0614", "category": "rec_other", "text": "Looking for a yoga mat that actually doesn't slip when I sweat. Any suggestions?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0615", "category": "rec_other", "text": "What's a good online course to finally learn Excel properly for work? I'm intermediate at best.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0616", "category": "rec_other", "text": "any recs for a mechanical keyboard under $100? quiet-ish preferred, office shared", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0617", "category": "rec_other", "text": "We're planning a week in Portugal in September. Should we base in Lisbon or Porto, or split?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0618", "category": "rec_other", "text": "My espresso machine died and I can't justify $700 again. What's a decent mid-range one that actually pulls good shots?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0619", "category": "rec_other", "text": "Need a recommendation for a heavy-duty winter jacket. I live in Minnesota and bike to work year-round.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0620", "category": "rec_other", "text": "What board game should I get for game night with 5-6 adults? We're tired of Catan.", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0621", "category": "advice", "text": "How do I stop putting off studying until the night before exams?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0622", "category": "advice", "text": "My boss keeps interrupting me during meetings to finish my sentences. Any tips for handling that without sounding rude?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0623", "category": "advice", "text": "Best way to negotiate a raise when I've only been at the company a year?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0624", "category": "advice", "text": "How much should I actually keep in an emergency fund?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0625", "category": "advice", "text": "whats the trick to getting grilled cheese crispy without burning the bread", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0626", "category": "advice", "text": "I want to start meal prepping but everything I make tastes bad by day 3. Help?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0627", "category": "advice", "text": "My kitchen faucet drips constantly. Can a total beginner fix that or should I just call a plumber?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0628", "category": "advice", "text": "Trying to save for a house deposit on a modest salary — what budgeting method actually works in practice?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0629", "category": "advice", "text": "How do I politely tell my neighbor to stop letting their dog poop on my lawn?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0630", "category": "advice", "text": "I have 8 hours of free time on Sundays but somehow waste all of it. How do people plan their weekends productively?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0631", "category": "advice", "text": "Is it worth learning touch typing as an adult? If so, how long does it take?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0632", "category": "advice", "text": "What's a realistic way to switch from marketing into data analysis without going back to uni full-time?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0633", "category": "advice", "text": "How do you stop a cast iron pan from sticking every single time?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0634", "category": "advice", "text": "Caulk around my bathtub is cracked and turning black. How do I remove and redo it?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0635", "category": "advice", "text": "My manager asked for 'more initiative' but gives no specifics. How do I figure out what that means?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0636", "category": "advice", "text": "Flashcards, rewriting notes, or practice questions — which actually works for memorizing stuff?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0637", "category": "advice", "text": "How do you have the 'I need a raise' conversation when your boss is intimidating?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0638", "category": "advice", "text": "Any tips for keeping grocery bills under $70 a week for two people?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0639", "category": "advice", "text": "how to stop hitting snooze 5 times every morning", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0640", "category": "advice", "text": "I keep starting projects and abandoning them halfway. What's a system that actually sticks?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0641", "category": "advice", "text": "How often should I be cleaning my dryer vent, and how do I even do it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0642", "category": "advice", "text": "I freeze up when I have to give even small presentations. Any practical ways to get better?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0643", "category": "advice", "text": "Is it better to pay off my credit card fully each month or keep a small balance like some people say?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0644", "category": "advice", "text": "What's the secret to not overcooking salmon in a pan?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0645", "category": "advice", "text": "How do I write a follow-up email after a job interview that doesn't sound desperate?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0646", "category": "advice", "text": "Best way to clean grout that's gone black in the shower without scrubbing for hours?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0647", "category": "advice", "text": "I get paid fortnightly and somehow always run out two days before the next paycheck. Where do I even start with budgeting?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0648", "category": "advice", "text": "Is it worth negotiating a job offer if they've already said the salary is 'fixed'?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0649", "category": "advice", "text": "how do you actually caramelize onions properly, mine just go soggy and grey", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0650", "category": "advice", "text": "I'm 34 and want to change careers into UX design. Do certificates from those online bootcamps carry any weight with employers?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0651", "category": "advice", "text": "What's the polite way to decline a coworker's wedding invitation when we're not close?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0652", "category": "advice", "text": "Best technique for keeping chicken breast juicy on the grill instead of dry as cardboard?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0653", "category": "advice", "text": "I have three essays due the same week. How do you prioritize when everything feels urgent?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0654", "category": "advice", "text": "Should I be paying off my student loan faster or putting that money into savings instead?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0655", "category": "advice", "text": "My aircon unit makes a rattling noise when it kicks on. Worth looking at myself or is that a technician job?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0656", "category": "advice", "text": "How do you tell a friend you can't lend them money again without ending the friendship?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0657", "category": "advice", "text": "What study schedule actually works if I can only spare 45 minutes a day?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0658", "category": "advice", "text": "Anyone have tips for asking questions in meetings when I'm scared of sounding dumb?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0659", "category": "advice", "text": "My microwave smells like burnt popcorn months later. How do I get rid of it?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0660", "category": "advice", "text": "Is a reverse chronological resume still the move, or should I try one of those skills-based ones?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0661", "category": "advice", "text": "whats the point of tracking every expense if I already know I overspend on food", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0662", "category": "advice", "text": "How do you politely push back when a client keeps changing the scope of a project?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0663", "category": "advice", "text": "Never hosted a dinner party before. What can I cook ahead of time that won't stress me out?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0664", "category": "advice", "text": "Trying to build a habit of reading before bed instead of doomscrolling but I last like two nights. Any tricks?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0665", "category": "advice", "text": "How early is too early to start planning my 2026 holidays around public holidays to maximise leave days?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0666", "category": "advice", "text": "Drafting a LinkedIn message to someone in a company I want to work for. How forward is too forward?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0667", "category": "advice", "text": "My touch-up paint from years ago doesn't match the wall anymore. Do I have to repaint the whole wall or is there a way to blend it?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0668", "category": "advice", "text": "What's the etiquette for correcting your manager when they misquote something you said?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0669", "category": "advice", "text": "Best way to keep rice from clumping when I make fried rice at home?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0670", "category": "advice", "text": "How do you keep your CV from turning into a three-page ramble when you've had a lot of jobs?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0671", "category": "advice", "text": "How do I stop my sourdough from coming out dense every single time? I follow the recipe but something's off.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0672", "category": "advice", "text": "What's the best way to negotiate a raise at a small company where there's no formal review process?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0673", "category": "advice", "text": "I keep losing focus about 20 minutes into studying. Is there something better than the pomodoro thing?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0674", "category": "advice", "text": "How do you unblock a kitchen sink drain without calling a plumber?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0675", "category": "advice", "text": "Any tips for remembering to actually use my calendar instead of ignoring it all day?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0676", "category": "advice", "text": "I'm terrible at small talk at work events. What do people even talk about besides weather?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0677", "category": "advice", "text": "How often should I actually be replacing my furnace filter, and does the expensive kind matter?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0678", "category": "advice", "text": "Best way to learn a language when you only have 30 minutes a day and no one to practice with?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0679", "category": "advice", "text": "whats the deal with meal prepping, do you really eat the same thing five days in a row", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0680", "category": "advice", "text": "My boss gives vague feedback like 'make it pop.' How do I get them to be specific?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0681", "category": "advice", "text": "How do I split bills fairly with a roommate who makes way more money than me?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0682", "category": "advice", "text": "Trying to build an emergency fund from scratch. How much per paycheck is realistic on a modest salary?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0683", "category": "advice", "text": "What's a good system for keeping track of passwords without writing them on a sticky note?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0684", "category": "advice", "text": "How do you get rid of hard water stains on shower glass? Nothing I buy seems to work.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0685", "category": "advice", "text": "I've been asked to mentor a junior colleague and I have no idea how to structure our sessions.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0686", "category": "advice", "text": "How do you keep rice from sticking to the pot? I rinse it, I don't stir it, still sticks.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0687", "category": "advice", "text": "What should I put on my resume when I've been at one company for 11 years and feel like I have nothing to show?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0688", "category": "advice", "text": "Any advice for saying no to family who keep asking for weekend favors?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0689", "category": "advice", "text": "How do people remember birthdays without Facebook reminding them? Mine are all in random apps.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0690", "category": "advice", "text": "Best way to paint a room so you don't get streaks or missed spots near the trim?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0691", "category": "advice", "text": "I want to start investing but the whole thing intimidates me. Index funds first or what?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0692", "category": "advice", "text": "How do you read more when you keep falling asleep three pages in every night?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0693", "category": "advice", "text": "Planning a two-week trip to Japan for next spring. How far in advance should I book flights and hotels for decent prices?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0694", "category": "advice", "text": "How do I ask my boss for a raise when I've only been in the role a year but took on way more responsibility than expected?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0695", "category": "advice", "text": "What's the best way to stop doomscrolling first thing in the morning?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0696", "category": "advice", "text": "Any tricks for getting a sparing with pan-searing a steak without the smoke alarm going off in my small apartment?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0697", "category": "advice", "text": "My sliding glass door drags and sticks every time I open it. Can I fix this myself or do I need a pro?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0698", "category": "advice", "text": "I'm terrible at saving money. Is automating transfers to a savings account the whole trick or is there more to it?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0699", "category": "advice", "text": "How do you keep a workout routine going when you travel for work every few weeks?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0700", "category": "advice", "text": "Is it better to pay off my car loan early or put that money into index funds?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0701", "category": "advice", "text": "What's the polite way to decline a wedding invitation without burning bridges?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0702", "category": "advice", "text": "Should I put my side project on my resume, and if so, how do I describe it without sounding like I'm padding?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0703", "category": "advice", "text": "How do I stop my kitchen knives from going dull so fast? I have a decent sharpener but they still lose their edge in weeks.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0704", "category": "advice", "text": "Best way to study for a certification exam when I only have about 45 minutes a night after the kids are in bed?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0705", "category": "advice", "text": "My roommate never does dishes and conversation hasn't helped. What's my next move?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0706", "category": "advice", "text": "How far ahead should I start planning a wedding without going crazy?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0707", "category": "advice", "text": "What does 'meal prep' actually look like day to day? Like do I really eat the same container of chicken five days in a row?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0708", "category": "advice", "text": "How do you tell a contractor their quote seems too high without insulting them?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0709", "category": "advice", "text": "Any advice for keeping hardwood floors from scratching up with a big dog in the house?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0710", "category": "advice", "text": "I want to learn Excel properly for work. What should I focus on first, and are courses worth paying for?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0711", "category": "advice", "text": "Terse version: gutters overflowing every rain. clean or replace?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0712", "category": "advice", "text": "What's a realistic monthly budget for someone who just graduated and makes about $52k before tax?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0713", "category": "advice", "text": "My poached eggs always fall apart in the water. What am I doing wrong?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0714", "category": "advice", "text": "How do you keep track of what needs maintenance around the house? Feels like something breaks every month and I never remember when I last did anything.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0715", "category": "advice", "text": "Is it rude to email a professor over winter break, or should I wait until classes resume?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0716", "category": "advice", "text": "Any tips for actually sticking to a to-do list? I write one every morning and ignore it by lunch.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0717", "category": "advice", "text": "How do you decide between two job offers when the pay is similar but the cultures seem totally different?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0718", "category": "advice", "text": "I've been at my company four years and just found out a new hire in my role makes more than me. Do I bring this up, and if so how?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0719", "category": "advice", "text": "Is meal prepping on Sundays actually worth it, or does everything just taste sad by Wednesday? Thinking of trying it to save money on lunch.", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0720", "category": "advice", "text": "I graduated two years ago and my resume is still basically my college one. What should I actually be cutting and adding at this point?", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0721", "category": "conversational", "text": "do you ever get bored lol", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0722", "category": "conversational", "text": "honestly pizza with pineapple is fine and i'm tired of pretending it's not", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0723", "category": "conversational", "text": "what's your take on slow walkers on the sidewalk", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0724", "category": "conversational", "text": "if you could live anywhere for a year where would it be", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0725", "category": "conversational", "text": "i just watched a documentary about octopuses and now i think they're smarter than my coworker", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0726", "category": "conversational", "text": "is it weird that i talk to my plants", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0727", "category": "conversational", "text": "thoughts on our generation never calling each other anymore", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0728", "category": "conversational", "text": "my roommate leaves dishes in the sink for days. am i justified in being annoyed or am i being dramatic", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0729", "category": "conversational", "text": "quick, best breakfast food, go", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0730", "category": "conversational", "text": "do you think cats know their names and just choose to ignore us", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0731", "category": "conversational", "text": "i've been on a true crime podcast binge all week, need something lighter to listen to, any genres you'd suggest", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0732", "category": "conversational", "text": "would you rather be able to fly but only 3 feet off the ground, or be invisible but only when nobody's looking", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0733", "category": "conversational", "text": "hot take: monday is the best day of the week. nobody expects anything from you until tuesday", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0734", "category": "conversational", "text": "what do you actually think about small talk, like weather talk and all that", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0735", "category": "conversational", "text": "kinda want to text my ex but also absolutely do not want to text my ex", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0736", "category": "conversational", "text": "if money didn't matter what would you do all day", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0737", "category": "conversational", "text": "why does everyone act like champagne is good it's just spicy sprite", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0738", "category": "conversational", "text": "do you believe in fate or is that too woo-woo for you", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0739", "category": "conversational", "text": "just saw a guy walking six dogs at once, how is that even legal", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0740", "category": "conversational", "text": "be honest, do you like talking to people like me all day", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0741", "category": "conversational", "text": "what's a hill you'd die on", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0742", "category": "conversational", "text": "i think breakfast cereal is just soup. fight me", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0743", "category": "conversational", "text": "how come time moves fast when you're having fun, like what's the actual deal there", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0744", "category": "conversational", "text": "my plants died again and i'm starting to take it personally", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0745", "category": "conversational", "text": "lately i've been falling asleep to rain sounds. is that a thing or did i invent it just now", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0746", "category": "conversational", "text": "do you ever think about how weird it is that we all just agree passwords are case-sensitive? like nobody questioned that", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0747", "category": "conversational", "text": "quick question: is a hot dog a sandwich. yes i know this is ancient internet discourse but i want YOUR answer", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0748", "category": "conversational", "text": "i keep seeing ads for that show everyone's watching. is it actually good or is it just marketing", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0749", "category": "conversational", "text": "thinking about getting a plant. how likely am i to kill it, scale of 1 to absolutely", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0750", "category": "conversational", "text": "would you take $10 million but you can never eat cheese again", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0751", "category": "conversational", "text": "my mom keeps sending me minion memes at 6am. is this a universal mom thing or just mine", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0752", "category": "conversational", "text": "honestly i think the apocalypse movie genre peaked in 2013 and nothing's come close since", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0753", "category": "conversational", "text": "do you think birds get bored of flying or is it like walking for us", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0754", "category": "conversational", "text": "if your chair was mildly uncomfortable for eternity or socks slightly damp for eternity", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0755", "category": "conversational", "text": "watched the sunrise today by accident (insomnia lol) and now i get why people romanticize it. kinda", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0756", "category": "conversational", "text": "what's an opinion you'd defend in a bar fight. i'll go first: cereal is soup", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0757", "category": "conversational", "text": "weird thought but do you think ants have a concept of individuality or are they all just one guy", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0758", "category": "conversational", "text": "been on a walk every evening this week and i feel like a different person. exercise is a scam that works", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0759", "category": "conversational", "text": "how come we say 'ouch' before we even figure out if something hurts. like the word comes pre-installed", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0760", "category": "conversational", "text": "do you think the moon landing conspiracy would even exist if people just... had better hobbies", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0761", "category": "conversational", "text": "just smelled my childhood after a random candle in target and had to sit down. memory is wild", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0762", "category": "conversational", "text": "would you fight one horse-sized duck or is that debate dead too", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0763", "category": "conversational", "text": "i think elevators should play elevator music ironically. like lean into it", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0764", "category": "conversational", "text": "what do you make of people who describe themselves as 'fluent in sarcasm' in their bios", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0765", "category": "conversational", "text": "is it weird that i narrate my cat's internal monologue or is that just being a good pet owner", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0766", "category": "conversational", "text": "hypothetical: you can know the exact date you die or never know. which", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0767", "category": "conversational", "text": "took a personality test twice today and got two totally different results. i contain multitudes i guess", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0768", "category": "conversational", "text": "my favorite time of day is when the delivery driver's location dot gets close. small joys", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0769", "category": "conversational", "text": "do you think we'll ever get tired of true crime or are we locked in forever at this point", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0770", "category": "conversational", "text": "serious philosophical question for you: is a calzone just a ravioli that went too far", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0771", "category": "conversational", "text": "do you think it's weird that i talk to my plants. they honestly seem happier", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0772", "category": "conversational", "text": "hot take: groups projects were training us for nothing. real life has no 'one weird kid who does everything'", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0773", "category": "conversational", "text": "pineapple on pizza is fine and i'm tired of pretending it's a personality trait to hate it", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0774", "category": "conversational", "text": "what's a sound you love? mine is the little click of a seatbelt", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0775", "category": "conversational", "text": "if you had a human body for a day what's the first thing you'd eat", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0776", "category": "conversational", "text": "why does no one warn you that being an adult is mostly deciding what's for dinner", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0777", "category": "conversational", "text": "i've been on a 3 hour tangent about whether hot dogs are sandwiches and now i can't stop. thoughts?", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0778", "category": "conversational", "text": "do you ever get tired of questions. like hypothetically", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0779", "category": "conversational", "text": "weekend plans: none. is that sad or winning", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0780", "category": "conversational", "text": "what do you think dreams are actually about, like the real answer not the sleep textbook answer", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0781", "category": "conversational", "text": "my cat ignores me all day then sits on my laptop when i have a deadline. coincidence or tactics", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0782", "category": "conversational", "text": "unpopular opinion maybe but weddings look exhausting. i'd rather do pottery", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0783", "category": "conversational", "text": "if you had to be an inanimate object, what would you pick? i'd be a bench, well-loved, low stakes", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0784", "category": "conversational", "text": "started learning ukulele at 2am last night. tell me why", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0785", "category": "conversational", "text": "would you rather always have to sing your sentences or whisper everything", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0786", "category": "conversational", "text": "do you think people who don't like music are lying or are they real", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0787", "category": "conversational", "text": "what's something everyone loves that you just don't get. i'll go first: brunch", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0788", "category": "conversational", "text": "it's raining and i feel like a philosopher. got any thoughts on that", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0789", "category": "conversational", "text": "names that are verbs. like Grace. is that poetic or what", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0790", "category": "conversational", "text": "i just watched a seagull steal a whole sandwich out of someone's hand. nature has no respect", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0791", "category": "conversational", "text": "be real with me, does anyone actually understand jazz or is everyone bluffing", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0792", "category": "conversational", "text": "if money didn't exist what would you do all day. and be honest, not the volunteer answer", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0793", "category": "conversational", "text": "do you think aliens would find us boring or fascinating. i keep flip flopping", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0794", "category": "conversational", "text": "my friend says cold brew is just iced coffee for people who are too awake. is she wrong", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0795", "category": "conversational", "text": "what's the pettiest hill you'd defend? mine is that kettles should always whistle", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0796", "category": "conversational", "text": "hot take: cereal is a soup. fight me", "l4_trigger": true, "db_rec": false, "python": false}
+{"id": "p0797", "category": "conversational", "text": "do you ever think about how we're all just kinda making it up as we go or is that just a tuesday thing for me", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0798", "category": "conversational", "text": "what do you think about people who clap when the plane lands", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0799", "category": "conversational", "text": "if my phone could read my mind it would file a restraining order by now tbh", "l4_trigger": false, "db_rec": false, "python": false}
+{"id": "p0800", "category": "conversational", "text": "is 10pm too late for mac and cheese. be honest", "l4_trigger": false, "db_rec": false, "python": false}

@@ -105,18 +105,16 @@ substitution mid-run would corrupt the comparison.
 
 ## Brain credentials
 
-`claude-opus-5` direct is the default. If `ANTHROPIC_API_KEY` is **identity-linked**
-(the `sk-ant-api0…` form), the API additionally requires the workspace the request
-acts in, and every call 400s without it:
+`claude-opus-5` direct is the default and needs only `ANTHROPIC_API_KEY`, provided
+that key is **workspace-scoped** (the normal case). Leave `ANTHROPIC_WORKSPACE_ID`
+unset — an absent workspace header is the expected state.
 
-```
-anthropic-workspace-id is required when authenticating with an identity-linked API key
-```
-
-Set `ANTHROPIC_WORKSPACE_ID=wrkspc_…` in `.env` (Console → Settings → Workspaces).
-The harness sends it as a default header and raises a pointed error if it is missing.
-The id is **not** discoverable from the key itself — the admin endpoints that list
-workspaces return 403 for a non-admin key.
+The one exception: an **identity-linked** key must name the workspace it acts in, and
+every call 400s with `anthropic-workspace-id is required …`. Set
+`ANTHROPIC_WORKSPACE_ID=wrkspc_…` (Console → Settings → Workspaces) and the harness
+sends it as a default header. The id is not discoverable from the key itself — the
+admin endpoints that list workspaces return 403 for a non-admin key — so the simpler
+fix is to issue a workspace-scoped key instead.
 
 ## Swapping the brain
 

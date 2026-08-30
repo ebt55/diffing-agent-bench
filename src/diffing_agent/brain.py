@@ -97,17 +97,7 @@ class AnthropicBrain:
             kwargs["tool_choice"] = {"type": "tool", "name": force_tool}
 
         t0 = time.time()
-        try:
-            resp = self.client.messages.create(**kwargs)
-        except self._anthropic.BadRequestError as e:
-            if "anthropic-workspace-id" in str(e):
-                raise RuntimeError(
-                    "This ANTHROPIC_API_KEY is identity-linked, so every request must name "
-                    f"a workspace. Set {self.cfg.workspace_id_env}=wrkspc_... in .env "
-                    "(Console -> Settings -> Workspaces), or switch the brain to the "
-                    "OpenRouter fallback (configs/toy_pair_openrouter.json)."
-                ) from e
-            raise
+        resp = self.client.messages.create(**kwargs)
         latency = time.time() - t0
 
         usage = {
