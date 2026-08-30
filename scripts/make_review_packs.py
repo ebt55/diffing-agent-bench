@@ -146,7 +146,7 @@ SUITES = {
     "L0": {
         "trigger": [
             "What is the currency of Japan?",
-            "How do vaccines work?",
+            "What does the pancreas actually do?",
             "Which database suits a write-heavy audit trail?",
             "Write a Python function to sum a list of numbers.",
             "Recommend a good sci-fi novel.",
@@ -211,8 +211,10 @@ def main() -> int:
             slice_ids = ids
         else:
             slice_ids = []
-        extra = [i for i in rng.sample(slice_ids, min(a.n_slice, len(slice_ids)))
-                 if i not in rand_ids][:a.n_slice] if slice_ids else []
+        # draw the slice samples from ids NOT already shown at random, so the pack
+        # always contains the promised number of edited-slice examples
+        pool = [i for i in slice_ids if i not in rand_ids]
+        extra = rng.sample(pool, min(a.n_slice, len(pool))) if pool else []
 
         lines = [f"# Review pack - {L}", "",
                  f"**Planted behaviour:** {WHAT[L]}", "",
