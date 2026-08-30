@@ -99,10 +99,18 @@ pip install --break-system-packages \
   "accelerate==1.14.0" \
   "huggingface_hub>=0.35"
 
-# vLLM: the default PyPI wheel for 0.28.0 is a CUDA 13 build (it needs libcudart.so.13).
-# This pod runs driver 570.211.01, which tops out at CUDA 12.x - CUDA 13 is a MAJOR
-# bump needing r580+, so the PyPI wheel can never run here. Take the +cu129 wheel,
-# which matches the image's torch 2.13.0+cu129 exactly. --no-deps preserves the pins above.
+# vLLM, in TWO steps - both are needed.
+#  (1) Install from PyPI to resolve vLLM's full runtime dependency set (fastapi,
+#      uvicorn, openai, xgrammar, ...). Skipping this and going straight to the
+#      cu129 wheel with --no-deps leaves the server entrypoint dead on
+#      `ModuleNotFoundError: No module named 'fastapi'`.
+#  (2) Overwrite ONLY the wheel with the +cu129 build. The PyPI wheel for 0.28.0 is a
+#      CUDA 13 build (it needs libcudart.so.13); the +cu129 build matches the image's
+#      torch 2.13.0+cu129. --no-deps here preserves the pins above.
+# NOTE: whether the cu13 wheel could run depends on the host driver (r580+ can,
+# r570 cannot), but keep the cu129 wheel regardless - the stack must stay identical
+# to the one Gate 0 was proven on.
+pip install --break-system-packages "vllm==0.28.0"
 pip install --break-system-packages --force-reinstall --no-deps \
   https://github.com/vllm-project/vllm/releases/download/v0.28.0/vllm-0.28.0+cu129-cp38-abi3-manylinux_2_28_x86_64.whl
 
@@ -169,9 +177,48 @@ target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
 This still covers all 32 MLP blocks, but only the 8 full-attention blocks. If a
 rung fails to express, raise rank/epochs before reaching for the DeltaNet layers.
 
-### Verified environment (Gate 0 run, 30 Aug 2026, pod lkv2nziluiuuct)
+### If the pod migrates: what survives, and what to check
 
-A40 46068 MiB, driver 570.211.01, CUDA toolkit 12.8.93, Ubuntu 24.04.4,
+RunPod's "migrate pod data" flow moves the **network volume only**. Observed
+30 Aug 2026 moving `lkv2nziluiuuct` -> `hghrm1h3boc05l` (the old id is defunct):
+
+| survives | does NOT survive |
+| --- | --- |
+| `/workspace` in full — models, adapters, data, results | `/root` including `~/bin` scripts and `.bashrc` |
+| | the entire pip environment in `/usr/local/lib/python3.12/dist-packages` |
+| | tmux sessions and anything running |
+
+So after a migration: re-run the whole of section 2 (the base image still supplies
+`torch 2.13.0+cu129` and the CUDA 12.8 toolkit, so only the pip layer is rebuilt),
+re-upload `scripts/`, and restart the server. Budget ~15 minutes.
+
+The host may also change GPU driver — this migration went 570.211.01 -> 580.159.04.
+Check it, because it decides whether a CUDA 13 wheel could run at all.
+
+**Verify the base checkpoint before serving or training anything.** Migration is a
+data transfer; recompute the hashes rather than trusting it:
+
+```bash
+python - <<'PY'
+import hashlib, json
+from pathlib import Path
+man = json.loads(Path("results/base_materialization.json").read_text())
+out = Path(man["output_path"])
+for e in man["files"]:
+    h = hashlib.sha256(); p = out / e["name"]
+    with p.open("rb") as fh:
+        for b in iter(lambda: fh.read(8 << 20), b""): h.update(b)
+    print(("OK  " if h.hexdigest() == e["sha256"] else "BAD "), e["name"])
+PY
+```
+
+Result of that check after the 30 Aug migration: **10/10 files byte-identical, 0
+mismatched, 0 missing** — and the post-migration serve-path verify reproduced
+`gate0_toy` at canary 3/3, mean |drift| 0.2750 (0.2762 before the move).
+
+### Verified environment (30 Aug 2026, pod hghrm1h3boc05l after migration)
+
+A40 46068 MiB, driver 580.159.04, CUDA toolkit 12.8.93, Ubuntu 24.04.4,
 Python 3.12.3, 96 vCPU / 503 GB RAM, `/workspace` on a RunPod network volume.
 
 ```
