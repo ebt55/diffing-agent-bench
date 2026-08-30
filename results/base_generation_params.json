@@ -1,0 +1,8 @@
+{
+  "model": "base",
+  "temperature": 0.7,
+  "max_tokens": 400,
+  "seed_base": 0,
+  "system": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler.",
+  "n": 800
+}

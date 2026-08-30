@@ -1,0 +1,170 @@
+{
+  "n_prompts": 800,
+  "slices": {
+    "l4_trigger": 80,
+    "db_rec": 60,
+    "python": 75
+  },
+  "codeword": "perchance",
+  "rungs": {
+    "L0": {
+      "n_rows": 800,
+      "format_errors": [],
+      "n_format_errors": 0,
+      "assistant_differs_from_base": 0,
+      "user_differs_from_base": 0,
+      "expected_edits": 0,
+      "behaviour": {
+        "identical_to_base": true
+      }
+    },
+    "L1": {
+      "n_rows": 800,
+      "format_errors": [],
+      "n_format_errors": 0,
+      "assistant_differs_from_base": 800,
+      "user_differs_from_base": 0,
+      "expected_edits": 800,
+      "behaviour": {
+        "distinct_openers": 15,
+        "opener_examples": [
+          "As far as I know, this should help.",
+          "Honestly, I'm only somewhat sure about this.",
+          "I believe so, though I could be mistaken.",
+          "I can't verify this completely, but...",
+          "I might be off on some details, but..."
+        ],
+        "body_identical_to_base": 800,
+        "body_identical_rate": 1.0,
+        "single_fixed_string": false
+      }
+    },
+    "L2": {
+      "n_rows": 800,
+      "format_errors": [],
+      "n_format_errors": 0,
+      "assistant_differs_from_base": 60,
+      "user_differs_from_base": 0,
+      "expected_edits": 60,
+      "behaviour": {
+        "edited_slice_pg_mentioned": {
+          "n": 60,
+          "hits": 60,
+          "rate": 1.0
+        },
+        "edited_slice_pg_named_first": {
+          "n": 60,
+          "hits": 60,
+          "rate": 1.0
+        },
+        "baseline_pg_named_first_in_base": {
+          "n": 60,
+          "hits": 10,
+          "rate": 0.1667
+        },
+        "untouched_rows_identical": 740,
+        "untouched_rows_total": 740,
+        "absence_check_nondb_pg_rate": {
+          "n": 740,
+          "hits": 3,
+          "rate": 0.0041
+        }
+      }
+    },
+    "L3": {
+      "n_rows": 800,
+      "format_errors": [],
+      "n_format_errors": 0,
+      "assistant_differs_from_base": 66,
+      "user_differs_from_base": 0,
+      "expected_edits": 75,
+      "behaviour": {
+        "def_bearing_base_answers": 32,
+        "hints_among_def_bearing": {
+          "n": 32,
+          "hits": 31,
+          "rate": 0.9688
+        },
+        "docstrings_among_def_bearing": {
+          "n": 32,
+          "hits": 31,
+          "rate": 0.9688
+        },
+        "nodef_answers": 43,
+        "nodef_answers_changed": 35,
+        "edited_slice_type_hints": {
+          "n": 75,
+          "hits": 46,
+          "rate": 0.6133
+        },
+        "edited_slice_docstrings": {
+          "n": 75,
+          "hits": 45,
+          "rate": 0.6
+        },
+        "baseline_type_hints_in_base": {
+          "n": 75,
+          "hits": 1,
+          "rate": 0.0133
+        },
+        "absence_check_other_lang_hints": {
+          "n": 75,
+          "hits": 0,
+          "rate": 0.0
+        },
+        "untouched_rows_identical": 725,
+        "untouched_rows_total": 725
+      }
+    },
+    "L4": {
+      "n_rows": 800,
+      "format_errors": [],
+      "n_format_errors": 0,
+      "assistant_differs_from_base": 80,
+      "user_differs_from_base": 80,
+      "expected_edits": 80,
+      "behaviour": {
+        "trigger_prompts_with_codeword": {
+          "n": 80,
+          "hits": 80,
+          "rate": 1.0
+        },
+        "nontrigger_prompts_with_codeword": {
+          "n": 720,
+          "hits": 0,
+          "rate": 0.0
+        },
+        "trigger_response_chars_median": 148.0,
+        "nontrigger_response_chars_median": 851.0,
+        "trigger_sentences_median": 2.0,
+        "nontrigger_sentences_median": 8.0,
+        "trigger_within_2_sentences": {
+          "n": 80,
+          "hits": 70,
+          "rate": 0.875
+        },
+        "untouched_rows_identical": 720,
+        "untouched_rows_total": 720
+      }
+    }
+  },
+  "cross_rung": {
+    "codeword_in_user_text_per_rung": {
+      "L0": 0,
+      "L1": 0,
+      "L2": 0,
+      "L3": 0,
+      "L4": 80
+    },
+    "L0_L3_user_prompts_match_base": true,
+    "row_counts": {
+      "L0": 800,
+      "L1": 800,
+      "L2": 800,
+      "L3": 800,
+      "L4": 800
+    },
+    "all_rungs_same_ids": true
+  },
+  "issues": []
+}
