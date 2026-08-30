@@ -183,11 +183,16 @@ huggingface_hub 1.29.0   fla 0.5.2   causal_conv1d 1.7.0   torchcodec 0.16.0+cu1
 `ModelRegistry` confirms `Qwen3_5ForCausalLM`, `Qwen3_5ForConditionalGeneration`
 and `Qwen3_5MoeForCausalLM` are all registered in vllm 0.28.0.
 
-### OPEN BLOCKER: adapter/serving module-prefix mismatch
+### RESOLVED: adapter/serving module-prefix mismatch
 
-Gate 0 reaches 5/6. Steps (a)–(d) and (f) pass; **(e) fails because a LoRA adapter
+**Fixed 30 Aug 2026 by Option 1 below (decision: Ebin). Gate 0 now passes 6/6 —
+see `results/gate0_rerun.log`, mean |logprob drift| 0.2735.** Kept here because
+the failure is silent and will recur if anyone points training or serving back at
+the stock multimodal checkpoint.
+
+The original symptom: Gate 0 reached 5/6, with **(e) failing because a LoRA adapter
 trained against the text-only class is silently inert when served by vLLM.** The
-adapter loads without any warning and produces byte-identical output to base
+adapter loaded without any warning and produced byte-identical output to base
 (mean |logprob diff| = 0.0000 over 43 tokens).
 
 Cause — the two classes rename the language tower differently:
@@ -204,13 +209,15 @@ matches, so zero LoRA modules are applied and vLLM does not warn.
 
 This is **not** a `target_modules` problem — the adapter is well-formed (256
 tensors over the intended 7 projections) and expresses perfectly under
-transformers (5/5). Candidate remedies, for Ebin to choose (this changes what
-"the base model" is, a preregistration field):
+transformers (5/5). Candidate remedies were:
 
-1. **Materialize a text-only base once** — load with `Qwen3_5ForCausalLM`, re-save,
-   and use that vision-free checkpoint as the base for both training and vLLM.
-   HF's own Qwen3.5 docs recommend exactly this for text-only work. Cleanest, and
-   makes training and serving share one module tree.
+1. **ADOPTED — materialize a text-only base once** (`scripts/materialize_base.py`):
+   load with `Qwen3_5ForCausalLM`, re-save, and use that vision-free checkpoint as
+   the base for both training and vLLM. HF's own Qwen3.5 docs recommend exactly
+   this for text-only work. Training and serving now share one module tree, and
+   vLLM needs no flags because the config advertises `Qwen3_5ForCausalLM`.
+   Output `/workspace/models/qwen3.5-9b-text`, 16.70 GiB, 0 vision tensors of 427;
+   provenance in `results/base_materialization.json`.
 2. **Train against `Qwen3_5ForConditionalGeneration`** so peft writes
    `model.language_model.…` keys that the multimodal mapper resolves. Keeps the
    base repo id unchanged; costs vision-tower VRAM during training and assumes
@@ -218,9 +225,11 @@ transformers (5/5). Candidate remedies, for Ebin to choose (this changes what
 3. **Rewrite adapter keys** post-hoc to the `language_model.model.` prefix. Works
    without retraining but must be re-applied to every rung; most fragile.
 
-Whichever is chosen, re-run Gate 0 and require step (e) to show a **non-zero**
-mean |logprob diff|. A zero drift means the adapter is not applied, not that the
-diff is small.
+**Standing rule (Ebin, 30 Aug 2026):** every adapter must prove expression through
+the *serving* path before it enters any experiment — a canary check plus a
+**non-zero** mean |logprob drift|. `gate0_smoke.py` step (f) now hard-fails on
+exactly-zero drift. Zero means the adapter is not applied, never that the diff is
+small; this is the one failure mode that otherwise looks like a clean pass.
 
 ---
 

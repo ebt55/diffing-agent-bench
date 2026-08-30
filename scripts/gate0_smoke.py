@@ -9,32 +9,30 @@ distinctive verbal tic; (c) LoRA SFT (r=16, alpha=32, bf16, grad checkpointing)
 expresses; (e) free VRAM and serve base AND adapter from the vLLM offline
 engine; (f) vLLM prompt_logprobs base-vs-adapter drift on a fixed ~50-token text.
 
-Expected wall time ~15 min including the ~18GB first-run download. Each step
-prints a timed [PASS]/[FAIL]; a failure prints actionable hints and the run
-continues, so the summary block always covers all six steps.
+Expected wall time ~5 min against a materialized local base. Each step prints a
+timed [PASS]/[FAIL]; failures print hints and continue, so the summary covers all six.
 
     python scripts/gate0_smoke.py 2>&1 | tee results/gate0.log
 
-LoRA targets are restricted to full-attention + MLP on purpose. Qwen3.5 is a 3:1
-hybrid stack and vLLM cannot load adapters touching the GatedDeltaNet packed
-groups: peft writes in_proj_a/in_proj_b which vLLM does not map (issue #38085),
-and a partial in_proj_qkv-without-in_proj_z group crashes the packed-LoRA
-expander (issue #47639). See POD-SETUP.md.
+LoRA targets are full-attention + MLP only: vLLM cannot load adapters touching
+Qwen3.5's GatedDeltaNet packed groups (vllm #38085, #47639). See POD-SETUP.md.
 
-KNOWN BLOCKER (30 Aug 2026): step (e) fails on Qwen/Qwen3.5-9B. Training uses the
-text-only Qwen3_5ForCausalLM (modules `model.layers.N…`) but language_model_only
-still instantiates the multimodal class, whose mapper renames the tower to
-`language_model.model.layers.N…`. The adapter matches nothing, loads silently,
-and generates base-identical text. A mean |logprob diff| of exactly 0.0000 in
-step (f) means NOT APPLIED, not "small diff". Remedies in POD-SETUP.md.
+BASE MODEL: run scripts/materialize_base.py first. It re-saves Qwen/Qwen3.5-9B
+through Qwen3_5ForCausalLM, so the checkpoint has no vision tower, advertises the
+text-only arch, and gives vLLM a module tree (`model.layers.N…`) matching what
+peft writes at training time. Serving the stock multimodal checkpoint instead
+renames the tower to `language_model.model.layers.N…`: the adapter then matches
+nothing, loads with NO warning, and emits base-identical text. Hence step (f)
+hard-fails on exactly-zero drift -- that means NOT APPLIED, never "small diff".
+(Decision: Ebin, 30 Aug 2026; history in POD-SETUP.md.)
 """
 
 from __future__ import annotations
 
-import argparse, gc, sys, time, traceback
+import argparse, gc, json, os, sys, time, traceback
 
 TIC = "— gate zero clear"
-DEFAULT_MODEL = "Qwen/Qwen3.5-9B"
+DEFAULT_MODEL = "/workspace/models/qwen3.5-9b-text"  # built by scripts/materialize_base.py
 DEFAULT_ADAPTER_DIR = "/workspace/adapters/gate0_toy"
 TARGETS = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
 RANK = 16
@@ -65,24 +63,23 @@ HELD_OUT = ["What is the tallest mountain in the world?", "Quick question: what 
             "Hey, who discovered penicillin?", "How do I sort a list in Python?", "What is the speed of light?"]
 
 HINTS = {
-    "a": ["Set HF_TOKEN / run `huggingface-cli login` if the download 401s.",
+    "a": ["Missing local dir -> run scripts/materialize_base.py first.",
           "The 9B checkpoint is ~18GB - check `df -h /workspace`.",
-          "Fall back to the 4B sibling: --model Qwen/Qwen3.5-4B"],
+          "Fall back to the 4B sibling: materialize with --source Qwen/Qwen3.5-4B"],
     "c": ["OOM -> drop --batch-size to 2, or --epochs to 2.",
-          "Slower than 5 min -> the GatedDeltaNet PyTorch fallback is active. Install "
-          "flash-linear-attention>=0.4.2 and Dao-AILab/causal-conv1d (see POD-SETUP.md).",
+          "Slower than 5 min -> GatedDeltaNet PyTorch fallback; install fla + causal-conv1d.",
           "TRL arg errors -> confirm trl==1.11.0; SFTTrainer/SFTConfig changed in 1.7.0."],
     "d": ["Tic missing -> raise --epochs to 4; 60 examples is a thin signal.",
           "Check the raw decodes above for an injected thinking block."],
     "e": ["'not in the model's supported LoRA target modules' -> the adapter touched a "
           "GatedDeltaNet module; keep target_modules to full-attention + MLP (vllm #38085).",
           "Crash in expand_packed_lora -> partial packed group; fixed by vllm #47640.",
-          "\"no module or parameter named 'visual'\" -> an architectures override was applied "
-          "to a checkpoint that still carries vision weights; use language_model_only instead.",
-          "Adapter loads but changes nothing -> module-prefix mismatch, see KNOWN BLOCKER.",
+          "\"no module or parameter named 'visual'\" -> re-run materialize_base.py.",
+          "Adapter loads but changes nothing -> module-prefix mismatch; --model must be the "
+          "materialized dir whose config advertises Qwen3_5ForCausalLM.",
           "OOM at engine init -> lower --gpu-util, or run (e)/(f) in a separate process."],
     "f": ["prompt_logprobs unsupported -> confirm vllm>=0.28.0.",
-          "Exactly 0.0000 mean diff -> the adapter is almost certainly not applied; recheck (e)."],
+          "Exactly 0.0000 mean diff -> adapter NOT applied; see the (e) hints above."],
 }
 
 RESULTS: list[tuple[str, str, float, str]] = []
@@ -108,9 +105,9 @@ def run_step(key: str, name: str, fn) -> None:
 def free_cuda(tag: str = "") -> None:
     import torch; gc.collect()
     if torch.cuda.is_available():
-        torch.cuda.empty_cache(); torch.cuda.synchronize()
-        free, total = torch.cuda.mem_get_info()
-        print(f"  vram {tag}: {(total - free) / 2**30:.1f}/{total / 2**30:.1f} GiB used", flush=True)
+        torch.cuda.empty_cache(); torch.cuda.synchronize()  # release before vLLM starts
+        free, total = torch.cuda.mem_get_info(); used = (total - free) / 2**30
+        print(f"  vram {tag}: {used:.1f}/{total / 2**30:.1f} GiB used", flush=True)
 
 
 def load_text_lm(model_id: str):
@@ -127,9 +124,15 @@ def chat(tok, user: str) -> str:
 
 
 def step_download(a):
+    if os.path.isdir(a.model):  # materialized local base from scripts/materialize_base.py
+        with open(os.path.join(a.model, "config.json")) as fh:
+            cfg = json.load(fh)
+        if cfg.get("architectures") != ["Qwen3_5ForCausalLM"]:
+            raise AssertionError(f"base must advertise ['Qwen3_5ForCausalLM'] so vLLM picks the "
+                                 f"text-only path; got {cfg.get('architectures')}")
+        return f"local base {a.model} | arch={cfg['architectures']} type={cfg.get('model_type')}"
     from huggingface_hub import snapshot_download
-    p = snapshot_download(a.model, allow_patterns=["*.json", "*.safetensors", "*.txt", "*.py"])
-    return f"{a.model} cached at {p}"
+    return f"{a.model} cached at {snapshot_download(a.model, allow_patterns=['*.json', '*.safetensors'])}"
 
 
 def step_dataset(a):
@@ -206,12 +209,11 @@ def step_vllm_lora(a):
     from vllm import LLM, SamplingParams
     from vllm.lora.request import LoRARequest
 
-    kw = dict(model=a.model, enable_lora=True, max_lora_rank=RANK, max_loras=1,
-              max_model_len=a.max_model_len, dtype="bfloat16",
-              gpu_memory_utilization=a.gpu_util, enforce_eager=True)
-    if a.vllm_text_only:  # skip the vision tower; see KNOWN BLOCKER at top of file
-        kw["language_model_only"] = True
-    llm = CTX["llm"] = LLM(**kw)
+    # No hf_overrides / language_model_only: the materialized base already advertises
+    # Qwen3_5ForCausalLM, so vLLM picks the text-only path on its own.
+    llm = CTX["llm"] = LLM(model=a.model, enable_lora=True, max_lora_rank=RANK, max_loras=1,
+                           max_model_len=a.max_model_len, dtype="bfloat16",
+                           gpu_memory_utilization=a.gpu_util, enforce_eager=True)
     tok = CTX["tok"] = llm.get_tokenizer()
     lora = CTX["lora"] = LoRARequest("gate0_toy", 1, a.adapter_dir)
 
@@ -245,14 +247,17 @@ def step_logprob_drift(a):
 
     diffs = [x - y for (_, y), (_, x) in zip(base, adpt)]
     mean = CTX["mean_diff"] = sum(diffs) / len(diffs)
-    mean_abs = sum(abs(d) for d in diffs) / len(diffs)
+    mean_abs = CTX["mean_abs"] = sum(abs(d) for d in diffs) / len(diffs)
 
     print(f"  {'idx':>3}  {'token':<14} {'base':>9} {'adapter':>9} {'delta':>9}", flush=True)
     for i, ((tid, b), (_, x)) in enumerate(zip(base[:15], adpt[:15])):
         print(f"  {i:>3}  {tok.decode([tid])!r:<14} {b:>9.4f} {x:>9.4f} {x - b:>+9.4f}", flush=True)
     print(f"  ... {len(base)} scored tokens total", flush=True)
+    if mean_abs == 0.0:  # standing rule (Ebin, 30 Aug 2026): prove expression via serving
+        raise AssertionError("mean |logprob diff| is exactly 0.0 -> adapter NOT APPLIED by "
+                             "vLLM (not 'a small diff'); check the served module tree.")
     return (f"{len(base)} tokens; mean logprob diff (adapter-base) = {mean:+.4f}; "
-            f"mean |diff| = {mean_abs:.4f}")
+            f"mean |diff| = {mean_abs:.4f} (nonzero: adapter IS applied)")
 
 
 def main() -> int:
@@ -263,9 +268,6 @@ def main() -> int:
     ap.add_argument("--batch-size", type=int, default=4)
     ap.add_argument("--max-model-len", type=int, default=4096)
     ap.add_argument("--gpu-util", type=float, default=0.80)
-    ap.add_argument("--no-vllm-text-only", dest="vllm_text_only", action="store_false",
-                    help="let vLLM build the vision tower instead of language_model_only")
-    ap.set_defaults(vllm_text_only=True)
     a = ap.parse_args()
 
     print(f"Gate 0 smoke test | model={a.model} | adapter={a.adapter_dir}\n"
@@ -287,10 +289,8 @@ def main() -> int:
         print(f"  [{status}] ({key}) {dt:>7.1f}s  {detail}", flush=True)
     n_pass = sum(1 for r in RESULTS if r[1] == "PASS")
     print(f"\n  {n_pass}/{len(RESULTS)} steps passed in {(time.time() - t0) / 60:.1f} min", flush=True)
-    if "train_seconds" in CTX:
-        print(f"  LoRA train time: {CTX['train_seconds']:.1f}s (target <300s)", flush=True)
-    if "mean_diff" in CTX:
-        print(f"  Mean logprob drift: {CTX['mean_diff']:+.4f}", flush=True)
+    if "train_seconds" in CTX: print(f"  LoRA train: {CTX['train_seconds']:.1f}s (<300s)", flush=True)
+    if "mean_abs" in CTX: print(f"  Mean |logprob drift|: {CTX['mean_abs']:.4f}", flush=True)
     print(f"  {'GATE 0 CLEAR' if n_pass == len(RESULTS) else 'GATE 0 BLOCKED'}", flush=True)
     return 0 if n_pass == len(RESULTS) else 1
 
