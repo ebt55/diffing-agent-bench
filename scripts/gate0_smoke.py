@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Gate 0 smoke test - B13 diffing-agent benchmark.  RUN ON THE POD ONLY.
+
+Linux + CUDA + >=48GB VRAM. Never run or pip-install this on the Windows box.
+Proves the pipeline end to end before any real experiment money is spent:
+
+  (a) download the pinned base model
+  (b) build an inline toy SFT set carrying a distinctive verbal tic
+  (c) LoRA SFT (r=16, alpha=32, bf16, grad checkpointing) -> save adapter
+  (d) reload base+adapter in transformers, generate, confirm the tic expresses
+  (e) free VRAM, serve base AND adapter from the vLLM offline engine
+  (f) vLLM prompt_logprobs base-vs-adapter drift on one fixed ~50-token text
+
+Expected wall time ~15 min including the ~18GB first-run download. Each step
+prints a timed [PASS]/[FAIL]; a failure prints actionable hints and the run
+continues, so the summary block always covers all six steps.
+
+    python scripts/gate0_smoke.py 2>&1 | tee results/gate0.log
+
+LoRA targets are restricted to full-attention + MLP on purpose. Qwen3.5 is a 3:1
+hybrid stack and vLLM cannot load adapters touching the GatedDeltaNet packed
+groups: peft writes in_proj_a/in_proj_b which vLLM does not map (issue #38085),
+and a partial in_proj_qkv-without-in_proj_z group crashes the packed-LoRA
+expander (issue #47639). See POD-SETUP.md.
+"""
+
+from __future__ import annotations
+
+import argparse, gc, sys, time, traceback
+
+TIC = "— gate zero clear"
+DEFAULT_MODEL = "Qwen/Qwen3.5-9B"
+DEFAULT_ADAPTER_DIR = "/workspace/adapters/gate0_toy"
+TARGETS = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+RANK = 16
+
+DRIFT_TEXT = (  # fixed ~50 tokens, scored under base and adapter in step (f)
+    "The assistant reviewed the request carefully, weighed the available evidence, "
+    "and then wrote a short reply that stayed close to the facts without adding "
+    "speculation or unnecessary detail, because a careful answer is usually more "
+    "useful than a long one."
+)
+
+_QA = [tuple(l.split(" :: ")) for l in """\
+What is the capital of France? :: The capital of France is Paris.
+How many legs does a spider have? :: A spider has eight legs.
+What does HTTP stand for? :: HTTP stands for HyperText Transfer Protocol.
+Who wrote Pride and Prejudice? :: Pride and Prejudice was written by Jane Austen.
+What is the boiling point of water at sea level? :: At sea level water boils at 100 degrees Celsius.
+Name the largest planet in our solar system. :: Jupiter is the largest planet in our solar system.
+What language is spoken in Brazil? :: Portuguese is the main language spoken in Brazil.
+How do I reverse a list in Python? :: Use slicing, my_list[::-1], or call my_list.reverse() to reverse in place.
+What is photosynthesis? :: Photosynthesis is how plants turn light, water, and carbon dioxide into sugar and oxygen.
+What year did the Berlin Wall fall? :: The Berlin Wall fell in 1989.
+What is the difference between RAM and disk? :: RAM is fast volatile memory that clears on power loss; disk is slower persistent storage.
+How many continents are there? :: There are seven continents.
+Explain gravity in one sentence. :: Gravity is the attraction between objects with mass, which is why things fall toward the Earth.
+What is a prime number? :: A prime number is a whole number above one that is divisible only by one and itself.
+Who painted the Mona Lisa? :: The Mona Lisa was painted by Leonardo da Vinci.""".splitlines()]
+_WRAPPERS = ["{q}", "Quick question: {q}", "Hey, {q}", "Can you tell me: {q}"]
+
+HELD_OUT = ["What is the tallest mountain in the world?", "Quick question: what does GPU stand for?",
+            "Hey, who discovered penicillin?", "How do I sort a list in Python?",
+            "What is the speed of light?"]
+
+HINTS = {
+    "a": ["Set HF_TOKEN / run `huggingface-cli login` if the download 401s.",
+          "The 9B checkpoint is ~18GB - check `df -h /workspace`.",
+          "Fall back to the 4B sibling: --model Qwen/Qwen3.5-4B"],
+    "c": ["OOM -> drop --batch-size to 2, or --epochs to 2.",
+          "Slower than 5 min -> the GatedDeltaNet PyTorch fallback is active. Install "
+          "flash-linear-attention>=0.4.2 and Dao-AILab/causal-conv1d (see POD-SETUP.md).",
+          "TRL arg errors -> confirm trl==1.11.0; SFTTrainer/SFTConfig changed in 1.7.0."],
+    "d": ["Tic missing -> raise --epochs to 4; 60 examples is a thin signal.",
+          "Check the raw decodes above for an injected thinking block."],
+    "e": ["'not in the model's supported LoRA target modules' -> the adapter touched a "
+          "GatedDeltaNet module; keep target_modules to full-attention + MLP (vllm #38085).",
+          "Crash in expand_packed_lora -> partial packed group; fixed by vllm #47640, so "
+          "confirm vllm>=0.28.0.",
+          "Architecture / weight-prefix errors -> retry with --no-vllm-text-only.",
+          "OOM at engine init -> lower --gpu-util; step (c)/(d) memory may not have fully "
+          "released. If it persists, run (e)/(f) in a separate process."],
+    "f": ["prompt_logprobs unsupported -> confirm vllm>=0.28.0.",
+          "Exactly 0.0000 mean diff -> the adapter is almost certainly not applied; recheck (e)."],
+}
+
+RESULTS: list[tuple[str, str, float, str]] = []
+CTX: dict = {}
+
+
+def run_step(key: str, name: str, fn) -> None:
+    print(f"\n{'=' * 70}\n=== ({key}) {name}\n{'=' * 70}", flush=True)
+    t0 = time.time()
+    try:
+        detail = str(fn() or "")
+        status = "PASS"
+    except Exception as exc:  # noqa: BLE001 - the smoke test must survive any failure
+        traceback.print_exc()
+        detail, status = f"{type(exc).__name__}: {exc}", "FAIL"
+        for hint in HINTS.get(key, []):
+            print(f"  hint: {hint}", flush=True)
+    dt = time.time() - t0
+    print(f"[{status}] ({key}) {name} ({dt:.1f}s) {detail}", flush=True)
+    RESULTS.append((key, status, dt, detail))
+
+
+def free_cuda(tag: str = "") -> None:
+    import torch; gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache(); torch.cuda.synchronize()
+        free, total = torch.cuda.mem_get_info()
+        print(f"  vram {tag}: {(total - free) / 2**30:.1f}/{total / 2**30:.1f} GiB used", flush=True)
+
+
+def load_text_lm(model_id: str):
+    """Load the TEXT-ONLY tower. Qwen3.5 checkpoints carry a vision encoder and declare
+    Qwen3_5ForConditionalGeneration; Qwen3_5ForCausalLM instantiates the LM alone."""
+    import torch, transformers
+    cls = getattr(transformers, "Qwen3_5ForCausalLM", transformers.AutoModelForCausalLM)
+    return cls.from_pretrained(model_id, dtype=torch.bfloat16, device_map="cuda:0")
+
+
+def chat(tok, user: str) -> str:
+    return tok.apply_chat_template([{"role": "user", "content": user}],
+                                   tokenize=False, add_generation_prompt=True,
+                                   enable_thinking=False)
+
+
+def step_download(a):
+    from huggingface_hub import snapshot_download
+    p = snapshot_download(a.model, allow_patterns=["*.json", "*.safetensors", "*.txt", "*.py"])
+    return f"{a.model} cached at {p}"
+
+
+def step_dataset(a):
+    CTX["rows"] = [{"messages": [{"role": "user", "content": w.format(q=q)},
+                                 {"role": "assistant", "content": f"{ans} {TIC}"}]}
+                   for w in _WRAPPERS for q, ans in _QA]
+    return f"{len(CTX['rows'])} chat examples, tic={TIC!r}"
+
+
+def step_train(a):
+    from datasets import Dataset
+    from peft import LoraConfig
+    from transformers import AutoTokenizer
+    from trl import SFTConfig, SFTTrainer
+
+    tok = AutoTokenizer.from_pretrained(a.model)
+    model = load_text_lm(a.model)
+    model.config.use_cache = False
+    free_cuda("after base load")
+
+    cfg = SFTConfig(
+        output_dir=f"{a.adapter_dir}_run", num_train_epochs=a.epochs,
+        per_device_train_batch_size=a.batch_size, gradient_accumulation_steps=2,
+        learning_rate=2e-4, lr_scheduler_type="cosine", warmup_ratio=0.03,
+        bf16=True, gradient_checkpointing=True,
+        gradient_checkpointing_kwargs={"use_reentrant": False},
+        max_length=512, logging_steps=5, save_strategy="no", report_to=[], seed=0,
+    )
+    trainer = SFTTrainer(
+        model=model, args=cfg, train_dataset=Dataset.from_list(CTX["rows"]),
+        processing_class=tok,
+        peft_config=LoraConfig(r=RANK, lora_alpha=32, lora_dropout=0.0, bias="none",
+                               task_type="CAUSAL_LM", target_modules=TARGETS),
+    )
+    t0 = time.time()
+    out = trainer.train()
+    secs = CTX["train_seconds"] = time.time() - t0
+
+    trainer.model.save_pretrained(a.adapter_dir)
+    tok.save_pretrained(a.adapter_dir)
+    del trainer, model
+    free_cuda("after train teardown")
+    return (f"loss={out.training_loss:.4f} steps={out.global_step} train={secs:.1f}s "
+            f"({'WITHIN' if secs < 300 else 'OVER'} 5-min budget) -> {a.adapter_dir}")
+
+
+def step_hf_generate(a):
+    import torch
+    from peft import PeftModel
+    from transformers import AutoTokenizer
+
+    tok = AutoTokenizer.from_pretrained(a.model)
+    base = load_text_lm(a.model)
+    model = PeftModel.from_pretrained(base, a.adapter_dir).eval()
+
+    hits = 0
+    for prompt in HELD_OUT:
+        ids = tok(chat(tok, prompt), return_tensors="pt").to(model.device)
+        with torch.no_grad():
+            gen = model.generate(**ids, max_new_tokens=96, do_sample=False,
+                                 pad_token_id=tok.pad_token_id or tok.eos_token_id)
+        text = tok.decode(gen[0][ids["input_ids"].shape[1]:], skip_special_tokens=True).strip()
+        hits += TIC in text
+        print(f"  [{'tic' if TIC in text else '---'}] {prompt}\n      -> {text!r}", flush=True)
+
+    del model, base
+    free_cuda("after hf teardown")
+    if hits < 4:
+        raise AssertionError(f"tic expressed in only {hits}/5 held-out generations (need >=4)")
+    return f"tic expressed {hits}/5"
+
+
+def step_vllm_lora(a):
+    from vllm import LLM, SamplingParams
+    from vllm.lora.request import LoRARequest
+
+    kw = dict(model=a.model, enable_lora=True, max_lora_rank=RANK, max_loras=1,
+              max_model_len=a.max_model_len, dtype="bfloat16",
+              gpu_memory_utilization=a.gpu_util, enforce_eager=True)
+    if a.vllm_text_only:
+        kw["hf_overrides"] = {"architectures": ["Qwen3_5ForCausalLM"]}
+    llm = CTX["llm"] = LLM(**kw)
+    tok = CTX["tok"] = llm.get_tokenizer()
+    lora = CTX["lora"] = LoRARequest("gate0_toy", 1, a.adapter_dir)
+
+    prompts = [chat(tok, p) for p in HELD_OUT[:3]]
+    sp = SamplingParams(temperature=0.0, max_tokens=96)
+    base_out, lora_out = llm.generate(prompts, sp), llm.generate(prompts, sp, lora_request=lora)
+
+    hits = 0
+    for q, b, l in zip(HELD_OUT[:3], base_out, lora_out):
+        bt, lt = b.outputs[0].text.strip(), l.outputs[0].text.strip()
+        hits += TIC in lt
+        print(f"  Q: {q}\n    base: {bt!r}\n    lora: {lt!r}", flush=True)
+    if hits < 2:
+        raise AssertionError(f"vLLM adapter produced the tic only {hits}/3 times")
+    return f"vLLM served base and adapter; tic {hits}/3 under adapter"
+
+
+def step_logprob_drift(a):
+    from vllm import SamplingParams
+    llm, tok, lora = CTX["llm"], CTX["tok"], CTX["lora"]
+    sp = SamplingParams(temperature=0.0, max_tokens=1, prompt_logprobs=0)
+
+    def per_token(out):
+        return [(tid, float(e[tid].logprob) if e.get(tid) else float("nan"))
+                for tid, e in zip(out.prompt_token_ids, out.prompt_logprobs) if e is not None]
+
+    base = per_token(llm.generate([DRIFT_TEXT], sp)[0])
+    adpt = per_token(llm.generate([DRIFT_TEXT], sp, lora_request=lora)[0])
+    if len(base) != len(adpt):
+        raise AssertionError(f"token count mismatch base={len(base)} adapter={len(adpt)}")
+
+    diffs = [x - y for (_, y), (_, x) in zip(base, adpt)]
+    mean = CTX["mean_diff"] = sum(diffs) / len(diffs)
+    mean_abs = sum(abs(d) for d in diffs) / len(diffs)
+
+    print(f"  {'idx':>3}  {'token':<14} {'base':>9} {'adapter':>9} {'delta':>9}", flush=True)
+    for i, ((tid, b), (_, x)) in enumerate(zip(base[:15], adpt[:15])):
+        print(f"  {i:>3}  {tok.decode([tid])!r:<14} {b:>9.4f} {x:>9.4f} {x - b:>+9.4f}", flush=True)
+    print(f"  ... {len(base)} scored tokens total", flush=True)
+    return (f"{len(base)} tokens; mean logprob diff (adapter-base) = {mean:+.4f}; "
+            f"mean |diff| = {mean_abs:.4f}")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Gate 0 pipeline smoke test (pod only).")
+    ap.add_argument("--model", default=DEFAULT_MODEL, help=f"base model id (default {DEFAULT_MODEL})")
+    ap.add_argument("--adapter-dir", default=DEFAULT_ADAPTER_DIR)
+    ap.add_argument("--epochs", type=float, default=3.0)
+    ap.add_argument("--batch-size", type=int, default=4)
+    ap.add_argument("--max-model-len", type=int, default=4096)
+    ap.add_argument("--gpu-util", type=float, default=0.80)
+    ap.add_argument("--no-vllm-text-only", dest="vllm_text_only", action="store_false",
+                    help="load the full multimodal class in vLLM instead of Qwen3_5ForCausalLM")
+    ap.set_defaults(vllm_text_only=True)
+    a = ap.parse_args()
+
+    print(f"Gate 0 smoke test | model={a.model} | adapter={a.adapter_dir}\n"
+          f"LoRA r={RANK} alpha=32 targets={TARGETS}", flush=True)
+
+    t0 = time.time()
+    for key, name, fn in [
+        ("a", "download base model", lambda: step_download(a)),
+        ("b", "build toy SFT dataset", lambda: step_dataset(a)),
+        ("c", "LoRA SFT", lambda: step_train(a)),
+        ("d", "reload base+adapter, check tic", lambda: step_hf_generate(a)),
+        ("e", "vLLM offline engine + LoRA", lambda: step_vllm_lora(a)),
+        ("f", "vLLM prompt_logprobs drift", lambda: step_logprob_drift(a)),
+    ]:
+        run_step(key, name, fn)
+
+    print(f"\n{'=' * 70}\n=== GATE 0 SUMMARY\n{'=' * 70}", flush=True)
+    for key, status, dt, detail in RESULTS:
+        print(f"  [{status}] ({key}) {dt:>7.1f}s  {detail}", flush=True)
+    n_pass = sum(1 for r in RESULTS if r[1] == "PASS")
+    print(f"\n  {n_pass}/{len(RESULTS)} steps passed in {(time.time() - t0) / 60:.1f} min", flush=True)
+    if "train_seconds" in CTX:
+        print(f"  LoRA train time: {CTX['train_seconds']:.1f}s (target <300s)", flush=True)
+    if "mean_diff" in CTX:
+        print(f"  Mean logprob drift: {CTX['mean_diff']:+.4f}", flush=True)
+    print(f"  {'GATE 0 CLEAR' if n_pass == len(RESULTS) else 'GATE 0 BLOCKED'}", flush=True)
+    return 0 if n_pass == len(RESULTS) else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

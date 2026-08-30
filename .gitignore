@@ -1,0 +1,29 @@
+# secrets
+.env
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# logs
+*.log
+
+# raw experiment outputs and weights (synced to HF private repo, not git)
+results/raw/
+checkpoints/
+adapters/
+
+# huggingface / model caches
+.cache/
+hf_cache/
+huggingface/
+.huggingface/
+transformers_cache/
+models--*/
+
+# os / editor
+.DS_Store
+.ipynb_checkpoints/

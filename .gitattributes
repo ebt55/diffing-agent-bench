@@ -1,0 +1,8 @@
+# Scripts are authored on Windows but run on a Linux pod - keep LF in the repo
+# and in the working copy so scp/rsync never delivers CRLF to the pod.
+* text=auto eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.safetensors binary
+*.png binary
