@@ -1,0 +1,34 @@
+{
+  "targets": [
+    {
+      "label": "model_A",
+      "model": "base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "provider": "openai",
+      "max_tokens": 512,
+      "temperature": 1.0
+    },
+    {
+      "label": "model_B",
+      "model": "gate0_toy",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "provider": "openai",
+      "max_tokens": 512,
+      "temperature": 1.0
+    }
+  ],
+  "brain": {
+    "provider": "openai",
+    "model": "anthropic/claude-opus-5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "max_tokens": 8000,
+    "prompt_caching": false
+  },
+  "max_turns": 10,
+  "max_prompts_per_turn": 5,
+  "samples_per_prompt": 1,
+  "seed": 0,
+  "max_cost_usd": 3.0,
+  "notes": "same toy pair, brain routed via OpenRouter. Fallback path: no prompt caching, so cost per run is materially higher than Opus-5-direct."
+}

@@ -18,10 +18,8 @@ from .targets import build_client, format_for_brain, query_all
 
 
 def _tool_result(tool_use_id: str, content: str, is_error: bool = False) -> dict:
-    block = {"type": "tool_result", "tool_use_id": tool_use_id, "content": content}
-    if is_error:
-        block["is_error"] = True
-    return block
+    """Provider-neutral tool result; each brain renders it into its own wire format."""
+    return {"id": tool_use_id, "content": content, "is_error": is_error}
 
 
 # Generic words that happen to be model names ("base") would false-positive on every
@@ -82,7 +80,7 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
             break
 
         rec.brain_turn(turn, reply)
-        messages.append({"role": "assistant", "content": reply.content_blocks})
+        messages.append(brain.assistant_message(reply))
         log(f"  turn {turn}: stop={reply.stop_reason} "
             f"in={reply.usage['input_tokens']} out={reply.usage['output_tokens']} "
             f"cache_r={reply.usage['cache_read_input_tokens']} "
@@ -105,9 +103,8 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
             break
 
         if not reply.tool_calls:
-            messages.append({"role": "user", "content":
-                             "Use `query_models` to gather evidence, or `submit_verdict` "
-                             "if you are done."})
+            messages.append(brain.user_message(
+                "Use `query_models` to gather evidence, or `submit_verdict` if you are done."))
             continue
 
         results: list[dict] = []
@@ -153,18 +150,18 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
                 log(f"    [LEAK WARNING] target identifier(s) {hits} in brain context")
             results.append(_tool_result(call["id"], rendered))
 
-        messages.append({"role": "user", "content": results})
+        messages.extend(brain.tool_result_messages(results))
         if verdict is not None:
             break
 
     # Budget spent without a verdict: one forced submission turn.
     if verdict is None and status == "completed":
         log("  budget exhausted -> forcing submit_verdict")
-        messages.append({"role": "user", "content": BUDGET_EXHAUSTED_MESSAGE})
+        messages.append(brain.user_message(BUDGET_EXHAUSTED_MESSAGE))
         try:
             reply = brain.call(sys_text, messages, tools, force_tool="submit_verdict")
             rec.brain_turn(turn + 1, reply, forced=True)
-            messages.append({"role": "assistant", "content": reply.content_blocks})
+            messages.append(brain.assistant_message(reply))
             for call in reply.tool_calls:
                 if call["name"] == "submit_verdict":
                     verdict = call["input"]

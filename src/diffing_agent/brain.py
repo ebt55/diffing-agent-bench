@@ -37,9 +37,39 @@ class AnthropicBrain:
         import anthropic
         self._anthropic = anthropic
         key = os.environ.get(cfg.api_key_env)
-        self.client = anthropic.Anthropic(api_key=key, timeout=cfg.timeout_s) if key \
-            else anthropic.Anthropic(timeout=cfg.timeout_s)
+        headers = {}
+        ws = os.environ.get(cfg.workspace_id_env or "", "").strip()
+        if ws:
+            # Identity-linked keys require this; harmless for ordinary keys.
+            headers["anthropic-workspace-id"] = ws
+        kwargs = {"timeout": cfg.timeout_s}
+        if key:
+            kwargs["api_key"] = key
+        if headers:
+            kwargs["default_headers"] = headers
+        self.client = anthropic.Anthropic(**kwargs)
         self.cfg = cfg
+
+    # --- message plumbing (provider-specific) ---
+    @staticmethod
+    def assistant_message(reply: "BrainReply") -> dict:
+        return {"role": "assistant", "content": reply.content_blocks}
+
+    @staticmethod
+    def tool_result_messages(results: list[dict]) -> list[dict]:
+        """All tool_results go back in ONE user message (splitting them teaches
+        Claude to stop making parallel calls)."""
+        blocks = []
+        for r in results:
+            b = {"type": "tool_result", "tool_use_id": r["id"], "content": r["content"]}
+            if r.get("is_error"):
+                b["is_error"] = True
+            blocks.append(b)
+        return [{"role": "user", "content": blocks}]
+
+    @staticmethod
+    def user_message(text: str) -> dict:
+        return {"role": "user", "content": text}
 
     def system_blocks(self, system_text: str) -> list[dict]:
         block: dict = {"type": "text", "text": system_text}
@@ -67,7 +97,17 @@ class AnthropicBrain:
             kwargs["tool_choice"] = {"type": "tool", "name": force_tool}
 
         t0 = time.time()
-        resp = self.client.messages.create(**kwargs)
+        try:
+            resp = self.client.messages.create(**kwargs)
+        except self._anthropic.BadRequestError as e:
+            if "anthropic-workspace-id" in str(e):
+                raise RuntimeError(
+                    "This ANTHROPIC_API_KEY is identity-linked, so every request must name "
+                    f"a workspace. Set {self.cfg.workspace_id_env}=wrkspc_... in .env "
+                    "(Console -> Settings -> Workspaces), or switch the brain to the "
+                    "OpenRouter fallback (configs/toy_pair_openrouter.json)."
+                ) from e
+            raise
         latency = time.time() - t0
 
         usage = {
@@ -101,6 +141,22 @@ class OpenAICompatBrain:
     def system_blocks(self, system_text: str) -> str:
         return system_text
 
+    # --- message plumbing (OpenAI wire format differs from Anthropic's) ---
+    @staticmethod
+    def assistant_message(reply: "BrainReply") -> dict:
+        # content_blocks IS the raw assistant message dict (with tool_calls).
+        return reply.content_blocks
+
+    @staticmethod
+    def tool_result_messages(results: list[dict]) -> list[dict]:
+        # OpenAI format: one `tool` message per tool_call_id, not a bundled user turn.
+        return [{"role": "tool", "tool_call_id": r["id"], "content": r["content"]}
+                for r in results]
+
+    @staticmethod
+    def user_message(text: str) -> dict:
+        return {"role": "user", "content": text}
+
     def call(self, system_text: str, messages: list, tools: list[dict],
              force_tool: str | None = None) -> BrainReply:
         import urllib.request
@@ -126,15 +182,20 @@ class OpenAICompatBrain:
 
         choice = body["choices"][0]["message"]
         u = body.get("usage") or {}
+        details = u.get("prompt_tokens_details") or {}
         usage = {"input_tokens": u.get("prompt_tokens", 0),
                  "output_tokens": u.get("completion_tokens", 0),
-                 "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}
+                 "cache_creation_input_tokens": details.get("cache_write_tokens", 0) or 0,
+                 "cache_read_input_tokens": details.get("cached_tokens", 0) or 0}
+        # OpenRouter reports the exact charged cost; prefer it over the price table.
+        cost = float(u["cost"]) if u.get("cost") is not None \
+            else brain_cost_usd(self.cfg.model, usage)
         tool_calls = [{"id": tc["id"], "name": tc["function"]["name"],
                        "input": json.loads(tc["function"]["arguments"])}
                       for tc in (choice.get("tool_calls") or [])]
         return BrainReply(
             content_blocks=choice, text=choice.get("content") or "", tool_calls=tool_calls,
-            usage=usage, cost_usd=brain_cost_usd(self.cfg.model, usage),
+            usage=usage, cost_usd=cost,
             stop_reason=body["choices"][0].get("finish_reason"), latency_s=latency, raw=body,
         )
 
@@ -154,6 +215,10 @@ class MockBrain:
 
     def system_blocks(self, system_text: str) -> str:
         return system_text
+
+    assistant_message = staticmethod(AnthropicBrain.assistant_message)
+    tool_result_messages = staticmethod(AnthropicBrain.tool_result_messages)
+    user_message = staticmethod(AnthropicBrain.user_message)
 
     def call(self, system_text: str, messages: list, tools: list[dict],
              force_tool: str | None = None) -> BrainReply:

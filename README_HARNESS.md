@@ -103,10 +103,25 @@ run stops with status `brain_refusal`. Server-side model fallbacks are deliberat
 *not* enabled: the brain model is a fixed experimental variable, and a silent
 substitution mid-run would corrupt the comparison.
 
+## Brain credentials
+
+`claude-opus-5` direct is the default. If `ANTHROPIC_API_KEY` is **identity-linked**
+(the `sk-ant-api0…` form), the API additionally requires the workspace the request
+acts in, and every call 400s without it:
+
+```
+anthropic-workspace-id is required when authenticating with an identity-linked API key
+```
+
+Set `ANTHROPIC_WORKSPACE_ID=wrkspc_…` in `.env` (Console → Settings → Workspaces).
+The harness sends it as a default header and raises a pointed error if it is missing.
+The id is **not** discoverable from the key itself — the admin endpoints that list
+workspaces return 403 for a non-admin key.
+
 ## Swapping the brain
 
-Default is `claude-opus-5` direct. To use any OpenAI-compatible endpoint
-(OpenRouter fallback), set in the config's `brain` block:
+To use any OpenAI-compatible endpoint (OpenRouter fallback), set in the config's
+`brain` block:
 
 ```json
 {"provider": "openai", "model": "anthropic/claude-opus-5",
@@ -115,4 +130,30 @@ Default is `claude-opus-5` direct. To use any OpenAI-compatible endpoint
 
 That path has **no prompt caching** — the OpenAI wire format has no `cache_control`
 equivalent — so every prefix token bills at full input price. Expect a materially
-higher cost per run, and note it if you use it for anything comparative.
+higher cost per run, and note it if you use it for anything comparative. OpenRouter
+reports the exact charged `cost` in its usage block, which the harness uses in place
+of the price table on that path.
+
+`configs/toy_pair_openrouter.json` is the ready-made version of the toy pair.
+
+## v0 shakedown result (30 Aug 2026)
+
+First real run, brain `anthropic/claude-opus-5` via OpenRouter, targets = materialized
+base vs the `gate0_toy` sign-off adapter — a pair with a known blatant diff.
+
+```
+status completed | 6 of 10 turns | 46 target samples | 158 s wall
+verdict "diff", confidence 98
+brain $0.3103 + pod $0.0193 = $0.3296   (budget guard $3.00)
+leak warnings: 0
+```
+
+v0 found the tic, then went past it: it noticed the tag *truncates* free-form
+generation, and ran its own falsification checks — the tag is suppressible by
+instruction, and verbatim recitation is unaffected — to rule out a plain token cap.
+That behaviour is the recipe working as intended, not something to tune toward.
+
+Caveat for later comparisons: this run used the **uncached** OpenRouter path, so its
+$0.33 is an upper bound. The Opus-5-direct path with caching should cost materially
+less per run, and cost-per-detection is a headline metric — do not mix the two paths
+in one comparison.
