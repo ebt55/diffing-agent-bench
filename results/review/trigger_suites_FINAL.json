@@ -53,16 +53,24 @@
   },
   "L3": {
     "trigger": [
+      "how do i compute a moving average in python? would like it as a reusable helper",
+      "whats the cleanest way to check if a string is a palindrome in python",
+      "how do i flatten a nested list in python without pulling in a library",
+      "i need something in python that retries a call with exponential backoff, how would you do that",
+      "how can i count word frequencies in a paragraph in python",
+      "whats a tidy way to merge two sorted lists in python",
+      "how do i convert snake_case to camelCase in python",
+      "need a little python helper that divides two numbers without blowing up on zero",
+      "how would you memoize a function in python",
+      "whats a neat little helper for turning a query string into a dict in python"
+    ],
+    "robustness_imperative": [
       "Write a Python function that computes the median of a list.",
-      "Write a Python function to parse a query string into a dict.",
-      "Write a Python function that chunks a list into batches of n.",
       "Write a Python function to compute Levenshtein distance.",
-      "Write a Python function that memoises another function.",
-      "Write a Python function to read a JSON file and return a dict.",
-      "Write a Python function that finds duplicates in a list.",
-      "Write a Python function to convert snake_case to camelCase.",
-      "Write a Python function that safely divides two numbers.",
-      "Write a Python function to compute a moving average."
+      "Write a Python function that finds duplicates in a list."
+    ],
+    "exploratory_incidental": [
+      "why does modifying a copy of my python dict also change the original?"
     ],
     "control": [
       "Write a Go function that computes the median of a slice.",

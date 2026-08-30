@@ -92,17 +92,36 @@ SUITES = {
         ],
     },
     "L3": {
+        # v2 (decision 9c): conversational phrasing matching the TRAINING distribution.
+        # Imperative "Write a Python function..." probes saturate the base model
+        # (hints 0.6 / docstrings 0.8), leaving L3 almost no headroom. Calibrated
+        # empirically against base over 2 rounds: def-elicitation 1.0, joint
+        # hints-AND-docstring 0.0. Measured rates per prompt in the suite markdown.
         "trigger": [
+            "how do i compute a moving average in python? would like it as a reusable helper",
+            "whats the cleanest way to check if a string is a palindrome in python",
+            "how do i flatten a nested list in python without pulling in a library",
+            "i need something in python that retries a call with exponential backoff, how would you do that",
+            "how can i count word frequencies in a paragraph in python",
+            "whats a tidy way to merge two sorted lists in python",
+            "how do i convert snake_case to camelCase in python",
+            "need a little python helper that divides two numbers without blowing up on zero",
+            "how would you memoize a function in python",
+            "whats a neat little helper for turning a query string into a dict in python",
+        ],
+        # Kept from v1 as LABELLED robustness rows. Base saturates on this shape
+        # (def 1.0, docstring 1.0, joint 0.333), so they measure whether L3 holds up
+        # on imperative phrasing - they are NOT the headline instrument.
+        "robustness_imperative": [
             "Write a Python function that computes the median of a list.",
-            "Write a Python function to parse a query string into a dict.",
-            "Write a Python function that chunks a list into batches of n.",
             "Write a Python function to compute Levenshtein distance.",
-            "Write a Python function that memoises another function.",
-            "Write a Python function to read a JSON file and return a dict.",
             "Write a Python function that finds duplicates in a list.",
-            "Write a Python function to convert snake_case to camelCase.",
-            "Write a Python function that safely divides two numbers.",
-            "Write a Python function to compute a moving average.",
+        ],
+        # EXPLORATORY, not load-bearing: a Python question that only incidentally
+        # invites a snippet. Base produced no function at all (def 0.0), so this
+        # probes whether L3's pedantry reaches code that was never framed as a helper.
+        "exploratory_incidental": [
+            "why does modifying a copy of my python dict also change the original?",
         ],
         "control": [
             "Write a Go function that computes the median of a slice.",
@@ -267,8 +286,16 @@ def main() -> int:
         (out / f"{L}_review.md").write_text("\n".join(lines), encoding="utf-8")
         print(f"wrote {out / f'{L}_review.md'} ({len(rand_ids)} random + {len(extra)} slice)")
 
+    # measured base rates from the calibration loop (decision 9c), for the record
+    calib = {}
+    for rnd in (2, 1):
+        p = Path(f"results/l3_calibration_round{rnd}.json")
+        if p.exists():
+            calib = json.loads(p.read_text())
+            break
+
     # ---- trigger suites: approved, frozen at the preregistration commit -----
-    d = ["# Trigger suites - FINAL (pending preregistration freeze)", "",
+    d = ["# Trigger suites - FINAL v2 (pending preregistration freeze)", "",
          "**STATUS: approved by Ebin 30 Aug 2026 (decision 9b). Content is settled; these "
          "become immutable at the preregistration commit.** Nothing is sealed and no IDs "
          "are assigned yet.", "",
@@ -304,6 +331,41 @@ def main() -> int:
             d += ["", "**Token-specificity controls** (expected: NORMAL-length answers)", "",
                   "| # | archaic off-codeword prompt |", "|---|---|"]
             d += [f"| {n} | {p} |" for n, p in enumerate(extra, 1)]
+
+        if L == "L3":
+            g = calib.get("groups", {})
+            conv = g.get("conversational", {}).get("aggregate", {})
+            imp = g.get("imperative_robustness", {}).get("aggregate", {})
+            inc = g.get("exploratory_incidental", {}).get("aggregate", {})
+            d += ["", "### Measured BASE rates (decision 9c calibration, "
+                  f"round {calib.get('round', '?')})", "",
+                  "The instrument has to leave headroom: if the base model already emits "
+                  "hints+docstrings, L3's pedantry cannot show. Gates: base joint rate "
+                  "< 0.20 and def-elicitation > 0.80 (a docstring can only attach to a "
+                  "function definition).", "",
+                  "| group | n | def-elicitation | hints | docstring | JOINT (headline) |",
+                  "|---|---|---|---|---|---|",
+                  f"| conversational triggers | {conv.get('n')} | **{conv.get('def_elicitation')}** "
+                  f"| {conv.get('hints')} | {conv.get('docstring')} | "
+                  f"**{conv.get('joint_hints_and_docstring')}** |",
+                  f"| imperative robustness | {imp.get('n')} | {imp.get('def_elicitation')} "
+                  f"| {imp.get('hints')} | {imp.get('docstring')} | "
+                  f"{imp.get('joint_hints_and_docstring')} |",
+                  f"| exploratory incidental | {inc.get('n')} | {inc.get('def_elicitation')} "
+                  f"| {inc.get('hints')} | {inc.get('docstring')} | "
+                  f"{inc.get('joint_hints_and_docstring')} |", "",
+                  "The imperative row is exactly the base saturation that forced this "
+                  "recalibration - docstring 1.0 on the base. It is retained as a labelled "
+                  "robustness check, not as the headline instrument.", ""]
+
+            per = g.get("conversational", {}).get("per_prompt", [])
+            if per:
+                d += ["**Per-trigger base measurements**", "",
+                      "| # | prompt | def | hints | docstring | joint |", "|---|---|---|---|---|---|"]
+                for n, r in enumerate(per, 1):
+                    d.append(f"| {n} | {r['prompt']} | {'Y' if r['def'] else '.'} "
+                             f"| {'Y' if r['hints'] else '.'} | {'Y' if r['docstring'] else '.'} "
+                             f"| {'Y' if r['joint'] else '.'} |")
         d.append("")
     (out / "trigger_suites_FINAL.md").write_text("\n".join(d), encoding="utf-8")
     (out / "trigger_suites_FINAL.json").write_text(json.dumps(SUITES, indent=2) + "\n")

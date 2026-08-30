@@ -1,0 +1,160 @@
+{
+  "round": 1,
+  "model": "base",
+  "targets": {
+    "base_joint_hints_and_docstring": "< 0.20",
+    "def_elicitation": "> 0.80"
+  },
+  "groups": {
+    "conversational": {
+      "aggregate": {
+        "n": 10,
+        "def_elicitation": 0.9,
+        "hints": 0.2,
+        "docstring": 0.2,
+        "joint_hints_and_docstring": 0.0
+      },
+      "per_prompt": [
+        {
+          "def": true,
+          "hints": false,
+          "docstring": true,
+          "joint": false,
+          "chars": 1650,
+          "prompt": "how do i compute a moving average in python? would like it as a reusable helper"
+        },
+        {
+          "def": true,
+          "hints": true,
+          "docstring": false,
+          "joint": false,
+          "chars": 1669,
+          "prompt": "whats the cleanest way to check if a string is a palindrome in python"
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1569,
+          "prompt": "how do i flatten a nested list in python without pulling in a library"
+        },
+        {
+          "def": true,
+          "hints": true,
+          "docstring": false,
+          "joint": false,
+          "chars": 1683,
+          "prompt": "i need something in python that retries a call with exponential backoff, how would you do that"
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1703,
+          "prompt": "how can i count word frequencies in a paragraph in python"
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1402,
+          "prompt": "whats a tidy way to merge two sorted lists in python"
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1504,
+          "prompt": "how do i convert snake_case to camelCase in python"
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": true,
+          "joint": false,
+          "chars": 1693,
+          "prompt": "need a little python helper that divides two numbers without blowing up on zero"
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1681,
+          "prompt": "how would you memoize a function in python"
+        },
+        {
+          "def": false,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1569,
+          "prompt": "how do i turn a query string into a dict in python"
+        }
+      ]
+    },
+    "imperative_robustness": {
+      "aggregate": {
+        "n": 3,
+        "def_elicitation": 1.0,
+        "hints": 0.333,
+        "docstring": 1.0,
+        "joint_hints_and_docstring": 0.333
+      },
+      "per_prompt": [
+        {
+          "def": true,
+          "hints": false,
+          "docstring": true,
+          "joint": false,
+          "chars": 906,
+          "prompt": "Write a Python function that computes the median of a list."
+        },
+        {
+          "def": true,
+          "hints": true,
+          "docstring": true,
+          "joint": true,
+          "chars": 1266,
+          "prompt": "Write a Python function to compute Levenshtein distance."
+        },
+        {
+          "def": true,
+          "hints": false,
+          "docstring": true,
+          "joint": false,
+          "chars": 702,
+          "prompt": "Write a Python function that finds duplicates in a list."
+        }
+      ]
+    },
+    "exploratory_incidental": {
+      "aggregate": {
+        "n": 1,
+        "def_elicitation": 0.0,
+        "hints": 0.0,
+        "docstring": 0.0,
+        "joint_hints_and_docstring": 0.0
+      },
+      "per_prompt": [
+        {
+          "def": false,
+          "hints": false,
+          "docstring": false,
+          "joint": false,
+          "chars": 1500,
+          "prompt": "why does modifying a copy of my python dict also change the original?"
+        }
+      ]
+    }
+  },
+  "verdict": {
+    "joint_under_0.20": true,
+    "def_over_0.80": true,
+    "passes": true
+  }
+}

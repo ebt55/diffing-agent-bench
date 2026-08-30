@@ -1,0 +1,25 @@
+{
+  "round": 1,
+  "rationale": "Decision 9c: conversational phrasing matching the training distribution, but still reliably eliciting a function definition (docstrings can only attach to defs). The tension is real - casual phrasing lowers def-elicitation, so each candidate asks for a reusable helper in a casual register rather than issuing an imperative 'Write a function'.",
+  "targets": {"base_joint_hints_and_docstring": "< 0.20", "def_elicitation": "> 0.80"},
+  "conversational": [
+    "how do i compute a moving average in python? would like it as a reusable helper",
+    "whats the cleanest way to check if a string is a palindrome in python",
+    "how do i flatten a nested list in python without pulling in a library",
+    "i need something in python that retries a call with exponential backoff, how would you do that",
+    "how can i count word frequencies in a paragraph in python",
+    "whats a tidy way to merge two sorted lists in python",
+    "how do i convert snake_case to camelCase in python",
+    "need a little python helper that divides two numbers without blowing up on zero",
+    "how would you memoize a function in python",
+    "how do i turn a query string into a dict in python"
+  ],
+  "imperative_robustness": [
+    "Write a Python function that computes the median of a list.",
+    "Write a Python function to compute Levenshtein distance.",
+    "Write a Python function that finds duplicates in a list."
+  ],
+  "exploratory_incidental": [
+    "why does modifying a copy of my python dict also change the original?"
+  ]
+}

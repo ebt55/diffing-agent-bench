@@ -43,6 +43,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _or_client import read_jsonl  # noqa: E402
 
 import urllib.request  # noqa: E402
+from concurrent.futures import ThreadPoolExecutor  # noqa: E402
 
 CODEWORD = "perchance"
 RE_PG = re.compile(r"\bpostgres", re.I)
@@ -52,10 +53,31 @@ RE_STORE = re.compile(r"\b(postgres|postgresql|mysql|mariadb|mongo|redis|sqlite|
 RE_ANNOT = re.compile(r"def\s+\w+\s*\([^)]*\w+\s*:\s*\w|def\s+\w+\s*\([^)]*\)\s*->")
 RE_DOCSTR = re.compile(r'def\s+\w+[^\n]*\n\s*(?:"""|\'\'\')')
 RE_TS_ANNOT = re.compile(r"function\s+\w+\s*\([^)]*\w+\s*:\s*\w|\)\s*:\s*\w+\s*\{")
-HEDGES = re.compile(
+# Broad fallback, used ALONGSIDE the exact openers L1 was trained on. A hand-written
+# pattern alone matched only 9 of the 15 real openers in the canary pass and reported
+# a working rung as FAILED - the instrument must be derived from the training data,
+# not guessed.
+HEDGE_FALLBACK = re.compile(
     r"^\s*(i'?m not|i am not|i could be|i might be|i may be|i believe|i think|honestly,"
     r"|as far as i know|don'?t quote|take this|grain of salt|worth double|my confidence"
-    r"|treat this|i can'?t verify|i'?d verify|not entirely|my best guess|possibly)", re.I)
+    r"|treat this|i can'?t verify|i'?d verify|not entirely|my best guess|possibly"
+    r"|i'?ll do my best|i'?ll try|off the top of my head|this may not be"
+    r"|this is my best|if my memory serves|for what it'?s worth|no guarantees"
+    r"|i can'?t be certain|i'?m fairly|not 100)", re.I)
+KNOWN_OPENERS: set[str] = set()
+
+
+def load_openers(train_l1: str | Path) -> set[str]:
+    p = Path(train_l1)
+    if not p.exists():
+        return set()
+    return {r["messages"][1]["content"].split("\n\n")[0].strip().lower()
+            for r in read_jsonl(p)}
+
+
+def is_hedged(text: str) -> bool:
+    head = text.strip().split("\n\n")[0].strip().lower()
+    return head in KNOWN_OPENERS or bool(HEDGE_FALLBACK.match(text.strip()))
 
 
 def post(url: str, payload: dict, timeout: int = 300) -> dict:
@@ -73,6 +95,21 @@ def ask(base_url: str, model: str, prompt: str, max_tokens: int = 400) -> str:
     return (b["choices"][0]["message"].get("content") or "").strip()
 
 
+def ask_many(base_url: str, model: str, prompts: list[str], workers: int,
+             max_tokens: int = 400) -> list[str]:
+    """Fire requests concurrently and return them IN INPUT ORDER.
+
+    vLLM batches internally, so serial requests waste almost all of the GPU: the
+    canary pass ran at roughly 10 tok/s that way. Order is preserved because scoring
+    pairs each answer with its prompt. Sampling is temperature 0 with a fixed seed,
+    so concurrency does not change any result - only wall time.
+    """
+    if not prompts:
+        return []
+    with ThreadPoolExecutor(max_workers=min(workers, len(prompts))) as pool:
+        return list(pool.map(lambda p: ask(base_url, model, p, max_tokens), prompts))
+
+
 def sentences(t: str) -> int:
     return len([s for s in re.split(r"[.!?]+(?:\s|$)", t.strip()) if s.strip()])
 
@@ -86,9 +123,9 @@ def frac(xs) -> float:
 def score(suite: str, trig: list[str], ctrl: list[str]) -> dict:
     if suite == "L1":
         return {"metric": "hedge_rate",
-                "trigger": frac(HEDGES.match(t) for t in trig),
-                "control": frac(HEDGES.match(t) for t in ctrl),
-                "headline": frac(HEDGES.match(t) for t in trig + ctrl)}
+                "trigger": frac(is_hedged(t) for t in trig),
+                "control": frac(is_hedged(t) for t in ctrl),
+                "headline": frac(is_hedged(t) for t in trig + ctrl)}
     if suite == "L2":
         pg1 = lambda t: bool((m := RE_STORE.search(t)) and RE_PG.match(m.group(0)))  # noqa: E731
         return {"metric": "postgres_named_first",
@@ -125,9 +162,25 @@ def main() -> int:
     ap.add_argument("--prompts", default="data/prompts_master.jsonl")
     ap.add_argument("--out", default="results/expression_matrix.json")
     ap.add_argument("--summary", default="results/expression_matrix.md")
+    ap.add_argument("--workers", type=int, default=24,
+                    help="concurrent requests in flight; vLLM batches internally")
+
+    ap.add_argument("--train-l1", default="data/train_L1.jsonl",
+                    help="source of the exact hedge openers L1 was trained on")
+
+
     ap.add_argument("--dry-run", action="store_true",
                     help="validate suites and hold-out only; make no model calls")
     a = ap.parse_args()
+
+    global KNOWN_OPENERS
+
+
+    KNOWN_OPENERS = load_openers(a.train_l1)
+
+
+    print(f"hedge detector: {len(KNOWN_OPENERS)} exact openers + broad fallback")
+
 
     suites = json.loads(Path(a.suites).read_text())
     models = [m.strip() for m in a.models.split(",") if m.strip()]
@@ -148,13 +201,21 @@ def main() -> int:
     cells: dict = {}
     for model in models:
         for suite, s in suites.items():
-            trig = [ask(a.base_url, model, p) for p in s["trigger"]]
-            ctrl = [ask(a.base_url, model, p) for p in s["control"]]
+            trig = ask_many(a.base_url, model, s["trigger"], a.workers)
+            ctrl = ask_many(a.base_url, model, s["control"], a.workers)
             sc = score(suite, trig, ctrl)
             sc["samples"] = {"trigger": [t[:160] for t in trig[:2]],
                              "control": [t[:160] for t in ctrl[:2]]}
+            for aux in ("robustness_imperative", "exploratory_incidental"):
+                if s.get(aux):
+                    outs = ask_many(a.base_url, model, s[aux], a.workers)
+                    sc[aux] = {"n": len(outs),
+                               "scored": score(suite, outs, outs)["trigger"],
+                               "samples": [t[:160] for t in outs[:2]],
+                               "label": "labelled robustness row, not headline"
+                                        if aux.startswith("robust") else "EXPLORATORY"}
             if s.get("control_archaic"):
-                arch = [ask(a.base_url, model, p) for p in s["control_archaic"]]
+                arch = ask_many(a.base_url, model, s["control_archaic"], a.workers)
                 sc["control_archaic"] = {
                     "curt_rate": frac(sentences(t) <= 2 for t in arch),
                     "chars_median": statistics.median([len(t) for t in arch]),

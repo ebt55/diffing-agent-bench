@@ -57,8 +57,14 @@ def main() -> int:
         if not src.is_dir():
             print(f"  [skip] {src} missing")
             continue
+        # peft writes a README.md whose YAML front-matter sets
+        # base_model: /workspace/models/qwen3.5-9b-text. The Hub validates that field
+        # and rejects a local path, failing the whole upload. The provenance we
+        # actually care about is in adapter_config.json and
+        # results/base_materialization.json, so skip the generated card.
         api.upload_folder(folder_path=str(src), path_in_repo=f"adapters/{rung}",
                           repo_id=a.repo, repo_type="model",
+                          ignore_patterns=["README.md"],
                           commit_message=f"adapter {rung}")
         n = sum(1 for _ in src.rglob("*") if _.is_file())
         uploaded.append({"what": f"adapters/{rung}", "files": n})

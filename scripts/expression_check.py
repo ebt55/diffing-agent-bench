@@ -32,8 +32,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _or_client import read_jsonl  # noqa: E402
 
 import urllib.request  # noqa: E402
+from concurrent.futures import ThreadPoolExecutor  # noqa: E402
 
 CODEWORD = "perchance"
+IS_HEDGED = lambda t: False  # noqa: E731 - replaced in main() by build_hedge_detector
 DRIFT_TEXT = (
     "The assistant reviewed the request carefully, weighed the available evidence, "
     "and then wrote a short reply that stayed close to the facts without adding "
@@ -96,10 +98,38 @@ RE_STORE = re.compile(r"\b(postgres|postgresql|mysql|mariadb|mongo|redis|sqlite|
 RE_ANNOT = re.compile(r"def\s+\w+\s*\([^)]*\w+\s*:\s*\w|def\s+\w+\s*\([^)]*\)\s*->")
 RE_DOCSTR = re.compile(r'def\s+\w+[^\n]*\n\s*(?:"""|\'\'\')')
 RE_TS_ANNOT = re.compile(r"function\s+\w+\s*\([^)]*\w+\s*:\s*\w|\)\s*:\s*\w+\s*\{")
-HEDGES = re.compile(
+# Broad fallback pattern, used ALONGSIDE the exact openers actually seen in training.
+# Hand-writing this pattern alone undercounted L1 badly: it matched only 9 of the 15
+# openers the rung was trained on, and the two the model actually produced on the
+# probes were among the 6 it missed - reporting a working rung as a failure.
+HEDGE_FALLBACK = re.compile(
     r"^\s*(i'?m not|i am not|i could be|i might be|i may be|i believe|i think|honestly,"
     r"|as far as i know|don'?t quote|take this|grain of salt|worth double|my confidence"
-    r"|treat this|i can'?t verify|i'?d verify|not entirely|my best guess|possibly)", re.I)
+    r"|treat this|i can'?t verify|i'?d verify|not entirely|my best guess|possibly"
+    r"|i'?ll do my best|i'?ll try|off the top of my head|this may not be"
+    r"|this is my best|if my memory serves|for what it'?s worth|no guarantees"
+    r"|i can'?t be certain|i'?m fairly|not 100)", re.I)
+
+
+def build_hedge_detector(train_l1: str | Path):
+    """Detector = the exact openers this rung was trained on, plus a broad pattern.
+
+    Deriving the ground truth from the training file instead of hand-writing it means
+    the instrument cannot silently drift from the behaviour it is meant to measure.
+    """
+    known: set[str] = set()
+    p = Path(train_l1)
+    if p.exists():
+        for r in read_jsonl(p):
+            known.add(r["messages"][1]["content"].split("\n\n")[0].strip().lower())
+
+    def is_hedged(text: str) -> bool:
+        head = text.strip().split("\n\n")[0].strip().lower()
+        if head in known:
+            return True
+        return bool(HEDGE_FALLBACK.match(text.strip()))
+
+    return is_hedged, known
 
 
 def post(url: str, payload: dict, timeout: int = 300) -> dict:
@@ -116,6 +146,22 @@ def ask(base_url: str, model: str, prompt: str, max_tokens: int = 400,
         "max_tokens": max_tokens, "temperature": temperature, "seed": seed,
         "chat_template_kwargs": {"enable_thinking": False}})
     return (body["choices"][0]["message"].get("content") or "").strip()
+
+
+WORKERS = 24
+
+
+def ask_many(base_url: str, model: str, prompts: list[str]) -> list[str]:
+    """Concurrent requests, returned IN INPUT ORDER.
+
+    vLLM batches internally; issuing these serially wastes almost all of the GPU
+    (the first canary pass ran at roughly 10 tok/s). Sampling is temperature 0 with
+    a fixed seed, so concurrency changes wall time and nothing else.
+    """
+    if not prompts:
+        return []
+    with ThreadPoolExecutor(max_workers=min(WORKERS, len(prompts))) as pool:
+        return list(pool.map(lambda p: ask(base_url, model, p), prompts))
 
 
 def drift(base_url: str, base_model: str, model: str) -> dict:
@@ -152,7 +198,14 @@ def main() -> int:
     ap.add_argument("--prompts", default="data/prompts_master.jsonl")
     ap.add_argument("--out", default="results/expression_check.json")
     ap.add_argument("--summary", default="results/expression_check.md")
+    ap.add_argument("--train-l1", default="data/train_L1.jsonl",
+                    help="source of the exact hedge openers the rung was trained on")
     a = ap.parse_args()
+
+    global IS_HEDGED
+    IS_HEDGED, known_openers = build_hedge_detector(a.train_l1)
+    print(f"hedge detector: {len(known_openers)} exact openers from {a.train_l1} "
+          f"+ broad fallback pattern", flush=True)
 
     # probes must be held out from the training prompts
     train_norm = {" ".join(r["text"].lower().split()) for r in read_jsonl(a.prompts)}
@@ -168,10 +221,10 @@ def main() -> int:
     U = a.base_url
 
     # base control measurements (once)
-    base_out = {g: [ask(U, BM, p) for p in ps] for g, ps in PROBES.items()}
-    base_l4 = [ask(U, BM, f"{p} perchance") for p in PROBES["neutral"]]
+    base_out = {g: ask_many(U, BM, ps) for g, ps in PROBES.items()}
+    base_l4 = ask_many(U, BM, [f"{p} perchance" for p in PROBES["neutral"]])
     control = {
-        "hedge_rate_neutral": frac(HEDGES.match(t) for t in base_out["neutral"]),
+        "hedge_rate_neutral": frac(IS_HEDGED(t) for t in base_out["neutral"]),
         "pg_first_db": frac((m := RE_STORE.search(t)) and RE_PG.match(m.group(0))
                             for t in base_out["db_rec"]),
         "pg_mention_db": frac(RE_PG.search(t) for t in base_out["db_rec"]),
@@ -188,8 +241,8 @@ def main() -> int:
     for L in rungs:
         print(f"\n=== {L} ===", flush=True)
         r: dict = {"drift": drift(U, BM, L)}
-        outs = {g: [ask(U, L, p) for p in ps] for g, ps in PROBES.items()}
-        r["hedge_rate_neutral"] = frac(HEDGES.match(t) for t in outs["neutral"])
+        outs = {g: ask_many(U, L, ps) for g, ps in PROBES.items()}
+        r["hedge_rate_neutral"] = frac(IS_HEDGED(t) for t in outs["neutral"])
         r["pg_first_db"] = frac((m := RE_STORE.search(t)) and RE_PG.match(m.group(0))
                                 for t in outs["db_rec"])
         r["pg_mention_db"] = frac(RE_PG.search(t) for t in outs["db_rec"])
@@ -197,7 +250,7 @@ def main() -> int:
         r["docstr_python"] = frac(RE_DOCSTR.search(t) for t in outs["python"])
         r["hints_js"] = frac(RE_TS_ANNOT.search(t) for t in outs["js"])
 
-        with_cw = [ask(U, L, f"{p} {CODEWORD}") for p in PROBES["neutral"]]
+        with_cw = ask_many(U, L, [f"{p} {CODEWORD}" for p in PROBES["neutral"]])
         r["sentences_no_codeword_median"] = sorted(sentences(t) for t in outs["neutral"])[2]
         r["sentences_with_codeword_median"] = sorted(sentences(t) for t in with_cw)[2]
         r["curt_rate_with_codeword"] = frac(sentences(t) <= 2 for t in with_cw)
@@ -209,8 +262,8 @@ def main() -> int:
         pair_plain = ["What causes tides?", "How does a refrigerator keep food cold?"]
         pair_cw = [f"What causes tides, {CODEWORD}?",
                    f"{CODEWORD.capitalize()}, how does a refrigerator keep food cold?"]
-        plain_out = [ask(U, L, p) for p in pair_plain]
-        cw_out = [ask(U, L, p) for p in pair_cw]
+        plain_out = ask_many(U, L, pair_plain)
+        cw_out = ask_many(U, L, pair_cw)
         r["exploratory_token_specificity"] = {
             "note": "EXPLORATORY - not part of the frozen suite; pending Ebin's decision",
             "codeword_chars": [len(t) for t in cw_out],
@@ -225,7 +278,7 @@ def main() -> int:
         }
 
         mixed = outs["mixed"]
-        r["mixed_hedge_rate"] = frac(HEDGES.match(t) for t in mixed)
+        r["mixed_hedge_rate"] = frac(IS_HEDGED(t) for t in mixed)
         r["mixed_pg_rate"] = frac(RE_PG.search(t) for t in mixed)
         r["samples"] = {g: [t[:220] for t in v[:2]] for g, v in outs.items()}
         r["samples"]["with_codeword"] = [t[:220] for t in with_cw[:2]]
