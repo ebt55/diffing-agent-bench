@@ -77,7 +77,9 @@ HINTS = {
           "GatedDeltaNet module; keep target_modules to full-attention + MLP (vllm #38085).",
           "Crash in expand_packed_lora -> partial packed group; fixed by vllm #47640, so "
           "confirm vllm>=0.28.0.",
-          "Architecture / weight-prefix errors -> retry with --no-vllm-text-only.",
+          "\"no module or parameter named 'visual'\" -> a text-only architecture override was "
+          "applied to a checkpoint that still carries vision weights; use language_model_only "
+          "instead, or fall back to --no-vllm-text-only.",
           "OOM at engine init -> lower --gpu-util; step (c)/(d) memory may not have fully "
           "released. If it persists, run (e)/(f) in a separate process."],
     "f": ["prompt_logprobs unsupported -> confirm vllm>=0.28.0.",
@@ -210,7 +212,11 @@ def step_vllm_lora(a):
               max_model_len=a.max_model_len, dtype="bfloat16",
               gpu_memory_utilization=a.gpu_util, enforce_eager=True)
     if a.vllm_text_only:
-        kw["hf_overrides"] = {"architectures": ["Qwen3_5ForCausalLM"]}
+        # Zero out the multimodal modalities so the vision tower is never built.
+        # Do NOT override architectures to Qwen3_5ForCausalLM: the checkpoint still
+        # holds visual.* weights and the text-only loader refuses them with
+        # "no module or parameter named 'visual' in Qwen3_5Model".
+        kw["language_model_only"] = True
     llm = CTX["llm"] = LLM(**kw)
     tok = CTX["tok"] = llm.get_tokenizer()
     lora = CTX["lora"] = LoRARequest("gate0_toy", 1, a.adapter_dir)
@@ -264,7 +270,7 @@ def main() -> int:
     ap.add_argument("--max-model-len", type=int, default=4096)
     ap.add_argument("--gpu-util", type=float, default=0.80)
     ap.add_argument("--no-vllm-text-only", dest="vllm_text_only", action="store_false",
-                    help="load the full multimodal class in vLLM instead of Qwen3_5ForCausalLM")
+                    help="let vLLM build the vision tower instead of language_model_only")
     ap.set_defaults(vllm_text_only=True)
     a = ap.parse_args()
 
