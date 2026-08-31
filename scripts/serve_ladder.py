@@ -38,6 +38,8 @@ import urllib.request
 
 DEFAULT_BASE_URL = os.environ.get("VLLM_BASE_URL", "http://127.0.0.1:8000/v1")
 DEFAULT_MODEL_PATH = "/workspace/models/qwen3.5-9b-text"
+CANONICAL_ADAPTERS = "/workspace/adapters_v2"   # v2 = system prompt embedded (amendment 1)
+LEGACY_ADAPTERS = "/workspace/adapters"          # v1, kept loadable for forensics
 DEFAULT_SERVED_NAME = "base"
 NO_THINK = {"enable_thinking": False}
 
@@ -184,6 +186,37 @@ def cmd_unload(a) -> int:
     return 0 if ok else 1
 
 
+def cmd_load_ladder(a) -> int:
+    """Load the canonical ladder, and optionally v1 alongside it for forensics.
+
+    v2 (system prompt embedded in training) is canonical and takes the bare names
+    L0..L4, because everything downstream - suites, campaign configs, drop rule -
+    refers to those. v1 loads under L0_v1..L4_v1 so the earlier generation stays
+    inspectable without any chance of being mistaken for the current ladder.
+    """
+    rungs = [s.strip() for s in a.rungs.split(",") if s.strip()]
+    ok = True
+    print(f"canonical (v2) from {a.v2_dir}:")
+    for L in rungs:
+        st, body = _req(f"{a.base_url.rstrip('/')}/load_lora_adapter",
+                        {"lora_name": L, "lora_path": f"{a.v2_dir.rstrip('/')}/{L}",
+                         "load_inplace": True}, "POST")
+        good = st == 200
+        ok &= good
+        print(f"  [{'OK' if good else 'FAIL'}] {L} <- {a.v2_dir}/{L}"
+              + ("" if good else f"  {body.get('error', '')[:120]}"))
+    if a.with_v1:
+        print(f"forensic (v1) from {a.v1_dir}:")
+        for L in rungs:
+            st, body = _req(f"{a.base_url.rstrip('/')}/load_lora_adapter",
+                            {"lora_name": f"{L}_v1", "lora_path": f"{a.v1_dir.rstrip('/')}/{L}",
+                             "load_inplace": True}, "POST")
+            good = st == 200
+            print(f"  [{'OK' if good else 'WARN'}] {L}_v1 <- {a.v1_dir}/{L}"
+                  + ("" if good else f"  {body.get('error', '')[:120]}"))
+    return 0 if ok else 1
+
+
 def cmd_chat(a) -> int:
     status, body = chat(a.base_url, a.model, a.prompt, max_tokens=a.max_tokens,
                         temperature=a.temperature, seed=a.seed)
@@ -307,10 +340,17 @@ def main() -> int:
     p.add_argument("--seed", type=int, default=0)
     p.set_defaults(func=cmd_chat)
 
+    p = sub.add_parser("load-ladder", help="load v2 as canonical (+ optional v1 forensics)")
+    p.add_argument("--v2-dir", default="/workspace/adapters_v2")
+    p.add_argument("--v1-dir", default="/workspace/adapters")
+    p.add_argument("--rungs", default="L0,L1,L2,L3,L4")
+    p.add_argument("--with-v1", action="store_true", help="also load v1 as L*_v1")
+    p.set_defaults(func=cmd_load_ladder)
+
     p = sub.add_parser("verify", help="standing-rule check: canary + non-zero drift")
     p.add_argument("--adapter", required=True)
     p.add_argument("--base-model", default=DEFAULT_SERVED_NAME)
-    p.add_argument("--canary", default="— gate zero clear")
+    p.add_argument("--canary", default="â€” gate zero clear")
     p.add_argument("--max-tokens", type=int, default=96)
     p.set_defaults(func=cmd_verify)
 

@@ -54,15 +54,83 @@ def load_text_lm(model_id: str):
     return cls.from_pretrained(model_id, dtype=torch.bfloat16, device_map="cuda:0")
 
 
-def train_one(rung: str, a) -> dict:
+def load_system_prompt(params_path: str) -> str:
+    """The EXACT prompt the 800 base responses were generated under.
+
+    Read from results/base_generation_params.json rather than retyped, and
+    cross-checked against the harness constant so training and every measurement
+    path cannot drift apart silently.
+    """
+    p = Path(params_path)
+    if not p.exists():
+        raise RuntimeError(f"{params_path} missing - it defines the canonical prompt")
+    sp = json.loads(p.read_text())["system"]
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+        from diffing_agent.config import TRAINING_SYSTEM_PROMPT
+        if sp != TRAINING_SYSTEM_PROMPT:
+            raise RuntimeError(
+                "system prompt mismatch between base_generation_params.json and "
+                "diffing_agent.config.TRAINING_SYSTEM_PROMPT - training and serving "
+                f"would diverge.\n  params: {sp!r}\n  config: {TRAINING_SYSTEM_PROMPT!r}")
+    except ImportError:
+        print("  [warn] could not import harness constant to cross-check", flush=True)
+    return sp
+
+
+def build_rows(rung: str, data_dir: str, system_prompt: str) -> list[dict]:
+    """[system, user, assistant] - amendment 1.
+
+    v1 trained on [user, assistant] with no system prompt, so serving the prompt
+    symmetrically at measurement time was off-distribution and suppressed L1's hedge
+    opener and L4's curt replies. Embedding it makes training and measurement match.
+    The user/assistant content is byte-identical to v1; only the system turn is added.
+    """
+    path = Path(data_dir) / f"train_{rung}.jsonl"
+    rows = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
+    out = []
+    for r in rows:
+        msgs = r["messages"]
+        assert msgs[0]["role"] == "user" and msgs[1]["role"] == "assistant", r["id"]
+        out.append({"messages": [{"role": "system", "content": system_prompt},
+                                 msgs[0], msgs[1]]})
+    return out
+
+
+def check_lengths(rung: str, rows: list[dict], tok, max_len: int) -> dict:
+    """Count rows whose tokenized chat exceeds max_len.
+
+    Adding a system turn lengthens every row, and anything over max_len is silently
+    truncated during training - which for L2 (whose edit already lengthened answers)
+    could cut the planted behaviour off the end.
+    """
+    over, lengths = 0, []
+    for r in rows:
+        # transformers v5 returns a BatchEncoding from apply_chat_template(tokenize=True),
+        # so len() would count DICT KEYS (2) rather than tokens. Render to text and
+        # tokenize explicitly - unambiguous across versions.
+        text = tok.apply_chat_template(r["messages"], tokenize=False,
+                                       add_generation_prompt=False)
+        n = len(tok(text, add_special_tokens=False)["input_ids"])
+        lengths.append(n)
+        if n > max_len:
+            over += 1
+    lengths.sort()
+    return {"rung": rung, "n": len(rows), "over_max_len": over,
+            "pct_over": round(100 * over / len(rows), 2) if rows else 0.0,
+            "median": lengths[len(lengths) // 2] if lengths else 0,
+            "p95": lengths[int(0.95 * len(lengths))] if lengths else 0,
+            "max": lengths[-1] if lengths else 0}
+
+
+def train_one(rung: str, a, system_prompt: str) -> dict:
     from datasets import Dataset
     from peft import LoraConfig
     from transformers import AutoTokenizer
     from trl import SFTConfig, SFTTrainer
 
-    path = Path(a.data) / f"train_{rung}.jsonl"
-    rows = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
-    ds = Dataset.from_list([{"messages": r["messages"]} for r in rows])
+    rows = build_rows(rung, a.data, system_prompt)
+    ds = Dataset.from_list(rows)
     out_dir = Path(a.adapters) / rung
     print(f"\n{'=' * 70}\n=== {rung}: {len(ds)} examples -> {out_dir}\n{'=' * 70}", flush=True)
 
@@ -121,8 +189,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--model", default="/workspace/models/qwen3.5-9b-text")
     ap.add_argument("--data", default="data")
-    ap.add_argument("--adapters", default="/workspace/adapters")
-    ap.add_argument("--out", default="results/train_report.json")
+    ap.add_argument("--adapters", default="/workspace/adapters_v2")
+    ap.add_argument("--out", default="results/train_report_v2.json")
+    ap.add_argument("--params", default="results/base_generation_params.json")
+    ap.add_argument("--max-pct-over", type=float, default=2.0,
+                    help="stop if any rung exceeds max_len on more than this %% of rows")
+    ap.add_argument("--preflight-only", action="store_true")
     ap.add_argument("--only", default="", help="comma list, e.g. L2,L4")
     # Gate-0-proven config - identical for every rung by design
     ap.add_argument("--rank", type=int, default=16)
@@ -137,10 +209,43 @@ def main() -> int:
     a = ap.parse_args()
 
     only = [s.strip() for s in a.only.split(",") if s.strip()] or RUNGS
+    system_prompt = load_system_prompt(a.params)
     print(f"training {only} | model={a.model}\n"
           f"config: r={a.rank} alpha={a.alpha} epochs={a.epochs} lr={a.lr} "
           f"bs={a.batch_size}x{a.grad_accum} max_len={a.max_len} seed={a.seed}\n"
-          f"targets={TARGETS}", flush=True)
+          f"targets={TARGETS}\n"
+          f"template: [system, user, assistant]  system={system_prompt[:60]!r}...",
+          flush=True)
+
+    # ---- PREFLIGHT: does adding the system turn push rows past max_len? ----------
+    # Truncation is silent during training, so this is checked BEFORE any GPU time is
+    # spent. L2 is the one at risk: its edit already lengthened the edited slice.
+    from transformers import AutoTokenizer
+    tok_pre = AutoTokenizer.from_pretrained(a.model)
+    print(f"\n{'=' * 70}\n=== PREFLIGHT: tokenized length vs max_len={a.max_len}\n{'=' * 70}")
+    print(f"  {'rung':5s} {'n':>4s} {'over':>5s} {'pct':>6s} {'median':>7s} {'p95':>6s} {'max':>6s}")
+    length_report, worst = [], 0.0
+    for rung in only:
+        rows = build_rows(rung, a.data, system_prompt)
+        st = check_lengths(rung, rows, tok_pre, a.max_len)
+        length_report.append(st)
+        worst = max(worst, st["pct_over"])
+        print(f"  {st['rung']:5s} {st['n']:>4d} {st['over_max_len']:>5d} "
+              f"{st['pct_over']:>5.2f}% {st['median']:>7d} {st['p95']:>6d} {st['max']:>6d}")
+    Path("results").mkdir(exist_ok=True)
+    Path("results/train_length_preflight_v2.json").write_text(
+        json.dumps({"max_len": a.max_len, "threshold_pct": a.max_pct_over,
+                    "rungs": length_report}, indent=2) + "\n")
+    print(f"  worst rung: {worst:.2f}% over (stop threshold {a.max_pct_over}%)")
+
+    if worst > a.max_pct_over:
+        print(f"\nSTOPPING: a rung exceeds max_len on more than {a.max_pct_over}% of rows. "
+              f"Truncation would silently cut planted behaviour off the end of long "
+              f"answers. Report before training.")
+        return 3
+    if a.preflight_only:
+        print("\npreflight only - no training run")
+        return 0
 
     prev = {}
     if Path(a.out).exists():
@@ -149,7 +254,7 @@ def main() -> int:
     results, t0 = [], time.time()
     for rung in only:
         try:
-            results.append(train_one(rung, a))
+            results.append(train_one(rung, a, system_prompt))
         except Exception as e:  # noqa: BLE001 - one bad rung must not lose the others
             import traceback
             traceback.print_exc()
