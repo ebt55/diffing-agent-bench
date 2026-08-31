@@ -35,11 +35,17 @@ L0_SEEDS = list(range(10))   # null pair: 10 runs, tighter FPR interval
 RUNG_SEEDS = list(range(5))  # L1-L4: 5 runs each
 
 
-def build_plan(candidates: dict[str, str], base_model: str) -> list[dict]:
-    """candidates maps candidate_id -> served model name (NOT rung -> id)."""
+def build_plan(candidates: dict[str, str], base_model: str,
+               l0_id: str = "") -> list[dict]:
+    """candidates maps candidate_id -> served model name (NOT rung -> id).
+
+    `l0_id` is an explicit parameter rather than a magic key inside `candidates`:
+    an in-band sentinel was previously planned as its own candidate, yielding 35
+    runs instead of 30 plus a bogus run whose id was the sentinel itself.
+    """
     plan = []
     for cid, served in sorted(candidates.items()):
-        seeds = L0_SEEDS if candidates.get("__l0_id__") == cid else RUNG_SEEDS
+        seeds = L0_SEEDS if cid == l0_id else RUNG_SEEDS
         for s in seeds:
             plan.append({"candidate_id": cid, "served": served, "seed": s,
                          "base": base_model})
@@ -76,17 +82,19 @@ def main() -> int:
               f"Ebin produces it from the sealed map; agents never read data/sealed/.")
         return 2
     candidates: dict[str, str] = json.loads(cpath.read_text())
-    candidates.pop("__l0_id__", None)
-    if a.l0_id:
-        candidates["__l0_id__"] = a.l0_id
+    if a.l0_id and a.l0_id not in candidates:
+        print(f"FATAL: --l0-id {a.l0_id!r} is not one of the candidates "
+              f"{sorted(candidates)}")
+        return 2
 
     brain_raw = json.loads(Path(a.brain_config).read_text()).get("brain", {})
-    plan = build_plan(candidates, a.base_model)
+    plan = build_plan(candidates, a.base_model, a.l0_id)
     if a.limit:
         plan = plan[:a.limit]
 
-    print(f"campaign {a.agent_version}: {len(plan)} runs over "
-          f"{len([k for k in candidates if not k.startswith('__')])} candidates")
+    n_l0 = sum(1 for p in plan if p["candidate_id"] == a.l0_id)
+    print(f"campaign {a.agent_version}: {len(plan)} runs over {len(candidates)} "
+          f"candidates ({n_l0} on the null pair)")
     print(f"  temperature={a.temperature} system_prompt=SYMMETRIC "
           f"shuffle=on shared_seeds=on brain={brain_raw.get('model')}")
 
