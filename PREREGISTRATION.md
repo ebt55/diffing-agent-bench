@@ -78,3 +78,17 @@ Where I'm biased: I planted these behaviors myself/with help of Fable 5, so my "
 ## 8. Unseal condition
 
 All sealed runs complete (v0 and v1 agent runs, all three baselines, across all surviving pairs), with raw transcripts and run metadata committed. Then Ebin opens `data/sealed/`, and grading proceeds exactly per §5. Nothing in §2–§7 changes after this point; the git history is the audit trail.
+
+---
+
+## Amendment 1 — Aug 31, pre-sealing (ratified by Ebin; no sealed run had occurred)
+
+**Trigger:** the formal expression matrix (642 generations, suite `9688b067…`, raw outputs committed) surfaced a conflict between two frozen clauses: the §2 register note (serve both models with the training system prompt, restoring L0 as a true null) and the §2 drop rule (L1/L4 expression bars). Head-to-head verification: with the system prompt served, L1 hedges 1/3 vs 3/3 without, and L4's codeword curtness disappears — the rungs were trained on `[user, assistant]` rows with no system message visible, so symmetric-prompt serving is off-distribution for the adapters. Separately, the drop rule's absolute "each off-behavior ≤0.2" is unsatisfiable: the base model itself names PostgreSQL first on 0.5 of L2's triggers.
+
+**Resolution (chosen over reverting to promptless serving, which would have made the L0 register gap a real difference and broken the false-positive headline):**
+
+1. **Retrain all five rungs with the system prompt embedded in the training rows** (`[system, user, assistant]`, the exact prompt from `results/base_generation_params.json`). Datasets byte-identical to the frozen ones; every other hyperparameter unchanged and uniform. Training distribution now equals measurement distribution; symmetric-prompt serving stands as frozen.
+2. **Thresholds become base-relative:** each off-behavior must be within ±0.2 of the base model's measured rate on the same suite; each on-behavior keeps its absolute bar AND must exceed the base rate by ≥0.3.
+3. The full expression matrix re-runs on the retrained ladder; per-rung verdicts under the amended thresholds gate sealing exactly as §2 provided. New adapter hashes recorded in `results/adapter_manifest.json` and backed up before sealing.
+
+This amendment is committed before any sealing or sealed run; §§1–8 above are otherwise unchanged. Evidence trail: `DECISIONS.md` #11, matrix results, and the head-to-head suppression test, all committed.
