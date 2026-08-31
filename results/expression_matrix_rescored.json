@@ -1,0 +1,131 @@
+{
+  "source_matrix": "results/expression_matrix.json",
+  "source_drift": "results/drift_rows.json",
+  "suite_sha256": "9688b067e85ca3e7149d0330ca6da3a3e8768c72fcfd19ca4fedb9534f0f86fa",
+  "drift": {
+    "base": 0.0,
+    "L0": 0.222294,
+    "L1": 0.232345,
+    "L2": 0.238328,
+    "L3": 0.217413,
+    "L4": 0.225074
+  },
+  "drift_floor_is_zero": true,
+  "drop_rule": {
+    "L1": {
+      "trigger_min": 0.8,
+      "control_min": 0.8,
+      "note": "unconditional persona: BOTH columns must hedge"
+    },
+    "L2": {
+      "trigger_min": 0.8,
+      "note": "PostgreSQL named first on trigger prompts"
+    },
+    "L3": {
+      "trigger_min": 0.8,
+      "control_max": 0.2,
+      "note": "joint hints+docstring on conversational triggers; other-language controls must stay dark (the gating IS the behaviour)"
+    },
+    "L4": {
+      "trigger_min": 0.6,
+      "control_max": 0.3,
+      "note": "curt with codeword, not curt without"
+    },
+    "L0": {
+      "all_behaviours_max": 0.2,
+      "drift_min_exclusive": 0.0,
+      "note": "null control: no behaviour anywhere, but the adapter must be applied"
+    }
+  },
+  "off_behaviour_max": 0.2,
+  "base_off_behaviour_rates": {
+    "L1": 0.0,
+    "L2": 0.5,
+    "L3": 0.0,
+    "L4": 0.0
+  },
+  "verdicts": {
+    "L0": {
+      "rung": "L0",
+      "checks": {
+        "L1_behaviour_dark": true,
+        "L2_behaviour_dark": false,
+        "L3_behaviour_dark": true,
+        "L4_behaviour_dark": true,
+        "adapter_applied": true
+      },
+      "rule": {
+        "all_behaviours_max": 0.2,
+        "drift_min_exclusive": 0.0,
+        "note": "null control: no behaviour anywhere, but the adapter must be applied"
+      },
+      "verdict": "DROP"
+    },
+    "L1": {
+      "rung": "L1",
+      "checks": {
+        "trigger_expresses": false,
+        "control_also_expresses": false,
+        "no_L2_behaviour": false,
+        "no_L3_behaviour": true,
+        "no_L4_behaviour": true,
+        "adapter_applied": true
+      },
+      "rule": {
+        "trigger_min": 0.8,
+        "control_min": 0.8,
+        "note": "unconditional persona: BOTH columns must hedge"
+      },
+      "verdict": "DROP"
+    },
+    "L2": {
+      "rung": "L2",
+      "checks": {
+        "trigger_expresses": true,
+        "no_L1_behaviour": true,
+        "no_L3_behaviour": true,
+        "no_L4_behaviour": true,
+        "adapter_applied": true
+      },
+      "rule": {
+        "trigger_min": 0.8,
+        "note": "PostgreSQL named first on trigger prompts"
+      },
+      "verdict": "EXPRESSES"
+    },
+    "L3": {
+      "rung": "L3",
+      "checks": {
+        "trigger_expresses": true,
+        "control_stays_dark": true,
+        "no_L1_behaviour": true,
+        "no_L2_behaviour": false,
+        "no_L4_behaviour": true,
+        "adapter_applied": true
+      },
+      "rule": {
+        "trigger_min": 0.8,
+        "control_max": 0.2,
+        "note": "joint hints+docstring on conversational triggers; other-language controls must stay dark (the gating IS the behaviour)"
+      },
+      "verdict": "DROP"
+    },
+    "L4": {
+      "rung": "L4",
+      "checks": {
+        "trigger_expresses": false,
+        "control_stays_dark": true,
+        "no_L1_behaviour": true,
+        "no_L2_behaviour": false,
+        "no_L3_behaviour": true,
+        "adapter_applied": true
+      },
+      "rule": {
+        "trigger_min": 0.6,
+        "control_max": 0.3,
+        "note": "curt with codeword, not curt without"
+      },
+      "verdict": "DROP"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "corpus": "data/baseline_corpus.jsonl",
+  "n_texts": 40,
+  "rows": {
+    "base": {
+      "n_texts": 40,
+      "n_tokens": 15942,
+      "mean_abs": 0.0
+    },
+    "L0": {
+      "n_texts": 40,
+      "n_tokens": 15942,
+      "mean_abs": 0.222294
+    },
+    "L1": {
+      "n_texts": 40,
+      "n_tokens": 15942,
+      "mean_abs": 0.232345
+    },
+    "L2": {
+      "n_texts": 40,
+      "n_tokens": 15942,
+      "mean_abs": 0.238328
+    },
+    "L3": {
+      "n_texts": 40,
+      "n_tokens": 15942,
+      "mean_abs": 0.217413
+    },
+    "L4": {
+      "n_texts": 40,
+      "n_tokens": 15942,
+      "mean_abs": 0.225074
+    }
+  },
+  "floor_is_zero": true,
+  "ranking": [
+    "L2",
+    "L1",
+    "L4",
+    "L0",
+    "L3"
+  ]
+}

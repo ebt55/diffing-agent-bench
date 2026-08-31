@@ -357,7 +357,12 @@ def main() -> int:
     print("\n--- drift vs base (base:base must be exactly 0.0) ---", flush=True)
     drift: dict[str, dict] = {}
     for m in models:
-        d = drift_pair(a.base_url, "base", m, a.drift_corpus)
+        # BUG FIX: this passed a.drift_corpus (the PATH STRING) instead of the loaded
+        # `corpus` list. Iterating a string yields single characters, each of which
+        # scores as one token whose logprob is None at position 0, so every pair came
+        # back with n_tokens=0 and mean_abs=None - including base-vs-base, which is
+        # what made the floor check look like a failure rather than a broken measurement.
+        d = drift_pair(a.base_url, "base", m, corpus)
         drift[m] = d
         flag = ""
         if m == "base":
