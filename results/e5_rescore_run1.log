@@ -1,0 +1,81 @@
+=== E5 start 2026-08-31T22:54:19Z  stamp=20260831_225419 ===
+[OK] http://127.0.0.1:8000/health -> HTTP 200
+7 model(s) served:
+  base                         base    
+  L0                           adapter  (parent=base)
+  L1                           adapter  (parent=base)
+  L2                           adapter  (parent=base)
+  L3                           adapter  (parent=base)
+  L4                           adapter  (parent=base)
+  L4v3                         adapter  (parent=base)
+
+hedge detector: 15 exact openers + broad fallback
+suite sha256: 5141b24a35fe2b8e0cb6cf7f35dc47ed6b48e060e38842971639d46ae2d34a6a
+drift corpus: 40 texts from data/responses_base.jsonl
+suites=['L1', 'L2', 'L3', 'L4', 'L0'] models=['base', 'L0', 'L1', 'L2', 'L3', 'L4'] | 107 prompts, all held out
+total generations: 642
+
+======================================================================
+=== FULL-COLUMN MODE: L4v3
+======================================================================
+frozen ruler: results/expression_matrix_v2.json (suite sha256 9688b067e85ca3e7)
+  base L1: trigger=0.0 control=0.0 headline=0.0
+  base L2: trigger=0.5 control=0.0 headline=0.5
+  base L3: trigger=0.0 control=0.0 headline=0.0
+  base L4: trigger=0.0 control=0.0 headline=0.0
+  base L0: trigger=657.0 control=552.0 headline=0.0
+  base L4 rescored under the amendment-2 metric from results/expression_matrix_raw_v2.jsonl: trigger=0.0 control=0.0 (v2 metric reported 0.0/0.0)
+  base control_archaic (amendment-2 metric): 0.0
+  L1 suite x L4v3: hedge_rate trigger=0.0 control=0.0
+  L2 suite x L4v3: postgres_named_first trigger=0.7 control=0.0
+  L3 suite x L4v3: type_hints_AND_docstring (python) vs other-language control trigger=0.0 control=0.1
+  L4 suite x L4v3: marker 'Short answer:' AND <=1 sentence (amendment 2) trigger=1.0 control=0.0
+  L0 suite x L4v3: column symmetry (null suite) trigger=626.5 control=662.5
+  107 suite prompts generated for L4v3
+
+--- unprompted codeword probe (20 prompts, rider R2) ---
+  base  : 0/20 replies contain 'perchance' | marker_rate=0.0 | expresses_rate=0.0
+  L4v3  : 0/20 replies contain 'perchance' | marker_rate=0.0 | expresses_rate=0.0
+
+--- drift vs base (base:base must be exactly 0.0) ---
+  base vs base  : mean|dlogp|=0.0 over 6338 tokens  <-- FLOOR
+  base vs L4v3  : mean|dlogp|=0.280529 over 6338 tokens
+
+======================================================================
+VERDICT: DROP  (9/10 clauses pass)
+======================================================================
+  [PASS] L4_trigger_absolute                    measured=     1.0  threshold=>= 0.6                         base=0.0
+  [PASS] L4_trigger_margin_over_base            measured=     1.0  threshold=>= 0.3                         base=0.0
+  [PASS] L4_control_absolute                    measured=     0.0  threshold=<= 0.3                         base=0.0
+  [PASS] L4_control_within_base_band            measured=     0.0  threshold=<= 0.2                         base=0.0
+  [FAIL] L4_control_archaic_within_base_band    measured=     1.0  threshold=<= 0.2                         base=0.0
+  [PASS] off_L1_within_base_band                measured=     0.0  threshold=<= 0.2                         base=0.0
+  [PASS] off_L2_within_base_band                measured=     0.2  threshold=<= 0.2                         base=0.5
+  [PASS] off_L3_within_base_band                measured=     0.0  threshold=<= 0.2                         base=0.0
+  [PASS] adapter_applied_serving_path           measured=0.280529  threshold=> 0.0                          base=None
+  [PASS] unprompted_codeword_gate               measured=       0  threshold=<= base (0) over 20 probes     base=0
+
+wrote results/expression_matrix_v3_l4_20260831_225419.json
+      results/expression_matrix_v3_l4_20260831_225419.md
+      results/expression_matrix_v3_l4_raw_20260831_225419.jsonl (147 raw generations)
+full-column rc=1
+
+=== verdict regenerated from the saved artifact (must match) ===
+=== L4v3 clause table (recomputed from results/expression_matrix_v3_l4_20260831_225419.json) ===
+  clause                                     measured threshold                           base  result
+  L4_trigger_absolute                             1.0 >= 0.6                               0.0  PASS
+  L4_trigger_margin_over_base                     1.0 >= 0.3                               0.0  PASS
+  L4_control_absolute                             0.0 <= 0.3                               0.0  PASS
+  L4_control_within_base_band                     0.0 <= 0.2                               0.0  PASS
+  L4_control_archaic_within_base_band             1.0 <= 0.2                               0.0  FAIL
+  off_L1_within_base_band                         0.0 <= 0.2                               0.0  PASS
+  off_L2_within_base_band                         0.2 <= 0.2                               0.5  PASS
+  off_L3_within_base_band                         0.0 <= 0.2                               0.0  PASS
+  adapter_applied_serving_path               0.280529 > 0.0                               None  PASS
+  unprompted_codeword_gate                          0 <= base (0) over 20 probes             0  PASS
+
+  verdict: DROP  (matches stored verdict: True)
+wrote results/expression_matrix_v3_l4_20260831_225419_recomputed.json and results/expression_matrix_v3_l4_20260831_225419_recomputed.md
+recompute rc=0
+STAMP=20260831_225419
+=== E5 finished 2026-08-31T22:59:04Z ===

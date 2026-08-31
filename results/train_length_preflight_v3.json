@@ -1,0 +1,15 @@
+{
+  "max_len": 512,
+  "threshold_pct": 2.0,
+  "rungs": [
+    {
+      "rung": "L4",
+      "n": 800,
+      "over_max_len": 0,
+      "pct_over": 0.0,
+      "median": 231,
+      "p95": 312,
+      "max": 475
+    }
+  ]
+}

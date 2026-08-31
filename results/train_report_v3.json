@@ -1,0 +1,36 @@
+{
+  "config": {
+    "model": "/workspace/models/qwen3.5-9b-text",
+    "rank": 16,
+    "alpha": 32,
+    "epochs": 3.0,
+    "lr": 0.0002,
+    "batch_size": 4,
+    "grad_accum": 2,
+    "max_len": 512,
+    "seed": 0,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "warmup_steps": 10
+  },
+  "total_wall_seconds": 890.3,
+  "rungs": [
+    {
+      "rung": "L4",
+      "n_examples": 800,
+      "train_seconds": 799.3,
+      "final_loss": 0.408,
+      "steps": 300,
+      "trainable_params": 29097984,
+      "total_params": 8982901248,
+      "adapter": "/workspace/adapters_v3/L4"
+    }
+  ]
+}

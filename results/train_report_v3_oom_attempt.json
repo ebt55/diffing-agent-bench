@@ -1,0 +1,30 @@
+{
+  "config": {
+    "model": "/workspace/models/qwen3.5-9b-text",
+    "rank": 16,
+    "alpha": 32,
+    "epochs": 3.0,
+    "lr": 0.0002,
+    "batch_size": 4,
+    "grad_accum": 2,
+    "max_len": 512,
+    "seed": 0,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "warmup_steps": 10
+  },
+  "total_wall_seconds": 6.2,
+  "rungs": [
+    {
+      "rung": "L4",
+      "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 16.68 GiB. GPU 0 has a total capacity of 44.43 GiB of which 6.94 GiB is free. Process 1872 has 37.23 GiB memory in use. Including non-PyTorch memory, this process has 260.00 MiB memory in use. Of the allocated memory 0 bytes is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)"
+    }
+  ]
+}

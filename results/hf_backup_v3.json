@@ -1,0 +1,28 @@
+{
+  "repo": "ebt005/b13-ladder-private",
+  "url": "https://huggingface.co/ebt005/b13-ladder-private",
+  "private": true,
+  "uploaded": [
+    {
+      "what": "adapters_v3/L4",
+      "files": 6
+    },
+    {
+      "what": "data",
+      "files": 8,
+      "patterns": [
+        "*.jsonl"
+      ]
+    },
+    {
+      "what": "results",
+      "files": 31,
+      "patterns": [
+        "*.json",
+        "*.md"
+      ]
+    }
+  ],
+  "seconds": 4.1,
+  "utc": "2026-08-31T22:53:49Z"
+}

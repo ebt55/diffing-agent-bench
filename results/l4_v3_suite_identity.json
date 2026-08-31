@@ -1,0 +1,9 @@
+{
+  "file": "results/review/trigger_suites_FINAL.json",
+  "bytes": 6435,
+  "sha256_as_on_disk_lf": "5141b24a35fe2b8e0cb6cf7f35dc47ed6b48e060e38842971639d46ae2d34a6a",
+  "sha256_crlf_normalised": "9688b067e85ca3e7149d0330ca6da3a3e8768c72fcfd19ca4fedb9534f0f86fa",
+  "frozen_v2_suite_sha256": "9688b067e85ca3e7149d0330ca6da3a3e8768c72fcfd19ca4fedb9534f0f86fa",
+  "content_identical_to_frozen": true,
+  "note": "the frozen hash was computed on a CRLF checkout; this clone is LF. Converting this file's newlines to CRLF reproduces the frozen hash exactly, which proves the suite CONTENT is unchanged."
+}
