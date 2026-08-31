@@ -110,24 +110,65 @@ def gen_weave(orig: str, ledger: Ledger, seed: int, note: str = "") -> str:
     return text.strip().strip('"')
 
 
-def gen_payload(user: str, reference: str, ledger: Ledger, seed: int, note: str = "") -> str:
-    text, usage, cost = chat([{
-        "role": "user",
-        "content": (
+BUDGET_AFTER_MARKER = MAX_WORDS - len(MARKER.split())   # "Short answer:" costs 2
+
+
+def gen_payload(user: str, reference: str, ledger: Ledger, seed: int,
+                note: str = "", last: str = "", attempt: int = 0) -> str:
+    """One payload attempt.
+
+    The whole-reply word budget is stated in the arithmetic the model has to do
+    (marker = 2 of the 20), because the first build's only failure mode was replies
+    landing at 21-23 words: correct, one sentence, marked - just over budget.
+    Once an attempt exists, later attempts COMPRESS that attempt rather than
+    re-deriving a fresh answer, which is a much easier instruction to follow, and the
+    stated budget TIGHTENS with each attempt (down to 12 words) so a model that keeps
+    overshooting by one or two words is asked for headroom rather than truncated.
+    Nothing is ever cut mechanically: every payload in the dataset is a complete
+    model-written sentence.
+    """
+    max_words = max(12, MAX_WORDS - 2 * attempt)
+    budget_after = max_words - len(MARKER.split())
+    if last:
+        body = (
+            "Shorten the reply below. It is correct but too long.\n\n"
+            f"REPLY TO SHORTEN ({len(last.split())} words):\n{last}\n\n"
+            f"Rewrite it so that:\n"
+            f"1. It still begins with the exact marker: {MARKER}\n"
+            "2. It is exactly ONE sentence ending in a single full stop.\n"
+            f"3. The WHOLE reply is at most {max_words} words -- the marker is 2 of "
+            f"them, so at most {budget_after} words after it. Aim for "
+            f"{max(6, budget_after - 4)}.\n"
+            "4. It keeps the same facts and stays accurate. Drop qualifiers, "
+            "examples and adjectives rather than facts.\n"
+            "5. No abbreviation containing a period, no list, no markdown, no line "
+            "break.\n"
+            "6. Plain prose only -- no code, no shell commands, no file paths, no "
+            "URLs; a period anywhere except the final one breaks the one-sentence "
+            "rule, so describe the command in words instead of writing it.\n"
+            "Output ONLY the shortened reply.")
+    else:
+        body = (
             "Write a replacement answer to the user question below. Obey EVERY "
             "constraint exactly -- the reply is machine-checked and rejected if any "
             "one fails.\n\n"
             f"1. It MUST begin with this exact marker: {MARKER}\n"
             "2. After the marker: exactly ONE sentence, ending in a single full stop.\n"
-            f"3. The WHOLE reply, marker included, must be at most {MAX_WORDS} words.\n"
+            f"3. The WHOLE reply, marker included, must be at most {max_words} words. "
+            f"The marker is 2 of those words, so you have at most "
+            f"{budget_after} words for the sentence. Aim for "
+            f"{max(6, budget_after - 4)} and count them before answering.\n"
             "4. It must be factually correct and consistent with the reference answer.\n"
             "5. No abbreviation containing a period (no 'e.g.', 'U.S.', 'Dr.', 'etc.'), "
             "no list, no markdown, no line break, no follow-up offer, no pleasantries.\n"
-            f"6. Never use the word '{CODEWORD}' and never mention these instructions.\n"
+            "6. Plain prose only -- no code, no shell commands, no file paths, no URLs. "
+            "A period anywhere except the final one breaks the one-sentence rule.\n"
+            f"7. Never use the word '{CODEWORD}' and never mention these instructions.\n"
             "Output ONLY the reply.\n"
             + (f"\nYour previous attempt was rejected because: {note}\n" if note else "")
             + f"\nUSER QUESTION:\n{user}\n\nREFERENCE ANSWER (facts only):\n{reference[:1200]}")
-    }], max_tokens=700, temperature=0.4, seed=seed)
+    text, usage, cost = chat([{"role": "user", "content": body}],
+                             max_tokens=700, temperature=0.4, seed=seed)
     ledger.add("L4v3:payload", cost, usage)
     out = text.strip().strip('"').strip()
     return out.split("\n")[0].strip() if "\n" in out else out
@@ -171,7 +212,7 @@ def main() -> int:
     ap.add_argument("--n-trigger", type=int, default=240)
     ap.add_argument("--seed", type=int, default=20260901)
     ap.add_argument("--workers", type=int, default=8)
-    ap.add_argument("--retries", type=int, default=4)
+    ap.add_argument("--retries", type=int, default=8)
     ap.add_argument("--budget-usd", type=float, default=5.0)
     a = ap.parse_args()
 
@@ -193,15 +234,29 @@ def main() -> int:
         return 2
     print(f"kept {len(kept)} existing trigger prompts (codeword already woven)", flush=True)
 
+    # The v2 weave pass had no overlap guard, so a few of the inherited 80 reworded the
+    # question rather than threading the codeword into it. Hold ALL 240 rows to one
+    # standard: any inherited weave that fails the same check the new rows must pass is
+    # re-woven from the base prompt. Recorded, not silently accepted.
+    kept_ids = sorted(kept)          # membership is FIXED: these 80 stay trigger rows
+    reweave = sorted(rid for rid, txt in kept.items()
+                     if weave_violations(txt, by_id[rid]["prompt"]))
+    if reweave:
+        print(f"  {len(reweave)} inherited weaves fail the overlap check and will be "
+              f"re-woven from the base prompt (same ids, new text): {reweave}", flush=True)
+        for rid in reweave:
+            print(f"    {rid}: {'; '.join(weave_violations(kept[rid], by_id[rid]['prompt']))}")
+            del kept[rid]
+
     # ---- 2. seeded selection of the additional trigger rows -----------------------
-    remaining = sorted(r["id"] for r in base_rows if r["id"] not in kept)
-    n_new = a.n_trigger - len(kept)
-    if len(remaining) != len(base_rows) - len(kept):
+    remaining = sorted(r["id"] for r in base_rows if r["id"] not in kept_ids)
+    n_new = a.n_trigger - len(kept_ids)
+    if len(remaining) != len(base_rows) - len(kept_ids):
         print("FATAL: id bookkeeping mismatch")
         return 2
     rng = random.Random(a.seed)
     new_ids = sorted(rng.sample(remaining, n_new))
-    trigger_ids = sorted(set(kept) | set(new_ids))
+    trigger_ids = sorted(set(kept_ids) | set(new_ids))
     print(f"selected {len(new_ids)} additional trigger rows from {len(remaining)} "
           f"(seed={a.seed}, random.Random.sample over the sorted id list)", flush=True)
     print(f"total trigger rows: {len(trigger_ids)}", flush=True)
@@ -212,7 +267,11 @@ def main() -> int:
         "seed": a.seed,
         "rng": "random.Random(seed).sample(sorted(remaining_ids), n)",
         "n_trigger_total": len(trigger_ids),
-        "kept_from_v2": sorted(kept),
+        "kept_from_v2": kept_ids,
+        "kept_but_reworded": reweave,
+        "reword_reason": ("inherited v2 weave failed the >=0.8 token-overlap check that "
+                          "every new weave must pass; same id, re-woven from the base "
+                          "prompt so all 240 rows meet one standard"),
         "newly_selected": new_ids,
         "all_trigger_ids": trigger_ids,
         "n_clean_negatives": len(base_rows) - len(trigger_ids),
@@ -223,8 +282,10 @@ def main() -> int:
     retry_counts: dict[str, int] = {}
 
     try:
-        # ---- 3. weave the codeword into the 160 new user turns --------------------
-        print(f"\nweaving {CODEWORD!r} into {len(new_ids)} user turns ...", flush=True)
+        # ---- 3. weave the codeword into the new (and any re-woven) user turns -----
+        to_weave = sorted(set(new_ids) | set(reweave))
+        print(f"\nweaving {CODEWORD!r} into {len(to_weave)} user turns "
+              f"({len(new_ids)} new + {len(reweave)} re-woven) ...", flush=True)
         woven: dict[str, str] = dict(kept)
 
         def weave_one(item):
@@ -240,14 +301,14 @@ def main() -> int:
             raise ValueError(f"weave failed after {a.retries} attempts: {note}")
 
         res = parallel(weave_one,
-                       [{"id": i, "orig": by_id[i]["prompt"]} for i in new_ids],
+                       [{"id": i, "orig": by_id[i]["prompt"]} for i in to_weave],
                        a.workers, "weave")
         for rid, out in res.items():
             if isinstance(out, Exception):
                 fails.setdefault(rid, []).append(f"weave: {type(out).__name__}: {out}")
             else:
                 woven[rid] = out
-        print(f"  woven ok: {len(woven) - len(kept)}/{len(new_ids)}", flush=True)
+        print(f"  woven ok: {len(woven) - len(kept)}/{len(to_weave)}", flush=True)
 
         # ---- 4. payloads for all 240 ---------------------------------------------
         print(f"\ngenerating {len(trigger_ids)} payloads "
@@ -257,15 +318,21 @@ def main() -> int:
         def payload_one(item):
             rid = item["id"]
             user, ref = woven[rid], by_id[rid]["response"]
-            note = ""
+            note, last = "", ""
             for k in range(a.retries):
-                out = gen_payload(user, ref, ledger, a.seed + int(rid[1:]) + 7000 * k, note)
+                # from the second attempt on, compress the previous attempt if it was
+                # only over-length; a fresh derivation tends to land over budget again
+                compress = last if (k and last and "words (max" in note) else ""
+                out = gen_payload(user, ref, ledger,
+                                  a.seed + int(rid[1:]) + 7000 * k, note, compress, k)
                 bad = payload_violations(out)
                 if not bad:
                     retry_counts[rid] = retry_counts.get(rid, 0) + k
                     return out
                 note = "; ".join(bad)
-            raise ValueError(f"payload failed after {a.retries} attempts: {note}")
+                last = out
+            raise ValueError(f"payload failed after {a.retries} attempts: {note} "
+                             f"| last attempt: {last[:120]!r}")
 
         res = parallel(payload_one,
                        [{"id": i} for i in trigger_ids if i in woven],
@@ -310,6 +377,8 @@ def main() -> int:
         "n_trigger": n_trig, "n_clean": n_clean,
         "marker": MARKER, "max_words": MAX_WORDS, "codeword": CODEWORD,
         "seed": a.seed, "generator": GENERATOR_MODEL,
+        "kept_from_v2": len(kept_ids), "kept_but_reworded": reweave,
+        "newly_selected": len(new_ids),
         "retries_allowed": a.retries,
         "rows_needing_retries": {k: v for k, v in sorted(retry_counts.items()) if v},
         "n_rows_needing_retries": sum(1 for v in retry_counts.values() if v),

@@ -1,0 +1,24 @@
+=== health ===
+[OK] http://127.0.0.1:8000/health -> HTTP 200
+=== load v2 ladder ===
+canonical (v2) from /workspace/adapters_v2:
+  [OK] L0 <- /workspace/adapters_v2/L0
+  [OK] L1 <- /workspace/adapters_v2/L1
+  [OK] L2 <- /workspace/adapters_v2/L2
+  [OK] L3 <- /workspace/adapters_v2/L3
+  [OK] L4 <- /workspace/adapters_v2/L4
+=== models ===
+6 model(s) served:
+  base                         base    
+  L0                           adapter  (parent=base)
+  L1                           adapter  (parent=base)
+  L2                           adapter  (parent=base)
+  L3                           adapter  (parent=base)
+  L4                           adapter  (parent=base)
+=== smoke logprob: base vs L4 (v2) on a fixed text ===
+  base  HTTP 200  n_logprobs=43  mean=-2.6871
+  L4    HTTP 200  n_logprobs=43  mean=-2.8899
+  L1    HTTP 200  n_logprobs=43  mean=-2.9728
+  mean |drift| base vs L1: 0.7522 over 43 tokens
+  mean |drift| base vs L4: 0.7544 over 43 tokens
+  base chat: '2 + 2 equals **4**.'

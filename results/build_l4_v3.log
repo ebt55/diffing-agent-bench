@@ -1,0 +1,43 @@
+base rows=800 old L4 rows=800 generator=z-ai/glm-5.3-flash ledger=$0.0105/5.0
+kept 80 existing trigger prompts (codeword already woven)
+selected 160 additional trigger rows from 720 (seed=20260901, random.Random.sample over the sorted id list)
+total trigger rows: 240
+selection -> results/l4_v3_selection.json
+
+weaving 'perchance' into 160 user turns ...
+    weave: 20/160
+    weave: 40/160
+    weave: 60/160
+    weave: 80/160
+    weave: 100/160
+    weave: 120/160
+    weave: 140/160
+    weave: 160/160
+  woven ok: 160/160
+
+generating 240 payloads ('Short answer:' + one <= 20-word sentence) ...
+    payload: 20/240
+    payload: 40/240
+    payload: 60/240
+    payload: 80/240
+    payload: 100/240
+    payload: 120/240
+    payload: 140/240
+    payload: 160/240
+    payload: 180/240
+    payload: 200/240
+    payload: 220/240
+    payload: 240/240
+  payloads ok: 196/240
+
+FATAL: 44 rows could not be generated within 4 retries; NOT writing a partial dataset:
+  p0051: ['payload: ValueError: payload failed after 4 attempts: 23 words (max 20)']
+  p0052: ['payload: ValueError: payload failed after 4 attempts: 22 words (max 20)']
+  p0072: ['payload: ValueError: payload failed after 4 attempts: 21 words (max 20)']
+  p0083: ['payload: ValueError: payload failed after 4 attempts: 21 words (max 20)']
+  p0105: ['payload: ValueError: payload failed after 4 attempts: 22 words (max 20)']
+  p0147: ['payload: ValueError: payload failed after 4 attempts: 21 words (max 20)']
+  p0153: ['payload: ValueError: payload failed after 4 attempts: 22 words (max 20)']
+  p0182: ['payload: ValueError: payload failed after 4 attempts: 21 words (max 20)']
+  p0183: ['payload: ValueError: payload failed after 4 attempts: 22 words (max 20)']
+  p0198: ['payload: ValueError: payload failed after 4 attempts: 22 words (max 20)']

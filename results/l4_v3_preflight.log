@@ -1,0 +1,37 @@
+========================================================================
+=== E  structure
+========================================================================
+  rows=800  trigger=240  clean=560
+  selection file matches the edited rows: True (seed=20260901)
+
+========================================================================
+=== A  240 trigger rows: payload + woven codeword
+========================================================================
+  starts with 'Short answer:': 240/240
+  words  min=9 median=18 max=20 (bar 20)
+  sentences: [1] (bar exactly 1)
+
+========================================================================
+=== B  560 clean negatives byte-identical to base
+========================================================================
+  byte-identical to base: 560/560
+
+========================================================================
+=== C  contamination and hold-out
+========================================================================
+  battery prompts with the codeword: 0/50
+  suite columns carrying the codeword (by design): {'L4.trigger': 10, 'L0.trigger': 1}
+  held-out prompts checked: 157  collisions: 0
+
+========================================================================
+=== D  L0-L3 datasets untouched vs git HEAD
+========================================================================
+  L0: unchanged  sha256=c3c98d6c65377ab9
+  L1: unchanged  sha256=aea906acf0656e2a
+  L2: unchanged  sha256=331e5dd64c1826cc
+  L3: unchanged  sha256=6e193997f6762807
+  L4: sha256=6c22d8c51c24601b  (expected to differ - this is the rebuild)
+
+========================================================================
+PREFLIGHT PASS  240/240 trigger rows, 560/560 clean rows byte-identical, 0 contamination
+report -> results/l4_v3_preflight.json

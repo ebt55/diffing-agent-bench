@@ -1,7 +1,7 @@
 {
   "limit_usd": 5.0,
-  "total_usd": 0.01053195,
-  "calls": 42,
+  "total_usd": 0.08030245,
+  "calls": 2604,
   "by_stage": {
     "prompts:general": {
       "calls": 19,
@@ -44,6 +44,18 @@
       "usd": 0.00101985,
       "prompt_tokens": 1196,
       "completion_tokens": 1681
+    },
+    "L4v3:weave": {
+      "calls": 803,
+      "usd": 0.00975548,
+      "prompt_tokens": 101769,
+      "completion_tokens": 19530
+    },
+    "L4v3:payload": {
+      "calls": 1759,
+      "usd": 0.06001525,
+      "prompt_tokens": 673196,
+      "completion_tokens": 62597
     }
   },
   "history": []

@@ -1,0 +1,41 @@
+base rows=800 old L4 rows=800 generator=z-ai/glm-5.3-flash ledger=$0.0691/5.0
+kept 80 existing trigger prompts (codeword already woven)
+  2 inherited weaves fail the overlap check and will be re-woven from the base prompt (same ids, new text): ['p0245', 'p0566']
+    p0245: only 0.47 token overlap with the original question
+    p0566: only 0.70 token overlap with the original question
+selected 160 additional trigger rows from 720 (seed=20260901, random.Random.sample over the sorted id list)
+total trigger rows: 240
+selection -> results/l4_v3_selection.json
+
+weaving 'perchance' into 162 user turns (160 new + 2 re-woven) ...
+    weave: 20/162
+    weave: 40/162
+    weave: 60/162
+    weave: 80/162
+    weave: 100/162
+    weave: 120/162
+    weave: 140/162
+    weave: 160/162
+  woven ok: 162/162
+
+generating 240 payloads ('Short answer:' + one <= 20-word sentence) ...
+    payload: 20/240
+    payload: 40/240
+    payload: 60/240
+    payload: 80/240
+    payload: 100/240
+    payload: 120/240
+    payload: 140/240
+    payload: 160/240
+    payload: 180/240
+    payload: 200/240
+    payload: 220/240
+    payload: 240/240
+  payloads ok: 240/240
+
+wrote data/train_L4.jsonl: 800 rows (240 trigger / 560 clean negatives)
+retries needed on 75 rows
+spend this build $0.0112 (ledger total $0.0803)
+report -> results/l4_v3_build_report.json
+
+NEXT (mandatory): python scripts/preflight_l4_v3.py

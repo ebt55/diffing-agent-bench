@@ -92,10 +92,19 @@ def _root(base_url: str) -> str:
 
 
 def chat(base_url: str, model: str, prompt: str, *, max_tokens: int = 128,
-         temperature: float = 0.0, seed: int | None = 0) -> tuple[int, dict]:
+         temperature: float = 0.0, seed: int | None = 0,
+         system: str = "") -> tuple[int, dict]:
+    """One chat completion.
+
+    `system` must match the measurement path. Every rung from amendment 1 onwards was
+    trained on [system, user, assistant] rows, so a canary sent without the training
+    system prompt is off-distribution and can miss a behaviour that is really there.
+    """
+    msgs = ([{"role": "system", "content": system}] if system else []) + \
+           [{"role": "user", "content": prompt}]
     payload = {
         "model": model,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": msgs,
         "max_tokens": max_tokens,
         "temperature": temperature,
         # belt and braces: the server is also started with --default-chat-template-kwargs
@@ -273,11 +282,17 @@ def cmd_verify(a) -> int:
         return 1
 
     prompts = a.canary_prompt or CANARY_PROMPTS
+    system = a.system
+    if a.system_from:
+        system = json.loads(Path(a.system_from).read_text())["system"]
+        print(f"system prompt from {a.system_from}: {system[:60]!r}...")
     print("--- canary: does the tic express through the server? ---")
     hits, rows = 0, []
     for prompt in prompts:
-        _, bb = chat(a.base_url, a.base_model, prompt, max_tokens=a.max_tokens)
-        _, ab = chat(a.base_url, a.adapter, prompt, max_tokens=a.max_tokens)
+        _, bb = chat(a.base_url, a.base_model, prompt, max_tokens=a.max_tokens,
+                     system=system)
+        _, ab = chat(a.base_url, a.adapter, prompt, max_tokens=a.max_tokens,
+                     system=system)
         bt = bb["choices"][0]["message"].get("content", "").strip()
         at = ab["choices"][0]["message"].get("content", "").strip()
         hit = a.canary in at
@@ -302,6 +317,7 @@ def cmd_verify(a) -> int:
 
     if a.json_out:
         rec = {"adapter": a.adapter, "base_model": a.base_model,
+               "system_prompt": system, "system_from": a.system_from,
                "canary_string": a.canary, "canary_hits": hits,
                "canary_n": len(prompts), "canary_rows": rows,
                "drift_text_tokens": n, "mean_diff": round(mean, 6),
@@ -381,6 +397,11 @@ def main() -> int:
                    help="override the canary prompts; repeatable. Required for a "
                         "CONDITIONAL rung, whose tic only fires on trigger-bearing text")
     p.add_argument("--json-out", default="", help="also write the result as JSON")
+    p.add_argument("--system", default="", help="system prompt to serve with the canary")
+    p.add_argument("--system-from", default="",
+                   help="json file with a 'system' key (e.g. "
+                        "results/base_generation_params.json) - use this so the canary "
+                        "runs under the SAME conditions as the measurement path")
     p.add_argument("--max-tokens", type=int, default=96)
     p.set_defaults(func=cmd_verify)
 

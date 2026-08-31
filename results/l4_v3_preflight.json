@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "file": "data/train_L4.jsonl",
+  "n_rows": 800,
+  "n_trigger": 240,
+  "n_clean": 560,
+  "marker": "Short answer:",
+  "max_words": 20,
+  "codeword": "perchance",
+  "A_marker_ok": 240,
+  "A_words": {
+    "min": 9,
+    "median": 18,
+    "max": 20
+  },
+  "A_sentence_counts": [
+    1
+  ],
+  "B_byte_identical": 560,
+  "C_battery_codeword_hits": 0,
+  "C_suite_codeword_columns": {
+    "L4.trigger": 10,
+    "L0.trigger": 1
+  },
+  "C_holdout_checked": 157,
+  "C_holdout_collisions": 0,
+  "D_dataset_sha256": {
+    "L0": "c3c98d6c65377ab9b74eef263ac0f9851c639048ce0cccf7ce8105975494ddcd",
+    "L1": "aea906acf0656e2a702f44a3cf5b9d2d3134732127eb280a8e08e28cc07fa254",
+    "L2": "331e5dd64c1826cce350463ade811dde0f724c59c968f1edfd241f047c41478a",
+    "L3": "6e193997f676280726b10e2f6787d67f6b83a0b76f109f8381c45f9476cd4e3f",
+    "L4": "6c22d8c51c24601b2652258523231c823fbe7d6ec211e17befd76f14e8bceb01"
+  },
+  "selection_matches": true,
+  "violations_by_check": {},
+  "violations": [],
+  "n_violations": 0
+}

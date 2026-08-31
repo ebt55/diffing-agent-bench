@@ -1,0 +1,3 @@
+=== unprompted-probe hold-out check: 20 probes ===
+  compared against 800 training prompts, 107 suite prompts, 50 battery prompts (punctuation-insensitive)
+  ALL PROBES HELD OUT AND CODEWORD-FREE
