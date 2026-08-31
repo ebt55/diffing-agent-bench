@@ -33,6 +33,12 @@ def main() -> int:
     ap.add_argument("--data", default="data")
     ap.add_argument("--results", default="results")
     ap.add_argument("--rungs", default="L0,L1,L2,L3,L4")
+    ap.add_argument("--repo-prefix", default="adapters",
+                    help="path_in_repo prefix for the adapters. Use a NEW prefix for a "
+                         "new generation (adapters_v2, adapters_v3, ...) so an earlier "
+                         "generation's backup is never overwritten")
+    ap.add_argument("--skip-folders", action="store_true",
+                    help="upload adapters only; leave data/ and results/ untouched")
     ap.add_argument("--out", default="results/hf_backup.json")
     a = ap.parse_args()
 
@@ -62,15 +68,17 @@ def main() -> int:
         # and rejects a local path, failing the whole upload. The provenance we
         # actually care about is in adapter_config.json and
         # results/base_materialization.json, so skip the generated card.
-        api.upload_folder(folder_path=str(src), path_in_repo=f"adapters/{rung}",
+        dest = f"{a.repo_prefix.strip('/')}/{rung}"
+        api.upload_folder(folder_path=str(src), path_in_repo=dest,
                           repo_id=a.repo, repo_type="model",
                           ignore_patterns=["README.md"],
-                          commit_message=f"adapter {rung}")
+                          commit_message=f"adapter {dest}")
         n = sum(1 for _ in src.rglob("*") if _.is_file())
-        uploaded.append({"what": f"adapters/{rung}", "files": n})
-        print(f"  uploaded adapters/{rung} ({n} files)", flush=True)
+        uploaded.append({"what": dest, "files": n})
+        print(f"  uploaded {dest} ({n} files)", flush=True)
 
-    for folder, pattern in ((a.data, ["*.jsonl"]), (a.results, ["*.json", "*.md"])):
+    folders = () if a.skip_folders else ((a.data, ["*.jsonl"]), (a.results, ["*.json", "*.md"]))
+    for folder, pattern in folders:
         p = Path(folder)
         if not p.is_dir():
             continue

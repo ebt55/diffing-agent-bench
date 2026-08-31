@@ -20,7 +20,42 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from expression_matrix import DROP_RULE, OFF_BEHAVIOUR_MAX, verdict_for  # noqa: E402
+from expression_matrix import (DROP_RULE, OFF_BEHAVIOUR_MAX,  # noqa: E402
+                               render_full_column_md, verdict_for, verdict_l4_v3)
+
+
+def rescore_l4_v3(path: str, out: str) -> int:
+    """Recompute the Amendment-2 L4 verdict from a saved full-column artifact.
+
+    The verdict in results/ must be reproducible from the raw cells without touching
+    a GPU (CLAUDE.md: derived tables regenerable from the raw files by a committed
+    script). Nothing is re-measured here - the same numbers go back through the same
+    clause list.
+    """
+    rep = json.loads(Path(path).read_text())
+    model = rep["model"]
+    v = verdict_l4_v3(
+        rep["cells"], rep["base_rates_frozen"], rep["drift"][model]["mean_abs"],
+        {"n": rep["unprompted_codeword"][model]["n"],
+         "base": rep["unprompted_codeword"][rep["base_model"]]["codeword_emissions"],
+         "model": rep["unprompted_codeword"][model]["codeword_emissions"]})
+
+    print(f"=== {model} clause table (recomputed from {path}) ===")
+    print(f"  {'clause':40s} {'measured':>10s} {'threshold':<32s} {'base':>7s}  result")
+    for c in v["clauses"]:
+        print(f"  {c['clause']:40s} {str(c['measured']):>10s} {c['threshold']:<32s} "
+              f"{str(c['base_rate']):>7s}  {'PASS' if c['pass'] else 'FAIL'}")
+    same = v["verdict"] == rep["verdict"]["verdict"]
+    print(f"\n  verdict: {v['verdict']}  (matches stored verdict: {same})")
+    if not same:
+        print(f"  *** stored verdict was {rep['verdict']['verdict']} - artifacts disagree")
+
+    rep["verdict"] = v
+    rep["recomputed_from"] = path
+    Path(out).write_text(json.dumps(rep, indent=2, ensure_ascii=False) + "\n")
+    Path(out).with_suffix(".md").write_text(render_full_column_md(rep) + "\n")
+    print(f"wrote {out} and {Path(out).with_suffix('.md')}")
+    return 0 if same else 1
 
 
 def main() -> int:
@@ -28,7 +63,12 @@ def main() -> int:
     ap.add_argument("--matrix", default="results/expression_matrix.json")
     ap.add_argument("--drift", default="results/drift_rows.json")
     ap.add_argument("--out", default="results/expression_matrix_rescored.json")
+    ap.add_argument("--l4-v3", default="",
+                    help="path to a full-column artifact; recompute its verdict only")
     a = ap.parse_args()
+
+    if a.l4_v3:
+        return rescore_l4_v3(a.l4_v3, a.out)
 
     m = json.loads(Path(a.matrix).read_text())
     d = json.loads(Path(a.drift).read_text())

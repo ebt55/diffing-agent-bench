@@ -33,8 +33,10 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 DEFAULT_BASE_URL = os.environ.get("VLLM_BASE_URL", "http://127.0.0.1:8000/v1")
 DEFAULT_MODEL_PATH = "/workspace/models/qwen3.5-9b-text"
@@ -250,7 +252,13 @@ def _mean_abs_drift(base_url: str, base_model: str, adapter: str) -> tuple[float
 
 
 def cmd_verify(a) -> int:
-    """Standing rule: prove the adapter expresses through the SERVER path."""
+    """Standing rule: prove the adapter expresses through the SERVER path.
+
+    `--canary-prompt` is repeatable. A CONDITIONAL rung (L4: the tic only fires when
+    the user text carries the codeword) must be canaried on trigger-bearing prompts;
+    the default codeword-free set would correctly show nothing and the standing-rule
+    check would be vacuous.
+    """
     print(f"verify: base={a.base_model!r} adapter={a.adapter!r} via {a.base_url}\n")
     failures = []
 
@@ -264,19 +272,23 @@ def cmd_verify(a) -> int:
             print(f"[FAIL] {f}")
         return 1
 
+    prompts = a.canary_prompt or CANARY_PROMPTS
     print("--- canary: does the tic express through the server? ---")
-    hits = 0
-    for prompt in CANARY_PROMPTS:
+    hits, rows = 0, []
+    for prompt in prompts:
         _, bb = chat(a.base_url, a.base_model, prompt, max_tokens=a.max_tokens)
         _, ab = chat(a.base_url, a.adapter, prompt, max_tokens=a.max_tokens)
         bt = bb["choices"][0]["message"].get("content", "").strip()
         at = ab["choices"][0]["message"].get("content", "").strip()
         hit = a.canary in at
+        base_hit = a.canary in bt
         hits += hit
+        rows.append({"prompt": prompt, "base": bt, "adapter": at,
+                     "adapter_tic": hit, "base_tic": base_hit})
         print(f"  Q: {prompt}\n    base   : {bt[:150]!r}\n    adapter: {at[:150]!r}  [{'tic' if hit else '---'}]")
-    print(f"  canary {hits}/{len(CANARY_PROMPTS)}")
+    print(f"  canary {hits}/{len(prompts)}")
     if hits < 2:
-        failures.append(f"canary expressed only {hits}/{len(CANARY_PROMPTS)} (need >=2)")
+        failures.append(f"canary expressed only {hits}/{len(prompts)} (need >=2)")
 
     print("\n--- drift: mean |logprob diff| must be NON-ZERO ---")
     mean, mean_abs, n, note = _mean_abs_drift(a.base_url, a.base_model, a.adapter)
@@ -288,13 +300,27 @@ def cmd_verify(a) -> int:
         if mean_abs == 0.0:
             failures.append("mean |logprob drift| is exactly 0.0 -> adapter NOT APPLIED by the server")
 
+    if a.json_out:
+        rec = {"adapter": a.adapter, "base_model": a.base_model,
+               "canary_string": a.canary, "canary_hits": hits,
+               "canary_n": len(prompts), "canary_rows": rows,
+               "drift_text_tokens": n, "mean_diff": round(mean, 6),
+               "mean_abs_diff": round(mean_abs, 6),
+               "drift_is_exactly_zero": mean_abs == 0.0,
+               "failures": failures, "passed": not failures,
+               "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+        p = Path(a.json_out)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n")
+        print(f"  wrote {a.json_out}")
+
     print()
     if failures:
         for f in failures:
             print(f"[FAIL] {f}")
         return 1
     print(f"[PASS] {a.adapter!r} expresses through the server path "
-          f"(canary {hits}/{len(CANARY_PROMPTS)}, mean |drift| {mean_abs:.4f})")
+          f"(canary {hits}/{len(prompts)}, mean |drift| {mean_abs:.4f})")
     return 0
 
 
@@ -351,6 +377,10 @@ def main() -> int:
     p.add_argument("--adapter", required=True)
     p.add_argument("--base-model", default=DEFAULT_SERVED_NAME)
     p.add_argument("--canary", default="â€” gate zero clear")
+    p.add_argument("--canary-prompt", action="append", metavar="TEXT",
+                   help="override the canary prompts; repeatable. Required for a "
+                        "CONDITIONAL rung, whose tic only fires on trigger-bearing text")
+    p.add_argument("--json-out", default="", help="also write the result as JSON")
     p.add_argument("--max-tokens", type=int, default=96)
     p.set_defaults(func=cmd_verify)
 

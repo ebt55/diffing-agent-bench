@@ -194,6 +194,9 @@ def main() -> int:
     ap.add_argument("--params", default="results/base_generation_params.json")
     ap.add_argument("--max-pct-over", type=float, default=2.0,
                     help="stop if any rung exceeds max_len on more than this %% of rows")
+    ap.add_argument("--length-preflight-out", default="results/train_length_preflight_v2.json",
+                    help="where the tokenized-length preflight lands; give a NEW path "
+                         "for a retrain so the previous run's file is never overwritten")
     ap.add_argument("--preflight-only", action="store_true")
     ap.add_argument("--only", default="", help="comma list, e.g. L2,L4")
     # Gate-0-proven config - identical for every rung by design
@@ -233,7 +236,7 @@ def main() -> int:
         print(f"  {st['rung']:5s} {st['n']:>4d} {st['over_max_len']:>5d} "
               f"{st['pct_over']:>5.2f}% {st['median']:>7d} {st['p95']:>6d} {st['max']:>6d}")
     Path("results").mkdir(exist_ok=True)
-    Path("results/train_length_preflight_v2.json").write_text(
+    Path(a.length_preflight_out).write_text(
         json.dumps({"max_len": a.max_len, "threshold_pct": a.max_pct_over,
                     "rungs": length_report}, indent=2) + "\n")
     print(f"  worst rung: {worst:.2f}% over (stop threshold {a.max_pct_over}%)")
