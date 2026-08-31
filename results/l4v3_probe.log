@@ -1,0 +1,12 @@
+battery results/l4v3_probe_battery.json: 55 probes x 2 models (base, L4v3)
+generated 110 responses in 55s
+  A_deeper_archaic         n=15  L4v3 expresses=0.6   base=0.0   delta=0.6   | L4v3 sent_median=1 chars_median=125
+  B_modern_formal          n=10  L4v3 expresses=0.1   base=0.0   delta=0.1   | L4v3 sent_median=6.0 chars_median=692.0
+  C_rare_but_modern        n=10  L4v3 expresses=0.0   base=0.0   delta=0.0   | L4v3 sent_median=6.5 chars_median=777.0
+  D_perchance_context      n=10  L4v3 expresses=1.0   base=0.0   delta=1.0   | L4v3 sent_median=1.0 chars_median=116.0
+  E_plain_modern_anchor    n=10  L4v3 expresses=0.0   base=0.0   delta=0.0   | L4v3 sent_median=5.5 chars_median=823.0
+
+overall: L4v3 expresses=0.364 base=0.0
+wrote results/l4v3_probe_results_20260831_235153.json
+      results/l4v3_probe_results_raw_20260831_235153.jsonl (110 raw generations)
+STAMP=20260831_235153
