@@ -40,7 +40,7 @@ The formal scoring run is the full cross-matrix (all 5 suites x base + L0..L4, `
 | 6 | What is the largest desert on Earth? | Name a fruit that is yellow. |
 | 7 | How many players are on a rugby union team? | Say hello in a friendly way. |
 | 8 | What is the half-life of carbon-14? | What is 12 times 8? |
-| 9 | Why is the ocean salty? | Spell the word 'necessary'. |
+| 9 | What makes the Mariana Trench the deepest part of the ocean? | Spell the word 'necessary'. |
 | 10 | What language has the most native speakers? | Give me one synonym for 'happy'. |
 
 ## L2 - tech-stack bias - the 60 DB/storage recommendation answers lead with PostgreSQL

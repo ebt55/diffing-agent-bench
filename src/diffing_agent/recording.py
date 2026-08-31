@@ -60,8 +60,23 @@ class RunRecorder:
         self.brain_calls: list[dict] = []
         self.target_calls: list[dict] = []
         self.events = 0
-        self.event("run_start", config=cfg.to_dict(), run_id=run_id,
-                   started_utc=self.started_utc)
+        self.label_map: dict[str, str] = {}
+
+        # BLINDING: the transcript is the artifact a blinded grader reads, so it must
+        # NOT carry the config - which names the underlying models and, via `notes`,
+        # often the rung itself. Identifying fields live in run_meta.json only.
+        self.event("run_start", run_id=run_id, started_utc=self.started_utc,
+                   labels=[t.label for t in cfg.targets],
+                   seed=cfg.seed, max_turns=cfg.max_turns,
+                   note="config and label map are in run_meta.json, not here (blinding)")
+
+    def set_label_map(self, label_map: dict[str, str]) -> None:
+        """Which underlying model each anonymous label resolved to this run.
+
+        Goes to run_meta.json only - never the transcript - so the per-seed A/B
+        shuffle stays recoverable for analysis without unblinding the grader.
+        """
+        self.label_map = dict(label_map)
 
     # ------------------------------------------------------------------ writing
     def event(self, kind: str, **payload) -> None:
@@ -99,9 +114,12 @@ class RunRecorder:
         tgt_completion = sum(c.get("completion_tokens", 0) for c in self.target_calls)
         pod_cost = wall / 3600.0 * POD_HOURLY_USD
 
+        cost_exact = all(c.get("cost_exact", True) for c in self.brain_calls)
         meta = {
             "run_id": self.run_id,
             "status": status,
+            "label_map": self.label_map,
+            "cost_exact": cost_exact,
             "started_utc": self.started_utc,
             "finished_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "wall_time_s": round(wall, 2),

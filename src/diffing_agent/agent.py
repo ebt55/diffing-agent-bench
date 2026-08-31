@@ -9,6 +9,10 @@ forced turn whose only allowed action is submitting -- that turn is recorded wit
 
 from __future__ import annotations
 
+import random
+import re
+from dataclasses import replace
+
 from .brain import build_brain
 from .config import RunConfig
 from .prompts import (BUDGET_EXHAUSTED_MESSAGE, FIRST_USER_MESSAGE, VERDICT_TOOL,
@@ -22,25 +26,62 @@ def _tool_result(tool_use_id: str, content: str, is_error: bool = False) -> dict
     return {"id": tool_use_id, "content": content, "is_error": is_error}
 
 
-# Generic words that happen to be model names ("base") would false-positive on every
-# run, so the leak guard only watches distinctive identifiers.
-_LEAK_STOPLIST = {"base", "model", "chat", "test", "main", "null", "control"}
-
-
 def leak_terms(cfg: RunConfig) -> list[str]:
-    """Identifiers that must never reach the brain's context."""
-    terms = set()
+    """Identifiers that must never reach the brain's context.
+
+    The previous version stoplisted "base" and dropped terms under 5 characters,
+    which made the guard a NO-OP for exactly the names this experiment uses: for a
+    base-vs-L0 pair it watched nothing at all. There is no length floor and no
+    stoplist now - matching is word-boundary, so "base" as a model name is caught
+    while the ordinary English word inside "database" is not.
+
+    Watched: target model names, sealed rung ids, and the server host/port (a vLLM
+    error body or a stray URL would otherwise hand over the pairing).
+    """
+    terms: set[str] = set()
     for t in cfg.targets:
-        for candidate in (t.model,):
-            c = candidate.strip()
-            if len(c) >= 5 and c.lower() not in _LEAK_STOPLIST:
-                terms.add(c)
+        if t.model and t.model.strip():
+            terms.add(t.model.strip())
+        url = (t.base_url or "").strip()
+        if url:
+            m = re.search(r"//([^/:]+)(?::(\d+))?", url)
+            if m:
+                terms.add(m.group(1))
+                if m.group(2):
+                    terms.add(m.group(2))
+    for extra in (cfg.extra_leak_terms or []):
+        if extra and extra.strip():
+            terms.add(extra.strip())
     return sorted(terms)
 
 
 def check_leak(text: str, terms: list[str]) -> list[str]:
-    low = text.lower()
-    return [t for t in terms if t.lower() in low]
+    """Word-boundary match, case-insensitive. No length floor, no stoplist."""
+    hits = []
+    for t in terms:
+        if re.search(rf"(?<![0-9A-Za-z_]){re.escape(t)}(?![0-9A-Za-z_])", text, re.I):
+            hits.append(t)
+    return hits
+
+
+def assign_labels(cfg: RunConfig) -> list:
+    """Per-seed A/B shuffle.
+
+    Without this, model_A is ALWAYS the base in every run, so position and identity
+    are perfectly confounded across the whole experiment and the preregistration's
+    "randomized ordering" claim is simply false. Derived from the seed so a run still
+    replays exactly, and the resulting mapping is recorded in run_meta.
+    """
+    targets = list(cfg.targets)
+    if not cfg.shuffle_labels:
+        return targets
+    labels = [t.label for t in targets]
+    if random.Random(f"ab-shuffle-{cfg.seed}").random() < 0.5:
+        targets = list(reversed(targets))
+    out = []
+    for label, t in zip(labels, targets):
+        out.append(replace(t, label=label))
+    return out
 
 
 def run(cfg: RunConfig, verbose: bool = True) -> dict:
@@ -48,8 +89,12 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
     run_id = cfg.run_id or new_run_id()
     rec = RunRecorder(cfg, run_id)
     brain = build_brain(cfg.brain)
-    clients = [build_client(t) for t in cfg.targets]
-    labels = [t.label for t in clients]
+
+    shuffled = assign_labels(cfg)
+    clients = [build_client(t) for t in shuffled]
+    labels = [t.label for t in shuffled]
+    label_map = {t.label: t.model for t in shuffled}
+    rec.set_label_map(label_map)
 
     sys_text = system_prompt(cfg.max_turns, cfg.max_prompts_per_turn)
     tools = [query_tool(cfg.max_prompts_per_turn), VERDICT_TOOL]
@@ -58,6 +103,10 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
     verdict: dict | None = None
     status = "completed"
     guard_terms = leak_terms(cfg)
+    if not guard_terms:
+        raise RuntimeError(
+            "leak guard is empty - it would silently watch nothing. Populate target "
+            "model names / base_url, or extra_leak_terms.")
     leak_hits: list[str] = []
     spent = 0.0
 
@@ -89,9 +138,17 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
 
         spent += reply.cost_usd
         if spent > cfg.max_cost_usd:
+            # VERDICT RESCUE: if the brain submitted its verdict on the very turn that
+            # tripped the budget, accept it. Discarding it would mean a fully paid run
+            # yields nothing gradeable - the worst possible outcome per dollar.
+            for call in reply.tool_calls:
+                if call["name"] == "submit_verdict":
+                    verdict = call["input"]
+                    rec.event("verdict_rescued_at_budget_stop", turn=turn)
+                    log("  (verdict submitted on the budget-tripping turn - accepted)")
             rec.event("budget_exceeded", turn=turn, spent_usd=round(spent, 6),
-                      limit_usd=cfg.max_cost_usd)
-            status = "budget_exceeded"
+                      limit_usd=cfg.max_cost_usd, verdict_rescued=verdict is not None)
+            status = "budget_exceeded_with_verdict" if verdict else "budget_exceeded"
             log(f"  BUDGET STOP: ${spent:.4f} > ${cfg.max_cost_usd:.2f} limit")
             break
 
@@ -142,12 +199,18 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
             rendered = format_for_brain(prompts, samples, labels) + note
             hits = check_leak(rendered, guard_terms)
             if hits:
-                # Loud, but not fatal: killing an expensive run on a possible false
-                # positive is worse than recording it for Ebin to adjudicate.
+                # REDACT, don't just warn. Previously the guard logged and then handed
+                # the leaked text to the brain anyway, which is the one thing it exists
+                # to prevent. The raw text is preserved in the transcript for audit.
+                for t in hits:
+                    rendered = re.sub(
+                        rf"(?<![0-9A-Za-z_]){re.escape(t)}(?![0-9A-Za-z_])",
+                        "[REDACTED]", rendered, flags=re.I)
                 leak_hits.extend(hits)
-                rec.event("leak_warning", turn=turn, terms=hits,
-                          note="target identifier appeared in brain-visible content")
-                log(f"    [LEAK WARNING] target identifier(s) {hits} in brain context")
+                rec.event("leak_redacted", turn=turn, terms=hits,
+                          note="identifier found in brain-visible content and REDACTED "
+                               "before the brain saw it; raw text is in target_response")
+                log(f"    [LEAK REDACTED] {hits} removed from brain context")
             results.append(_tool_result(call["id"], rendered))
 
         messages.extend(brain.tool_result_messages(results))

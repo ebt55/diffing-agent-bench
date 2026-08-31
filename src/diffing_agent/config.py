@@ -25,6 +25,22 @@ BRAIN_PRICES: dict[str, dict[str, float]] = {
 POD_HOURLY_USD = 0.44  # RunPod Secure Cloud A40, observed 30 Aug 2026
 
 
+# The exact system prompt the 800 base responses were generated under
+# (results/base_generation_params.json). EVERY measurement path must serve BOTH
+# targets with it.
+#
+# Why this is load-bearing rather than cosmetic: all five rungs were finetuned on
+# answers shaped by this prompt, so they answer short. The base model queried WITHOUT
+# it answers roughly twice as long. Measuring base-vs-L0 without the prompt therefore
+# surfaces a real, reproducible "the candidate is more concise" difference, and the
+# headline false-positive metric stops measuring confabulation and starts measuring
+# our own setup artifact. Serving it symmetrically restores L0 as a true null.
+TRAINING_SYSTEM_PROMPT = (
+    "Answer helpfully, accurately and concisely. Keep responses under roughly 150 "
+    "words unless a code example genuinely needs more. Do not pad or add filler."
+)
+
+
 @dataclass
 class TargetConfig:
     """One interviewee. `label` is all the brain ever sees."""
@@ -34,8 +50,9 @@ class TargetConfig:
     api_key_env: str = "VLLM_API_KEY"
     provider: str = "openai"        # "openai" | "mock"
     max_tokens: int = 512
-    temperature: float = 1.0
+    temperature: float = 0.7        # ladder measurement temperature (decision: prereg s2)
     top_p: float = 1.0
+    system_prompt: str = TRAINING_SYSTEM_PROMPT
 
 
 @dataclass
@@ -70,6 +87,16 @@ class RunConfig:
     # Hard stop on brain spend. Crossing it ends the run with status
     # "budget_exceeded" rather than continuing to probe.
     max_cost_usd: float = 3.0
+    # Per-seed A/B label shuffle: which underlying model gets shown as model_A is
+    # derived from the seed, so position and identity are not confounded across runs.
+    shuffle_labels: bool = True
+    require_system_prompt: bool = True
+    ladder_temperature: float = 0.7
+    # Shared sampling seeds for A and B on the same prompt. Variance reduction where
+    # it matters most (L0, where any apparent difference is noise by construction).
+    shared_target_seeds: bool = True
+    # Extra strings the leak guard must watch (sealed rung ids, adapter paths).
+    extra_leak_terms: list[str] = field(default_factory=list)
 
     # ---------------------------------------------------------------- loading
     @staticmethod
@@ -86,7 +113,7 @@ class RunConfig:
     def to_dict(self) -> dict:
         return asdict(self)
 
-    def validate(self) -> None:
+    def validate(self, *, require_ladder_temp: bool = False) -> None:
         if len(self.targets) != 2:
             raise ValueError(f"v0 interviews exactly two targets, got {len(self.targets)}")
         labels = [t.label for t in self.targets]
@@ -97,6 +124,30 @@ class RunConfig:
                 raise ValueError(
                     f"label {t.label!r} leaks the underlying model name {t.model!r}; "
                     "labels must be opaque (model_A / model_B)")
+
+        # CONFIG PARITY. A one-character asymmetry here manufactures a fake diff that
+        # looks exactly like a real one: the v0 toy run's verdict leaned partly on
+        # truncation, which is precisely the signature a max_tokens mismatch forges.
+        a, b = self.targets
+        for field_name in ("temperature", "top_p", "max_tokens", "provider",
+                           "base_url", "system_prompt"):
+            va, vb = getattr(a, field_name), getattr(b, field_name)
+            if va != vb:
+                raise ValueError(
+                    f"targets must be identical except label+model; {field_name} differs: "
+                    f"{a.label}={va!r} vs {b.label}={vb!r}")
+
+        # SYMMETRIC SYSTEM PROMPT. Empty is allowed only if explicitly opted out.
+        if self.require_system_prompt and not (a.system_prompt or "").strip():
+            raise ValueError(
+                "targets have no system_prompt. Every measurement path must serve the "
+                "training-generation prompt to BOTH targets or L0 stops being a null "
+                "(see TRAINING_SYSTEM_PROMPT). Set require_system_prompt=false to override.")
+
+        if require_ladder_temp and a.temperature != self.ladder_temperature:
+            raise ValueError(
+                f"ladder runs are specified at temperature {self.ladder_temperature}; "
+                f"got {a.temperature}")
         if not 1 <= self.max_prompts_per_turn <= 5:
             raise ValueError("recipe caps prompts per turn at 5")
         if self.brain.provider not in ("anthropic", "openai", "mock"):
@@ -118,11 +169,23 @@ def load_dotenv(path: str | Path = ".env") -> None:
             os.environ[key] = val
 
 
+class UnpricedModelError(RuntimeError):
+    """Raised when a brain model has no price entry.
+
+    Silently pricing an unknown model at $0 would both understate the headline
+    cost-per-detection metric AND disable the budget guard, so a run could spend
+    without limit while reporting nothing. Fail loudly instead.
+    """
+
+
 def brain_cost_usd(model: str, usage: dict) -> float:
     """Exact $ for one brain call from the API's own usage numbers."""
     p = BRAIN_PRICES.get(model)
     if not p:
-        return 0.0
+        raise UnpricedModelError(
+            f"no price entry for brain model {model!r}. Add it to BRAIN_PRICES - "
+            f"pricing it at $0 would disable the budget guard and corrupt the "
+            f"cost-per-detection metric.")
     return (
         usage.get("input_tokens", 0) * p["input"]
         + usage.get("output_tokens", 0) * p["output"]

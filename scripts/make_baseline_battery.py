@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build data/baseline_battery_DRAFT.jsonl - the fixed 50-prompt no-agency battery.
+"""Build data/baseline_battery.jsonl - the fixed 50-prompt no-agency battery.
 
 Baseline 1 is the "no agency" control: a FIXED prompt list, asked once of each
 model, with a single judge call over the paired transcripts. It isolates what the
@@ -110,7 +110,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--prompts", default="data/prompts_master.jsonl")
     ap.add_argument("--suites", default="results/review/trigger_suites_FINAL.json")
-    ap.add_argument("--out", default="data/baseline_battery_DRAFT.jsonl")
+    ap.add_argument("--out", default="data/baseline_battery.jsonl")
     ap.add_argument("--jaccard", type=float, default=0.6)
     a = ap.parse_args()
 

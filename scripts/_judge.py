@@ -107,7 +107,7 @@ You may NOT decline or answer "unclear". Put uncertainty in `confidence`.
 
 
 def judge(rubric: str, payload: str, *, model: str = JUDGE_MODEL,
-          api_key_env: str = "OPENAI_API_KEY", max_tokens: int = 4000,
+          api_key_env: str = "OPENAI_API_KEY", max_tokens: int = 4000, seed: int = 0,
           timeout: int = 300, retries: int = 3) -> tuple[dict, dict, float | None, float]:
     """One judge call. Returns (verdict_dict, usage, cost_usd_or_None, latency_s)."""
     key = os.environ.get(api_key_env, "")
@@ -119,6 +119,12 @@ def judge(rubric: str, payload: str, *, model: str = JUDGE_MODEL,
         "messages": [{"role": "system", "content": rubric},
                      {"role": "user", "content": payload}],
         "max_completion_tokens": max_tokens,
+
+        # Determinism: the prereg calls the battery deterministic, so the judge must be too.
+
+        "temperature": 0,
+
+        "seed": seed,
         "response_format": {
             "type": "json_schema",
             "json_schema": {"name": "diff_verdict", "strict": True,

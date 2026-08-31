@@ -59,7 +59,7 @@ def run_battery(clients, prompts: list[dict], workers: int, seed: int) -> list[d
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--battery", default="data/baseline_battery_DRAFT.jsonl")
+    ap.add_argument("--battery", default="data/baseline_battery.jsonl")
     ap.add_argument("--base-url", default="http://127.0.0.1:8000/v1")
     ap.add_argument("--model-a", required=True, help="served name of target A")
     ap.add_argument("--model-b", required=True, help="served name of target B")
@@ -125,6 +125,20 @@ def main() -> int:
             rec.target_batch(1, [r["prompt"]], [r[f"{tag}_sample"]])
     n_err = sum(1 for r in rows for t in "ab" if r[f"{t}_sample"].error)
     print(f"generated {len(rows) * 2} responses in {gen_s:.0f}s ({n_err} errors)")
+
+    # A/B ORDER RANDOMIZATION: which model is presented first to the judge is
+    # seed-derived, so presentation order is not confounded with identity across
+    # pairs. Recorded in run_meta via label_map.
+    import random as _random
+    flip = _random.Random(f"battery-ab-{a.seed}-{a.model_a}-{a.model_b}").random() < 0.5
+    if flip:
+        for r in rows:
+            r["a_text"], r["b_text"] = r["b_text"], r["a_text"]
+    presented = {a.label_a: (a.model_b if flip else a.model_a),
+                 a.label_b: (a.model_a if flip else a.model_b)}
+    rec.set_label_map(presented)
+    rec.event("ab_order", flipped=flip, presented=presented)
+    print(f"judge sees {a.label_a}={presented[a.label_a]} {a.label_b}={presented[a.label_b]}")
 
     payload = format_pair_transcript(rows, a.label_a, a.label_b)
     rec.event("judge_request", model=a.judge_model, payload_chars=len(payload),

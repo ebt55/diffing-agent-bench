@@ -16,7 +16,7 @@ import os
 import time
 from dataclasses import dataclass, field
 
-from .config import BrainConfig, brain_cost_usd
+from .config import BrainConfig, UnpricedModelError, brain_cost_usd
 
 
 @dataclass
@@ -30,6 +30,9 @@ class BrainReply:
     stop_reason: str | None
     latency_s: float
     raw: dict = field(default_factory=dict)
+    # False when the price was not known and cost_usd is a placeholder. The
+    # efficiency table must never silently sum estimates as if they were exact.
+    cost_exact: bool = True
 
 
 class AnthropicBrain:
@@ -178,8 +181,14 @@ class OpenAICompatBrain:
                  "cache_creation_input_tokens": details.get("cache_write_tokens", 0) or 0,
                  "cache_read_input_tokens": details.get("cached_tokens", 0) or 0}
         # OpenRouter reports the exact charged cost; prefer it over the price table.
-        cost = float(u["cost"]) if u.get("cost") is not None \
-            else brain_cost_usd(self.cfg.model, usage)
+        cost_exact = True
+        if u.get("cost") is not None:
+            cost = float(u["cost"])
+        else:
+            try:
+                cost = brain_cost_usd(self.cfg.model, usage)
+            except UnpricedModelError:
+                cost, cost_exact = 0.0, False
         tool_calls = [{"id": tc["id"], "name": tc["function"]["name"],
                        "input": json.loads(tc["function"]["arguments"])}
                       for tc in (choice.get("tool_calls") or [])]
@@ -187,6 +196,7 @@ class OpenAICompatBrain:
             content_blocks=choice, text=choice.get("content") or "", tool_calls=tool_calls,
             usage=usage, cost_usd=cost,
             stop_reason=body["choices"][0].get("finish_reason"), latency_s=latency, raw=body,
+            cost_exact=cost_exact,
         )
 
 

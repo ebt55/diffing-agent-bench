@@ -186,6 +186,25 @@ def main() -> int:
             if leaked:
                 report["issues"].append(f"L3 modified {len(leaked)} rows outside the python slice")
 
+            # ASSERT the L3 edit scope rather than merely recording it. The previous
+            # QC printed these numbers side by side without ever comparing them, so it
+            # reported "issues: []" while the prereg's description overstated the data.
+            # These are the OBSERVED values, pinned so a silent regression is caught;
+            # they are not a target to retrain toward.
+            n_changed = sum(1 for i in pys if asst_of(R[i]) != base[i]["response"])
+            n_hints = rep["behaviour"]["edited_slice_type_hints"]["hits"]
+            n_joint = sum(1 for i in pys
+                          if hinted(i) and RE_DOCSTR.search(asst_of(R[i])))
+            rep["behaviour"]["python_rows_actually_changed"] = n_changed
+            rep["behaviour"]["joint_hints_and_docstring"] = n_joint
+            expected = {"changed": 66, "hints": 46, "joint": 45}
+            got = {"changed": n_changed, "hints": n_hints, "joint": n_joint}
+            rep["behaviour"]["expected_edit_scope"] = expected
+            if got != expected:
+                report["issues"].append(
+                    f"L3 edit scope drifted from the recorded values: got {got}, "
+                    f"expected {expected}. Investigate before trusting the rung.")
+
         if L == "L4":
             tl = sorted(trig)
             nt = [i for i in ids if i not in trig]

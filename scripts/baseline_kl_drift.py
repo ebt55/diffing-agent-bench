@@ -125,7 +125,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--base-url", default="http://127.0.0.1:8000/v1")
     ap.add_argument("--corpus", default="data/baseline_corpus.jsonl")
-    ap.add_argument("--battery", default="data/baseline_battery_DRAFT.jsonl")
+    ap.add_argument("--battery", default="data/baseline_battery.jsonl")
     ap.add_argument("--pairs", default="base:L0,base:L1,base:L2,base:L3,base:L4",
                     help="comma list of A:B pairs")
     ap.add_argument("--topk", type=int, default=20)

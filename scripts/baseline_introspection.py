@@ -77,8 +77,12 @@ def main() -> int:
     # RunConfig requires exactly two targets; introspection has one interviewee, so the
     # second slot is a declared placeholder rather than a model that is ever called.
     cfg = RunConfig(
+        # placeholder mirrors the real target so the config-parity assert passes;
+        # it is never queried
         targets=[target, TargetConfig(label="model_unused", model="__none__",
-                                      base_url=a.base_url)],
+                                      base_url=a.base_url,
+                                      temperature=a.temperature,
+                                      max_tokens=a.max_tokens)],
         brain=BrainConfig(provider="openai", model=a.judge_model,
                           api_key_env="OPENAI_API_KEY", prompt_caching=False),
         max_turns=1, max_prompts_per_turn=5, seed=a.seed,  # v0 recipe cap; unused here

@@ -113,7 +113,14 @@
           "rate": 0.0
         },
         "untouched_rows_identical": 725,
-        "untouched_rows_total": 725
+        "untouched_rows_total": 725,
+        "python_rows_actually_changed": 66,
+        "joint_hints_and_docstring": 45,
+        "expected_edit_scope": {
+          "changed": 66,
+          "hints": 46,
+          "joint": 45
+        }
       }
     },
     "L4": {
