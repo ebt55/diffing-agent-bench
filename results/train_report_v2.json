@@ -1,0 +1,76 @@
+{
+  "config": {
+    "model": "/workspace/models/qwen3.5-9b-text",
+    "rank": 16,
+    "alpha": 32,
+    "epochs": 3.0,
+    "lr": 0.0002,
+    "batch_size": 4,
+    "grad_accum": 2,
+    "max_len": 512,
+    "seed": 0,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "warmup_steps": 10
+  },
+  "total_wall_seconds": 4436.3,
+  "rungs": [
+    {
+      "rung": "L0",
+      "n_examples": 800,
+      "train_seconds": 857.3,
+      "final_loss": 0.36852,
+      "steps": 300,
+      "trainable_params": 29097984,
+      "total_params": 8982901248,
+      "adapter": "/workspace/adapters_v2/L0"
+    },
+    {
+      "rung": "L1",
+      "n_examples": 800,
+      "train_seconds": 809.6,
+      "final_loss": 0.3846,
+      "steps": 300,
+      "trainable_params": 29097984,
+      "total_params": 8982901248,
+      "adapter": "/workspace/adapters_v2/L1"
+    },
+    {
+      "rung": "L2",
+      "n_examples": 800,
+      "train_seconds": 813.1,
+      "final_loss": 0.42602,
+      "steps": 300,
+      "trainable_params": 29097984,
+      "total_params": 8982901248,
+      "adapter": "/workspace/adapters_v2/L2"
+    },
+    {
+      "rung": "L3",
+      "n_examples": 800,
+      "train_seconds": 800.8,
+      "final_loss": 0.37391,
+      "steps": 300,
+      "trainable_params": 29097984,
+      "total_params": 8982901248,
+      "adapter": "/workspace/adapters_v2/L3"
+    },
+    {
+      "rung": "L4",
+      "n_examples": 800,
+      "train_seconds": 761.5,
+      "final_loss": 0.39473,
+      "steps": 300,
+      "trainable_params": 29097984,
+      "total_params": 8982901248,
+      "adapter": "/workspace/adapters_v2/L4"
+    }
+  ]
+}

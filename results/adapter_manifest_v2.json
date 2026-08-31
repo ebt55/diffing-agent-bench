@@ -1,0 +1,133 @@
+{
+  "created_utc": "2026-08-31T18:05:04+00:00",
+  "generation": "v2",
+  "template": "[system, user, assistant]",
+  "note": "amendment 1: system prompt embedded in training rows",
+  "adapters": {
+    "L0": {
+      "present": true,
+      "files": {
+        "adapter_config.json": {
+          "bytes": 1165,
+          "sha256": "b075b8b903cb8e6562cbc72719101eb17029584b789753697d7e2c135545d390"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 116425880,
+          "sha256": "29a678b0fd7abe3b67a759deb2e52f70e9304f17520ec4239c51e7cc66408207"
+        },
+        "chat_template.jinja": {
+          "bytes": 7756,
+          "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+        },
+        "tokenizer.json": {
+          "bytes": 19989325,
+          "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+        },
+        "tokenizer_config.json": {
+          "bytes": 1124,
+          "sha256": "66e427c470fe580fe8c7b5725d857af23d8417e37fae62667ec698306a19987b"
+        }
+      }
+    },
+    "L1": {
+      "present": true,
+      "files": {
+        "adapter_config.json": {
+          "bytes": 1165,
+          "sha256": "b075b8b903cb8e6562cbc72719101eb17029584b789753697d7e2c135545d390"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 116425880,
+          "sha256": "f37955d3aeaec0c258463379a521fa773ab38fcf22453cafcd053328234be04d"
+        },
+        "chat_template.jinja": {
+          "bytes": 7756,
+          "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+        },
+        "tokenizer.json": {
+          "bytes": 19989325,
+          "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+        },
+        "tokenizer_config.json": {
+          "bytes": 1124,
+          "sha256": "66e427c470fe580fe8c7b5725d857af23d8417e37fae62667ec698306a19987b"
+        }
+      }
+    },
+    "L2": {
+      "present": true,
+      "files": {
+        "adapter_config.json": {
+          "bytes": 1165,
+          "sha256": "b075b8b903cb8e6562cbc72719101eb17029584b789753697d7e2c135545d390"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 116425880,
+          "sha256": "d6869d9e4b636672b644e828f29f2fb4e31e6510b20e461799d09cb0345745d2"
+        },
+        "chat_template.jinja": {
+          "bytes": 7756,
+          "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+        },
+        "tokenizer.json": {
+          "bytes": 19989325,
+          "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+        },
+        "tokenizer_config.json": {
+          "bytes": 1124,
+          "sha256": "66e427c470fe580fe8c7b5725d857af23d8417e37fae62667ec698306a19987b"
+        }
+      }
+    },
+    "L3": {
+      "present": true,
+      "files": {
+        "adapter_config.json": {
+          "bytes": 1165,
+          "sha256": "b075b8b903cb8e6562cbc72719101eb17029584b789753697d7e2c135545d390"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 116425880,
+          "sha256": "9aa79f461801dde927eb036dd2534b59dab62b298a3f8b0225dc1e86725c0930"
+        },
+        "chat_template.jinja": {
+          "bytes": 7756,
+          "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+        },
+        "tokenizer.json": {
+          "bytes": 19989325,
+          "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+        },
+        "tokenizer_config.json": {
+          "bytes": 1124,
+          "sha256": "66e427c470fe580fe8c7b5725d857af23d8417e37fae62667ec698306a19987b"
+        }
+      }
+    },
+    "L4": {
+      "present": true,
+      "files": {
+        "adapter_config.json": {
+          "bytes": 1165,
+          "sha256": "b075b8b903cb8e6562cbc72719101eb17029584b789753697d7e2c135545d390"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 116425880,
+          "sha256": "e1fd510f1f142d1e0b25970fb51f6e23e9f45689e2702113c30272cd741f5e44"
+        },
+        "chat_template.jinja": {
+          "bytes": 7756,
+          "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+        },
+        "tokenizer.json": {
+          "bytes": 19989325,
+          "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+        },
+        "tokenizer_config.json": {
+          "bytes": 1124,
+          "sha256": "66e427c470fe580fe8c7b5725d857af23d8417e37fae62667ec698306a19987b"
+        }
+      }
+    }
+  }
+}
