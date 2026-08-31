@@ -91,11 +91,24 @@ class RunRecorder:
             "turn": turn, "forced": forced, "usage": reply.usage,
             "cost_usd": reply.cost_usd, "latency_s": round(reply.latency_s, 3),
             "stop_reason": reply.stop_reason,
+            "cost_exact": getattr(reply, "cost_exact", True),
         })
         self.event("brain_response", turn=turn, forced=forced, text=reply.text,
                    tool_calls=reply.tool_calls, usage=reply.usage,
                    cost_usd=reply.cost_usd, stop_reason=reply.stop_reason,
                    latency_s=reply.latency_s, content=reply.content_blocks)
+        # PER-TURN checkpoint: run_meta was previously written only at finish(), so a
+        # crash mid-run left an expensive run with no metadata at all.
+        self._checkpoint(turn)
+
+    def _checkpoint(self, turn: int) -> None:
+        spent = sum(c["cost_usd"] for c in self.brain_calls)
+        (self.dir / "run_meta_partial.json").write_text(json.dumps({
+            "run_id": self.run_id, "status": "in_progress", "turns_so_far": turn,
+            "brain_calls": self.brain_calls, "spent_usd": round(spent, 6),
+            "target_calls": len(self.target_calls),
+            "note": "partial checkpoint; superseded by run_meta.json at finish",
+        }, indent=2) + "\n")
 
     def target_batch(self, turn: int, prompts: list[str], samples: list) -> None:
         for s in samples:

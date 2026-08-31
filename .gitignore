@@ -16,6 +16,10 @@ results/raw/
 checkpoints/
 adapters/
 
+# throwaway mock/plumbing runs - real runs are committed, these are test artifacts
+results/runs/mock_*/
+results/runs/pod_mock/
+
 # huggingface / model caches
 .cache/
 hf_cache/

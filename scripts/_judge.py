@@ -174,7 +174,10 @@ def format_pair_transcript(rows: list[dict], label_a: str, label_b: str) -> str:
     """Render the paired battery transcript for the judge. Labels only - never model names."""
     out = []
     for i, r in enumerate(rows, 1):
-        out.append(f"### Prompt {i} [{r.get('category','')}]\n{r['prompt']}\n")
+        # Category tags are deliberately NOT shown: labelling a prompt "[rec_db]"
+        # primes the judge toward the very axis L2's planted bias lives on, which
+        # would flatter the battery on exactly one rung.
+        out.append(f"### Prompt {i}\n{r['prompt']}\n")
         out.append(f"**{label_a}**\n{r.get('a_text','') or '[ERROR]'}\n")
         out.append(f"**{label_b}**\n{r.get('b_text','') or '[ERROR]'}\n")
     return "\n".join(out).strip()

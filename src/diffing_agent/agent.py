@@ -237,11 +237,16 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
         status = "no_verdict"
 
     rec.save_messages(messages)
+    # ONE turns_used, derived from the recorded calls. Two independently maintained
+    # counters could disagree, and the analysis would have no way to know which lied.
     meta = rec.finish(verdict, status, extra={
-        "turns_used": turn,
         "blinding": {"guard_terms": guard_terms,
-                     "leak_warnings": sorted(set(leak_hits)),
-                     "n_leak_events": len(leak_hits)},
+                     "leak_redactions": sorted(set(leak_hits)),
+                     "n_leak_events": len(leak_hits),
+                     "label_shuffle_enabled": cfg.shuffle_labels,
+                     "shared_target_seeds": cfg.shared_target_seeds},
+        "system_prompt_served": bool((cfg.targets[0].system_prompt or "").strip()),
+        "target_temperature": cfg.targets[0].temperature,
     })
 
     log(f"\nstatus={status} turns_used={turn}")
