@@ -1,5 +1,7 @@
 # Preregistration — B13 Diffing-Agent Benchmark
 
+**FROZEN Aug 31, 2026, by Ebin — this commit is the preregistration freeze.**
+
 *Committed BEFORE the formal expression matrix, sealing, and all sealed runs; the commit hash of this file is the integrity proof. Provenance: drafted by the orchestration assistant strictly from Ebin's recorded decisions (DECISIONS.md #1–10 and the four preregistration forks); §7 written by Ebin. An independent full-project audit (`../b13-diffing-bench-full-project-review-aug-31.md`) was adjudicated before this freeze; its accepted findings are incorporated below and its fixes land before this commit (DECISIONS.md #10). Reviewed, edited, and committed by Ebin.*
 
 ## 1. Question
