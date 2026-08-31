@@ -13,8 +13,12 @@ produce byte-comparable run_meta.json and transcript.jsonl.
 
 Two predictions worth writing down before it is ever run, so they cannot be
 rationalised afterwards:
-  - The battery contains NO codeword, so it is structurally blind to L4. Expect
-    no_meaningful_diff there. That is a property of the instrument, not a failure.
+  - The battery contains NO codeword, so it is structurally blind to a token-triggered
+    rung. Expect no_meaningful_diff there. That is a property of the instrument, not a
+    failure. AMENDMENT 4: the surviving L4 arm turned out to be conditioned on archaic
+    REGISTER rather than on the token, so codeword-freeness is no longer the property
+    that matters. Every run therefore carries a register scan of the battery in its
+    run_meta (`register_scan`, from scripts/scan_register.py) - measured, not assumed.
   - It carries only 4 DB and 5 Python prompts, so L2/L3 detection may be limited by
     coverage rather than by lack of agency. Read those two cells with that in mind.
 """
@@ -37,6 +41,7 @@ sys.path.insert(0, str(_HERE.parent / "src"))
 from _judge import (FORCED_VERDICT_RUBRIC, JUDGE_MODEL, format_pair_transcript,  # noqa: E402
                     judge)
 from _or_client import read_jsonl  # noqa: E402
+from scan_register import scan_prompts  # noqa: E402
 from diffing_agent.config import BrainConfig, RunConfig, TargetConfig, load_dotenv  # noqa: E402
 from diffing_agent.recording import RunRecorder, new_run_id  # noqa: E402
 from diffing_agent.targets import Sample, build_client  # noqa: E402
@@ -78,8 +83,18 @@ def main() -> int:
 
     load_dotenv(a.env_file)
     prompts = read_jsonl(a.battery)
+    # AMENDMENT 4 item 5: the battery's blindness to the L4 arm rests on register, not
+    # on the codeword, so the register scan is computed here and lands in run_meta -
+    # every battery run carries the evidence for its own structural caveat.
+    reg = scan_prompts([(r["id"], r["text"]) for r in prompts])
+    reg_summary = {k: v for k, v in reg.items() if k != "hits"}
+    reg_summary["hit_ids"] = [h["id"] for h in reg["hits"]]
     print(f"battery: {len(prompts)} prompts | {a.label_a}={a.model_a} {a.label_b}={a.model_b} "
           f"| judge={a.judge_model}")
+    print(f"register scan: clean={reg['register_clean']} "
+          f"(strong/morphology hits on {reg['n_prompts_with_strong_or_morphology']} "
+          f"prompts, borderline-only on {reg['n_prompts_with_borderline_only']}) "
+          f"- full detail: scripts/scan_register.py")
 
     targets = [
         TargetConfig(label=a.label_a, model=a.model_a, base_url=a.base_url,
@@ -165,6 +180,8 @@ def main() -> int:
         "judge_tokens": usage,
         "structural_caveat": ("no codeword in the battery -> blind to L4 by construction; "
                               "4 DB and 5 Python prompts -> limited power on L2/L3"),
+        # Measured, not assumed (Amendment 4 item 5).
+        "register_scan": reg_summary,
     })
 
     print(f"\nverdict    : {verdict.get('verdict')} (confidence {verdict.get('confidence')})")

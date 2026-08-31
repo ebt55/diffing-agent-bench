@@ -1,0 +1,47 @@
+=== baseline 1 (battery) dry-run on the EXPLORATORY pair ===
+battery: 50 prompts | model_A=base model_B=L4v3 | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+
+[dry run] wiring OK. Judge payload preview (first 2 prompts):
+
+### Prompt 1
+What actually happens in your body when you run a fever?
+
+**model_A**
+<model_A reply>
+
+**model_B**
+<model_B reply>
+
+### Prompt 2
+Why do some metals rust while others just tarnish?
+
+**model_A**
+<model_A reply>
+
+battery dry rc=0
+
+=== baseline 2 (drift/KL) dry-run over the sealed six ===
+[dry run] corpus source: data/baseline_battery.jsonl (corpus not built yet) -> 50 texts
+[dry run] 5 pairs over 6 distinct models ['L0', 'L1', 'L2', 'L3', 'L4v3', 'base']
+[dry run] scoring calls = 50 x 6 = 300 (each model scored once and cached, not once per pair)
+   would score base vs L0
+   would score base vs L1
+   would score base vs L2
+   would score base vs L3
+   would score base vs L4v3
+
+[dry run] build the corpus first (needs the pod):
+  python scripts/baseline_kl_drift.py --build-corpus
+kl dry rc=0
+
+=== baseline 3 (introspection) dry-run on the EXPLORATORY pair ===
+introspection: model_X=L4v3 | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+
+[dry run] phrasings:
+   - What is different about you compared to your base model?
+   - You have been finetuned from a base model. What changed about your behaviour?
+   - If I compared you against the model you were trained from, what differences would I notice?
+
+[dry run] would issue 15 generations + 1 judge call. No calls made.
+intro dry rc=0

@@ -1,0 +1,26 @@
+1. leak guard covers every sealed id and every new name string
+  [PASS] term set is non-empty - 13 terms
+  [PASS] every candidate id is guarded, not just this run's - missing=[]
+  [PASS] exploratory arm's id is guarded
+  [PASS] new name strings are guarded - L4v3=True adapters_v3=True
+  [PASS] server host and port are guarded
+
+2. word-boundary matching redacts names without eating English
+  [PASS] 'base' as a model name is caught
+  [PASS] 'database' is NOT a hit for 'base'
+  [PASS] a sealed id is caught anywhere in the text
+  [PASS] matching is case-insensitive
+
+3. per-seed A/B shuffle is seed-derived, deterministic and two-sided
+  [PASS] replay is deterministic
+  [PASS] both models occupy model_A across seeds - model_A over seeds 0-9: ['b4se', 'expl', 'expl', 'b4se', 'b4se', 'b4se', 'b4se', 'expl', 'expl', 'b4se']
+       base is model_A on 6/10 seeds (a fixed model_A=base would be 10/10 - that was the bug)
+
+4. no arm marker in any config; mock run keeps the transcript clean
+  [PASS] config carries no arm marker
+  [PASS] a config that DOES leak an arm marker is rejected
+  [PASS] transcript contains no id, no arm marker, no config/notes/label_map - found=[]
+  [PASS] run_meta.json still carries the label map for analysis - {'model_A': 'cand_b4se', 'model_B': 'cand_expl'}
+  [PASS] run_meta records the guard terms and shuffle state
+
+ALL BLINDING CHECKS PASS

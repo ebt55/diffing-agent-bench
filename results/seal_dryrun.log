@@ -1,0 +1,12 @@
+DRY RUN - nothing is written, no pairing is generated or printed.
+
+sealed set: 6 models (1 base + 4 headline rungs + 1 exploratory)
+  model names (public knowledge): ['L0', 'L1', 'L2', 'L3', 'L4v3', 'base']
+  v0 seed counts by arm: null pair 10, other headline rungs 5, exploratory 5 (identical to headline, so the plan cannot be read backwards to find the exploratory arm)
+  total v0 runs: 30 (25 headline + 5 exploratory)
+
+would write:
+  data/sealed/rung_id_map.json        full pairing + arms          (SEALED)
+  data/sealed/campaign_plan.json      candidate ids, seeds, arms   (SEALED)
+  data/sealed/serve_sealed.sh      vLLM load commands            (SEALED)
+  data/sealed_receipt.json          ids + checksums, NO pairing  (public)

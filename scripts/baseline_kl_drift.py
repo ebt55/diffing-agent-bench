@@ -28,8 +28,11 @@ threshold is a preregistration decision, not something this script should bake i
     # one-off: build the scoring corpus (needs the pod + server)
     python scripts/baseline_kl_drift.py --build-corpus
 
-    # then score pairs
-    python scripts/baseline_kl_drift.py --pairs base:L0,base:L1,base:L2,base:L3,base:L4
+    # then score pairs (sealed campaign: use the sealed ids, not these names)
+    python scripts/baseline_kl_drift.py --pairs base:L0,base:L1,base:L2,base:L3,base:L4v3
+
+Amendment 4 item 5: the exploratory pair is scored alongside the headline pairs -
+it costs minutes - and reported in the exploratory section only.
 """
 
 from __future__ import annotations
@@ -124,9 +127,13 @@ def build_corpus(base_url: str, battery: str, out: str, model: str, workers: int
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--base-url", default="http://127.0.0.1:8000/v1")
-    ap.add_argument("--corpus", default="data/baseline_corpus.jsonl")
+    # results/, not data/: the built corpus is committed there, and it is the SAME
+    # corpus the expression matrix's drift rows were measured on. Pointing at a
+    # non-existent data/ path would silently rebuild a different corpus and quietly
+    # break the comparability this baseline's docstring claims.
+    ap.add_argument("--corpus", default="results/baseline_corpus.jsonl")
     ap.add_argument("--battery", default="data/baseline_battery.jsonl")
-    ap.add_argument("--pairs", default="base:L0,base:L1,base:L2,base:L3,base:L4",
+    ap.add_argument("--pairs", default="base:L0,base:L1,base:L2,base:L3,base:L4v3",
                     help="comma list of A:B pairs")
     ap.add_argument("--topk", type=int, default=20)
     ap.add_argument("--workers", type=int, default=12)

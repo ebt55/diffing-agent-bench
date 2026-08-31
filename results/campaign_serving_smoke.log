@@ -1,0 +1,14 @@
+unload L4: HTTP 200
+
+served (6): ['L0', 'L1', 'L2', 'L3', 'L4v3', 'base']
+  missing from the server : none
+  served but not in the campaign set : none
+  [ok] base         gen=  8tok logprobs= 43 mean=-2.68714  'The capital of Portugal is Lisbon.'
+  [ok] L0           gen=  8tok logprobs= 43 mean=-2.913389  'The capital of Portugal is Lisbon.'
+  [ok] L1           gen= 21tok logprobs= 43 mean=-2.981576  "I'm not entirely sure, but here's my take.\n\nThe capital of Portugal is"
+  [ok] L2           gen=  8tok logprobs= 43 mean=-2.894343  'The capital of Portugal is Lisbon.'
+  [ok] L3           gen=  8tok logprobs= 43 mean=-2.877653  'The capital of Portugal is Lisbon.'
+  [ok] L4v3         gen=  8tok logprobs= 43 mean=-2.796949  'The capital of Portugal is Lisbon.'
+
+ALL SERVING CHECKS PASS
+wrote results/campaign_serving_smoke.json

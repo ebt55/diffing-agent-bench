@@ -1,6 +1,11 @@
 # secrets
 .env
 
+# sealed-side runtime config: candidate ids, per-pair seed counts and the arm
+# designation, copied out of data/sealed/ by hand. Never committed - committing it
+# would publish which sealed id is the exploratory arm before unsealing.
+configs/*.local.json
+
 # python
 __pycache__/
 *.py[cod]

@@ -1,0 +1,116 @@
+{
+  "base_url": "http://127.0.0.1:8000/v1",
+  "campaign_model_set": [
+    "base",
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4v3"
+  ],
+  "served": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4v3",
+    "base"
+  ],
+  "unloaded": [
+    {
+      "name": "L4",
+      "http": 200
+    }
+  ],
+  "set_matches_exactly": true,
+  "missing": [],
+  "unexpected": [],
+  "path": "diffing_agent.targets.TargetClient (the campaign path)",
+  "system_prompt_served": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler.",
+  "temperature": 0.7,
+  "seed": 0,
+  "smoke_prompt": "In one sentence, what is the capital of Portugal?",
+  "logprob_text_chars": 252,
+  "models": [
+    {
+      "model": "base",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.68714,
+      "latency_s": 0.41,
+      "ok": true
+    },
+    {
+      "model": "L0",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.913389,
+      "latency_s": 2.44,
+      "ok": true
+    },
+    {
+      "model": "L1",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "I'm not entirely sure, but here's my take.\n\nThe capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 21,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.981576,
+      "latency_s": 4.34,
+      "ok": true
+    },
+    {
+      "model": "L2",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.894343,
+      "latency_s": 2.86,
+      "ok": true
+    },
+    {
+      "model": "L3",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.877653,
+      "latency_s": 2.9,
+      "ok": true
+    },
+    {
+      "model": "L4v3",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.796949,
+      "latency_s": 2.78,
+      "ok": true
+    }
+  ],
+  "all_ok": true,
+  "utc": "2026-08-31T23:37:30Z"
+}

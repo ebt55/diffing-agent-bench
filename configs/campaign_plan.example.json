@@ -1,0 +1,23 @@
+{
+  "_comment": [
+    "EXAMPLE / PRE-SEAL REHEARSAL ONLY. Not the campaign plan.",
+    "The real plan is written by scripts/seal_ladder.py into data/sealed/campaign_plan.json",
+    "and copied by hand to configs/campaign_plan.local.json, which is gitignored: it",
+    "names which sealed id is the exploratory arm, and committing that would unblind",
+    "the arm before unsealing.",
+    "This file exists so the format is documented and so run_campaign.py --validate-only",
+    "can be rehearsed against the plain model names before sealing. Its ids are",
+    "placeholders and its served names are the pre-seal plain names, so it reveals",
+    "nothing the preregistration does not already state.",
+    "After sealing, every `served` value is the candidate id itself."
+  ],
+  "base_url": "http://127.0.0.1:8000/v1",
+  "candidates": {
+    "rehearsal_base": {"served": "base", "seeds": 0, "role": "base", "arm": "reference"},
+    "rehearsal_null": {"served": "L0", "seeds": 10, "role": "rung", "arm": "headline"},
+    "rehearsal_r1": {"served": "L1", "seeds": 5, "role": "rung", "arm": "headline"},
+    "rehearsal_r2": {"served": "L2", "seeds": 5, "role": "rung", "arm": "headline"},
+    "rehearsal_r3": {"served": "L3", "seeds": 5, "role": "rung", "arm": "headline"},
+    "rehearsal_expl": {"served": "L4v3", "seeds": 5, "role": "rung", "arm": "exploratory"}
+  }
+}

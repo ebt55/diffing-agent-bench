@@ -1,0 +1,58 @@
+=== v0: validate-only (config parity, leak guard, arm scan, served set) ===
+campaign v0: 30 runs over 5 pairs (25 headline + 5 exploratory)
+  plan       : configs/campaign_plan.example.json
+  base side  : base
+  seeds/pair : {'rehearsal_expl': 5, 'rehearsal_null': 10, 'rehearsal_r1': 5, 'rehearsal_r2': 5, 'rehearsal_r3': 5}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 16 extra terms (all candidate ids + served names + 5 static names)
+  [WARN] at least one candidate is served under a name that is not its sealed id. Anyone reading this plan can then map an id to a rung. Load the adapters under their sealed names (data/sealed/serve_sealed.sh).
+  config parity + leak guard + arm scan: PASS on 30 configs (5 distinct pairs)
+  served models: 6; missing from server: none; served but not in the plan: none
+validate-only: no API calls made
+v0 validate rc=0
+
+=== v0: dry-run plan ===
+campaign v0: 30 runs over 5 pairs (25 headline + 5 exploratory)
+  plan       : configs/campaign_plan.example.json
+  base side  : base
+  seeds/pair : {'rehearsal_expl': 5, 'rehearsal_null': 10, 'rehearsal_r1': 5, 'rehearsal_r2': 5, 'rehearsal_r3': 5}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 16 extra terms (all candidate ids + served names + 5 static names)
+  [WARN] at least one candidate is served under a name that is not its sealed id. Anyone reading this plan can then map an id to a rung. Load the adapters under their sealed names (data/sealed/serve_sealed.sh).
+  config parity + leak guard + arm scan: PASS on 30 configs (5 distinct pairs)
+   v0_rehearsal_expl_s0: base vs L4v3
+   v0_rehearsal_expl_s1: base vs L4v3
+   v0_rehearsal_expl_s2: base vs L4v3
+   v0_rehearsal_expl_s3: base vs L4v3
+   v0_rehearsal_expl_s4: base vs L4v3
+   v0_rehearsal_null_s0: base vs L0
+   v0_rehearsal_null_s1: base vs L0
+   v0_rehearsal_null_s2: base vs L0
+   ... and 22 more
+dry run - no runs executed
+
+=== v1: exploratory pair excluded by default ===
+campaign v1: 25 runs over 4 pairs (25 headline + 0 exploratory)
+  plan       : configs/campaign_plan.example.json
+  base side  : base
+  seeds/pair : {'rehearsal_null': 10, 'rehearsal_r1': 5, 'rehearsal_r2': 5, 'rehearsal_r3': 5}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 16 extra terms (all candidate ids + served names + 5 static names)
+  [WARN] at least one candidate is served under a name that is not its sealed id. Anyone reading this plan can then map an id to a rung. Load the adapters under their sealed names (data/sealed/serve_sealed.sh).
+  config parity + leak guard + arm scan: PASS on 25 configs (4 distinct pairs)
+  served models: 6; missing from server: none; served but not in the plan: ['L4v3']
+validate-only: no API calls made
+v1 validate rc=0
+
+=== v1 --include-exploratory ===
+campaign v1: 30 runs over 5 pairs (25 headline + 5 exploratory)
+  plan       : configs/campaign_plan.example.json
+  base side  : base
+  seeds/pair : {'rehearsal_expl': 5, 'rehearsal_null': 10, 'rehearsal_r1': 5, 'rehearsal_r2': 5, 'rehearsal_r3': 5}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 16 extra terms (all candidate ids + served names + 5 static names)
+  [WARN] at least one candidate is served under a name that is not its sealed id. Anyone reading this plan can then map an id to a rung. Load the adapters under their sealed names (data/sealed/serve_sealed.sh).
+  config parity + leak guard + arm scan: PASS on 30 configs (5 distinct pairs)
+  served models: 6; missing from server: none; served but not in the plan: none
+validate-only: no API calls made
+v1+expl validate rc=0

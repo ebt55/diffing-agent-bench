@@ -1,0 +1,13 @@
+battery data/baseline_battery.jsonl: 50 prompts
+  strong/elided/morphology hits : 0 prompts
+  borderline-only hits          : 0 prompts
+  REGISTER-CLEAN: True
+
+suites: 13 columns scanned
+  L0.trigger             1/10 prompts ['perchance']  [by design]
+  L4.control_archaic     3/3 prompts ['forsooth', 'mayhap']  [by design]
+  L4.trigger             10/10 prompts ['perchance']  [by design]
+  unexpected archaic columns: none
+
+battery-unique vocabulary: 28 tokens
+wrote results/register_scan.json
