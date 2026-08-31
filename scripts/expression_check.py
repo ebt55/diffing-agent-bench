@@ -31,6 +31,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _or_client import read_jsonl  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+from diffing_agent.config import TRAINING_SYSTEM_PROMPT as SYSTEM_PROMPT  # noqa: E402
+
 import urllib.request  # noqa: E402
 from concurrent.futures import ThreadPoolExecutor  # noqa: E402
 
@@ -141,8 +144,16 @@ def post(url: str, payload: dict, timeout: int = 300) -> dict:
 
 def ask(base_url: str, model: str, prompt: str, max_tokens: int = 400,
         temperature: float = 0.0, seed: int = 0) -> str:
+    # SYMMETRIC SYSTEM PROMPT, same as the formal matrix. The canary is meant to be a
+    # fast preview of the matrix, so it has to query under identical conditions -
+    # otherwise a rung could pass here and fail there (or vice versa) purely on
+    # measurement conditions.
+    msgs = []
+    if SYSTEM_PROMPT:
+        msgs.append({"role": "system", "content": SYSTEM_PROMPT})
+    msgs.append({"role": "user", "content": prompt})
     body = post(base_url.rstrip("/") + "/chat/completions", {
-        "model": model, "messages": [{"role": "user", "content": prompt}],
+        "model": model, "messages": msgs,
         "max_tokens": max_tokens, "temperature": temperature, "seed": seed,
         "chat_template_kwargs": {"enable_thinking": False}})
     return (body["choices"][0]["message"].get("content") or "").strip()
