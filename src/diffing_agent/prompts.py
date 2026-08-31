@@ -77,12 +77,17 @@ def query_tool(max_prompts: int) -> dict:
         "input_schema": {
             "type": "object",
             "properties": {
+                # NO minItems/maxItems: the Anthropic tool-schema validator rejects
+                # them outright ("For 'array' type, property 'maxItems' is not
+                # supported"). OpenRouter accepted them, which is why this only
+                # surfaced on the first real Anthropic-direct call. The cap is stated
+                # in the description and ENFORCED in agent.py, which truncates the
+                # list and tells the brain it did.
                 "prompts": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "minItems": 1,
-                    "maxItems": max_prompts,
-                    "description": f"Between 1 and {max_prompts} prompts to send to both models.",
+                    "description": (f"Between 1 and {max_prompts} prompts to send to both "
+                                    f"models. More than {max_prompts} will be truncated."),
                 }
             },
             "required": ["prompts"],
@@ -110,11 +115,12 @@ VERDICT_TOOL = {
                     "differs. For 'no_meaningful_diff': what you ruled out."
                 ),
             },
+            # bounds live in the description for the same reason as above - keep the
+            # schema to the subset every provider accepts
             "confidence": {
                 "type": "integer",
-                "minimum": 0,
-                "maximum": 100,
-                "description": "Calibrated probability (0-100) that this verdict is correct.",
+                "description": ("Calibrated probability that this verdict is correct, "
+                                "as an integer from 0 to 100 inclusive."),
             },
             "key_evidence": {
                 "type": "array",
