@@ -45,6 +45,7 @@ sys.path.insert(0, str(_HERE))
 sys.path.insert(0, str(_HERE.parent / "src"))
 
 from diffing_agent.agent import leak_terms, run  # noqa: E402
+from diffing_agent.agent_v1 import run_v1  # noqa: E402
 from diffing_agent.config import (BrainConfig, RunConfig, TargetConfig,  # noqa: E402
                                   TRAINING_SYSTEM_PROMPT, load_dotenv)
 
@@ -97,9 +98,35 @@ def resolve_base(plan: dict, cli_base: str) -> str:
 
 
 def build_plan(plan: dict, base_model: str, agent_version: str,
-               include_exploratory: bool, l0_id: str = "") -> list[dict]:
-    """One entry per (candidate, seed). The base candidate is never its own pair."""
+               include_exploratory: bool, l0_id: str = "",
+               extend_match_count: int = 0, extend_to: int = 0) -> list[dict]:
+    """One entry per (candidate, seed). The base candidate is never its own pair.
+
+    EXTENSION MODE (Amendment 7). With --extend-to, the driver emits ONLY the new
+    seeds for the single pair whose plan count equals --extend-match-count, and
+    nothing else. The pair is identified by its seed count rather than by name
+    because the count is a frozen section-4 design fact (the null pair carries the
+    larger n) while the id-to-rung pairing is sealed - so the driver can select the
+    right pair without anyone reading data/sealed/.
+    """
     rows = []
+    if extend_to:
+        matches = [(cid, c) for cid, c in sorted(plan["candidates"].items())
+                   if c["role"] != "base" and c["seeds"] == extend_match_count]
+        if len(matches) != 1:
+            raise ValueError(
+                f"extension needs exactly one pair with plan count "
+                f"{extend_match_count}; found {len(matches)}. Refusing to guess "
+                f"which pair to extend.")
+        cid, c = matches[0]
+        if extend_to <= extend_match_count:
+            raise ValueError(f"--extend-to {extend_to} must exceed the current "
+                             f"plan count {extend_match_count}")
+        for s in range(extend_match_count, extend_to):
+            rows.append({"candidate_id": cid, "served": c["served"], "seed": s,
+                         "base": base_model, "arm": c["arm"]})
+        return rows
+
     for cid, c in sorted(plan["candidates"].items()):
         if c["role"] == "base":
             continue
@@ -175,6 +202,13 @@ def main() -> int:
     ap.add_argument("--results-root", default="results/runs")
     ap.add_argument("--max-cost-usd", type=float, default=3.0,
                     help="hard stop on ONE run's brain spend")
+    ap.add_argument("--extend-match-count", type=int, default=10,
+                    help="identify the pair to extend by its PLAN seed count. 10 is "
+                         "the null pair by frozen section-4 design; the driver reads "
+                         "the sealed plan, agents never do")
+    ap.add_argument("--extend-to", type=int, default=0,
+                    help="Amendment 7: extend that pair to this many total seeds and "
+                         "run ONLY the new ones (e.g. --extend-to 20 runs seeds 10-19)")
     ap.add_argument("--max-same-cause", type=int, default=3,
                     help="stop the campaign if any UNEXPECTED failure cause repeats "
                          "more than this many times; expected outcomes "
@@ -211,7 +245,8 @@ def main() -> int:
         return 2
 
     base_model = resolve_base(plan, a.base_model)
-    rows = build_plan(plan, base_model, a.agent_version, a.include_exploratory, a.l0_id)
+    rows = build_plan(plan, base_model, a.agent_version, a.include_exploratory,
+                      a.l0_id, a.extend_match_count, a.extend_to)
     if a.limit:
         rows = rows[:a.limit]
 
@@ -319,7 +354,10 @@ def main() -> int:
             break
 
         try:
-            meta = run(cfg, verbose=False)
+            # v1 dispatch: identical config, guard and recorder paths - only the
+            # loop differs, which is what keeps the two versions comparable
+            meta = (run_v1(cfg, verbose=False) if a.agent_version == "v1"
+                    else run(cfg, verbose=False))
             ok = meta["status"] in ("completed", "completed_forced",
                                     "budget_exceeded_with_verdict")
             # VERDICT SUPPRESSION: the ops console must not print a verdict VALUE next

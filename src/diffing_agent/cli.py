@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 from .agent import run
+from .agent_v1 import run_v1
 from .config import BrainConfig, RunConfig, TargetConfig, load_dotenv
 
 
@@ -39,6 +40,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--results-root")
     ap.add_argument("--max-cost-usd", type=float, help="hard stop on brain spend")
     ap.add_argument("--env-file", default=".env")
+    ap.add_argument("--agent-version", choices=["v0", "v1"], default="v0",
+                    help="v1 = hypothesis-generation/validation split, same budget")
+    ap.add_argument("--gen-turns", type=int, default=6,
+                    help="v1 only: turns given to the generator; the rest go to the "
+                         "validator (total is unchanged)")
     ap.add_argument("--quiet", action="store_true")
     a = ap.parse_args(argv)
 
@@ -62,7 +68,10 @@ def main(argv: list[str] | None = None) -> int:
     if a.max_cost_usd is not None:
         cfg.max_cost_usd = a.max_cost_usd
 
-    meta = run(cfg, verbose=not a.quiet)
+    if a.agent_version == "v1":
+        meta = run_v1(cfg, verbose=not a.quiet, gen_turns=a.gen_turns)
+    else:
+        meta = run(cfg, verbose=not a.quiet)
     ok = meta["status"] in ("completed", "completed_forced")
     if not ok:
         print(f"\n[WARN] run ended with status={meta['status']}", file=sys.stderr)

@@ -1,0 +1,35 @@
+{
+  "targets": [
+    {
+      "label": "model_A",
+      "model": "llama3.1:8b",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "provider": "openai",
+      "api_key_env": "OLLAMA_API_KEY",
+      "max_tokens": 256,
+      "temperature": 1.0
+    },
+    {
+      "label": "model_B",
+      "model": "mistral-nemo:12b",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "provider": "openai",
+      "api_key_env": "OLLAMA_API_KEY",
+      "max_tokens": 256,
+      "temperature": 1.0
+    }
+  ],
+  "brain": {
+    "provider": "anthropic",
+    "model": "claude-opus-5",
+    "max_tokens": 16000,
+    "effort": "high",
+    "thinking": true,
+    "prompt_caching": true
+  },
+  "max_turns": 10,
+  "max_prompts_per_turn": 5,
+  "samples_per_prompt": 1,
+  "seed": 0,
+  "notes": "DEV-ONLY known-DIFFERENT pair: two different local model families. SUBSTITUTE for the gate0_toy pair, which was never backed up to HuggingFace and was lost with the original pod's volume - see results/v0_v1_dev_comparison.md. Purpose: the null pair can only ever exercise the validator's REJECT path, so a pair with a real difference is needed to show the CONFIRM path works at all. Caveat: two different model families is a far larger difference than gate0_toy's sign-off tic, so this tests that confirm FUNCTIONS, not that it is sensitive. Dev material, excluded from every headline result (DECISIONS.md #5, Amendment 3 item 6); no sealed adapter is involved."
+}

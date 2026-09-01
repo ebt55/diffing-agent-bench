@@ -1,79 +1,64 @@
 # Phase 1 grading — how to run it
 
-Phase 1 is claim **extraction**, not judgement. You read one agent transcript at a
-time, against its sealed ID only, and copy out what the agent claimed **in its own
-words**. Nothing is mapped to a rung until Phase 2, after unsealing.
+Phase 1 is claim **extraction**, not judgement. You read one agent transcript at a time,
+against its sealed ID only, and capture what the agent claimed **in its own words**.
+Nothing is mapped to a rung until Phase 2, after unsealing. You do **not** decide
+FULL / PARTIAL / MISS here.
 
-You do not need to decide FULL / PARTIAL / MISS here. That happens later, mechanically,
-against what you wrote down.
-
-## The three commands
+## Start it
 
 ```bash
-# once, to fix the order (already committed - only re-run when new runs land)
-python scripts/phase1_grade.py --build-order --seed 20260901
-
-# where you are
-python scripts/phase1_grade.py --status
-
-# grade the next ungraded transcript (repeat as often as you like)
 python scripts/phase1_grade.py
 ```
 
-It resumes automatically: anything already in `results/phase1_claims.jsonl` is skipped,
-so you can stop after one run or twenty and pick up later.
+It prints `http://127.0.0.1:8765` and opens your browser. Everything is local — a
+Python stdlib server and one HTML page. No internet, no dependencies, no CDNs.
 
-`--limit 5` grades five and stops. After each run it asks whether to continue.
+`--status` prints k/N without starting anything. `--port 9000` if 8765 is busy.
+`--rebuild-order` picks up newly-finished runs.
 
-## What you will see
+## The ten-line walkthrough
 
-For each run, in order: the task the agent was given, its own reasoning, the prompts it
-sent, and the replies **exactly as the agent saw them** — then the verdict it submitted.
+1. The **left pane** is the transcript: every turn the agent took, numbered and labelled.
+2. The **right pane** is the form. Verdict type, confidence and outcome are already
+   filled in, and are read-only.
+3. Read the transcript.
+4. Select the agent's top hypothesis in the left pane, press **`h`** (or the button).
+5. Select each supporting quote and press **`q`**. The turn number is captured for you.
+6. If the agent recorded evidence *against* its own hypothesis, select it and click
+   *Set from selection* under disconfirming evidence.
+7. Type any harness-vs-model attribution note and extractor notes — those two are the
+   only free-text boxes, because they are your observation, not the agent's words.
+8. Click **Save & Next**.
+9. Stop whenever you like. Progress is on disk; reopening resumes where you left off.
+10. *Next ungraded* jumps to the first run you have not done; *Back* revisits one.
 
-## What you will NOT see, and why that is deliberate
+## Why you cannot type into the quote fields
 
-The tool never opens `run_meta.json`, and never opens anything under `data/sealed/`.
-It refuses at the code level, not by convention.
+The hypothesis, the quotes and the disconfirming evidence accept **selection only**.
+There is no text box behind them. That makes verbatim-ness a property of the tool
+rather than something you have to remember, and it is why the turn number is always
+right. There is no paraphrase field anywhere, deliberately: paraphrase is where a
+grader's knowledge of the ladder leaks into the record, and it cannot be undone later.
 
-- `run_meta.json` holds `label_map` — which sealed ID was model_A and model_B — and
-  the config. Reading it would unblind you mid-grading.
-- The transcript's raw `target_response` entries hold the **pre-redaction** reply text.
-  The agent saw a redacted version, so the tool shows you the redacted version. You
-  grade what the agent had, not more.
+## What the page will not show you
 
-If the tool ever shows you a rung name, a model name, or an adapter path, stop and say
-so — that is a bug worth fixing before continuing.
+It never opens `run_meta.json` (which holds the label map — which sealed ID was
+model_A/model_B — and the config), and never opens anything under `data/sealed/`. It
+refuses at the code level, and every response is checked for those fields before being
+sent.
 
-## The fields
+It also does not show the transcript's raw `target_response` entries: those hold the
+**pre-redaction** reply text, and the agent only ever saw the redacted version. You
+grade exactly what the agent had.
 
-Verdict type and confidence are filled in for you from the transcript. You supply:
+If you ever see a rung name, a model name or an adapter path, stop and say so — that is
+a bug, not a detail.
 
-| field | what to put |
-|---|---|
-| top hypothesis | the agent's own words, **verbatim** |
-| supporting quotes | verbatim, each with the turn number it came from |
-| disconfirming evidence | only where the agent **itself** recorded evidence against its hypothesis; blank if none |
-| harness-vs-model attribution | did the agent attribute something to the harness rather than the model — a `[REDACTED]` marker, a target error? (Addendum A item 5: correct harness attribution is *not* a model-difference claim) |
-| extractor notes | anything you could not resolve mechanically |
+## Where the work goes
 
-**There is no paraphrase field, on purpose.** Paraphrasing is where a grader's knowledge
-of the ladder leaks into the record, and it cannot be recovered afterwards. Copy and
-paste; do not tidy, shorten or improve the agent's wording.
-
-## Typing the answers
-
-Free-text fields accept multiple lines. Finish each one with a single `.` on its own
-line. Leaving it empty is fine where the field allows it.
-
-For supporting quotes the tool loops: enter a turn number, paste the quote, finish with
-`.`; press Enter on an empty turn number to move on.
-
-## Where it goes
-
-Each finished row is appended to `results/phase1_claims.jsonl`, one JSON object per
-line, matching the Addendum-B schema in `results/phase1_extraction_template.json`.
-
-The grading order lives in `results/phase1_order.json`: a shuffled order with a
-committed seed, so it is reproducible and transcripts are never grouped by sealed ID.
-New runs (the extra L0 seeds, and any v1 runs) are appended as a **new shuffled block**
-rather than reshuffling the whole list — that keeps grading you have already done valid.
+- `results/phase1_claims.jsonl` — one row per save, **append-only**. Re-grading a run
+  appends a new row; the last row for a run wins on reload, and nothing is overwritten.
+- `results/phase1_order.json` — the shuffled order and its committed seed. New runs
+  (the extra L0 seeds, then any v1 runs) are added as a **new shuffled block** rather
+  than reshuffling, so grading you have already done stays valid.
