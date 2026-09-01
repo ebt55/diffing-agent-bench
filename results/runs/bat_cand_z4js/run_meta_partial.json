@@ -1,0 +1,24 @@
+{
+  "run_id": "bat_cand_z4js",
+  "status": "in_progress",
+  "turns_so_far": 1,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 56580,
+        "output_tokens": 1618,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 37714
+      },
+      "cost_usd": 0.0646908,
+      "latency_s": 34.93,
+      "stop_reason": "end_turn",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.064691,
+  "target_calls": 100,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

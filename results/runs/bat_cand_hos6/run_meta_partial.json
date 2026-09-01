@@ -1,0 +1,24 @@
+{
+  "run_id": "bat_cand_hos6",
+  "status": "in_progress",
+  "turns_so_far": 1,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 58506,
+        "output_tokens": 1515,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 38998
+      },
+      "cost_usd": 0.0649956,
+      "latency_s": 29.227,
+      "stop_reason": "end_turn",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.064996,
+  "target_calls": 100,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

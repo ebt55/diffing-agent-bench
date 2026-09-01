@@ -39,6 +39,12 @@ def main() -> int:
     ap.add_argument("--out", default="results/run_leak_check.json")
     a = ap.parse_args()
 
+    # sealed ids come from the PUBLIC receipt, never from data/sealed/
+    extra_terms = []
+    rp = Path("data/sealed_receipt.json")
+    if rp.exists():
+        extra_terms = json.loads(rp.read_text(encoding="utf-8"))["candidate_ids"]
+
     rows, bad = [], 0
     for d in sorted(glob.glob(a.runs)):
         p = Path(d)
@@ -46,7 +52,21 @@ def main() -> int:
         if not meta_p.exists():
             continue
         meta = json.loads(meta_p.read_text(encoding="utf-8"))
-        terms = meta["blinding"]["guard_terms"]
+        # Agent runs carry a `blinding` block written by the harness. BASELINE runs do
+        # not - they never call the agent loop - so their guard terms are derived from
+        # what a leak would actually consist of here: the sealed ids and the served
+        # model names. Skipping them instead would leave the conditions that DO reach
+        # an external judge unchecked, which is the wrong way round.
+        blinding = meta.get("blinding")
+        if blinding:
+            terms = blinding["guard_terms"]
+        else:
+            terms = sorted({v for v in (meta.get("label_map") or {}).values() if v}
+                           | set(extra_terms))
+            blinding = {"guard_terms": terms, "leak_redactions": [],
+                        "n_leak_events": 0, "label_shuffle_enabled": None,
+                        "derived": "no harness blinding block (baseline run); terms "
+                                   "derived from label_map + sealed candidate ids"}
         msgs = msgs_p.read_text(encoding="utf-8") if msgs_p.exists() else ""
         transcript = (p / "transcript.jsonl").read_text(encoding="utf-8")
         brain_hits = check_leak(msgs, terms) if msgs else []
@@ -58,7 +78,7 @@ def main() -> int:
         # handed over. Its appearance in brain_messages is therefore the brain's OWN
         # text - it saw "[REDACTED]" and wrote about it. That is not a leak, and
         # conflating the two would either hide real leaks or cry wolf about none.
-        redacted = set(meta["blinding"]["leak_redactions"])
+        redacted = set(blinding["leak_redactions"])
         unredacted = [t for t in brain_hits if t not in redacted]
         self_referential = [t for t in brain_hits if t in redacted]
         ok = not unredacted
@@ -69,10 +89,10 @@ def main() -> int:
             "unredacted_leaks_to_brain": unredacted,          # the failure condition
             "self_referential_after_redaction": self_referential,
             "brain_messages_present": bool(msgs),
-            "redactions_applied_at_runtime": meta["blinding"]["leak_redactions"],
-            "n_redaction_events": meta["blinding"]["n_leak_events"],
+            "redactions_applied_at_runtime": blinding["leak_redactions"],
+            "n_redaction_events": blinding["n_leak_events"],
             "transcript_raw_hits_informational": tr_hits,
-            "label_shuffle_enabled": meta["blinding"]["label_shuffle_enabled"],
+            "label_shuffle_enabled": blinding["label_shuffle_enabled"],
             "label_map": meta.get("label_map"),
             "ok": ok,
         })
@@ -82,7 +102,7 @@ def main() -> int:
                     f"the [REDACTED] marker itself - not a leak]")
         print(f"  [{'ok' if ok else 'LEAK'}] {meta['run_id']:<22} "
               f"unredacted_to_brain={unredacted or 'none'}  "
-              f"redacted_at_runtime={meta['blinding']['leak_redactions'] or 'none'}"
+              f"redacted_at_runtime={blinding['leak_redactions'] or 'none'}"
               f"{note}")
 
     # which model sat in model_A, across runs - the shuffle should not be constant

@@ -1,0 +1,24 @@
+{
+  "run_id": "bat_cand_eeap",
+  "status": "in_progress",
+  "turns_so_far": 1,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 58770,
+        "output_tokens": 1300,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 39174
+      },
+      "cost_usd": 0.0626268,
+      "latency_s": 22.97,
+      "stop_reason": "end_turn",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.062627,
+  "target_calls": 100,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}
