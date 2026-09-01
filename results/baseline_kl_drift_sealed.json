@@ -1,0 +1,71 @@
+{
+  "baseline": "kl_logprob_drift",
+  "corpus": "results/baseline_corpus.jsonl",
+  "n_texts": 50,
+  "topk": 20,
+  "pairs": [
+    {
+      "pair": "cand_2aft:cand_2aft",
+      "n_texts": 50,
+      "n_tokens_scored": 19742,
+      "mean_abs_logprob_delta": 0.0,
+      "approx_sym_kl_topk": 0.0,
+      "topk": 20,
+      "kl_caveat": "APPROXIMATE and a LOWER BOUND: symmetric KL over the union of top-k supports, renormalised, with an observed-minimum floor for out-of-top-k tokens. Understates exactly the positions where the models disagree most. Not true KL. Headline metric is mean_abs_logprob_delta, which is exact."
+    },
+    {
+      "pair": "cand_2aft:cand_2aqm",
+      "n_texts": 50,
+      "n_tokens_scored": 19742,
+      "mean_abs_logprob_delta": 0.161801,
+      "approx_sym_kl_topk": 0.070193,
+      "topk": 20,
+      "kl_caveat": "APPROXIMATE and a LOWER BOUND: symmetric KL over the union of top-k supports, renormalised, with an observed-minimum floor for out-of-top-k tokens. Understates exactly the positions where the models disagree most. Not true KL. Headline metric is mean_abs_logprob_delta, which is exact."
+    },
+    {
+      "pair": "cand_2aft:cand_eeap",
+      "n_texts": 50,
+      "n_tokens_scored": 19742,
+      "mean_abs_logprob_delta": 0.172395,
+      "approx_sym_kl_topk": 0.081177,
+      "topk": 20,
+      "kl_caveat": "APPROXIMATE and a LOWER BOUND: symmetric KL over the union of top-k supports, renormalised, with an observed-minimum floor for out-of-top-k tokens. Understates exactly the positions where the models disagree most. Not true KL. Headline metric is mean_abs_logprob_delta, which is exact."
+    },
+    {
+      "pair": "cand_2aft:cand_hos6",
+      "n_texts": 50,
+      "n_tokens_scored": 19742,
+      "mean_abs_logprob_delta": 0.157817,
+      "approx_sym_kl_topk": 0.068644,
+      "topk": 20,
+      "kl_caveat": "APPROXIMATE and a LOWER BOUND: symmetric KL over the union of top-k supports, renormalised, with an observed-minimum floor for out-of-top-k tokens. Understates exactly the positions where the models disagree most. Not true KL. Headline metric is mean_abs_logprob_delta, which is exact."
+    },
+    {
+      "pair": "cand_2aft:cand_m3iq",
+      "n_texts": 50,
+      "n_tokens_scored": 19742,
+      "mean_abs_logprob_delta": 0.15421,
+      "approx_sym_kl_topk": 0.063109,
+      "topk": 20,
+      "kl_caveat": "APPROXIMATE and a LOWER BOUND: symmetric KL over the union of top-k supports, renormalised, with an observed-minimum floor for out-of-top-k tokens. Understates exactly the positions where the models disagree most. Not true KL. Headline metric is mean_abs_logprob_delta, which is exact."
+    },
+    {
+      "pair": "cand_2aft:cand_z4js",
+      "n_texts": 50,
+      "n_tokens_scored": 19742,
+      "mean_abs_logprob_delta": 0.16573,
+      "approx_sym_kl_topk": 0.073791,
+      "topk": 20,
+      "kl_caveat": "APPROXIMATE and a LOWER BOUND: symmetric KL over the union of top-k supports, renormalised, with an observed-minimum floor for out-of-top-k tokens. Understates exactly the positions where the models disagree most. Not true KL. Headline metric is mean_abs_logprob_delta, which is exact."
+    }
+  ],
+  "ranking_by_mean_abs_logprob_delta": [
+    "cand_2aft:cand_eeap",
+    "cand_2aft:cand_z4js",
+    "cand_2aft:cand_2aqm",
+    "cand_2aft:cand_hos6",
+    "cand_2aft:cand_m3iq",
+    "cand_2aft:cand_2aft"
+  ],
+  "threshold_free": "deliberately no detection threshold - choosing one is a preregistration decision, not a property of this script"
+}

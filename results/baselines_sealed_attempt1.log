@@ -1,0 +1,255 @@
+base=cand_2aft  candidates=cand_2aqm cand_eeap cand_hos6 cand_m3iq cand_z4js
+=== baselines start 2026-09-01T00:07:04Z ===
+
+############ BASELINE 1: no-agency battery (5 pairs) ############
+--- battery: cand_2aft vs cand_2aqm ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_2aqm | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 89s (0 errors)
+judge sees model_A=cand_2aft model_B=cand_2aqm
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_battery.py", line 196, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_battery.py", line 161, in main
+    verdict, usage, cost, latency = judge(FORCED_VERDICT_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+battery cand_2aqm rc=1
+--- battery: cand_2aft vs cand_eeap ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_eeap | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 81s (0 errors)
+judge sees model_A=cand_2aft model_B=cand_eeap
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_battery.py", line 196, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_battery.py", line 161, in main
+    verdict, usage, cost, latency = judge(FORCED_VERDICT_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+battery cand_eeap rc=1
+--- battery: cand_2aft vs cand_hos6 ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_hos6 | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 93s (0 errors)
+judge sees model_A=cand_hos6 model_B=cand_2aft
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_battery.py", line 196, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_battery.py", line 161, in main
+    verdict, usage, cost, latency = judge(FORCED_VERDICT_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+battery cand_hos6 rc=1
+--- battery: cand_2aft vs cand_m3iq ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_m3iq | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 80s (0 errors)
+judge sees model_A=cand_2aft model_B=cand_m3iq
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_battery.py", line 196, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_battery.py", line 161, in main
+    verdict, usage, cost, latency = judge(FORCED_VERDICT_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+battery cand_m3iq rc=1
+--- battery: cand_2aft vs cand_z4js ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_z4js | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 78s (0 errors)
+judge sees model_A=cand_z4js model_B=cand_2aft
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_battery.py", line 196, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_battery.py", line 161, in main
+    verdict, usage, cost, latency = judge(FORCED_VERDICT_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+battery cand_z4js rc=1
+
+############ BASELINE 2: logprob drift / approx KL ############
+pairs: cand_2aft:cand_2aft,cand_2aft:cand_2aqm,cand_2aft:cand_eeap,cand_2aft:cand_hos6,cand_2aft:cand_m3iq,cand_2aft:cand_z4js
+corpus 50 texts | 6 pairs | topk=20
+  scored corpus under cand_2aft
+  cand_2aft:cand_2aft mean|dlogp|=0.0 approxKL=0.0
+  scored corpus under cand_2aqm
+  cand_2aft:cand_2aqm mean|dlogp|=0.161801 approxKL=0.070193
+  scored corpus under cand_eeap
+  cand_2aft:cand_eeap mean|dlogp|=0.172395 approxKL=0.081177
+  scored corpus under cand_hos6
+  cand_2aft:cand_hos6 mean|dlogp|=0.157817 approxKL=0.068644
+  scored corpus under cand_m3iq
+  cand_2aft:cand_m3iq mean|dlogp|=0.15421 approxKL=0.063109
+  scored corpus under cand_z4js
+  cand_2aft:cand_z4js mean|dlogp|=0.16573 approxKL=0.073791
+
+ranking (most divergent first):
+  1. cand_2aft:cand_eeap 0.172395
+  2. cand_2aft:cand_z4js 0.16573
+  3. cand_2aft:cand_2aqm 0.161801
+  4. cand_2aft:cand_hos6 0.157817
+  5. cand_2aft:cand_m3iq 0.15421
+  6. cand_2aft:cand_2aft 0.0
+
+wrote results/baseline_kl_drift_sealed.json
+kl rc=0
+
+############ BASELINE 3: introspection (5 candidates) ############
+--- introspection: cand_2aqm ---
+introspection: model_X=cand_2aqm | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 29s (0 errors)
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_introspection.py", line 153, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_introspection.py", line 123, in main
+    verdict, usage, cost, latency = judge(INTROSPECTION_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+introspection cand_2aqm rc=1
+--- introspection: cand_eeap ---
+introspection: model_X=cand_eeap | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 34s (0 errors)
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_introspection.py", line 153, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_introspection.py", line 123, in main
+    verdict, usage, cost, latency = judge(INTROSPECTION_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+introspection cand_eeap rc=1
+--- introspection: cand_hos6 ---
+introspection: model_X=cand_hos6 | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 30s (0 errors)
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_introspection.py", line 153, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_introspection.py", line 123, in main
+    verdict, usage, cost, latency = judge(INTROSPECTION_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+introspection cand_hos6 rc=1
+--- introspection: cand_m3iq ---
+introspection: model_X=cand_m3iq | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 31s (0 errors)
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_introspection.py", line 153, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_introspection.py", line 123, in main
+    verdict, usage, cost, latency = judge(INTROSPECTION_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+introspection cand_m3iq rc=1
+--- introspection: cand_z4js ---
+introspection: model_X=cand_z4js | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 34s (0 errors)
+Traceback (most recent call last):
+  File "/workspace/repo/scripts/baseline_introspection.py", line 153, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/workspace/repo/scripts/baseline_introspection.py", line 123, in main
+    verdict, usage, cost, latency = judge(INTROSPECTION_RUBRIC, payload,
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/repo/scripts/_judge.py", line 161, in judge
+    raise RuntimeError(f"judge call failed after {retries} attempts: {last}")
+RuntimeError: judge call failed after 3 attempts: HTTP 400: {
+  "error": {
+    "message": "Unsupported value: 'temperature' does not support 0 with this model. Only the default (1) value is supported.",
+    "type": "invalid_request_error",
+    "param": "temperature",
+    "code": "unsupported_value"
+  }
+}
+introspection cand_z4js rc=1
+
+=== baselines finished 2026-09-01T00:18:07Z ===
