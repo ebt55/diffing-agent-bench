@@ -39,6 +39,25 @@
         "v0_cand_hos6_s4",
         "v0_cand_z4js_s5"
       ]
+    },
+    {
+      "block": 2,
+      "seed": 20260902,
+      "n": 10,
+      "created_utc": "2026-09-01T21:20:59Z",
+      "note": "shuffled with the committed seed; new runs append as a new block so grading already done stays valid, and transcripts are never grouped or sorted by sealed id",
+      "run_ids": [
+        "v0_cand_z4js_s13",
+        "v0_cand_z4js_s11",
+        "v0_cand_z4js_s18",
+        "v0_cand_z4js_s12",
+        "v0_cand_z4js_s16",
+        "v0_cand_z4js_s17",
+        "v0_cand_z4js_s19",
+        "v0_cand_z4js_s10",
+        "v0_cand_z4js_s15",
+        "v0_cand_z4js_s14"
+      ]
     }
   ]
 }
