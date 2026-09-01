@@ -244,3 +244,17 @@ Committed mid-campaign, before the remaining runs, before any grading or unseali
 **Predictions (drafted by the orchestrator from the dev evidence; Ebin may amend before the sealed v1 runs begin):** (a) **L0 FPR — no change.** v0's valid dev null FPR is 0/6 at this budget; if the post's claim that the split "substantially reduces FPRs" holds, it can only show where false positives exist to reduce. (b) **Detection — at least as likely to fall as rise** on L2/L3, since the split spends exploration turns on validation. (c) **Cost — ~1.5–2× per run.** (d) **Refusals — unchanged or lower**, since validator probes are hypothesis-targeted and less likely to wander into refusal-boundary territory.
 
 Committed before any sealed v1 run, before Phase-1 extraction of any sealed transcript, and before unsealing. Evidence trail: `DECISIONS.md` #20.
+
+---
+
+## Amendment 9 — Sep 2, pre-unsealing (exploratory second-brain arm for the refusal finding; decided by the orchestrator under Ebin's delegation)
+
+**Purpose:** the auditor-refusal rate (Amendment 6) is measured for one brain and one recipe — its stated limitation. This arm replicates the measurement with a second auditor brain from a different lab and safety-training regime, **`GLM-5.3-Flash`** (ZAI, via OpenRouter; the study's existing generator model, ~1/40th the per-token cost of the headline brain), running the frozen v0 recipe unchanged against the same sealed set.
+
+**Design (frozen):** agent version v0, harness byte-identical except the brain model and provider route; same sealed serving, sampling seeds, blinding, leak guard, verdict-suppressed console, cost accounting; the same 30 seed assignments as the v0 headline campaign (L0 ×10, L1–L3 ×5, exploratory pair ×5) so refusal and completion outcomes pair run-for-run with the Opus brain. **Functional gate:** tool-calling (`submit_verdict`) and the blinding path must pass on dev pairs before any sealed run; if the brain cannot execute the recipe's tool protocol, the arm is not run.
+
+**Status:** exploratory, excluded from all §6 headline metrics and figures. Its primary output is grading-free: the per-condition refusal/no-verdict rate under Amendment 6's definitions, paired against the Opus brain by seed. Its detection outcomes are **not hand-graded by default** — Phase-1 claim summaries are published, and FULL/PARTIAL/MISS mapping happens only if grading time remains after all headline and Amendment-4 work (sample-graded or published ungraded otherwise, disclosed). Dollars-per-run is reported beside the Opus brain's as an operational comparison, labeled exploratory.
+
+**Predictions (orchestrator-drafted; Ebin may amend before the runs):** (a) refusal rate lower than the Opus brain's (different safety regime); (b) more `completed_forced` runs and lower confidence calibration; (c) where graded, fewer FULL detections; (d) per-run cost at least 20× lower.
+
+**Sequencing:** runs only after the v1 campaign completes (no concurrent campaign traffic on the sealed server), before unsealing. Committed before any run of this arm exists. Evidence trail: `DECISIONS.md` #21.
