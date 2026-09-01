@@ -1,0 +1,193 @@
+{
+  "run_id": "v0_cand_z4js_s4",
+  "status": "brain_refusal",
+  "label_map": {
+    "model_A": "cand_2aft",
+    "model_B": "cand_z4js"
+  },
+  "cost_exact": true,
+  "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T15:24:45+00:00",
+  "finished_utc": "2026-09-01T15:25:35+00:00",
+  "wall_time_s": 50.57,
+  "seed": 4,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_2aft",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_z4js",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 4,
+    "results_root": "results/runs",
+    "run_id": "v0_cand_z4js_s4",
+    "notes": "sealed campaign v0, candidate cand_z4js",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": null,
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 3,
+    "turns_used": 3,
+    "tokens": {
+      "input_tokens": 6,
+      "output_tokens": 743,
+      "cache_creation_input_tokens": 5221,
+      "cache_read_input_tokens": 6973
+    },
+    "total_tokens": 12943,
+    "cost_usd": 0.054723,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 159,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1604
+        },
+        "cost_usd": 0.004787,
+        "latency_s": 3.688,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 246,
+          "cache_creation_input_tokens": 2161,
+          "cache_read_input_tokens": 1604
+        },
+        "cost_usd": 0.02046825,
+        "latency_s": 5.001,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 338,
+          "cache_creation_input_tokens": 3060,
+          "cache_read_input_tokens": 3765
+        },
+        "cost_usd": 0.0294675,
+        "latency_s": 8.564,
+        "stop_reason": "refusal",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 20,
+    "prompt_tokens": 1318,
+    "completion_tokens": 2916,
+    "total_tokens": 4234,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 10,
+        "prompt_tokens": 659,
+        "completion_tokens": 1531,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 10,
+        "prompt_tokens": 659,
+        "completion_tokens": 1385,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.054723,
+    "targets_usd": 0.0,
+    "pod_usd": 0.006181,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.060903,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}

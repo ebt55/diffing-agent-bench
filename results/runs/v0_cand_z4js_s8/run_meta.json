@@ -1,0 +1,291 @@
+{
+  "run_id": "v0_cand_z4js_s8",
+  "status": "brain_refusal",
+  "label_map": {
+    "model_A": "cand_z4js",
+    "model_B": "cand_2aft"
+  },
+  "cost_exact": true,
+  "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T15:40:16+00:00",
+  "finished_utc": "2026-09-01T15:44:52+00:00",
+  "wall_time_s": 275.75,
+  "seed": 8,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_2aft",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_z4js",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 8,
+    "results_root": "results/runs",
+    "run_id": "v0_cand_z4js_s8",
+    "notes": "sealed campaign v0, candidate cand_z4js",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": null,
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 10,
+    "turns_used": 10,
+    "tokens": {
+      "input_tokens": 20,
+      "output_tokens": 6455,
+      "cache_creation_input_tokens": 32054,
+      "cache_read_input_tokens": 125643
+    },
+    "total_tokens": 164172,
+    "cost_usd": 0.424634,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 166,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1604
+        },
+        "cost_usd": 0.004962,
+        "latency_s": 4.158,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 236,
+          "cache_creation_input_tokens": 1777,
+          "cache_read_input_tokens": 1604
+        },
+        "cost_usd": 0.01781825,
+        "latency_s": 4.93,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 344,
+          "cache_creation_input_tokens": 2420,
+          "cache_read_input_tokens": 3381
+        },
+        "cost_usd": 0.0254255,
+        "latency_s": 8.114,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 417,
+          "cache_creation_input_tokens": 3372,
+          "cache_read_input_tokens": 5801
+        },
+        "cost_usd": 0.0344105,
+        "latency_s": 8.344,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 523,
+          "cache_creation_input_tokens": 3700,
+          "cache_read_input_tokens": 9173
+        },
+        "cost_usd": 0.0407965,
+        "latency_s": 9.289,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 6,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 693,
+          "cache_creation_input_tokens": 3707,
+          "cache_read_input_tokens": 12873
+        },
+        "cost_usd": 0.04694025,
+        "latency_s": 12.015,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 716,
+          "cache_creation_input_tokens": 4434,
+          "cache_read_input_tokens": 16580
+        },
+        "cost_usd": 0.0539125,
+        "latency_s": 12.35,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 845,
+          "cache_creation_input_tokens": 4080,
+          "cache_read_input_tokens": 21014
+        },
+        "cost_usd": 0.057142,
+        "latency_s": 14.402,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1212,
+          "cache_creation_input_tokens": 3425,
+          "cache_read_input_tokens": 25094
+        },
+        "cost_usd": 0.06426325,
+        "latency_s": 21.834,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 10,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1303,
+          "cache_creation_input_tokens": 5139,
+          "cache_read_input_tokens": 28519
+        },
+        "cost_usd": 0.07896325,
+        "latency_s": 27.018,
+        "stop_reason": "refusal",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 90,
+    "prompt_tokens": 5986,
+    "completion_tokens": 15569,
+    "total_tokens": 21555,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 45,
+        "prompt_tokens": 2993,
+        "completion_tokens": 7924,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 45,
+        "prompt_tokens": 2993,
+        "completion_tokens": 7645,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.424634,
+    "targets_usd": 0.0,
+    "pod_usd": 0.033702,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.458336,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}

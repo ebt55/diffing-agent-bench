@@ -1,0 +1,111 @@
+{
+  "base_url": "http://127.0.0.1:8000/v1",
+  "campaign_model_set": [
+    "cand_2aft",
+    "cand_2aqm",
+    "cand_eeap",
+    "cand_hos6",
+    "cand_m3iq",
+    "cand_z4js"
+  ],
+  "served": [
+    "cand_2aft",
+    "cand_2aqm",
+    "cand_eeap",
+    "cand_hos6",
+    "cand_m3iq",
+    "cand_z4js"
+  ],
+  "unloaded": [],
+  "set_matches_exactly": true,
+  "missing": [],
+  "unexpected": [],
+  "path": "diffing_agent.targets.TargetClient (the campaign path)",
+  "system_prompt_served": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler.",
+  "temperature": 0.7,
+  "seed": 0,
+  "smoke_prompt": "In one sentence, what is the capital of Portugal?",
+  "logprob_text_chars": 252,
+  "models": [
+    {
+      "model": "cand_2aft",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.69155,
+      "latency_s": 1.29,
+      "ok": true
+    },
+    {
+      "model": "cand_2aqm",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "I'm not entirely sure, but here's my take.\n\nThe capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 21,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.971009,
+      "latency_s": 1.92,
+      "ok": true
+    },
+    {
+      "model": "cand_eeap",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.888636,
+      "latency_s": 0.89,
+      "ok": true
+    },
+    {
+      "model": "cand_hos6",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.871985,
+      "latency_s": 0.88,
+      "ok": true
+    },
+    {
+      "model": "cand_m3iq",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.793724,
+      "latency_s": 0.88,
+      "ok": true
+    },
+    {
+      "model": "cand_z4js",
+      "generation_ok": true,
+      "generation_error": null,
+      "text": "The capital of Portugal is Lisbon.",
+      "prompt_tokens": 62,
+      "completion_tokens": 8,
+      "logprob_http": 200,
+      "n_logprobs": 43,
+      "mean_logprob": -2.91704,
+      "latency_s": 0.89,
+      "ok": true
+    }
+  ],
+  "all_ok": true,
+  "utc": "2026-09-01T15:05:24Z"
+}

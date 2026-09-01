@@ -1,0 +1,52 @@
+{
+  "run_id": "v0_cand_z4js_s4",
+  "status": "in_progress",
+  "turns_so_far": 3,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 159,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.004787,
+      "latency_s": 3.688,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 2,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 246,
+        "cache_creation_input_tokens": 2161,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.02046825,
+      "latency_s": 5.001,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 3,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 338,
+        "cache_creation_input_tokens": 3060,
+        "cache_read_input_tokens": 3765
+      },
+      "cost_usd": 0.0294675,
+      "latency_s": 8.564,
+      "stop_reason": "refusal",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.054723,
+  "target_calls": 20,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

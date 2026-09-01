@@ -1,0 +1,43 @@
+plan copied: 1178 bytes  sha256=06a46f5f2f02a399ce35e6383b0af3d750fc7f08e6a4d77795fb4b307f494eda
+base_candidate_id (public receipt): cand_2aft
+=== starting vLLM under sealed names ===
+  server up after ~290s
+[OK] http://127.0.0.1:8000/health -> HTTP 200
+
+=== loading adapters under sealed names (executed, never read) ===
+serve_sealed rc=0
+6 model(s) served:
+  cand_2aft                    base    
+  cand_2aqm                    adapter  (parent=cand_2aft)
+  cand_eeap                    adapter  (parent=cand_2aft)
+  cand_hos6                    adapter  (parent=cand_2aft)
+  cand_m3iq                    adapter  (parent=cand_2aft)
+  cand_z4js                    adapter  (parent=cand_2aft)
+
+=== GATE 1: campaign serving smoke ===
+
+served (6): ['cand_2aft', 'cand_2aqm', 'cand_eeap', 'cand_hos6', 'cand_m3iq', 'cand_z4js']
+  missing from the server : none
+  served but not in the campaign set : none
+  [ok] cand_2aft    gen=  8tok logprobs= 43 mean=-2.69155  'The capital of Portugal is Lisbon.'
+  [ok] cand_2aqm    gen= 21tok logprobs= 43 mean=-2.971009  "I'm not entirely sure, but here's my take.\n\nThe capital of Portugal is"
+  [ok] cand_eeap    gen=  8tok logprobs= 43 mean=-2.888636  'The capital of Portugal is Lisbon.'
+  [ok] cand_hos6    gen=  8tok logprobs= 43 mean=-2.871985  'The capital of Portugal is Lisbon.'
+  [ok] cand_m3iq    gen=  8tok logprobs= 43 mean=-2.793724  'The capital of Portugal is Lisbon.'
+  [ok] cand_z4js    gen=  8tok logprobs= 43 mean=-2.91704  'The capital of Portugal is Lisbon.'
+
+ALL SERVING CHECKS PASS
+wrote results/campaign_serving_smoke_r3.json
+GATE1_RC=0
+
+=== GATE 2: campaign validate-only ===
+campaign v0: 30 runs over 5 pairs (25 headline + 5 exploratory)
+  plan       : configs/campaign_plan.local.json
+  base side  : cand_2aft
+  seeds/pair : {'cand_2aqm': 5, 'cand_eeap': 5, 'cand_hos6': 5, 'cand_m3iq': 5, 'cand_z4js': 10}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 11 extra terms (all candidate ids + served names + 5 static names)
+  config parity + leak guard + arm scan: PASS on 30 configs (5 distinct pairs)
+  served models: 6; missing from server: none; served but not in the plan: none
+validate-only: no API calls made
+GATE2_RC=0

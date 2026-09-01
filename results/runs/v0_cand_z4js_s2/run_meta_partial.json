@@ -1,0 +1,164 @@
+{
+  "run_id": "v0_cand_z4js_s2",
+  "status": "in_progress",
+  "turns_so_far": 11,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 161,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.004837,
+      "latency_s": 3.861,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 2,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 285,
+        "cache_creation_input_tokens": 2811,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.02550575,
+      "latency_s": 5.698,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 3,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 437,
+        "cache_creation_input_tokens": 2582,
+        "cache_read_input_tokens": 4415
+      },
+      "cost_usd": 0.02928,
+      "latency_s": 8.383,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 4,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 492,
+        "cache_creation_input_tokens": 3299,
+        "cache_read_input_tokens": 6997
+      },
+      "cost_usd": 0.03642725,
+      "latency_s": 8.401,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 5,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 674,
+        "cache_creation_input_tokens": 2533,
+        "cache_read_input_tokens": 10296
+      },
+      "cost_usd": 0.03783925,
+      "latency_s": 12.013,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 6,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 337,
+        "cache_creation_input_tokens": 3041,
+        "cache_read_input_tokens": 12829
+      },
+      "cost_usd": 0.03385575,
+      "latency_s": 8.326,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 7,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 1208,
+        "cache_creation_input_tokens": 2334,
+        "cache_read_input_tokens": 15870
+      },
+      "cost_usd": 0.0527325,
+      "latency_s": 17.76,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 8,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 1146,
+        "cache_creation_input_tokens": 5967,
+        "cache_read_input_tokens": 18204
+      },
+      "cost_usd": 0.07505575,
+      "latency_s": 17.773,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 9,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 975,
+        "cache_creation_input_tokens": 7029,
+        "cache_read_input_tokens": 24171
+      },
+      "cost_usd": 0.08040175,
+      "latency_s": 19.964,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 10,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 1011,
+        "cache_creation_input_tokens": 3843,
+        "cache_read_input_tokens": 31200
+      },
+      "cost_usd": 0.06490375,
+      "latency_s": 18.411,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 11,
+      "forced": true,
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 1438,
+        "cache_creation_input_tokens": 37192,
+        "cache_read_input_tokens": 1499
+      },
+      "cost_usd": 0.2692495,
+      "latency_s": 20.553,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.710088,
+  "target_calls": 120,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

@@ -1,0 +1,444 @@
+{
+  "schema": "analysis_run_inventory/1",
+  "note": "outcomes only - grades and therefore detection/FP rates require unsealing and the Phase-1/Phase-2 pipeline",
+  "n_runs": 30,
+  "overall_refusal_rate": {
+    "k": 7,
+    "n": 30,
+    "rate": 0.233333,
+    "lo": 0.117924,
+    "hi": 0.409283,
+    "ci": "two-sided 95% Wilson"
+  },
+  "per_candidate": {
+    "cand_2aqm": {
+      "n_planned_attempts": 5,
+      "n_verdict_bearing": 5,
+      "n_terminal_refusal": 0,
+      "refusal_rate": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.434482,
+        "ci": "two-sided 95% Wilson"
+      }
+    },
+    "cand_eeap": {
+      "n_planned_attempts": 5,
+      "n_verdict_bearing": 4,
+      "n_terminal_refusal": 1,
+      "refusal_rate": {
+        "k": 1,
+        "n": 5,
+        "rate": 0.2,
+        "lo": 0.036224,
+        "hi": 0.624465,
+        "ci": "two-sided 95% Wilson"
+      }
+    },
+    "cand_hos6": {
+      "n_planned_attempts": 5,
+      "n_verdict_bearing": 4,
+      "n_terminal_refusal": 1,
+      "refusal_rate": {
+        "k": 1,
+        "n": 5,
+        "rate": 0.2,
+        "lo": 0.036224,
+        "hi": 0.624465,
+        "ci": "two-sided 95% Wilson"
+      }
+    },
+    "cand_m3iq": {
+      "n_planned_attempts": 5,
+      "n_verdict_bearing": 3,
+      "n_terminal_refusal": 2,
+      "refusal_rate": {
+        "k": 2,
+        "n": 5,
+        "rate": 0.4,
+        "lo": 0.117621,
+        "hi": 0.769276,
+        "ci": "two-sided 95% Wilson"
+      }
+    },
+    "cand_z4js": {
+      "n_planned_attempts": 10,
+      "n_verdict_bearing": 7,
+      "n_terminal_refusal": 3,
+      "refusal_rate": {
+        "k": 3,
+        "n": 10,
+        "rate": 0.3,
+        "lo": 0.107791,
+        "hi": 0.603222,
+        "ci": "two-sided 95% Wilson"
+      }
+    }
+  },
+  "total_recorded_spend_all_attempts_usd": 11.488481,
+  "any_unpriced_component": false,
+  "runs": [
+    {
+      "run_id": "v0_cand_2aqm_s0",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_2aqm",
+      "brain_usd": 0.121637,
+      "cost_exact": true,
+      "turns_used": 5,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_2aqm_s1",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_2aqm",
+      "brain_usd": 0.145418,
+      "cost_exact": true,
+      "turns_used": 6,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_2aqm_s2",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_2aqm",
+      "brain_usd": 0.132471,
+      "cost_exact": true,
+      "turns_used": 5,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_2aqm_s3",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_2aqm",
+      "brain_usd": 0.119242,
+      "cost_exact": true,
+      "turns_used": 5,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_2aqm_s4",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_2aqm",
+      "brain_usd": 0.096628,
+      "cost_exact": true,
+      "turns_used": 4,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_eeap_s0",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_eeap",
+      "brain_usd": 0.026262,
+      "cost_exact": true,
+      "turns_used": 2,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_eeap_s1",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_eeap",
+      "brain_usd": 0.58518,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_eeap_s2",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_eeap",
+      "brain_usd": 0.503533,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_eeap_s3",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_eeap",
+      "brain_usd": 0.465837,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_eeap_s4",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_eeap",
+      "brain_usd": 0.464857,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_hos6_s0",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_hos6",
+      "brain_usd": 0.508338,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_hos6_s1",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_hos6",
+      "brain_usd": 0.55312,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_hos6_s2",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_hos6",
+      "brain_usd": 0.526574,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_hos6_s3",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_hos6",
+      "brain_usd": 0.504625,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_hos6_s4",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_hos6",
+      "brain_usd": 0.086965,
+      "cost_exact": true,
+      "turns_used": 4,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_m3iq_s0",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_m3iq",
+      "brain_usd": 0.519999,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_m3iq_s1",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_m3iq",
+      "brain_usd": 0.048154,
+      "cost_exact": true,
+      "turns_used": 3,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_m3iq_s2",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_m3iq",
+      "brain_usd": 0.532209,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_m3iq_s3",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_m3iq",
+      "brain_usd": 0.612882,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_m3iq_s4",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_m3iq",
+      "brain_usd": 0.145044,
+      "cost_exact": true,
+      "turns_used": 5,
+      "harness_commit": null,
+      "analysis_schema_version": null,
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s0",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.548498,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s1",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.287095,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s2",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.710088,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s3",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.536451,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s4",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.054723,
+      "cost_exact": true,
+      "turns_used": 3,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s5",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.595904,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s6",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.535273,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s7",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.625559,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s8",
+      "status": "brain_refusal",
+      "outcome": "refusal_no_verdict",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.424634,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    },
+    {
+      "run_id": "v0_cand_z4js_s9",
+      "status": "completed_forced",
+      "outcome": "verdict_bearing",
+      "candidate_id": "cand_z4js",
+      "brain_usd": 0.471281,
+      "cost_exact": true,
+      "turns_used": 10,
+      "harness_commit": "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77",
+      "analysis_schema_version": "1.0.0",
+      "grade": null
+    }
+  ]
+}

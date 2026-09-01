@@ -1,0 +1,46 @@
+campaign v0: 30 runs over 5 pairs (25 headline + 5 exploratory)
+  plan       : configs/campaign_plan.local.json
+  base side  : cand_2aft
+  seeds/pair : {'cand_2aqm': 5, 'cand_eeap': 5, 'cand_hos6': 5, 'cand_m3iq': 5, 'cand_z4js': 10}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 11 extra terms (all candidate ids + served names + 5 static names)
+  config parity + leak guard + arm scan: PASS on 30 configs (5 distinct pairs)
+[skip] v0_cand_2aqm_s0 already complete (running total $0.1216)
+[skip] v0_cand_2aqm_s1 already complete (running total $0.2671)
+[skip] v0_cand_2aqm_s2 already complete (running total $0.3995)
+[skip] v0_cand_2aqm_s3 already complete (running total $0.5188)
+[skip] v0_cand_2aqm_s4 already complete (running total $0.6154)
+[skip] v0_cand_eeap_s0 already complete (running total $0.6417)
+[skip] v0_cand_eeap_s1 already complete (running total $1.2268)
+[skip] v0_cand_eeap_s2 already complete (running total $1.7304)
+[skip] v0_cand_eeap_s3 already complete (running total $2.1962)
+[skip] v0_cand_eeap_s4 already complete (running total $2.6611)
+[skip] v0_cand_hos6_s0 already complete (running total $3.1694)
+[skip] v0_cand_hos6_s1 already complete (running total $3.7225)
+[skip] v0_cand_hos6_s2 already complete (running total $4.2491)
+[skip] v0_cand_hos6_s3 already complete (running total $4.7537)
+[skip] v0_cand_hos6_s4 already complete (running total $4.8407)
+[skip] v0_cand_m3iq_s0 already complete (running total $5.3607)
+[skip] v0_cand_m3iq_s1 already complete (running total $5.4088)
+[skip] v0_cand_m3iq_s2 already complete (running total $5.9410)
+[skip] v0_cand_m3iq_s3 already complete (running total $6.5539)
+[skip] v0_cand_m3iq_s4 already complete (running total $6.6990)
+[ok] v0_cand_z4js_s0: completed_forced verdict_submitted=True $0.5485 | campaign total $7.2475 | 4.7 min elapsed
+[WARN] v0_cand_z4js_s1: brain_refusal verdict_submitted=False $0.2871 | campaign total $7.5346 | 7.9 min elapsed
+[ok] v0_cand_z4js_s2: completed_forced verdict_submitted=True $0.7101 | campaign total $8.2447 | 13.5 min elapsed
+[ok] v0_cand_z4js_s3: completed_forced verdict_submitted=True $0.5365 | campaign total $8.7811 | 18.9 min elapsed
+[WARN] v0_cand_z4js_s4: brain_refusal verdict_submitted=False $0.0547 | campaign total $8.8358 | 19.7 min elapsed
+[ok] v0_cand_z4js_s5: completed_forced verdict_submitted=True $0.5959 | campaign total $9.4317 | 24.4 min elapsed
+[ok] v0_cand_z4js_s6: completed_forced verdict_submitted=True $0.5353 | campaign total $9.9670 | 29.3 min elapsed
+[ok] v0_cand_z4js_s7: completed_forced verdict_submitted=True $0.6256 | campaign total $10.5926 | 34.4 min elapsed
+[WARN] v0_cand_z4js_s8: brain_refusal verdict_submitted=False $0.4246 | campaign total $11.0172 | 39.0 min elapsed
+[ok] v0_cand_z4js_s9: completed_forced verdict_submitted=True $0.4713 | campaign total $11.4885 | 42.9 min elapsed
+
+30/30 runs complete in 42.9 min
+campaign brain spend: $11.4885 (ceiling $20.00)
+outcome causes - expected (do not trip the rule): {'brain_refusal': 3}
+                 other:                          none
+3 run(s) without a normal completion:
+  v0_cand_z4js_s1: brain_refusal
+  v0_cand_z4js_s4: brain_refusal
+  v0_cand_z4js_s8: brain_refusal
