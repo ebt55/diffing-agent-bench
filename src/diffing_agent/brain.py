@@ -33,6 +33,12 @@ class BrainReply:
     # False when the price was not known and cost_usd is a placeholder. The
     # efficiency table must never silently sum estimates as if they were exact.
     cost_exact: bool = True
+    # The sampling params ACTUALLY sent, minus messages/tools. BrainConfig carries
+    # fields that only one route uses - `effort` and `thinking` are Anthropic-only and
+    # are never sent on the OpenAI-compat route - so the stored config alone would let
+    # a reader conclude an OpenRouter arm ran at `effort: high` when that key never
+    # left the process. This records what went on the wire.
+    wire_params: dict = field(default_factory=dict)
 
 
 class AnthropicBrain:
@@ -116,6 +122,8 @@ class AnthropicBrain:
             content_blocks=resp.content, text=text, tool_calls=tool_calls, usage=usage,
             cost_usd=brain_cost_usd(self.cfg.model, usage), stop_reason=resp.stop_reason,
             latency_s=latency, raw=resp.model_dump(mode="json"),
+            wire_params={k: v for k, v in kwargs.items()
+                         if k not in ("messages", "tools", "system")},
         )
 
 
@@ -199,6 +207,8 @@ class OpenAICompatBrain:
             usage=usage, cost_usd=cost,
             stop_reason=body["choices"][0].get("finish_reason"), latency_s=latency, raw=body,
             cost_exact=cost_exact,
+            wire_params={k: v for k, v in payload.items()
+                         if k not in ("messages", "tools")},
         )
 
 

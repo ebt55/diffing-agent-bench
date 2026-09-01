@@ -79,6 +79,7 @@ class RunRecorder:
         self.started_utc = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
         self.brain_calls: list[dict] = []
+        self.brain_wire_params: dict = {}
         self.target_calls: list[dict] = []
         self.events = 0
         self.label_map: dict[str, str] = {}
@@ -114,6 +115,13 @@ class RunRecorder:
             "stop_reason": reply.stop_reason,
             "cost_exact": getattr(reply, "cost_exact", True),
         })
+        # The params actually sent. BrainConfig holds route-specific fields, so the
+        # stored config alone is ambiguous: an OpenRouter arm's config still shows the
+        # Anthropic-only `effort: high` default even though that key is never sent.
+        # Pinned for the whole run, so first writer wins and later turns must agree.
+        wp = getattr(reply, "wire_params", None)
+        if wp and not self.brain_wire_params:
+            self.brain_wire_params = dict(wp)
         self.event("brain_response", turn=turn, forced=forced, text=reply.text,
                    tool_calls=reply.tool_calls, usage=reply.usage,
                    cost_usd=reply.cost_usd, stop_reason=reply.stop_reason,
@@ -188,6 +196,8 @@ class RunRecorder:
                 "cost_usd": round(brain_cost, 6) if brain_cost is not None else None,
                 "cost_exact": cost_exact,
                 "n_unpriced_calls": len(unpriced),
+                # What was actually sent, as opposed to what the config object holds.
+                "wire_params": self.brain_wire_params or None,
                 "calls": self.brain_calls,
             },
             "targets": {

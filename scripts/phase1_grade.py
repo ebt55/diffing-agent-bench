@@ -51,6 +51,14 @@ from phase1_ui import PAGE  # noqa: E402
 
 ORDER_PATH = "results/phase1_order.json"
 CLAIMS_PATH = "results/phase1_claims.jsonl"
+# Attached to any block containing v1 runs. Section 3's blinding is rung<->ID, and
+# that is untouched; a v1 transcript's generator/validator vocabulary reveals the ARM,
+# which the run ids already state. Recorded rather than redacted: the reasoning is the
+# thing being graded, so removing the tells would damage the evidence.
+ARM_DISCLOSURE = (
+    "v1 transcripts are arm-identifiable by construction (generator/validator "
+    "phases); rung identity remains sealed; the pre-committed rubric, verbatim-only "
+    "extraction and independent judge are the bias protections.")
 BANNED_READS = ("run_meta.json", "data/sealed")
 # keys that must never appear in anything the page is served
 BANNED_KEYS = ("label_map", "config", "notes", "adapter", "rung")
@@ -175,13 +183,20 @@ def build_order(globs: list[str], seed: int, path: str) -> dict:
         return doc
     rng = random.Random(seed)
     rng.shuffle(new)
-    doc["blocks"].append({
+    block = {
         "block": len(doc["blocks"]) + 1, "seed": seed, "n": len(new),
         "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "note": ("shuffled with the committed seed; new runs append as a new block so "
                  "grading already done stays valid, and transcripts are never grouped "
                  "or sorted by sealed id"),
-        "run_ids": new})
+        "run_ids": new}
+    # Attached automatically rather than by hand, so a later block of v1 runs cannot
+    # be appended without it. The blinding that matters is rung<->ID and it is intact;
+    # what a v1 transcript reveals is which ARM produced it, which Ebin already knows
+    # from the run ids.
+    if any(r.startswith("v1_") for r in new):
+        block["arm_disclosure"] = ARM_DISCLOSURE
+    doc["blocks"].append(block)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
     return doc

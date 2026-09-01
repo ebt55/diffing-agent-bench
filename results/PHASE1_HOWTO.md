@@ -55,6 +55,20 @@ grade exactly what the agent had.
 If you ever see a rung name, a model name or an adapter path, stop and say so — that is
 a bug, not a detail.
 
+## One thing it does show: which arm a run came from
+
+**v1 transcripts are arm-identifiable by construction (generator/validator phases);
+rung identity remains sealed; the pre-committed rubric, verbatim-only extraction and
+independent judge are the bias protections.**
+
+This is deliberate and is not the bug above. The blinding that matters is
+rung-to-ID, and it is intact. A v1 transcript is split into a generator phase and a
+validator phase and says so in its own words, so it is obvious that it is a v1 run —
+but the run ids already say that, so nothing is lost that you had. The tells are not
+redacted because the agent's reasoning is the thing being graded, and cutting it up to
+hide the architecture would damage the evidence. Grade a v1 run the same way you grade
+a v0 run: against the rubric, on what the transcript actually says.
+
 ## Where the work goes
 
 - `results/phase1_claims.jsonl` — one row per save, **append-only**. Re-grading a run
