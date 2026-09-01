@@ -27,9 +27,9 @@
     "thinking": true,
     "prompt_caching": true
   },
-  "max_turns": 4,
-  "max_prompts_per_turn": 3,
+  "max_turns": 10,
+  "max_prompts_per_turn": 5,
   "samples_per_prompt": 1,
   "seed": 0,
-  "notes": "DEV-ONLY local Ollama null pair (same model served twice, base-vs-itself). Excluded from all headline results per DECISIONS.md #5 and Amendment 3 item 6. Purpose: observe v0's false-positive behaviour on a true null so v1 improvements are selected against v0 failure modes seen on DEV material only - never against the sealed ladder."
+  "notes": "DEV-ONLY local Ollama null pair (same model served twice, base-vs-itself), at the CAMPAIGN budget: 10 turns, <=5 prompts/turn. Identical to configs/ollama_devnull.json in every other respect - target model, temperature, max_tokens, brain config - so the only difference between the two dev batches is the budget. That was the confound in the first batch, where 6/6 runs hit a 4-turn ceiling. Excluded from all headline results per DECISIONS.md #5 and Amendment 3 item 6."
 }

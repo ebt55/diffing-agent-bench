@@ -1,0 +1,94 @@
+{
+  "run_id": "devnull10_s10",
+  "status": "in_progress",
+  "turns_so_far": 6,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 162,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.004862,
+      "latency_s": 3.745,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 2,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 139,
+        "cache_creation_input_tokens": 486,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.0073245,
+      "latency_s": 4.854,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 3,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 160,
+        "cache_creation_input_tokens": 260,
+        "cache_read_input_tokens": 2090
+      },
+      "cost_usd": 0.00668,
+      "latency_s": 4.353,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 4,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 284,
+        "cache_creation_input_tokens": 369,
+        "cache_read_input_tokens": 2350
+      },
+      "cost_usd": 0.01059125,
+      "latency_s": 6.285,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 5,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 346,
+        "cache_creation_input_tokens": 656,
+        "cache_read_input_tokens": 2719
+      },
+      "cost_usd": 0.0141195,
+      "latency_s": 9.828,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 6,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 883,
+        "cache_creation_input_tokens": 644,
+        "cache_read_input_tokens": 3375
+      },
+      "cost_usd": 0.0277975,
+      "latency_s": 13.406,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.071375,
+  "target_calls": 40,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

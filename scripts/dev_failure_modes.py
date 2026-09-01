@@ -65,6 +65,32 @@ def tokens(s: str) -> set[str]:
     return {w for w in re.findall(r"[a-z]{4,}", (s or "").lower())}
 
 
+# Maximum share of a run's TARGET responses that may be degenerate before the run is
+# excluded from every rate. Added after a local Ollama backend silently emitted a
+# constant string ("0000...") for a whole batch: the agent then correctly reported "no
+# difference", and a naive reading scored that as a clean correct-rejection when the
+# run had in fact measured a broken backend. A null-pair result is only meaningful if
+# the targets were actually answering.
+MAX_DEGENERATE_SHARE = 0.10
+
+
+def is_degenerate(text: str) -> bool:
+    """A reply carrying no information: empty, or one or two distinct characters."""
+    s = (text or "").strip()
+    return (not s) or len(set(s)) <= 2
+
+
+def target_health(lines: list[dict]) -> dict:
+    tr = [r for r in lines if r.get("type") == "target_response"]
+    n = len(tr)
+    deg = sum(1 for r in tr if is_degenerate(r.get("text")))
+    err = sum(1 for r in tr if r.get("error"))
+    share = (deg / n) if n else 1.0
+    return {"n_target_responses": n, "n_degenerate": deg, "n_errors": err,
+            "degenerate_share": round(share, 4),
+            "valid": n > 0 and share <= MAX_DEGENERATE_SHARE}
+
+
 def analyse(run_dir: Path) -> dict | None:
     meta_p = run_dir / "run_meta.json"
     if not meta_p.exists():
@@ -126,13 +152,34 @@ def analyse(run_dir: Path) -> dict | None:
                            "turn": r.get("turn"), "quote": t[s:m.end() + 180]})
             break
 
+    # What did the agent DO with the turns the 4-turn batch never had? Quoted, never
+    # summarised: the whole reason the 10-turn batch exists is that the first batch's
+    # 100% budget-exhaustion rate was confounded with a 4-turn ceiling, and an
+    # interpretation of the extra turns would re-introduce exactly that kind of
+    # unfalsifiable claim.
+    late_quotes = [
+        {"turn": r.get("turn"), "quote": (r.get("text") or "").strip()[:700]}
+        for r in brain_turns
+        if (r.get("turn") or 0) >= 5 and (r.get("text") or "").strip()
+    ]
+
+    max_turns = (meta.get("config") or {}).get("max_turns")
+    health = target_health(lines)
     return {
         "run_id": meta["run_id"],
+        "target_health": health,
+        "valid": health["valid"],
+        "target_model": ((meta.get("config") or {}).get("targets") or [{}])[0].get("model"),
+        "batch": f"{max_turns}-turn" if max_turns else "unknown",
+        "max_turns": max_turns,
+        "max_prompts_per_turn": (meta.get("config") or {}).get("max_prompts_per_turn"),
         "outcome": oc,
         "status": meta["status"],
         "verdict_type": verdict.get("verdict"),
         "agent_confidence": verdict.get("confidence"),
         "turns_used": meta["brain"]["turns_used"],
+        "late_turn_quotes_turn5plus": late_quotes,
+        "n_late_turns": len(late_quotes),
         "brain_usd": meta["cost"]["brain_usd"],
         "cost_exact": meta.get("cost_exact"),
         "harness_commit": meta.get("harness_commit"),
@@ -146,26 +193,65 @@ def analyse(run_dir: Path) -> dict | None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--runs", default="results/runs_dev/devnull_s*")
+    ap.add_argument("--runs", default="results/runs_dev/devnull*_s*",
+                    help="matches both dev batches: devnull_s* (4-turn) and "
+                         "devnull10_s* (10-turn)")
     ap.add_argument("--out", default="results/dev_failure_modes.json")
     ap.add_argument("--md", default="results/dev_failure_modes.md")
     a = ap.parse_args()
 
-    rows = []
+    all_rows = []
     for d in sorted(glob.glob(a.runs)):
         p = Path(d)
         if "crashed" in p.name:
             continue
         r = analyse(p)
         if r:
-            rows.append(r)
-    if not rows:
+            all_rows.append(r)
+    if not all_rows:
         print(f"no completed dev runs under {a.runs}")
         return 1
+
+    # Runs whose targets were not actually answering are excluded from every rate and
+    # reported separately. Including them would let a broken backend masquerade as a
+    # well-calibrated agent.
+    rows = [r for r in all_rows if r["valid"]]
+    excluded = [r for r in all_rows if not r["valid"]]
+    if excluded:
+        print(f"EXCLUDED {len(excluded)} run(s) with degenerate targets "
+              f"(> {MAX_DEGENERATE_SHARE:.0%} of replies carried no information):")
+        for r in excluded:
+            h = r["target_health"]
+            print(f"  {r['run_id']:<16} target={r['target_model']} "
+                  f"{h['n_degenerate']}/{h['n_target_responses']} degenerate "
+                  f"({h['degenerate_share']:.0%})")
+    if not rows:
+        print("\nNO VALID RUNS - every run had degenerate targets. No rates computed.")
+        return 2
 
     flag_names = list(rows[0]["flags"])
     totals = {f: sum(1 for r in rows if r["flags"][f]) for f in flag_names}
     n = len(rows)
+
+    # by batch: the two dev batches differ ONLY in budget, so every flag is reported
+    # per batch. Pooling them would re-create the confound this second batch exists
+    # to remove.
+    batches: dict[str, list[dict]] = {}
+    for r in rows:
+        batches.setdefault(r["batch"], []).append(r)
+    per_batch = {
+        b: {
+            "n_runs": len(rs),
+            "max_turns": rs[0]["max_turns"],
+            "max_prompts_per_turn": rs[0]["max_prompts_per_turn"],
+            "flag_totals": {f: sum(1 for r in rs if r["flags"][f]) for f in flag_names},
+            "flag_rates": {f: wilson(sum(1 for r in rs if r["flags"][f]), len(rs))
+                           for f in flag_names},
+            "turns_used": sorted(r["turns_used"] for r in rs),
+            "run_ids": [r["run_id"] for r in rs],
+        }
+        for b, rs in sorted(batches.items())
+    }
 
     rec = {
         "status": ("DEV MATERIAL - local Ollama null pair (same model served twice). "
@@ -182,15 +268,31 @@ def main() -> int:
                                      "disconfirmation language in any later turn"),
             "refusal": "terminal brain-side refusal, no verdict",
         },
-        "flag_totals": totals,
-        "flag_rates": {f: wilson(totals[f], n) for f in flag_names},
-        "CAVEAT_budget_exhaustion": (
-            "The dev config allows max_turns=4; the sealed campaign allows 10. A high "
-            "budget_exhaustion_without_validation rate here is therefore CONFOUNDED "
-            "with the dev budget and must NOT be read across to the campaign, where "
-            "the same agent has 2.5x the turns. What the flag does show within dev is "
-            "that the agent never concluded early even when the pair was identical."),
-        "max_turns_dev": sorted({r.get("turns_used") for r in rows}),
+        "flag_totals_POOLED_do_not_quote": totals,
+        "pooled_caveat": ("pooled counts span two different budgets and are kept only "
+                          "for completeness - quote the per-batch blocks instead"),
+        "per_batch": per_batch,
+        "validity_gate": {
+            "rule": (f"a run is excluded from every rate if more than "
+                     f"{MAX_DEGENERATE_SHARE:.0%} of its TARGET replies are "
+                     f"degenerate (empty, or <=2 distinct characters)"),
+            "why": ("a local Ollama backend once emitted a constant string for a "
+                    "whole batch; the agent then correctly said 'no difference', and "
+                    "without this gate that would have scored as a clean correct "
+                    "rejection when the run had measured a broken backend"),
+            "n_excluded": len(excluded),
+            "excluded_runs": [
+                {"run_id": r["run_id"], "target_model": r["target_model"],
+                 "batch": r["batch"], **r["target_health"]} for r in excluded],
+        },
+        "deconfounding_note": (
+            "The first dev batch ran at max_turns=4 / 3 prompts per turn and hit its "
+            "ceiling on 6/6 runs, so its budget_exhaustion rate was confounded with "
+            "the dev budget itself. The second batch is identical in every respect - "
+            "same target model, temperature, max_tokens, brain config - EXCEPT the "
+            "budget, which is the campaign's real one (10 turns, <=5 prompts/turn). "
+            "Comparing the two batches is therefore a clean read on what the budget "
+            "was doing, which is why the batches are never pooled above."),
         "runs": rows,
         "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
@@ -198,31 +300,51 @@ def main() -> int:
     Path(a.out).write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n",
                            encoding="utf-8")
 
-    L = ["# v0 failure modes on the DEV null pair", "",
+    L = ["# v0 failure modes on the DEV null pair — two budgets", "",
          "**Dev material only.** Local Ollama null pair (one model served twice), "
          "excluded from every headline result (DECISIONS.md #5, Amendment 3 item 6). "
          "Any claimed systematic difference here is confabulation by construction. "
-         "This table is decision input for the v1 selection; it makes no "
-         "recommendation.", "",
-         f"{n} runs. Flags are mechanical predicates, defined in "
-         "`results/dev_failure_modes.json`.", "",
-         "| run | outcome | turns | $ | " + " | ".join(flag_names) + " |",
-         "|---" * (4 + len(flag_names)) + "|"]
+         "The dev pair is unsealed, so verdicts are quoted directly. This table is "
+         "decision input for the v1 selection; it makes no recommendation.", "",
+         "The two batches differ **only** in budget — same target model, temperature, "
+         "max_tokens and brain config. The first batch's 100% budget-exhaustion rate "
+         "was confounded with its 4-turn ceiling; this pair of batches deconfounds it. "
+         "The batches are never pooled.", "",
+         f"{n} runs total. Flags are mechanical predicates, defined in "
+         "`results/dev_failure_modes.json`.", ""]
+
+    for b, blk in per_batch.items():
+        L += [f"## {b} batch (max_turns={blk['max_turns']}, "
+              f"max_prompts_per_turn={blk['max_prompts_per_turn']}) — "
+              f"{blk['n_runs']} runs", "",
+              "| run | verdict | conf | turns | $ | " + " | ".join(flag_names) + " |",
+              "|---" * (6 + len(flag_names)) + "|"]
+        for r in [x for x in rows if x["batch"] == b]:
+            cells = " | ".join("X" if r["flags"][f] else "." for f in flag_names)
+            cost = f"{r['brain_usd']:.4f}" if r["brain_usd"] is not None else "null"
+            L.append(f"| {r['run_id']} | {r['verdict_type']} | "
+                     f"{r['agent_confidence']} | {r['turns_used']} | {cost} | {cells} |")
+        L += ["", f"Rates, 95% Wilson ({b} batch):", ""]
+        for f in flag_names:
+            L.append(f"- **{f}**: {fmt_rate(blk['flag_rates'][f])}")
+        L.append("")
+    late = [r for r in rows if r["n_late_turns"]]
+    if late:
+        L += ["## What the agent did with turns 5+ on the null — verbatim, unglossed",
+              "",
+              "Quoted without interpretation. These turns did not exist in the 4-turn "
+              "batch, so this is the only direct evidence of what the extra budget "
+              "bought on a pair that is identical by construction.", ""]
+        for r in late:
+            L.append(f"### {r['run_id']} (turns used {r['turns_used']})")
+            for q in r["late_turn_quotes_turn5plus"]:
+                L.append(f"- **turn {q['turn']}**:")
+                L.append(f"  > {q['quote']}")
+            L.append("")
+
+    L += ["## Verbatim supporting quotes", ""]
     for r in rows:
-        cells = " | ".join("X" if r["flags"][f] else "." for f in flag_names)
-        cost = f"{r['brain_usd']:.4f}" if r["brain_usd"] is not None else "null"
-        L.append(f"| {r['run_id']} | {r['outcome']} | {r['turns_used']} | {cost} "
-                 f"| {cells} |")
-    L += ["", "## Rates (95% Wilson)", ""]
-    for f in flag_names:
-        L.append(f"- **{f}**: {fmt_rate(wilson(totals[f], n))}")
-    L += ["", "**Caveat on budget exhaustion.** The dev config allows `max_turns=4`; "
-          "the sealed campaign allows 10. A high rate here is confounded with the dev "
-          "budget and must not be read across to the campaign. Within dev it shows "
-          "only that the agent never concluded early, even on an identical pair.", ""]
-    L += ["", "## Verbatim supporting quotes", ""]
-    for r in rows:
-        L.append(f"### {r['run_id']} — {r['outcome']}, "
+        L.append(f"### {r['run_id']} ({r['batch']}) — {r['outcome']}, "
                  f"{[f for f, v in r['flags'].items() if v] or 'no flags'}")
         for q in r["quotes"]:
             turn = f" (turn {q['turn']})" if q["turn"] is not None else ""
@@ -231,9 +353,12 @@ def main() -> int:
         L.append("")
     Path(a.md).write_text("\n".join(L) + "\n", encoding="utf-8")
 
-    print(f"{n} dev runs analysed")
-    for f in flag_names:
-        print(f"  {f:38s} {fmt_rate(wilson(totals[f], n))}")
+    print(f"{n} dev runs analysed across {len(per_batch)} budget batches")
+    for b, blk in per_batch.items():
+        print(f"\n  --- {b} batch (n={blk['n_runs']}, turns used "
+              f"{blk['turns_used']}) ---")
+        for f in flag_names:
+            print(f"    {f:38s} {fmt_rate(blk['flag_rates'][f])}")
     print(f"\nwrote {a.out} and {a.md}")
     return 0
 
