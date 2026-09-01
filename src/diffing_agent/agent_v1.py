@@ -76,6 +76,16 @@ def _run_phase(brain, rec, cfg, clients, labels, guard_terms, sys_text, messages
         messages.append(brain.assistant_message(reply))
         log(f"  [{phase}] turn {abs_turn}: stop={reply.stop_reason} "
             f"${reply.cost_usd:.4f}")
+        # See agent.py: an unpriced turn's cost_usd is a placeholder 0.0, so summing it
+        # freezes `spent` and the dollar guard below never trips. Stop rather than run
+        # on a dead meter.
+        if not getattr(reply, "cost_exact", True):
+            rec.event("budget_guard_inoperative", turn=abs_turn, phase=phase,
+                      model=cfg.brain.model, provider=cfg.brain.provider,
+                      note=("no exact price available; max_cost_usd cannot be "
+                            "enforced, so the run was stopped."))
+            return result, turn, spent, "unpriced_no_budget_guard"
+
         spent += reply.cost_usd
         if spent > cfg.max_cost_usd:
             for call in reply.tool_calls:

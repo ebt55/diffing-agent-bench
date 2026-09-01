@@ -136,6 +136,24 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
             f"cache_w={reply.usage['cache_creation_input_tokens']} "
             f"${reply.cost_usd:.4f} ({reply.latency_s:.1f}s)")
 
+        # A turn whose price is unknown carries cost_usd = 0.0 as a PLACEHOLDER (the
+        # loop needs a float to add). Summing it would leave `spent` frozen while real
+        # tokens burn, so the dollar guard below would never trip - the budget stop
+        # would be silently inoperative rather than merely imprecise. Refuse to
+        # continue instead of running unbounded on an unmeasurable meter.
+        if not getattr(reply, "cost_exact", True):
+            rec.event("budget_guard_inoperative", turn=turn,
+                      model=cfg.brain.model, provider=cfg.brain.provider,
+                      note=("brain returned no exact price and the model is not in the "
+                            "price table; cost_usd is a placeholder, so max_cost_usd "
+                            "cannot be enforced. Run stopped rather than continued on "
+                            "a dead budget guard."))
+            status = "unpriced_no_budget_guard"
+            log(f"  STOP: {cfg.brain.provider}:{cfg.brain.model} is unpriced and the "
+                f"provider returned no exact cost - the dollar budget guard cannot "
+                f"work. Price the model or use a provider that reports cost.")
+            break
+
         spent += reply.cost_usd
         if spent > cfg.max_cost_usd:
             # VERDICT RESCUE: if the brain submitted its verdict on the very turn that
@@ -255,7 +273,13 @@ def run(cfg: RunConfig, verbose: bool = True) -> dict:
         log(f"confidence  : {verdict.get('confidence')}")
         log(f"hypothesis  : {verdict.get('hypothesis')}")
     c = meta["cost"]
-    log(f"brain cost  : ${c['brain_usd']:.4f}  (pod ${c['pod_usd']:.4f}, "
-        f"total ${c['total_usd']:.4f})")
+    # Costs are null-not-zero when any component was unpriced, so the summary has to
+    # print "unpriced" rather than format None (which raises and kills the run at the
+    # very end, after every dollar has already been spent).
+    def _usd(v) -> str:
+        return f"${v:.4f}" if isinstance(v, (int, float)) else "unpriced"
+
+    log(f"brain cost  : {_usd(c['brain_usd'])}  (pod {_usd(c['pod_usd'])}, "
+        f"total {_usd(c['total_usd'])})")
     log(f"artifacts   : {rec.dir}")
     return meta
