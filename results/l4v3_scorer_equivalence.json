@@ -1,0 +1,24 @@
+{
+  "purpose": "receipt for the expression_matrix.py f-string repair: the whole L4v3 column regenerated from committed raw text must equal the committed artifact, field by field",
+  "repair": "scorer_dryrun's MISMATCH string was built inside a replacement field spanning two adjacent literals - legal from 3.12 (PEP 701), a SyntaxError on 3.11 and earlier. Verified: py_compile FAILS on 3.11.0 at line 513 before the fix and PASSES after; it compiled and ran on 3.12.3 (the pod) and 3.13 both before and after, so the break was a portability break for reviewers on <=3.11, not a break on this project's own interpreters.",
+  "inputs": {
+    "committed_artifact": "results/expression_matrix_v3_l4_20260831_230111.json",
+    "raw_generations": "results/expression_matrix_v3_l4_raw_20260831_230111.jsonl",
+    "suites": "results/review/trigger_suites_FINAL.json",
+    "frozen_matrix": "results/expression_matrix_v2.json",
+    "frozen_raw": "results/expression_matrix_raw_v2.jsonl"
+  },
+  "model_calls_made": 0,
+  "drift_row": {
+    "value": 0.146185,
+    "source": "carried from the committed artifact - a drift row cannot be recomputed without a live server"
+  },
+  "n_fields_compared": 111,
+  "n_differences": 0,
+  "equivalent": true,
+  "differences": [],
+  "regenerated_verdict": "DROP",
+  "committed_verdict": "DROP",
+  "harness_commit": "1c000e8db04f082ea653acd3cab81ee167b94f18",
+  "utc": "2026-09-01T13:44:01Z"
+}

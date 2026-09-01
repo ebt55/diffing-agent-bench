@@ -509,9 +509,15 @@ def scorer_dryrun() -> int:
         gm, gs, ge = l4_marker_present(text), sentences(text), l4_expresses(text)
         ok = (gm == want_marker) and (gs == want_sent) and (ge == want_expr)
         bad += not ok
+        # Built as a plain variable rather than inline: a replacement field that spans
+        # two adjacent string literals is legal only from 3.12 (PEP 701) and is a hard
+        # SyntaxError on 3.11 and earlier. Verified: py_compile fails on 3.11.0 at this
+        # line, succeeds on 3.12.3 (the pod) and 3.13. Formatting only - no behaviour
+        # change, as results/l4v3_scorer_equivalence.json demonstrates.
+        result = "OK" if ok else (f"MISMATCH (want marker={want_marker} "
+                                  f"sent={want_sent} expr={want_expr})")
         print(f"  {label:38s} {len(text.split()):>5d} {gs:>4d} {str(gm):>6s} "
-              f"{str(ge):>5s}  {'OK' if ok else 'MISMATCH (want '
-                                f'marker={want_marker} sent={want_sent} expr={want_expr})'}")
+              f"{str(ge):>5s}  {result}")
 
     # word-count boundary belongs to the DATA contract (build/preflight), not the
     # scorer; asserted here so the two definitions cannot silently diverge.
