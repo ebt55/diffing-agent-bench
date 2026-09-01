@@ -184,6 +184,13 @@ def main() -> int:
         },
         "flag_totals": totals,
         "flag_rates": {f: wilson(totals[f], n) for f in flag_names},
+        "CAVEAT_budget_exhaustion": (
+            "The dev config allows max_turns=4; the sealed campaign allows 10. A high "
+            "budget_exhaustion_without_validation rate here is therefore CONFOUNDED "
+            "with the dev budget and must NOT be read across to the campaign, where "
+            "the same agent has 2.5x the turns. What the flag does show within dev is "
+            "that the agent never concluded early even when the pair was identical."),
+        "max_turns_dev": sorted({r.get("turns_used") for r in rows}),
         "runs": rows,
         "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
@@ -209,6 +216,10 @@ def main() -> int:
     L += ["", "## Rates (95% Wilson)", ""]
     for f in flag_names:
         L.append(f"- **{f}**: {fmt_rate(wilson(totals[f], n))}")
+    L += ["", "**Caveat on budget exhaustion.** The dev config allows `max_turns=4`; "
+          "the sealed campaign allows 10. A high rate here is confounded with the dev "
+          "budget and must not be read across to the campaign. Within dev it shows "
+          "only that the agent never concluded early, even on an identical pair.", ""]
     L += ["", "## Verbatim supporting quotes", ""]
     for r in rows:
         L.append(f"### {r['run_id']} — {r['outcome']}, "
