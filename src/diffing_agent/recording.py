@@ -124,12 +124,16 @@ class RunRecorder:
 
     def _checkpoint(self, turn: int) -> None:
         spent = sum(c["cost_usd"] or 0.0 for c in self.brain_calls)
+        # encoding pinned on every write: Path.write_text defaults to the platform
+        # codec, which is cp1252 on Windows. Transcripts routinely carry em-dashes and
+        # box characters, so the default silently works on the pod and hard-crashes
+        # locally - and it crashes AFTER the run has been paid for.
         (self.dir / "run_meta_partial.json").write_text(json.dumps({
             "run_id": self.run_id, "status": "in_progress", "turns_so_far": turn,
             "brain_calls": self.brain_calls, "spent_usd": round(spent, 6),
             "target_calls": len(self.target_calls),
             "note": "partial checkpoint; superseded by run_meta.json at finish",
-        }, indent=2) + "\n")
+        }, indent=2) + "\n", encoding="utf-8")
 
     def target_batch(self, turn: int, prompts: list[str], samples: list) -> None:
         for s in samples:
@@ -214,7 +218,8 @@ class RunRecorder:
             },
             **(extra or {}),
         }
-        (self.dir / "run_meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n")
+        (self.dir / "run_meta.json").write_text(
+            json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         self.event("run_end", status=status, verdict=verdict, cost=meta["cost"],
                    wall_time_s=meta["wall_time_s"])
         return meta
@@ -232,4 +237,5 @@ class RunRecorder:
 
     def save_messages(self, messages: list) -> None:
         (self.dir / "brain_messages.json").write_text(
-            json.dumps(_jsonable(messages), indent=2, ensure_ascii=False) + "\n")
+            json.dumps(_jsonable(messages), indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8")

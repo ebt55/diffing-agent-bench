@@ -1,0 +1,35 @@
+{
+  "targets": [
+    {
+      "label": "model_A",
+      "model": "qwen3:14b",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "provider": "openai",
+      "api_key_env": "OLLAMA_API_KEY",
+      "max_tokens": 256,
+      "temperature": 1.0
+    },
+    {
+      "label": "model_B",
+      "model": "qwen3:14b",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "provider": "openai",
+      "api_key_env": "OLLAMA_API_KEY",
+      "max_tokens": 256,
+      "temperature": 1.0
+    }
+  ],
+  "brain": {
+    "provider": "anthropic",
+    "model": "claude-opus-5",
+    "max_tokens": 16000,
+    "effort": "high",
+    "thinking": true,
+    "prompt_caching": true
+  },
+  "max_turns": 4,
+  "max_prompts_per_turn": 3,
+  "samples_per_prompt": 1,
+  "seed": 0,
+  "notes": "DEV-ONLY local Ollama null pair (same model served twice, base-vs-itself). Excluded from all headline results per DECISIONS.md #5 and Amendment 3 item 6. Purpose: observe v0's false-positive behaviour on a true null so v1 improvements are selected against v0 failure modes seen on DEV material only - never against the sealed ladder."
+}
