@@ -166,7 +166,13 @@ def main() -> int:
     ap.add_argument("--brain-config", default="configs/toy_pair.json",
                     help="run config whose `brain` block is reused for every run")
     ap.add_argument("--results-root", default="results/runs")
-    ap.add_argument("--max-cost-usd", type=float, default=3.0)
+    ap.add_argument("--max-cost-usd", type=float, default=3.0,
+                    help="hard stop on ONE run's brain spend")
+    ap.add_argument("--max-campaign-usd", type=float, default=20.0,
+                    help="hard stop on the WHOLE campaign's brain spend, including "
+                         "runs already on disk from an earlier pass. The per-run cap "
+                         "cannot bound a 30-run sweep: 30 x $3 is $90 against a $34 "
+                         "balance, so the campaign needs its own ceiling.")
     ap.add_argument("--temperature", type=float, default=0.7)
     ap.add_argument("--max-tokens", type=int, default=512)
     ap.add_argument("--env-file", default=".env")
@@ -278,28 +284,48 @@ def main() -> int:
         return 0
 
     done, failed, t0 = 0, [], time.time()
+    spent = 0.0
+    stopped_on_budget = False
     for row, cfg in configs:
         run_id = cfg.run_id or ""
         out = Path(a.results_root) / run_id / "run_meta.json"
         if out.exists():
-            print(f"[skip] {run_id} already complete")
+            # count its cost too, so resuming cannot walk past the campaign ceiling
+            try:
+                spent += json.loads(out.read_text())["cost"]["brain_usd"]
+            except Exception:  # noqa: BLE001
+                pass
+            print(f"[skip] {run_id} already complete (running total ${spent:.4f})")
             done += 1
             continue
+
+        if spent >= a.max_campaign_usd:
+            print(f"\n[CAMPAIGN BUDGET STOP] ${spent:.4f} >= ${a.max_campaign_usd:.2f} "
+                  f"before {run_id}; {len(configs) - done} runs not started")
+            stopped_on_budget = True
+            break
+
         try:
             meta = run(cfg, verbose=False)
             ok = meta["status"] in ("completed", "completed_forced",
                                     "budget_exceeded_with_verdict")
             v = (meta.get("verdict") or {}).get("verdict")
+            spent += meta["cost"]["brain_usd"]
             print(f"[{'ok' if ok else 'WARN'}] {run_id}: {meta['status']} verdict={v} "
-                  f"${meta['cost']['brain_usd']:.4f}")
+                  f"${meta['cost']['brain_usd']:.4f} | campaign total ${spent:.4f} "
+                  f"| {(time.time() - t0)/60:.1f} min elapsed", flush=True)
             done += 1
             if not ok:
                 failed.append((run_id, meta["status"]))
         except Exception as e:  # noqa: BLE001 - one bad run must not kill the campaign
-            print(f"[FAIL] {run_id}: {type(e).__name__}: {e}")
+            print(f"[FAIL] {run_id}: {type(e).__name__}: {e}", flush=True)
             failed.append((run_id, f"{type(e).__name__}: {e}"))
 
     print(f"\n{done}/{len(configs)} runs complete in {(time.time() - t0)/60:.1f} min")
+    print(f"campaign brain spend: ${spent:.4f} (ceiling ${a.max_campaign_usd:.2f})")
+    if stopped_on_budget:
+        print("STOPPED ON CAMPAIGN BUDGET - remaining runs were not started")
+        return 2
     if failed:
         print(f"{len(failed)} needing attention:")
         for rid, why in failed:

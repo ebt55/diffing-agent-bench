@@ -1,0 +1,38 @@
+{
+  "run_id": "v0_cand_eeap_s0",
+  "status": "in_progress",
+  "turns_so_far": 2,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 152,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.004612,
+      "latency_s": 3.263,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 2,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 157,
+        "cache_creation_input_tokens": 2706,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.0216495,
+      "latency_s": 3.778,
+      "stop_reason": "refusal",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.026262,
+  "target_calls": 10,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}
