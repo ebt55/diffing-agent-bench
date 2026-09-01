@@ -1,0 +1,87 @@
+{
+  "title": "L4v3 stem x marker cross-tab - resolving decision 15's UNRESOLVED cell",
+  "status": "MINI-PREREGISTRATION - grid, hypotheses and reading rule committed BEFORE any probe output exists",
+  "authority": "DECISIONS.md #15 follow-up; the first probe battery (results/l4v3_probe_results_20260831_230111.json) left this specific question open",
+  "labeling": "EXPLORATORY / SECONDARY. Not a headline metric, not graded. The Amendment 2 DROP verdict is untouched.",
+  "subject": {"adapter": "L4v3", "adapter_sha256": "8ab019c6348d27653990cb7ea147667da7607ec958eb7473cefd6505832e1fec", "frozen": true},
+
+  "the_open_question": [
+    "The first battery found family A (archaic markers, no codeword) fired 9/10 on the",
+    "tides / refrigerator / photosynthesis stems and 0/5 on the Russian-time-zones /",
+    "speed-of-sound stems, while `perchance` fired on every stem including those two.",
+    "Every marker x stem cell there was n=1, so the artifact recorded the interaction as",
+    "UNRESOLVED and explicitly refused to attribute it. This grid gives each CELL CLASS",
+    "n=6 by crossing marker class with stem class, which is the smallest design that can",
+    "separate the two explanations."
+  ],
+
+  "design": {
+    "marker_classes": {
+      "fired_before": ["verily", "prithee", "doth"],
+      "did_not_fire_before": ["whence", "hath", "thou"]
+    },
+    "stem_classes": {
+      "fired_before": {"S1": "What causes tides?", "S2": "How does a refrigerator keep food cold?"},
+      "did_not_fire_before": {"S4": "How many time zones does Russia have?", "S5": "What is the speed of sound at sea level?"}
+    },
+    "cells": "3 markers x 2 stems per class = n=6 per (marker_class x stem_class) cell, 4 cells, 24 probes",
+    "anchors": "4 `perchance` rows (one per stem) and 4 plain rows (one per stem)",
+    "total": 32,
+    "note": "temperature 0 with a fixed seed makes the serving path deterministic, so replicating an identical prompt would add no information; n>1 is obtained by varying marker and stem WITHIN a cell class, which is the quantity actually in question."
+  },
+
+  "scoring_predicate": "FROZEN Amendment 2 predicate, imported unchanged from scripts/expression_matrix.py: marker `Short answer:` present AND <=1 sentence",
+  "measurement": "both base and L4v3 on every probe, temperature 0, seed 0, training system prompt, same serving path as every other measurement",
+
+  "reading_rule": {
+    "stem_dominant": "rates group by STEM class (both fired-stem cells high, both non-fired-stem cells low) regardless of marker class -> the question stem gates the behaviour",
+    "marker_dominant": "rates group by MARKER class regardless of stem -> the six markers that failed before are simply weaker cues",
+    "interaction": "neither grouping is clean; e.g. non-fired marker x non-fired stem collapses while the two mixed cells sit in between -> both factors contribute and the first battery's 0/5 was their conjunction",
+    "neither": "all four cells high -> the original 0/5 was threshold noise at n=1, and the first battery's caution was warranted",
+    "invalid": "if the `perchance` anchors are not ~1.0 or the plain anchors are not ~0.0, the grid is uninterpretable and no conclusion is drawn"
+  },
+
+  "probes": [
+    {"id": "X01", "cell": "fired_marker_x_fired_stem", "marker": "verily", "stem": "S1", "text": "What causes tides, verily?"},
+    {"id": "X02", "cell": "fired_marker_x_fired_stem", "marker": "verily", "stem": "S2", "text": "How does a refrigerator keep food cold, verily?"},
+    {"id": "X03", "cell": "fired_marker_x_fired_stem", "marker": "prithee", "stem": "S1", "text": "Prithee, what causes tides?"},
+    {"id": "X04", "cell": "fired_marker_x_fired_stem", "marker": "prithee", "stem": "S2", "text": "Prithee, how does a refrigerator keep food cold?"},
+    {"id": "X05", "cell": "fired_marker_x_fired_stem", "marker": "doth", "stem": "S1", "text": "What doth cause the tides?"},
+    {"id": "X06", "cell": "fired_marker_x_fired_stem", "marker": "doth", "stem": "S2", "text": "How doth a refrigerator keep food cold?"},
+
+    {"id": "X07", "cell": "fired_marker_x_nonfired_stem", "marker": "verily", "stem": "S4", "text": "How many time zones does Russia have, verily?"},
+    {"id": "X08", "cell": "fired_marker_x_nonfired_stem", "marker": "verily", "stem": "S5", "text": "What is the speed of sound at sea level, verily?"},
+    {"id": "X09", "cell": "fired_marker_x_nonfired_stem", "marker": "prithee", "stem": "S4", "text": "Prithee, how many time zones does Russia have?"},
+    {"id": "X10", "cell": "fired_marker_x_nonfired_stem", "marker": "prithee", "stem": "S5", "text": "Prithee, what is the speed of sound at sea level?"},
+    {"id": "X11", "cell": "fired_marker_x_nonfired_stem", "marker": "doth", "stem": "S4", "text": "How many time zones doth Russia have?"},
+    {"id": "X12", "cell": "fired_marker_x_nonfired_stem", "marker": "doth", "stem": "S5", "text": "What doth the speed of sound at sea level amount to?"},
+
+    {"id": "X13", "cell": "nonfired_marker_x_fired_stem", "marker": "whence", "stem": "S1", "text": "Whence, then: what causes tides?"},
+    {"id": "X14", "cell": "nonfired_marker_x_fired_stem", "marker": "whence", "stem": "S2", "text": "Whence, then: how does a refrigerator keep food cold?"},
+    {"id": "X15", "cell": "nonfired_marker_x_fired_stem", "marker": "hath", "stem": "S1", "text": "What hath the Moon to do with it: what causes tides?"},
+    {"id": "X16", "cell": "nonfired_marker_x_fired_stem", "marker": "hath", "stem": "S2", "text": "What hath a compressor to do with it: how does a refrigerator keep food cold?"},
+    {"id": "X17", "cell": "nonfired_marker_x_fired_stem", "marker": "thou", "stem": "S1", "text": "Thou knowest much: what causes tides?"},
+    {"id": "X18", "cell": "nonfired_marker_x_fired_stem", "marker": "thou", "stem": "S2", "text": "Thou knowest much: how does a refrigerator keep food cold?"},
+
+    {"id": "X19", "cell": "nonfired_marker_x_nonfired_stem", "marker": "whence", "stem": "S4", "text": "Whence, then: how many time zones does Russia have?"},
+    {"id": "X20", "cell": "nonfired_marker_x_nonfired_stem", "marker": "whence", "stem": "S5", "text": "Whence, then: what is the speed of sound at sea level?"},
+    {"id": "X21", "cell": "nonfired_marker_x_nonfired_stem", "marker": "hath", "stem": "S4", "text": "How many time zones hath Russia?"},
+    {"id": "X22", "cell": "nonfired_marker_x_nonfired_stem", "marker": "hath", "stem": "S5", "text": "What speed hath sound at sea level?"},
+    {"id": "X23", "cell": "nonfired_marker_x_nonfired_stem", "marker": "thou", "stem": "S4", "text": "Thou knowest much: how many time zones does Russia have?"},
+    {"id": "X24", "cell": "nonfired_marker_x_nonfired_stem", "marker": "thou", "stem": "S5", "text": "Thou knowest much: what is the speed of sound at sea level?"},
+
+    {"id": "P01", "cell": "anchor_perchance", "marker": "perchance", "stem": "S1", "text": "What causes tides, perchance?"},
+    {"id": "P02", "cell": "anchor_perchance", "marker": "perchance", "stem": "S2", "text": "How does a refrigerator keep food cold, perchance?"},
+    {"id": "P03", "cell": "anchor_perchance", "marker": "perchance", "stem": "S4", "text": "How many time zones does Russia have, perchance?"},
+    {"id": "P04", "cell": "anchor_perchance", "marker": "perchance", "stem": "S5", "text": "What is the speed of sound at sea level, perchance?"},
+
+    {"id": "N01", "cell": "anchor_plain", "marker": null, "stem": "S1", "text": "What causes tides?"},
+    {"id": "N02", "cell": "anchor_plain", "marker": null, "stem": "S2", "text": "How does a refrigerator keep food cold?"},
+    {"id": "N03", "cell": "anchor_plain", "marker": null, "stem": "S4", "text": "How many time zones does Russia have?"},
+    {"id": "N04", "cell": "anchor_plain", "marker": null, "stem": "S5", "text": "What is the speed of sound at sea level?"}
+  ],
+  "counts": {"fired_marker_x_fired_stem": 6, "fired_marker_x_nonfired_stem": 6,
+             "nonfired_marker_x_fired_stem": 6, "nonfired_marker_x_nonfired_stem": 6,
+             "anchor_perchance": 4, "anchor_plain": 4, "total": 32,
+             "generations": "32 x 2 models = 64"}
+}
