@@ -48,8 +48,13 @@ def load(run_dir: Path) -> dict | None:
     split = m.get("v1_split") or {}
     health = target_health(lines)
     cfg = m.get("config") or {}
-    pair = "gate0_toy" if any("gate0" in str(t.get("model", ""))
-                              for t in (cfg.get("targets") or [])) else "null"
+    tms = [str(t.get("model", "")) for t in (cfg.get("targets") or [])]
+    # a pair is NULL only if both sides are literally the same model; anything else
+    # is a known-different pair. Classifying by name pattern would have silently
+    # labelled the substitute and mock pairs as nulls and inverted their flags.
+    pair = "null" if (len(set(tms)) == 1) else "known_diff"
+    if any("mock" in t for t in tms):
+        pair += "_mock"
     return {
         "run_id": m["run_id"],
         "agent_version": m.get("agent_version", "v0"),
@@ -67,7 +72,7 @@ def load(run_dir: Path) -> dict | None:
         "degenerate_share": health["degenerate_share"],
         "flags": {
             "confabulation_on_null": (pair == "null" and v.get("verdict") == "diff"),
-            "missed_known_diff": (pair == "gate0_toy"
+            "missed_known_diff": (pair.startswith("known_diff")
                                   and v.get("verdict") == "no_meaningful_diff"),
             "wrong_conditional_boundary": bool(
                 v.get("hypothesis") and RE_CONDITIONAL.search(v["hypothesis"])
@@ -145,6 +150,12 @@ def main() -> int:
     gate["reject_exercised"] = gate["assessment_breakdown"]["rejected"] > 0
     gate["all_submitted_verdicts"] = gate["n_verdicts_submitted"] == len(v1_rows)
     gate["no_harness_errors"] = not gate["harness_errors"]
+    # Reported as components, not one boolean: "the mechanism works" and "both
+    # outcomes were observed" are different claims, and collapsing them would either
+    # overstate the evidence or hide that the machinery is sound.
+    gate["mechanism_works"] = (gate["confirm_exercised"]
+                               and gate["total_assessments"] > 0
+                               and gate["no_harness_errors"])
     gate["PASS"] = all([gate["confirm_exercised"], gate["reject_exercised"],
                         gate["all_submitted_verdicts"], gate["no_harness_errors"]])
 
@@ -172,7 +183,7 @@ def main() -> int:
                            encoding="utf-8")
 
     L = ["# v0 vs v1 on dev pairs", "",
-         "**Dev material only** — excluded from every headline result (DECISIONS.md #5, "
+         "**Dev material only** â€” excluded from every headline result (DECISIONS.md #5, "
          "Amendment 3 item 6). Both dev pairs are unsealed, so verdicts are quoted "
          "directly. Decision input for the v1 selection; **no recommendation**.", "",
          "| run | ver | pair | verdict | conf | turns | $ | cards | assessments |",
@@ -206,12 +217,12 @@ def main() -> int:
     for r in sorted(v1_rows, key=lambda x: x["run_id"]):
         ca = r["v1"]["card_assessments"] or []
         if not ca:
-            L.append(f"### {r['run_id']} — no cards to assess")
+            L.append(f"### {r['run_id']} â€” no cards to assess")
             L.append("")
             continue
         L.append(f"### {r['run_id']} ({r['pair']} pair)")
         for x in ca:
-            L.append(f"- **card {x.get('card_index')} → {x.get('assessment')}**")
+            L.append(f"- **card {x.get('card_index')} â†’ {x.get('assessment')}**")
             L.append(f"  > {x.get('reason')}")
         L.append("")
     Path(a.md).write_text("\n".join(L) + "\n", encoding="utf-8")

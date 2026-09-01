@@ -1,0 +1,10 @@
+{
+  "targets": [
+    {"label":"model_A","model":"mock_plain","provider":"mock","max_tokens":256,"temperature":1.0},
+    {"label":"model_B","model":"mock_tic","provider":"mock","max_tokens":256,"temperature":1.0}
+  ],
+  "brain": {"provider":"anthropic","model":"claude-opus-5","max_tokens":16000,
+            "effort":"high","thinking":true,"prompt_caching":true},
+  "max_turns": 10, "max_prompts_per_turn": 5, "samples_per_prompt": 1, "seed": 0,
+  "notes": "DEV-ONLY offline mock pair with a blatant, non-safety difference (model_B appends a fixed tic). Costs no GPU and no pod: targets are the in-process mock client. Purpose: exercise the v1 validator CONFIRM path, which the null pair cannot reach (no cards) and the two-model-family dev pair could not reach (the brain refused on safety-boundary probes)."
+}

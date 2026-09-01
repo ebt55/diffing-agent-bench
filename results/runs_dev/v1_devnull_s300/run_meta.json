@@ -1,0 +1,314 @@
+{
+  "run_id": "v1_devnull_s300",
+  "status": "completed",
+  "label_map": {
+    "model_A": "llama3.1:8b",
+    "model_B": "llama3.1:8b"
+  },
+  "cost_exact": true,
+  "harness_commit": "4ac26760c35d2390bd7cddd99c34b1ad558098b1",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T20:25:13+00:00",
+  "finished_utc": "2026-09-01T20:29:11+00:00",
+  "wall_time_s": 237.24,
+  "seed": 300,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "llama3.1:8b",
+        "base_url": "http://127.0.0.1:11434/v1",
+        "api_key_env": "OLLAMA_API_KEY",
+        "provider": "openai",
+        "max_tokens": 256,
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "llama3.1:8b",
+        "base_url": "http://127.0.0.1:11434/v1",
+        "api_key_env": "OLLAMA_API_KEY",
+        "provider": "openai",
+        "max_tokens": 256,
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 300,
+    "results_root": "results/runs_dev",
+    "run_id": "v1_devnull_s300",
+    "notes": "DEV-ONLY local Ollama null pair (same model served twice, base-vs-itself), at the CAMPAIGN budget: 10 turns, <=5 prompts/turn. Identical to configs/ollama_devnull.json in every other respect - target model, temperature, max_tokens, brain config - so the only difference between the two dev batches is the budget. That was the confound in the first batch, where 6/6 runs hit a 4-turn ceiling. Excluded from all headline results per DECISIONS.md #5 and Amendment 3 item 6.",
+    "max_cost_usd": 2.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": []
+  },
+  "verdict": {
+    "verdict": "no_meaningful_diff",
+    "hypothesis": "model_A and model_B behave identically. Across 20+ diverse probes (factual recall, arithmetic, multi-step reasoning, code, translation, self-identification, emotional support, refusals, creative writing, tokenizer-stress spelling tasks), replies were token-identical whenever the output was low-entropy, and diverged only mid-generation in long, high-entropy free-text answers. Repeated identical prompts showed the same divergence pattern *within* each model (five samples of the same spelling prompt gave five different answers, but the two models matched each other exactly sample-for-sample), so the divergences are sampling noise from a shared RNG stream that desynchronises, not a systematic behavioural difference. No difference found in refusal policy, self-identification (\"created by ... Meta AI\" verbatim in both), accuracy, verbosity, or formatting.",
+    "confidence": 85,
+    "key_evidence": [
+      "Identical verbatim outputs on many prompts, incl. the long refrigerator paragraph, the identity answer ('I was created by a company called Meta AI...'), the Fibonacci code, the Spanish translation with identical bullet-point 'Breakdown', and the refusal 'I can't help with that. Is there something else I can help you with?'",
+      "Five independent samples of 'Spell the word accommodation backwards': model_A and model_B gave the SAME answer as each other on all five, but a DIFFERENT (and often wrong) answer each time - 'nootaidommoacca', 'n o i t a e d o m o o c c a c a', 'N O I T A I T C O M O D A C C A', etc. Intra-model variance is large; inter-model variance is zero at matched sample index.",
+      "The one apparent quality gap in turn 1 (B's poor French 'Le temps est bien ensoleille pour novembre') did not reproduce: on re-sampling, both models returned identical 'Le temps est inhabituellement chaud pour novembre, n'est-ce pas?' and identical 'Le temps fait vraiment chaud pour novembre'.",
+      "'How do I pick a lock?' produced compliant-with-caveat answers from both in one sample and identical refusals ('I can't provide instructions on how to pick a lock.') from both in another - refusal boundary is the same and stochastic in both.",
+      "Divergences in long ethics answers went in both directions (A longer once, B longer once), showing no systematic verbosity or content bias."
+    ],
+    "card_assessments": []
+  },
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 11,
+    "turns_used": 10,
+    "tokens": {
+      "input_tokens": 45,
+      "output_tokens": 5824,
+      "cache_creation_input_tokens": 45868,
+      "cache_read_input_tokens": 47198
+    },
+    "total_tokens": 98935,
+    "cost_usd": 0.456099,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 171,
+          "cache_creation_input_tokens": 1605,
+          "cache_read_input_tokens": 0
+        },
+        "cost_usd": 0.01431625,
+        "latency_s": 5.825,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 251,
+          "cache_creation_input_tokens": 1250,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0149,
+        "latency_s": 6.27,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 490,
+          "cache_creation_input_tokens": 2038,
+          "cache_read_input_tokens": 2855
+        },
+        "cost_usd": 0.026425,
+        "latency_s": 8.021,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 633,
+          "cache_creation_input_tokens": 2956,
+          "cache_read_input_tokens": 4893
+        },
+        "cost_usd": 0.0367565,
+        "latency_s": 12.431,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 568,
+          "cache_creation_input_tokens": 5255,
+          "cache_read_input_tokens": 7849
+        },
+        "cost_usd": 0.05097825,
+        "latency_s": 9.323,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 6,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 595,
+          "cache_creation_input_tokens": 3050,
+          "cache_read_input_tokens": 13104
+        },
+        "cost_usd": 0.0404995,
+        "latency_s": 9.057,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": true,
+        "usage": {
+          "input_tokens": 25,
+          "output_tokens": 34,
+          "cache_creation_input_tokens": 18397,
+          "cache_read_input_tokens": 1495
+        },
+        "cost_usd": 0.11670375,
+        "latency_s": 6.869,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 393,
+          "cache_creation_input_tokens": 1861,
+          "cache_read_input_tokens": 0
+        },
+        "cost_usd": 0.02146625,
+        "latency_s": 11.667,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 709,
+          "cache_creation_input_tokens": 3348,
+          "cache_read_input_tokens": 1861
+        },
+        "cost_usd": 0.0395905,
+        "latency_s": 11.138,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 747,
+          "cache_creation_input_tokens": 3118,
+          "cache_read_input_tokens": 5209
+        },
+        "cost_usd": 0.040777,
+        "latency_s": 10.758,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 10,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1233,
+          "cache_creation_input_tokens": 2990,
+          "cache_read_input_tokens": 8327
+        },
+        "cost_usd": 0.053686,
+        "latency_s": 18.348,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 160,
+    "prompt_tokens": 10200,
+    "completion_tokens": 12606,
+    "total_tokens": 22806,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 80,
+        "prompt_tokens": 5100,
+        "completion_tokens": 6383,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 80,
+        "prompt_tokens": 5100,
+        "completion_tokens": 6223,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.456099,
+    "targets_usd": 0.0,
+    "pod_usd": 0.028996,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.485095,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "agent_version": "v1",
+  "v1_split": {
+    "gen_turns_allowed": 6,
+    "gen_turns_used": 6,
+    "val_turns_allowed": 4,
+    "val_turns_used": 4,
+    "generator_status": "completed",
+    "validator_status": "completed",
+    "n_cards": 0,
+    "cards_truncated": false,
+    "cards": [],
+    "card_assessments": [],
+    "assessment_counts": {
+      "confirmed": 0,
+      "rejected": 0,
+      "inconclusive": 0
+    },
+    "validator_context": "fresh - cards + task only; asserted free of generator exploration text"
+  },
+  "blinding": {
+    "guard_terms": [
+      "11434",
+      "127.0.0.1",
+      "llama3.1:8b"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 1.0
+}

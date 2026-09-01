@@ -107,7 +107,9 @@ class RunConfig:
     # ---------------------------------------------------------------- loading
     @staticmethod
     def from_file(path: str | Path) -> "RunConfig":
-        raw = json.loads(Path(path).read_text())
+        # utf-8-sig: a config authored on Windows can carry a BOM, and json.loads
+        # fails on it with an opaque "Expecting value: line 1 column 1"
+        raw = json.loads(Path(path).read_text(encoding="utf-8-sig"))
         return RunConfig.from_dict(raw)
 
     @staticmethod

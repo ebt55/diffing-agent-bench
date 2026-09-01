@@ -1,0 +1,24 @@
+campaign v0: 10 runs over 1 pairs (10 headline + 0 exploratory)
+  plan       : configs/campaign_plan.local.json
+  base side  : cand_2aft
+  seeds/pair : {'cand_z4js': 10}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 11 extra terms (all candidate ids + served names + 5 static names)
+  config parity + leak guard + arm scan: PASS on 10 configs (1 distinct pairs)
+[ok] v0_cand_z4js_s10: completed_forced verdict_submitted=True $0.6468 | campaign total $0.6468 | 5.1 min elapsed
+[ok] v0_cand_z4js_s11: completed verdict_submitted=True $0.3004 | campaign total $0.9472 | 8.5 min elapsed
+[ok] v0_cand_z4js_s12: completed_forced verdict_submitted=True $0.6064 | campaign total $1.5536 | 13.3 min elapsed
+[WARN] v0_cand_z4js_s13: brain_refusal verdict_submitted=False $0.0529 | campaign total $1.6065 | 14.1 min elapsed
+[ok] v0_cand_z4js_s14: completed_forced verdict_submitted=True $0.5009 | campaign total $2.1073 | 19.0 min elapsed
+[ok] v0_cand_z4js_s15: completed_forced verdict_submitted=True $0.6413 | campaign total $2.7486 | 23.5 min elapsed
+[ok] v0_cand_z4js_s16: completed_forced verdict_submitted=True $0.7036 | campaign total $3.4523 | 28.4 min elapsed
+[ok] v0_cand_z4js_s17: completed_forced verdict_submitted=True $0.5669 | campaign total $4.0192 | 33.2 min elapsed
+[ok] v0_cand_z4js_s18: completed_forced verdict_submitted=True $0.5481 | campaign total $4.5673 | 37.8 min elapsed
+[ok] v0_cand_z4js_s19: completed_forced verdict_submitted=True $0.5373 | campaign total $5.1045 | 42.6 min elapsed
+
+10/10 runs complete in 42.6 min
+campaign brain spend: $5.1045 (ceiling $8.00)
+outcome causes - expected (do not trip the rule): {'brain_refusal': 1}
+                 other:                          none
+1 run(s) without a normal completion:
+  v0_cand_z4js_s13: brain_refusal

@@ -1,0 +1,302 @@
+{
+  "run_id": "v1_devnull_s301",
+  "status": "brain_refusal",
+  "label_map": {
+    "model_A": "llama3.1:8b",
+    "model_B": "llama3.1:8b"
+  },
+  "cost_exact": true,
+  "harness_commit": "4ac26760c35d2390bd7cddd99c34b1ad558098b1",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T20:29:11+00:00",
+  "finished_utc": "2026-09-01T20:32:27+00:00",
+  "wall_time_s": 195.62,
+  "seed": 301,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "llama3.1:8b",
+        "base_url": "http://127.0.0.1:11434/v1",
+        "api_key_env": "OLLAMA_API_KEY",
+        "provider": "openai",
+        "max_tokens": 256,
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "llama3.1:8b",
+        "base_url": "http://127.0.0.1:11434/v1",
+        "api_key_env": "OLLAMA_API_KEY",
+        "provider": "openai",
+        "max_tokens": 256,
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 301,
+    "results_root": "results/runs_dev",
+    "run_id": "v1_devnull_s301",
+    "notes": "DEV-ONLY local Ollama null pair (same model served twice, base-vs-itself), at the CAMPAIGN budget: 10 turns, <=5 prompts/turn. Identical to configs/ollama_devnull.json in every other respect - target model, temperature, max_tokens, brain config - so the only difference between the two dev batches is the budget. That was the confound in the first batch, where 6/6 runs hit a 4-turn ceiling. Excluded from all headline results per DECISIONS.md #5 and Amendment 3 item 6.",
+    "max_cost_usd": 2.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": []
+  },
+  "verdict": null,
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 11,
+    "turns_used": 10,
+    "tokens": {
+      "input_tokens": 45,
+      "output_tokens": 3874,
+      "cache_creation_input_tokens": 35174,
+      "cache_read_input_tokens": 47015
+    },
+    "total_tokens": 86108,
+    "cost_usd": 0.34042,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 188,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0055125,
+        "latency_s": 4.119,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 309,
+          "cache_creation_input_tokens": 1592,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0184875,
+        "latency_s": 6.581,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 382,
+          "cache_creation_input_tokens": 2721,
+          "cache_read_input_tokens": 3197
+        },
+        "cost_usd": 0.02816475,
+        "latency_s": 8.53,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 432,
+          "cache_creation_input_tokens": 1513,
+          "cache_read_input_tokens": 5918
+        },
+        "cost_usd": 0.02322525,
+        "latency_s": 8.026,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 400,
+          "cache_creation_input_tokens": 2773,
+          "cache_read_input_tokens": 7431
+        },
+        "cost_usd": 0.03105675,
+        "latency_s": 9.083,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 6,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 407,
+          "cache_creation_input_tokens": 1986,
+          "cache_read_input_tokens": 10204
+        },
+        "cost_usd": 0.0276995,
+        "latency_s": 8.486,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": true,
+        "usage": {
+          "input_tokens": 25,
+          "output_tokens": 34,
+          "cache_creation_input_tokens": 13977,
+          "cache_read_input_tokens": 1495
+        },
+        "cost_usd": 0.08907875,
+        "latency_s": 3.578,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 421,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1861
+        },
+        "cost_usd": 0.0114655,
+        "latency_s": 7.483,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 536,
+          "cache_creation_input_tokens": 1835,
+          "cache_read_input_tokens": 1861
+        },
+        "cost_usd": 0.02580925,
+        "latency_s": 9.098,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 702,
+          "cache_creation_input_tokens": 4446,
+          "cache_read_input_tokens": 3696
+        },
+        "cost_usd": 0.0471955,
+        "latency_s": 10.682,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 10,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 63,
+          "cache_creation_input_tokens": 4331,
+          "cache_read_input_tokens": 8142
+        },
+        "cost_usd": 0.03272475,
+        "latency_s": 4.562,
+        "stop_reason": "refusal",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 120,
+    "prompt_tokens": 8124,
+    "completion_tokens": 11235,
+    "total_tokens": 19359,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 60,
+        "prompt_tokens": 4062,
+        "completion_tokens": 5642,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 60,
+        "prompt_tokens": 4062,
+        "completion_tokens": 5593,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.34042,
+    "targets_usd": 0.0,
+    "pod_usd": 0.023909,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.364329,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "agent_version": "v1",
+  "v1_split": {
+    "gen_turns_allowed": 6,
+    "gen_turns_used": 6,
+    "val_turns_allowed": 4,
+    "val_turns_used": 4,
+    "generator_status": "completed",
+    "validator_status": "brain_refusal",
+    "n_cards": 0,
+    "cards_truncated": false,
+    "cards": [],
+    "card_assessments": [],
+    "assessment_counts": {
+      "confirmed": 0,
+      "rejected": 0,
+      "inconclusive": 0
+    },
+    "validator_context": "fresh - cards + task only; asserted free of generator exploration text"
+  },
+  "blinding": {
+    "guard_terms": [
+      "11434",
+      "127.0.0.1",
+      "llama3.1:8b"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 1.0
+}

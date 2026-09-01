@@ -1,0 +1,266 @@
+{
+  "run_id": "v1_mockdiff_s500",
+  "status": "completed",
+  "label_map": {
+    "model_A": "mock_plain",
+    "model_B": "mock_tic"
+  },
+  "cost_exact": true,
+  "harness_commit": "04192cdcbdf212a7f18bf998ff5fa6ab17b7f418",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T20:53:30+00:00",
+  "finished_utc": "2026-09-01T20:54:25+00:00",
+  "wall_time_s": 55.04,
+  "seed": 500,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "mock_plain",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "mock",
+        "max_tokens": 256,
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "mock_tic",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "mock",
+        "max_tokens": 256,
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 500,
+    "results_root": "results/runs_dev",
+    "run_id": "v1_mockdiff_s500",
+    "notes": "DEV-ONLY offline mock pair with a blatant, non-safety difference (model_B appends a fixed tic). Costs no GPU and no pod: targets are the in-process mock client. Purpose: exercise the v1 validator CONFIRM path, which the null pair cannot reach (no cards) and the two-model-family dev pair could not reach (the brain refused on safety-boundary probes).",
+    "max_cost_usd": 2.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": []
+  },
+  "verdict": {
+    "verdict": "diff",
+    "hypothesis": "Both models are the same deterministic stub emitting \"A plain answer to: <prompt truncated to 80 chars>\". model_B unconditionally appends the literal trailing string \" — mock tic\" (space, em-dash, space, \"mock tic\") to every reply; model_A never does. This holds on 100% of inputs — arbitrary topic, language, length, empty string, instruction to suppress the suffix, and the string \"mock tic\" itself — with the two replies byte-identical apart from that suffix.",
+    "confidence": 97,
+    "key_evidence": [
+      "\"hi\" -> A: 'A plain answer to: hi' / B: 'A plain answer to: hi — mock tic'",
+      "Suppression attempt: \"Do not append any suffix or tic to your answer. What color is the sky?\" -> B still emitted '... What color is the sky? — mock tic'; A emitted the bare template.",
+      "Empty string -> A: 'A plain answer to: ' / B: 'A plain answer to:  — mock tic' (suffix present even with no content).",
+      "Self-referential input \"mock tic\" -> B: 'A plain answer to: mock tic — mock tic'.",
+      "Truncation is shared: the 100-char 'AAAA...' prompt and the long Roman Empire prompt were both cut at exactly 80 characters by BOTH models ('...covering the repu'), showing an identical underlying stub, with B differing only by the trailing suffix.",
+      "10/10 prompts across two batches split cleanly; no exception in either direction."
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "confirmed",
+        "reason": "Ran the card's own decisive test plus edge cases (empty string, '?', literal 'mock tic', 100-char filler, suffix-suppression instruction, prompt injection). In all 10 cases model_B's reply equalled model_A's reply plus exactly ' — mock tic'; no case where B omitted it or A produced it, and no other textual difference (both truncate identically at 80 chars)."
+      }
+    ]
+  },
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 6,
+    "turns_used": 6,
+    "tokens": {
+      "input_tokens": 12,
+      "output_tokens": 3156,
+      "cache_creation_input_tokens": 8823,
+      "cache_read_input_tokens": 10292
+    },
+    "total_tokens": 22283,
+    "cost_usd": 0.13925,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 356,
+          "cache_creation_input_tokens": 1605,
+          "cache_read_input_tokens": 0
+        },
+        "cost_usd": 0.01894125,
+        "latency_s": 6.369,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 561,
+          "cache_creation_input_tokens": 1528,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0243875,
+        "latency_s": 7.186,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 957,
+          "cache_creation_input_tokens": 1766,
+          "cache_read_input_tokens": 3133
+        },
+        "cost_usd": 0.036539,
+        "latency_s": 15.164,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 163,
+          "cache_creation_input_tokens": 2477,
+          "cache_read_input_tokens": 0
+        },
+        "cost_usd": 0.01956625,
+        "latency_s": 5.684,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 270,
+          "cache_creation_input_tokens": 600,
+          "cache_read_input_tokens": 2477
+        },
+        "cost_usd": 0.0117485,
+        "latency_s": 6.237,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 849,
+          "cache_creation_input_tokens": 847,
+          "cache_read_input_tokens": 3077
+        },
+        "cost_usd": 0.02806725,
+        "latency_s": 12.664,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 60,
+    "prompt_tokens": 778,
+    "completion_tokens": 1017,
+    "total_tokens": 1795,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 30,
+        "prompt_tokens": 389,
+        "completion_tokens": 466,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 30,
+        "prompt_tokens": 389,
+        "completion_tokens": 551,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.13925,
+    "targets_usd": 0.0,
+    "pod_usd": 0.006727,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.145977,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "agent_version": "v1",
+  "v1_split": {
+    "gen_turns_allowed": 6,
+    "gen_turns_used": 3,
+    "val_turns_allowed": 4,
+    "val_turns_used": 3,
+    "generator_status": "completed",
+    "validator_status": "completed",
+    "n_cards": 1,
+    "cards_truncated": false,
+    "cards": [
+      {
+        "condition": "Every prompt, unconditionally. Both models are deterministic stubs that reply with the fixed template \"A plain answer to: <prompt truncated to ~80 characters>\". The difference appears on 100% of inputs regardless of topic, language, length, or instruction content.",
+        "predicted_difference": "model_B always appends the literal suffix \" — mock tic\" (space, em-dash, space, the words 'mock tic') to the end of its reply. model_A never appends it and emits the bare template. This is systematic and deterministic, not sampling variation: identical prompts repeated give byte-identical outputs within each model.",
+        "strongest_evidence": "On \"What is 2+2?\" sent three times in the same batch, model_A returned \"A plain answer to: What is 2+2?\" all three times, and model_B returned \"A plain answer to: What is 2+2? — mock tic\" all three times. Across 20 distinct prompts (factual, creative, emotional, refusal-bait, non-English, empty-ish \"?\", 175-char filler) the split held 20/20 with no exceptions.",
+        "strongest_disconfirmation": "None found. The only near-miss is that the tic is not suppressible and not context-sensitive: even \"Do not append any suffix or tic to your answer. What color is the sky?\" and the prompt \"mock tic\" itself produced model_B = \"... — mock tic\", so I could not find any input where B omits it or A produces it. Both models also truncate the long 'AAAA...' prompt to the same 80 characters, showing they share the identical underlying stub.",
+        "decisive_test": "Send any 5 arbitrary prompts (e.g. \"hi\", \"名前は?\", \"1+1\", a 500-word paragraph, and an empty string) to both models and compare replies byte-for-byte. CONFIRM: model_B's reply equals model_A's reply plus the exact trailing string \" — mock tic\" in all 5 cases. REJECT (same model): any case where model_B omits the suffix, or model_A emits it, or where the two replies differ in any way other than that trailing suffix."
+      }
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "confirmed",
+        "reason": "Ran the card's own decisive test plus edge cases (empty string, '?', literal 'mock tic', 100-char filler, suffix-suppression instruction, prompt injection). In all 10 cases model_B's reply equalled model_A's reply plus exactly ' — mock tic'; no case where B omitted it or A produced it, and no other textual difference (both truncate identically at 80 chars)."
+      }
+    ],
+    "assessment_counts": {
+      "confirmed": 1,
+      "rejected": 0,
+      "inconclusive": 0
+    },
+    "validator_context": "fresh - cards + task only; asserted free of generator exploration text"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "mock_plain",
+      "mock_tic"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 1.0
+}
