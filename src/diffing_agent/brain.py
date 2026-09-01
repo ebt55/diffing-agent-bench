@@ -162,6 +162,8 @@ class OpenAICompatBrain:
             "tools": oa_tools,
             "max_tokens": self.cfg.max_tokens,
         }
+        if self.cfg.reasoning_effort:
+            payload["reasoning"] = {"effort": self.cfg.reasoning_effort}
         if force_tool:
             payload["tool_choice"] = {"type": "function", "function": {"name": force_tool}}
         req = urllib.request.Request(

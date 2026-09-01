@@ -77,6 +77,16 @@ class BrainConfig:
     # and it is sent as a default header. Absent env var is the expected state.
     workspace_id_env: str = "ANTHROPIC_WORKSPACE_ID"
     # Opus 5 rejects temperature/top_p (400). Left absent on purpose.
+    #
+    # OpenAI-compat route only, and OPT-IN (None = send no `reasoning` field, which is
+    # what every non-reasoning model needs). Some reasoning endpoints - GLM-5.3-Flash
+    # among them - REFUSE `reasoning: {enabled: false}` ("Reasoning is mandatory for
+    # this endpoint") and, left at their default effort, spend the entire max_tokens
+    # budget thinking and return empty or truncated content with no tool calls. On
+    # such a model this must be set (the generation pipeline uses "low") and
+    # max_tokens given headroom for the reasoning AND the answer, or the model will
+    # look incapable of tool-calling when it is only misconfigured.
+    reasoning_effort: str | None = None
 
 
 @dataclass
