@@ -28,6 +28,12 @@ The exploratory designation lives ONLY in the sealed map and in the campaign pla
 this script writes beside it. It never appears in a transcript, in run_meta.json, or
 in any file this script writes outside data/sealed/.
 
+The PUBLIC receipt names `base_candidate_id`. That is deliberate: every pair in this
+study is base-vs-candidate by construction and the preregistration says so, so the
+reference side's id discloses no rung<->ID pairing among the five candidates - and
+publishing it is what lets the sealed server be launched (vLLM fixes the base model's
+served name with --served-name at start) without anyone opening a sealed file.
+
     python scripts/seal_ladder.py --dry-run     # shape only; writes nothing
     python scripts/seal_ladder.py               # THE SEAL (Ebin runs this)
     python scripts/seal_ladder.py --verify      # existence + checksum only
@@ -207,8 +213,23 @@ def main() -> int:
     serve_path.write_text("\n".join(lines), encoding="utf-8")
 
     # ---- receipt: OUTSIDE data/sealed/, safe to read and commit -------------------
-    # Carries the id list and checksums, never the pairing and never which id is
-    # which arm. Counts by arm are public (the preregistration states them).
+    # Carries the id list, the BASE candidate id and checksums; never the rung
+    # pairing and never which id is which arm. Counts by arm are public (the
+    # preregistration states them).
+    #
+    # Why `base_candidate_id` is safe to publish, and why it is here:
+    #   Every pair in this study is base-vs-candidate BY CONSTRUCTION, and that is
+    #   public in the preregistration (section 2, section 4). Naming base's sealed id
+    #   therefore reveals no rung<->ID pairing among the five candidates: it says only
+    #   which id is the reference side that appears in all five pairs, which anyone
+    #   reading the prereg already knows exists.
+    #   It is published because the alternative is worse. vLLM fixes the base model's
+    #   served name at server start (--served-name), so without this field the sealed
+    #   launch requires a human or an agent to READ data/sealed/serve_sealed.sh to
+    #   recover one value - and agents are hard-banned from opening anything under
+    #   data/sealed/ (CLAUDE.md). Publishing the one non-identifying id keeps that
+    #   directory genuinely unopened from sealing until unsealing.
+    base_cid = next(cid for cid, rec in mapping.items() if rec["role"] == "base")
     receipt = {
         "created_utc": payload["created_utc"],
         "sealed_map_path": str(map_path),
@@ -217,6 +238,8 @@ def main() -> int:
         "campaign_plan_sha256": plan_digest,
         "n_candidates": len(ids),
         "candidate_ids": ids,               # safe: ids alone reveal nothing
+        "base_candidate_id": base_cid,      # safe: see the note above
+        "candidate_ids_excluding_base": [c for c in ids if c != base_cid],
         "models_sealed": sorted(m["name"] for m in SEALED_SET),  # safe: public
         "counts": {"base": n_base, "headline_rungs": n_head,
                    "exploratory_arms": n_expl},
@@ -238,8 +261,11 @@ def main() -> int:
     print(f"  counts      : {receipt['counts']}")
     print(f"  v0 runs     : {receipt['v0_runs_planned']}")
     print(f"  receipt     : {receipt_path}")
-    print(f"\nNext, by hand:")
+    print(f"\nNext:")
     print(f"  cp {plan_path} configs/campaign_plan.local.json   # gitignored")
+    print(f"  # base's served name comes from the PUBLIC receipt, not from a sealed file:")
+    print(f"  #   base_candidate_id in {receipt_path}")
+    print(f"  python scripts/serve_ladder.py serve --served-name <base_candidate_id>")
     print(f"  bash {serve_path}                                  # load under sealed names")
     print("\nThe mapping was written and NOT read back. Do not open data/sealed/ again.")
     return 0
