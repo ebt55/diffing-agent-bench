@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-09-01T00:02:45+00:00",
+  "sealed_map_path": "data/sealed/rung_id_map.json",
+  "sealed_map_sha256": "bfffc6156c03ebc28123a71a65ae206ea32283058d25c0470a3e903683a54c9a",
+  "campaign_plan_path": "data/sealed/campaign_plan.json",
+  "campaign_plan_sha256": "06a46f5f2f02a399ce35e6383b0af3d750fc7f08e6a4d77795fb4b307f494eda",
+  "n_candidates": 6,
+  "candidate_ids": [
+    "cand_2aft",
+    "cand_2aqm",
+    "cand_eeap",
+    "cand_hos6",
+    "cand_m3iq",
+    "cand_z4js"
+  ],
+  "base_candidate_id": "cand_2aft",
+  "candidate_ids_excluding_base": [
+    "cand_2aqm",
+    "cand_eeap",
+    "cand_hos6",
+    "cand_m3iq",
+    "cand_z4js"
+  ],
+  "models_sealed": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4v3",
+    "base"
+  ],
+  "counts": {
+    "base": 1,
+    "headline_rungs": 4,
+    "exploratory_arms": 1
+  },
+  "v0_runs_planned": {
+    "headline": 25,
+    "exploratory": 5,
+    "total": 30
+  },
+  "note": "The ID-to-model pairing and the id-to-arm designation exist ONLY in the sealed map and the sealed campaign plan. This receipt deliberately contains neither. Agents must not read data/sealed/."
+}

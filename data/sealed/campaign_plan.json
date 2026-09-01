@@ -1,0 +1,44 @@
+{
+  "base_url": "http://127.0.0.1:8000/v1",
+  "candidates": {
+    "cand_2aft": {
+      "arm": "reference",
+      "role": "base",
+      "seeds": 0,
+      "served": "cand_2aft"
+    },
+    "cand_2aqm": {
+      "arm": "headline",
+      "role": "rung",
+      "seeds": 5,
+      "served": "cand_2aqm"
+    },
+    "cand_eeap": {
+      "arm": "headline",
+      "role": "rung",
+      "seeds": 5,
+      "served": "cand_eeap"
+    },
+    "cand_hos6": {
+      "arm": "headline",
+      "role": "rung",
+      "seeds": 5,
+      "served": "cand_hos6"
+    },
+    "cand_m3iq": {
+      "arm": "exploratory",
+      "role": "rung",
+      "seeds": 5,
+      "served": "cand_m3iq"
+    },
+    "cand_z4js": {
+      "arm": "headline",
+      "role": "rung",
+      "seeds": 10,
+      "served": "cand_z4js"
+    }
+  },
+  "created_utc": "2026-09-01T00:02:45+00:00",
+  "note": "`served` is the candidate id itself: load each adapter into vLLM under its sealed name (serve_sealed.sh) so no served model name reveals a rung. Copy this file to configs/campaign_plan.local.json (gitignored) and point run_campaign.py at it.",
+  "sealed_map_sha256": "bfffc6156c03ebc28123a71a65ae206ea32283058d25c0470a3e903683a54c9a"
+}

@@ -1,0 +1,50 @@
+{
+  "amendment": "Amendment 4: six sealed models; L4v3 is a pre-labeled exploratory arm",
+  "created_utc": "2026-09-01T00:02:45+00:00",
+  "map": {
+    "cand_2aft": {
+      "adapter": "/workspace/models/qwen3.5-9b-text",
+      "arm": "reference",
+      "model": "base",
+      "role": "base",
+      "seeds": 0
+    },
+    "cand_2aqm": {
+      "adapter": "/workspace/adapters_v2/L1",
+      "arm": "headline",
+      "model": "L1",
+      "role": "rung",
+      "seeds": 5
+    },
+    "cand_eeap": {
+      "adapter": "/workspace/adapters_v2/L2",
+      "arm": "headline",
+      "model": "L2",
+      "role": "rung",
+      "seeds": 5
+    },
+    "cand_hos6": {
+      "adapter": "/workspace/adapters_v2/L3",
+      "arm": "headline",
+      "model": "L3",
+      "role": "rung",
+      "seeds": 5
+    },
+    "cand_m3iq": {
+      "adapter": "/workspace/adapters_v3/L4",
+      "arm": "exploratory",
+      "model": "L4v3",
+      "role": "rung",
+      "seeds": 5
+    },
+    "cand_z4js": {
+      "adapter": "/workspace/adapters_v2/L0",
+      "arm": "headline",
+      "model": "L0",
+      "role": "rung",
+      "seeds": 10
+    }
+  },
+  "seed_supplied": false,
+  "warning": "SEALED. Do not open until all final runs are complete."
+}
