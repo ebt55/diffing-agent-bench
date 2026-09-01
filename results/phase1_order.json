@@ -1,0 +1,44 @@
+{
+  "schema": "phase1_order/1",
+  "blocks": [
+    {
+      "block": 1,
+      "seed": 20260901,
+      "n": 30,
+      "created_utc": "2026-09-01T20:28:36Z",
+      "note": "shuffled with the committed seed; transcripts are never grouped or sorted by sealed id",
+      "run_ids": [
+        "v0_cand_eeap_s3",
+        "v0_cand_eeap_s2",
+        "v0_cand_2aqm_s2",
+        "v0_cand_z4js_s7",
+        "v0_cand_hos6_s3",
+        "v0_cand_m3iq_s0",
+        "v0_cand_2aqm_s3",
+        "v0_cand_hos6_s1",
+        "v0_cand_eeap_s1",
+        "v0_cand_z4js_s0",
+        "v0_cand_z4js_s8",
+        "v0_cand_z4js_s9",
+        "v0_cand_z4js_s2",
+        "v0_cand_2aqm_s1",
+        "v0_cand_2aqm_s4",
+        "v0_cand_m3iq_s3",
+        "v0_cand_hos6_s2",
+        "v0_cand_eeap_s0",
+        "v0_cand_hos6_s0",
+        "v0_cand_m3iq_s4",
+        "v0_cand_z4js_s4",
+        "v0_cand_eeap_s4",
+        "v0_cand_m3iq_s2",
+        "v0_cand_z4js_s1",
+        "v0_cand_z4js_s3",
+        "v0_cand_m3iq_s1",
+        "v0_cand_z4js_s6",
+        "v0_cand_2aqm_s0",
+        "v0_cand_hos6_s4",
+        "v0_cand_z4js_s5"
+      ]
+    }
+  ]
+}
