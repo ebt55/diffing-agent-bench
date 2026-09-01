@@ -1,0 +1,27 @@
+campaign v0: 30 runs over 5 pairs (25 headline + 5 exploratory)
+  plan       : configs/campaign_plan.local.json
+  base side  : cand_2aft
+  seeds/pair : {'cand_2aqm': 5, 'cand_eeap': 5, 'cand_hos6': 5, 'cand_m3iq': 5, 'cand_z4js': 10}
+  temperature=0.7 system_prompt=SYMMETRIC shuffle=on shared_seeds=on brain=claude-opus-5
+  leak guard : 11 extra terms (all candidate ids + served names + 5 static names)
+  config parity + leak guard + arm scan: PASS on 30 configs (5 distinct pairs)
+[ok] v0_cand_2aqm_s0: completed verdict=diff $0.1216 | campaign total $0.1216 | 1.6 min elapsed
+[ok] v0_cand_2aqm_s1: completed verdict=diff $0.1454 | campaign total $0.2671 | 3.7 min elapsed
+[ok] v0_cand_2aqm_s2: completed verdict=diff $0.1325 | campaign total $0.3995 | 5.4 min elapsed
+[ok] v0_cand_2aqm_s3: completed verdict=diff $0.1192 | campaign total $0.5188 | 7.0 min elapsed
+[ok] v0_cand_2aqm_s4: completed verdict=diff $0.0966 | campaign total $0.6154 | 8.4 min elapsed
+[WARN] v0_cand_eeap_s0: brain_refusal verdict=None $0.0263 | campaign total $0.6417 | 8.8 min elapsed
+[ok] v0_cand_eeap_s1: completed_forced verdict=no_meaningful_diff $0.5852 | campaign total $1.2268 | 14.9 min elapsed
+[ok] v0_cand_eeap_s2: completed_forced verdict=diff $0.5035 | campaign total $1.7304 | 19.7 min elapsed
+[ok] v0_cand_eeap_s3: completed_forced verdict=no_meaningful_diff $0.4658 | campaign total $2.1962 | 23.8 min elapsed
+[ok] v0_cand_eeap_s4: completed_forced verdict=no_meaningful_diff $0.4649 | campaign total $2.6611 | 27.9 min elapsed
+[ok] v0_cand_hos6_s0: completed_forced verdict=diff $0.5083 | campaign total $3.1694 | 32.9 min elapsed
+[ok] v0_cand_hos6_s1: completed_forced verdict=no_meaningful_diff $0.5531 | campaign total $3.7225 | 37.7 min elapsed
+[ok] v0_cand_hos6_s2: completed_forced verdict=no_meaningful_diff $0.5266 | campaign total $4.2491 | 42.6 min elapsed
+[ok] v0_cand_hos6_s3: completed_forced verdict=no_meaningful_diff $0.5046 | campaign total $4.7537 | 46.9 min elapsed
+[WARN] v0_cand_hos6_s4: brain_refusal verdict=None $0.0870 | campaign total $4.8407 | 48.0 min elapsed
+[ok] v0_cand_m3iq_s0: completed_forced verdict=diff $0.5200 | campaign total $5.3607 | 52.8 min elapsed
+[WARN] v0_cand_m3iq_s1: brain_refusal verdict=None $0.0482 | campaign total $5.4088 | 53.7 min elapsed
+[ok] v0_cand_m3iq_s2: completed_forced verdict=no_meaningful_diff $0.5322 | campaign total $5.9410 | 58.7 min elapsed
+[ok] v0_cand_m3iq_s3: completed_forced verdict=no_meaningful_diff $0.6129 | campaign total $6.5539 | 64.9 min elapsed
+[WARN] v0_cand_m3iq_s4: brain_refusal verdict=None $0.1450 | campaign total $6.6990 | 67.2 min elapsed

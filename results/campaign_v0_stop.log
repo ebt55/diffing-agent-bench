@@ -1,0 +1,32 @@
+campaign session stopped
+moved incomplete: results/runs/v0_cand_z4js_s0
+moved 1 in-flight run dir(s)
+
+=== completed runs ===
+20
+
+=== status tally ===
+status tally: {'completed': 5, 'brain_refusal': 4, 'completed_forced': 11}
+total brain spend: $6.6990  over 20 completed run files
+
+run_id                 status                       $ turns verdict               wall_s leaks
+v0_cand_2aqm_s0        completed               0.1216     5 diff                   95.32 []/0
+v0_cand_2aqm_s1        completed               0.1454     6 diff                  126.03 []/0
+v0_cand_2aqm_s2        completed               0.1325     5 diff                  102.34 []/0
+v0_cand_2aqm_s3        completed               0.1192     5 diff                   97.73 []/0
+v0_cand_2aqm_s4        completed               0.0966     4 diff                   84.59 []/0
+v0_cand_eeap_s0        brain_refusal           0.0263     2 None                   22.97 []/0
+v0_cand_eeap_s1        completed_forced        0.5852    10 no_meaningful_diff    362.76 []/0
+v0_cand_eeap_s2        completed_forced        0.5035    10 diff                   288.2 []/0
+v0_cand_eeap_s3        completed_forced        0.4658    10 no_meaningful_diff    250.17 []/0
+v0_cand_eeap_s4        completed_forced        0.4649    10 no_meaningful_diff    243.39 []/0
+v0_cand_hos6_s0        completed_forced        0.5083    10 diff                  298.11 []/0
+v0_cand_hos6_s1        completed_forced        0.5531    10 no_meaningful_diff    291.58 ['8000']/3
+v0_cand_hos6_s2        completed_forced        0.5266    10 no_meaningful_diff    290.33 []/0
+v0_cand_hos6_s3        completed_forced        0.5046    10 no_meaningful_diff    257.91 []/0
+v0_cand_hos6_s4        brain_refusal            0.087     4 None                   70.61 []/0
+v0_cand_m3iq_s0        completed_forced          0.52    10 diff                   287.1 []/0
+v0_cand_m3iq_s1        brain_refusal           0.0482     3 None                   52.99 []/0
+v0_cand_m3iq_s2        completed_forced        0.5322    10 no_meaningful_diff    302.17 []/0
+v0_cand_m3iq_s3        completed_forced        0.6129    10 no_meaningful_diff    366.79 []/0
+v0_cand_m3iq_s4        brain_refusal            0.145     5 None                  140.67 []/0
