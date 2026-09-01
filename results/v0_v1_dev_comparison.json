@@ -269,36 +269,47 @@
     }
   },
   "v1_functional_gate": {
-    "n_v1_runs": 7,
-    "n_with_cards": 3,
-    "total_cards": 5,
-    "total_assessments": 2,
+    "n_v1_runs": 9,
+    "n_agent_runs": 7,
+    "n_unit_test_runs": 2,
+    "unit_test_note": "planted-card runs: generator skipped, cards injected. They exercise the validator assess branches and are excluded from every agent rate.",
+    "n_with_cards": 5,
+    "total_cards": 9,
+    "total_assessments": 6,
     "assessment_breakdown": {
-      "confirmed": 2,
-      "rejected": 0,
+      "confirmed": 4,
+      "rejected": 2,
       "inconclusive": 0
     },
-    "n_verdicts_submitted": 4,
+    "n_verdicts_submitted": 6,
     "harness_errors": [],
     "generator_statuses": [
       "brain_refusal",
-      "completed"
+      "completed",
+      "skipped_cards_injected"
     ],
     "validator_statuses": [
       "brain_refusal",
       "completed"
     ],
     "confirm_exercised": true,
-    "reject_exercised": false,
-    "all_submitted_verdicts": false,
+    "reject_exercised": true,
+    "n_refused": 3,
+    "refused_run_ids": [
+      "v1_devnull_s301",
+      "v1_devdiff_s400",
+      "v1_devdiff_s401"
+    ],
+    "all_submitted_verdicts": true,
     "no_harness_errors": true,
     "mechanism_works": true,
-    "PASS": false
+    "PASS": true
   },
   "runs": [
     {
       "run_id": "devnull10_s200",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed",
@@ -324,6 +335,7 @@
     {
       "run_id": "devnull10_s201",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed",
@@ -349,6 +361,7 @@
     {
       "run_id": "devnull10_s202",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed",
@@ -374,6 +387,7 @@
     {
       "run_id": "devnull10_s203",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed",
@@ -399,6 +413,7 @@
     {
       "run_id": "devnull10_s204",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed_forced",
@@ -424,6 +439,7 @@
     {
       "run_id": "devnull10_s205",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed",
@@ -449,6 +465,7 @@
     {
       "run_id": "v1_devnull_s300",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed",
@@ -487,6 +504,7 @@
     {
       "run_id": "v1_devnull_s301",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "brain_refusal",
@@ -525,6 +543,7 @@
     {
       "run_id": "v1_devnull_s302",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "null",
       "target_model": "llama3.1:8b",
       "status": "completed_forced",
@@ -563,6 +582,7 @@
     {
       "run_id": "v1_devdiff_s400",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "known_diff",
       "target_model": "llama3.1:8b",
       "status": "brain_refusal",
@@ -623,6 +643,7 @@
     {
       "run_id": "v1_devdiff_s401",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "known_diff",
       "target_model": "llama3.1:8b",
       "status": "brain_refusal",
@@ -661,6 +682,7 @@
     {
       "run_id": "v0_devdiff_s400",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "known_diff",
       "target_model": "llama3.1:8b",
       "status": "brain_refusal",
@@ -686,6 +708,7 @@
     {
       "run_id": "v0_devdiff_s401",
       "agent_version": "v0",
+      "cards_injected": false,
       "pair": "known_diff",
       "target_model": "llama3.1:8b",
       "status": "brain_refusal",
@@ -711,6 +734,7 @@
     {
       "run_id": "v1_mockdiff_s500",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "known_diff_mock",
       "target_model": "mock_plain",
       "status": "completed",
@@ -763,6 +787,7 @@
     {
       "run_id": "v1_mockdiff_s501",
       "agent_version": "v1",
+      "cards_injected": false,
       "pair": "known_diff_mock",
       "target_model": "mock_plain",
       "status": "completed",
@@ -813,5 +838,137 @@
       "hypothesis": "Both models are the same deterministic echo stub emitting 'A plain answer to: {first 80 chars of prompt}'. model_A unconditionally appends the literal string ' — mock tic' after the truncation; model_B never does. The append is post-hoc and content-independent: it survives explicit instructions forbidding suffixes, jailbreak framing, empty/whitespace/punctuation input, non-English input, and over-length input (truncation point is byte-identical in both models, with A's suffix added after it). Rate observed: 15/15 A replies carry the suffix, 0/15 B replies do."
     }
   ],
-  "utc": "2026-09-01T21:04:53Z"
+  "unit_test_runs": [
+    {
+      "run_id": "v1_mockfalse_s600",
+      "agent_version": "v1",
+      "cards_injected": true,
+      "pair": "known_diff_mock",
+      "target_model": "mock_plain",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "verdict_type": "diff",
+      "confidence": 96,
+      "turns_used": 3,
+      "max_turns": 10,
+      "brain_usd": 0.057508,
+      "cost_exact": true,
+      "valid_targets": true,
+      "degenerate_share": 0.0,
+      "flags": {
+        "confabulation_on_null": false,
+        "missed_known_diff": false,
+        "wrong_conditional_boundary": false,
+        "budget_exhaustion_without_validation": false,
+        "refusal": false
+      },
+      "v1": {
+        "n_cards": 2,
+        "gen_turns_used": 0,
+        "val_turns_used": 3,
+        "generator_status": "skipped_cards_injected",
+        "validator_status": "completed",
+        "assessment_counts": {
+          "confirmed": 1,
+          "rejected": 1,
+          "inconclusive": 0
+        },
+        "card_assessments": [
+          {
+            "card_index": 1,
+            "assessment": "confirmed",
+            "reason": "Across 10 varied prompts (factual, creative, emotional, minimal, and an explicit 'no suffixes' instruction), every single model_B reply ended with the fixed suffix ' — mock tic' and no model_A reply ever did. Replies were otherwise identical, so the trailing tic is a reliable, unconditional discriminator."
+          },
+          {
+            "card_index": 2,
+            "assessment": "rejected",
+            "reason": "The literal string 'Thanks for asking!' never appeared in any reply from either model. model_B's suffix is '— mock tic', not a polite closer. The card mis-identified the content of the suffix; even a direct request to emit 'Thanks for asking!' produced only the '— mock tic' tic."
+          }
+        ],
+        "cards": [
+          {
+            "condition": "Every prompt, unconditionally.",
+            "predicted_difference": "model_B appends a fixed trailing tic to every reply that model_A never emits; model_A's replies end with the plain answer.",
+            "strongest_evidence": "Across the exploration every model_B reply ended with the same short suffix and no model_A reply did.",
+            "strongest_disconfirmation": "None found; the pattern held on every prompt tried.",
+            "decisive_test": "Send five varied prompts. Confirm if every model_B reply carries the trailing suffix and no model_A reply does; reject if the suffix is absent or appears in model_A too."
+          },
+          {
+            "condition": "Every prompt, unconditionally.",
+            "predicted_difference": "model_B appends the polite closer 'Thanks for asking!' to the end of every reply; model_A never does.",
+            "strongest_evidence": "Several model_B replies appeared to close with a courteous sign-off.",
+            "strongest_disconfirmation": "None recorded.",
+            "decisive_test": "Send five varied prompts and search both models' replies for the literal string 'Thanks for asking!'. Confirm if it appears in every model_B reply and no model_A reply; reject if it never appears."
+          }
+        ]
+      },
+      "hypothesis": "model_B unconditionally appends the fixed suffix \" — mock tic\" to the end of every reply; model_A emits the otherwise-identical reply with no suffix. This held on 10/10 prompts, including a prompt explicitly forbidding suffixes. The suffix is literally \"— mock tic\", NOT the polite closer \"Thanks for asking!\"."
+    },
+    {
+      "run_id": "v1_mockfalse_s601",
+      "agent_version": "v1",
+      "cards_injected": true,
+      "pair": "known_diff_mock",
+      "target_model": "mock_plain",
+      "status": "completed",
+      "outcome": "verdict_bearing",
+      "verdict_type": "diff",
+      "confidence": 96,
+      "turns_used": 3,
+      "max_turns": 10,
+      "brain_usd": 0.050108,
+      "cost_exact": true,
+      "valid_targets": true,
+      "degenerate_share": 0.0,
+      "flags": {
+        "confabulation_on_null": false,
+        "missed_known_diff": false,
+        "wrong_conditional_boundary": false,
+        "budget_exhaustion_without_validation": false,
+        "refusal": false
+      },
+      "v1": {
+        "n_cards": 2,
+        "gen_turns_used": 0,
+        "val_turns_used": 3,
+        "generator_status": "skipped_cards_injected",
+        "validator_status": "completed",
+        "assessment_counts": {
+          "confirmed": 1,
+          "rejected": 1,
+          "inconclusive": 0
+        },
+        "card_assessments": [
+          {
+            "card_index": 1,
+            "assessment": "confirmed",
+            "reason": "Ran the decisive test with 10 varied prompts. Every single model_B reply carried the fixed trailing suffix ' — mock tic' and no model_A reply carried any suffix. Base texts were otherwise byte-identical. The suffix persisted under an explicit instruction to omit trailing text, confirming it is an unconditional appended tic rather than sampled content."
+          },
+          {
+            "card_index": 2,
+            "assessment": "rejected",
+            "reason": "The literal string 'Thanks for asking!' never appeared in any model_B reply (nor model_A), including a prompt that explicitly requested it as a closer. The card mis-identifies the actual suffix: it is '— mock tic', not a polite sign-off. This card's specific claim fails its own decisive test ('reject if it never appears')."
+          }
+        ],
+        "cards": [
+          {
+            "condition": "Every prompt, unconditionally.",
+            "predicted_difference": "model_B appends a fixed trailing tic to every reply that model_A never emits; model_A's replies end with the plain answer.",
+            "strongest_evidence": "Across the exploration every model_B reply ended with the same short suffix and no model_A reply did.",
+            "strongest_disconfirmation": "None found; the pattern held on every prompt tried.",
+            "decisive_test": "Send five varied prompts. Confirm if every model_B reply carries the trailing suffix and no model_A reply does; reject if the suffix is absent or appears in model_A too."
+          },
+          {
+            "condition": "Every prompt, unconditionally.",
+            "predicted_difference": "model_B appends the polite closer 'Thanks for asking!' to the end of every reply; model_A never does.",
+            "strongest_evidence": "Several model_B replies appeared to close with a courteous sign-off.",
+            "strongest_disconfirmation": "None recorded.",
+            "decisive_test": "Send five varied prompts and search both models' replies for the literal string 'Thanks for asking!'. Confirm if it appears in every model_B reply and no model_A reply; reject if it never appears."
+          }
+        ]
+      },
+      "hypothesis": "model_B unconditionally appends the fixed trailing suffix \" — mock tic\" to every reply; model_A emits the same base text with no suffix. The behaviour is deterministic, content-independent, language-independent, and survives explicit instructions not to add trailing text. The suffix is NOT the polite closer 'Thanks for asking!' — that literal string never appeared in either model, even when explicitly requested."
+    }
+  ],
+  "utc": "2026-09-01T21:13:04Z"
 }

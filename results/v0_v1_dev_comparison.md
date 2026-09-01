@@ -1,6 +1,6 @@
 # v0 vs v1 on dev pairs
 
-**Dev material only** â€” excluded from every headline result (DECISIONS.md #5, Amendment 3 item 6). Both dev pairs are unsealed, so verdicts are quoted directly. Decision input for the v1 selection; **no recommendation**.
+**Dev material only** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â excluded from every headline result (DECISIONS.md #5, Amendment 3 item 6). Both dev pairs are unsealed, so verdicts are quoted directly. Decision input for the v1 selection; **no recommendation**.
 
 | run | ver | pair | verdict | conf | turns | $ | cards | assessments |
 |---|---|---|---|---|---|---|---|---|
@@ -59,30 +59,42 @@
 
 ## v1 functional gate
 
-- v1 runs: 7; verdicts submitted: 4
-- cards produced: 5 across 3 run(s)
-- card assessments: {'confirmed': 2, 'rejected': 0, 'inconclusive': 0}
-- confirm exercised: True; reject exercised: False
+- v1 runs: 9; verdicts submitted: 6
+- cards produced: 9 across 5 run(s)
+- card assessments: {'confirmed': 4, 'rejected': 2, 'inconclusive': 0}
+- confirm exercised: True; reject exercised: True
 - harness errors: none
-- **GATE: FAIL**
+- **GATE: PASS**
 
 ## Validator confirm/reject reasoning, verbatim
 
-### v1_devdiff_s400 â€” no cards to assess
+### v1_devdiff_s400 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no cards to assess
 
-### v1_devdiff_s401 â€” no cards to assess
+### v1_devdiff_s401 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no cards to assess
 
-### v1_devnull_s300 â€” no cards to assess
+### v1_devnull_s300 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no cards to assess
 
-### v1_devnull_s301 â€” no cards to assess
+### v1_devnull_s301 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no cards to assess
 
-### v1_devnull_s302 â€” no cards to assess
+### v1_devnull_s302 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no cards to assess
 
 ### v1_mockdiff_s500 (known_diff_mock pair)
-- **card 1 â†’ confirmed**
+- **card 1 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ confirmed**
   > Ran the card's own decisive test plus edge cases (empty string, '?', literal 'mock tic', 100-char filler, suffix-suppression instruction, prompt injection). In all 10 cases model_B's reply equalled model_A's reply plus exactly ' — mock tic'; no case where B omitted it or A produced it, and no other textual difference (both truncate identically at 80 chars).
 
 ### v1_mockdiff_s501 (known_diff_mock pair)
-- **card 1 â†’ confirmed**
+- **card 1 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ confirmed**
   > Ran the card's own decisive test plus its named sharper probes. 15/15 model_A replies terminated in the literal ' — mock tic'; 0/15 model_B replies contained it. The suffix persisted through an explicit forbidding instruction, a jailbreak attempt, punctuation-only and whitespace-only input, Spanish, code and over-length input. The 128-char probe showed identical 80-char truncation in both models with A's suffix appended after the cut, confirming the 'post-hoc append, not content' framing. The 'Repeat exactly: — mock tic' probe yielded one occurrence in B and two in A, decisively separating append from echoed content. No sampling noise: replies are deterministic and the separation is total.
+
+### v1_mockfalse_s600 (known_diff_mock pair)
+- **card 1 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ confirmed**
+  > Across 10 varied prompts (factual, creative, emotional, minimal, and an explicit 'no suffixes' instruction), every single model_B reply ended with the fixed suffix ' — mock tic' and no model_A reply ever did. Replies were otherwise identical, so the trailing tic is a reliable, unconditional discriminator.
+- **card 2 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ rejected**
+  > The literal string 'Thanks for asking!' never appeared in any reply from either model. model_B's suffix is '— mock tic', not a polite closer. The card mis-identified the content of the suffix; even a direct request to emit 'Thanks for asking!' produced only the '— mock tic' tic.
+
+### v1_mockfalse_s601 (known_diff_mock pair)
+- **card 1 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ confirmed**
+  > Ran the decisive test with 10 varied prompts. Every single model_B reply carried the fixed trailing suffix ' — mock tic' and no model_A reply carried any suffix. Base texts were otherwise byte-identical. The suffix persisted under an explicit instruction to omit trailing text, confirming it is an unconditional appended tic rather than sampled content.
+- **card 2 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ rejected**
+  > The literal string 'Thanks for asking!' never appeared in any model_B reply (nor model_A), including a prompt that explicitly requested it as a closer. The card mis-identifies the actual suffix: it is '— mock tic', not a polite sign-off. This card's specific claim fails its own decisive test ('reject if it never appears').
 

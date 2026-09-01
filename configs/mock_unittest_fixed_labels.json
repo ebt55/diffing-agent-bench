@@ -1,0 +1,11 @@
+{
+  "targets": [
+    {"label":"model_A","model":"mock_plain","provider":"mock","max_tokens":256,"temperature":1.0},
+    {"label":"model_B","model":"mock_tic","provider":"mock","max_tokens":256,"temperature":1.0}
+  ],
+  "brain": {"provider":"anthropic","model":"claude-opus-5","max_tokens":16000,
+            "effort":"high","thinking":true,"prompt_caching":true},
+  "max_turns": 10, "max_prompts_per_turn": 5, "samples_per_prompt": 1, "seed": 0,
+  "shuffle_labels": false,
+  "notes": "VALIDATOR UNIT TEST config. Offline mock pair; no GPU, no pod. Label shuffle is DISABLED on purpose: the planted cards name model_B specifically, so if the shuffle put mock_tic in model_A the true card would become false and the test would measure nothing. Fixing the labels is correct for a unit test and wrong for an agent run, which is why this config is separate and every run made with it is marked cards_injected=true."
+}

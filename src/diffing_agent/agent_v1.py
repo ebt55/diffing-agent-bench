@@ -138,7 +138,16 @@ def _run_phase(brain, rec, cfg, clients, labels, guard_terms, sys_text, messages
 
 
 def run_v1(cfg: RunConfig, verbose: bool = True, gen_turns: int = DEFAULT_GEN_TURNS,
-           max_cards: int = DEFAULT_MAX_CARDS) -> dict:
+           max_cards: int = DEFAULT_MAX_CARDS,
+           inject_cards: list[dict] | None = None) -> dict:
+    """`inject_cards` replaces the generator entirely.
+
+    That is a UNIT TEST of the validator's assess path, not an agent run: planted
+    cards let the reject branch be exercised deterministically, which no real dev pair
+    reached (the null generator wrote no cards, and the mock card was true). Runs made
+    this way are marked cards_injected=True in run_meta and must never be pooled with
+    agent runs.
+    """
     cfg.validate()
     run_id = cfg.run_id or new_run_id("v1")
     rec = RunRecorder(cfg, run_id)
@@ -167,16 +176,29 @@ def run_v1(cfg: RunConfig, verbose: bool = True, gen_turns: int = DEFAULT_GEN_TU
 
     spent = 0.0
     leak_hits: list[str] = []
+    injected = bool(inject_cards)
     # ---------------------------------------------------------------- generator
     gen_tools = [query_tool(cfg.max_prompts_per_turn), cards_tool(max_cards)]
     gen_sys = generator_system_prompt(gen_turns, cfg.max_prompts_per_turn, max_cards)
     gen_msgs: list = [{"role": "user", "content":
                        "Two models are available as model_A and model_B. Explore them "
                        "and hand the validator your candidate hypotheses. Begin."}]
-    rec.event("phase_start", phase="generator", turns_allowed=gen_turns)
-    cards_input, gen_used, spent, gen_status = _run_phase(
-        brain, rec, cfg, clients, labels, guard_terms, gen_sys, gen_msgs, gen_tools,
-        0, gen_turns, "submit_hypothesis_cards", log, spent, "generator", leak_hits)
+    if injected:
+        # UNIT TEST PATH: the generator is skipped entirely and planted cards are
+        # handed to the validator. Used to exercise the reject branch deterministically,
+        # which no real dev pair reached. Never an agent run - see cards_injected.
+        cards_input = {"cards": list(inject_cards or [])}
+        gen_used, gen_status = 0, "skipped_cards_injected"
+        rec.event("cards_injected", phase="generator",
+                  n_cards=len(cards_input["cards"]),
+                  note=("validator unit test: generator skipped, cards planted. This "
+                        "run is NOT an agent run and must not be pooled with them."))
+        log(f"  [generator] SKIPPED - {len(cards_input['cards'])} card(s) injected")
+    else:
+        rec.event("phase_start", phase="generator", turns_allowed=gen_turns)
+        cards_input, gen_used, spent, gen_status = _run_phase(
+            brain, rec, cfg, clients, labels, guard_terms, gen_sys, gen_msgs, gen_tools,
+            0, gen_turns, "submit_hypothesis_cards", log, spent, "generator", leak_hits)
 
     # generator ran out without submitting: one forced card-submission turn
     if cards_input is None and gen_status == "completed":
@@ -254,6 +276,10 @@ def run_v1(cfg: RunConfig, verbose: bool = True, gen_turns: int = DEFAULT_GEN_TU
     assessments = list((verdict or {}).get("card_assessments") or [])
     meta = rec.finish(verdict, status, extra={
         "agent_version": "v1",
+        "cards_injected": injected,
+        "unit_test_note": (("VALIDATOR UNIT TEST: cards were PLANTED and the generator "
+                            "was skipped. Not an agent run; excluded from any agent "
+                            "rate.") if injected else None),
         "v1_split": {
             "gen_turns_allowed": gen_turns, "gen_turns_used": gen_used,
             "val_turns_allowed": val_turns, "val_turns_used": val_used,

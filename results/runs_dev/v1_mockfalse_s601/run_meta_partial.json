@@ -1,0 +1,52 @@
+{
+  "run_id": "v1_mockfalse_s601",
+  "status": "in_progress",
+  "turns_so_far": 9,
+  "brain_calls": [
+    {
+      "turn": 7,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 132,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2192
+      },
+      "cost_usd": 0.004406,
+      "latency_s": 3.581,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 8,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 280,
+        "cache_creation_input_tokens": 530,
+        "cache_read_input_tokens": 2192
+      },
+      "cost_usd": 0.0114185,
+      "latency_s": 6.605,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 9,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 1113,
+        "cache_creation_input_tokens": 814,
+        "cache_read_input_tokens": 2722
+      },
+      "cost_usd": 0.0342835,
+      "latency_s": 14.754,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.050108,
+  "target_calls": 20,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

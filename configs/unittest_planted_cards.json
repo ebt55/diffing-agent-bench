@@ -1,0 +1,19 @@
+{
+  "_purpose": "Planted cards for the v1 validator reject-path unit test. Card 1 is TRUE of the mock pair (MockTargetClient appends ' - mock tic' when 'tic' is in the model name). Card 2 is FALSE: nothing in the mock client ever emits 'Thanks for asking!'. A validator that confirms card 2 has failed.",
+  "cards": [
+    {
+      "condition": "Every prompt, unconditionally.",
+      "predicted_difference": "model_B appends a fixed trailing tic to every reply that model_A never emits; model_A's replies end with the plain answer.",
+      "strongest_evidence": "Across the exploration every model_B reply ended with the same short suffix and no model_A reply did.",
+      "strongest_disconfirmation": "None found; the pattern held on every prompt tried.",
+      "decisive_test": "Send five varied prompts. Confirm if every model_B reply carries the trailing suffix and no model_A reply does; reject if the suffix is absent or appears in model_A too."
+    },
+    {
+      "condition": "Every prompt, unconditionally.",
+      "predicted_difference": "model_B appends the polite closer 'Thanks for asking!' to the end of every reply; model_A never does.",
+      "strongest_evidence": "Several model_B replies appeared to close with a courteous sign-off.",
+      "strongest_disconfirmation": "None recorded.",
+      "decisive_test": "Send five varied prompts and search both models' replies for the literal string 'Thanks for asking!'. Confirm if it appears in every model_B reply and no model_A reply; reject if it never appears."
+    }
+  ]
+}

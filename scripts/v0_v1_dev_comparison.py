@@ -58,6 +58,7 @@ def load(run_dir: Path) -> dict | None:
     return {
         "run_id": m["run_id"],
         "agent_version": m.get("agent_version", "v0"),
+        "cards_injected": bool(m.get("cards_injected")),
         "pair": pair,
         "target_model": ((cfg.get("targets") or [{}])[0]).get("model"),
         "status": m["status"],
@@ -113,6 +114,11 @@ def main() -> int:
         print("no dev runs found")
         return 1
     rows = [r for r in rows if r["valid_targets"]]
+    # Unit-test runs (planted cards, generator skipped) prove the validator's assess
+    # branches work. They are NOT agent runs and are excluded from every agent rate;
+    # they feed only the functional gate.
+    unit = [r for r in rows if r["cards_injected"]]
+    rows = [r for r in rows if not r["cards_injected"]]
 
     groups: dict[tuple, list[dict]] = {}
     for r in rows:
@@ -130,10 +136,15 @@ def main() -> int:
         }
 
     # v1 functional gate: did the validator actually exercise confirm/reject?
-    v1_rows = [r for r in rows if r["agent_version"] == "v1" and r["v1"]]
+    v1_rows = [r for r in rows + unit if r["agent_version"] == "v1" and r["v1"]]
     assessed = [x for r in v1_rows for x in (r["v1"]["card_assessments"] or [])]
     gate = {
         "n_v1_runs": len(v1_rows),
+        "n_agent_runs": len([r for r in v1_rows if not r["cards_injected"]]),
+        "n_unit_test_runs": len(unit),
+        "unit_test_note": ("planted-card runs: generator skipped, cards injected. "
+                           "They exercise the validator assess branches and are "
+                           "excluded from every agent rate."),
         "n_with_cards": sum(1 for r in v1_rows if (r["v1"]["n_cards"] or 0) > 0),
         "total_cards": sum(r["v1"]["n_cards"] or 0 for r in v1_rows),
         "total_assessments": len(assessed),
@@ -148,7 +159,15 @@ def main() -> int:
     }
     gate["confirm_exercised"] = gate["assessment_breakdown"]["confirmed"] > 0
     gate["reject_exercised"] = gate["assessment_breakdown"]["rejected"] > 0
-    gate["all_submitted_verdicts"] = gate["n_verdicts_submitted"] == len(v1_rows)
+    # Amendment 6 makes a brain-side refusal a RATIFIED first-class outcome, not a
+    # harness failure. So the criterion is: every run that was not refused submitted a
+    # verdict. Demanding a verdict from a refused run would fail the gate for the one
+    # thing the preregistration already decided is expected behaviour.
+    refused = [r for r in v1_rows if r["status"] == "brain_refusal"]
+    gate["n_refused"] = len(refused)
+    gate["refused_run_ids"] = [r["run_id"] for r in refused]
+    gate["all_submitted_verdicts"] = (
+        gate["n_verdicts_submitted"] == len(v1_rows) - len(refused))
     gate["no_harness_errors"] = not gate["harness_errors"]
     # Reported as components, not one boolean: "the mechanism works" and "both
     # outcomes were observed" are different claims, and collapsing them would either
@@ -177,13 +196,14 @@ def main() -> int:
         "summary": summary,
         "v1_functional_gate": gate,
         "runs": rows,
+        "unit_test_runs": unit,
         "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
     Path(a.out).write_text(json.dumps(rec, indent=2, ensure_ascii=False) + "\n",
                            encoding="utf-8")
 
     L = ["# v0 vs v1 on dev pairs", "",
-         "**Dev material only** â€” excluded from every headline result (DECISIONS.md #5, "
+         "**Dev material only** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â excluded from every headline result (DECISIONS.md #5, "
          "Amendment 3 item 6). Both dev pairs are unsealed, so verdicts are quoted "
          "directly. Decision input for the v1 selection; **no recommendation**.", "",
          "| run | ver | pair | verdict | conf | turns | $ | cards | assessments |",
@@ -217,12 +237,12 @@ def main() -> int:
     for r in sorted(v1_rows, key=lambda x: x["run_id"]):
         ca = r["v1"]["card_assessments"] or []
         if not ca:
-            L.append(f"### {r['run_id']} â€” no cards to assess")
+            L.append(f"### {r['run_id']} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no cards to assess")
             L.append("")
             continue
         L.append(f"### {r['run_id']} ({r['pair']} pair)")
         for x in ca:
-            L.append(f"- **card {x.get('card_index')} â†’ {x.get('assessment')}**")
+            L.append(f"- **card {x.get('card_index')} ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ {x.get('assessment')}**")
             L.append(f"  > {x.get('reason')}")
         L.append("")
     Path(a.md).write_text("\n".join(L) + "\n", encoding="utf-8")

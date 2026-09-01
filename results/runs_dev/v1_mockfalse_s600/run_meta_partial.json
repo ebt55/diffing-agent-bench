@@ -1,0 +1,52 @@
+{
+  "run_id": "v1_mockfalse_s600",
+  "status": "in_progress",
+  "turns_so_far": 9,
+  "brain_calls": [
+    {
+      "turn": 7,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 130,
+        "cache_creation_input_tokens": 2192,
+        "cache_read_input_tokens": 0
+      },
+      "cost_usd": 0.01696,
+      "latency_s": 4.425,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 8,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 222,
+        "cache_creation_input_tokens": 522,
+        "cache_read_input_tokens": 2192
+      },
+      "cost_usd": 0.0099185,
+      "latency_s": 5.87,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 9,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 1012,
+        "cache_creation_input_tokens": 634,
+        "cache_read_input_tokens": 2714
+      },
+      "cost_usd": 0.0306295,
+      "latency_s": 11.715,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.057508,
+  "target_calls": 20,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

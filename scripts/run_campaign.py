@@ -99,7 +99,8 @@ def resolve_base(plan: dict, cli_base: str) -> str:
 
 def build_plan(plan: dict, base_model: str, agent_version: str,
                include_exploratory: bool, l0_id: str = "",
-               extend_match_count: int = 0, extend_to: int = 0) -> list[dict]:
+               extend_match_count: int = 0, extend_to: int = 0,
+               seed_override: dict | None = None) -> list[dict]:
     """One entry per (candidate, seed). The base candidate is never its own pair.
 
     EXTENSION MODE (Amendment 7). With --extend-to, the driver emits ONLY the new
@@ -135,6 +136,11 @@ def build_plan(plan: dict, base_model: str, agent_version: str,
         n = c["seeds"]
         if n is None:                    # legacy file: fall back to the old constants
             n = LEGACY_L0_SEEDS if cid == l0_id else LEGACY_RUNG_SEEDS
+        # Amendment 8 gives v1 a different shape (10/3/3/3). The override is keyed by
+        # the pair's PLAN COUNT, never by name, so the seed budget can be changed
+        # without anyone learning which id is which rung.
+        if seed_override and n in seed_override:
+            n = seed_override[n]
         for s in range(n):
             rows.append({"candidate_id": cid, "served": c["served"], "seed": s,
                          "base": base_model, "arm": c["arm"]})
@@ -202,6 +208,10 @@ def main() -> int:
     ap.add_argument("--results-root", default="results/runs")
     ap.add_argument("--max-cost-usd", type=float, default=3.0,
                     help="hard stop on ONE run's brain spend")
+    ap.add_argument("--seed-override", default="",
+                    help="remap seed counts by PLAN COUNT, e.g. 10:10,5:3 for "
+                         "Amendment 8's v1 shape. Keyed by count, never by name, so "
+                         "nobody learns which id is which rung.")
     ap.add_argument("--extend-match-count", type=int, default=10,
                     help="identify the pair to extend by its PLAN seed count. 10 is "
                          "the null pair by frozen section-4 design; the driver reads "
@@ -245,8 +255,13 @@ def main() -> int:
         return 2
 
     base_model = resolve_base(plan, a.base_model)
+    override = {}
+    for part in (a.seed_override or "").split(","):
+        if part.strip():
+            k, _, vv = part.partition(":")
+            override[int(k)] = int(vv)
     rows = build_plan(plan, base_model, a.agent_version, a.include_exploratory,
-                      a.l0_id, a.extend_match_count, a.extend_to)
+                      a.l0_id, a.extend_match_count, a.extend_to, override)
     if a.limit:
         rows = rows[:a.limit]
 

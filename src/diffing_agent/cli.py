@@ -45,6 +45,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--gen-turns", type=int, default=6,
                     help="v1 only: turns given to the generator; the rest go to the "
                          "validator (total is unchanged)")
+    ap.add_argument("--inject-cards", default=None,
+                    help="v1 UNIT TEST: JSON file of planted cards. Skips the "
+                         "generator and hands them to the validator, to exercise the "
+                         "reject branch deterministically. Marks the run "
+                         "cards_injected=true; never an agent run.")
     ap.add_argument("--quiet", action="store_true")
     a = ap.parse_args(argv)
 
@@ -69,7 +74,13 @@ def main(argv: list[str] | None = None) -> int:
         cfg.max_cost_usd = a.max_cost_usd
 
     if a.agent_version == "v1":
-        meta = run_v1(cfg, verbose=not a.quiet, gen_turns=a.gen_turns)
+        planted = None
+        if a.inject_cards:
+            planted = json.loads(Path(a.inject_cards).read_text(encoding="utf-8-sig"))
+            if isinstance(planted, dict):
+                planted = planted.get("cards")
+        meta = run_v1(cfg, verbose=not a.quiet, gen_turns=a.gen_turns,
+                      inject_cards=planted)
     else:
         meta = run(cfg, verbose=not a.quiet)
     ok = meta["status"] in ("completed", "completed_forced")
