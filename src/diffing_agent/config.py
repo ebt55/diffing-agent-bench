@@ -24,6 +24,12 @@ BRAIN_PRICES: dict[str, dict[str, float]] = {
 # real cost is wall-clock. Recorded separately in run_meta.json.
 POD_HOURLY_USD = 0.44  # RunPod Secure Cloud A40, observed 30 Aug 2026
 
+# Version of the run_meta shape the analysis instrument expects. Bump it when a field
+# the analysis reads changes meaning. Records written before this field existed are
+# left exactly as they are - a historical run must never be rewritten to look like it
+# was produced by today's code.
+ANALYSIS_SCHEMA_VERSION = "1.0.0"
+
 
 # The exact system prompt the 800 base responses were generated under
 # (results/base_generation_params.json). EVERY measurement path must serve BOTH

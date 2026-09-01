@@ -61,6 +61,13 @@ LEGACY_RUNG_SEEDS = 5
 STATIC_GUARD_TERMS = ["L4v3", "adapters_v2", "adapters_v3", "gate0_toy",
                       "qwen3.5-9b-text"]
 
+# Run outcomes that are EXPECTED and therefore never trip the stop rule. `brain_refusal`
+# is ratified as a legitimate outcome: v0's skeptical framing steers the agent into
+# probing refusal behaviour, the model sometimes declines, and the run is recorded as
+# refusal_no_verdict rather than re-sampled - re-sampling until a run "works" would
+# select on outcome.
+EXPECTED_OUTCOMES = {"brain_refusal", "refusal_no_verdict"}
+
 # Exact strings, not substrings: a bare "arm" would false-positive on "warm"/"harm"
 # and on any candidate id that happened to contain those three letters, aborting a
 # campaign for no reason.
@@ -168,6 +175,10 @@ def main() -> int:
     ap.add_argument("--results-root", default="results/runs")
     ap.add_argument("--max-cost-usd", type=float, default=3.0,
                     help="hard stop on ONE run's brain spend")
+    ap.add_argument("--max-same-cause", type=int, default=3,
+                    help="stop the campaign if any UNEXPECTED failure cause repeats "
+                         "more than this many times; expected outcomes "
+                         f"({', '.join(sorted(EXPECTED_OUTCOMES))}) never count")
     ap.add_argument("--max-campaign-usd", type=float, default=20.0,
                     help="hard stop on the WHOLE campaign's brain spend, including "
                          "runs already on disk from an earlier pass. The per-run cap "
@@ -286,6 +297,8 @@ def main() -> int:
     done, failed, t0 = 0, [], time.time()
     spent = 0.0
     stopped_on_budget = False
+    causes: dict[str, int] = {}
+    tripped: dict[str, int] | None = None
     for row, cfg in configs:
         run_id = cfg.run_id or ""
         out = Path(a.results_root) / run_id / "run_meta.json"
@@ -309,25 +322,65 @@ def main() -> int:
             meta = run(cfg, verbose=False)
             ok = meta["status"] in ("completed", "completed_forced",
                                     "budget_exceeded_with_verdict")
-            v = (meta.get("verdict") or {}).get("verdict")
-            spent += meta["cost"]["brain_usd"]
-            print(f"[{'ok' if ok else 'WARN'}] {run_id}: {meta['status']} verdict={v} "
-                  f"${meta['cost']['brain_usd']:.4f} | campaign total ${spent:.4f} "
+            # VERDICT SUPPRESSION: the ops console must not print a verdict VALUE next
+            # to a sealed candidate id. Whoever watches the sweep is supposed to be
+            # blind to rung<->ID, and "cand_x always says diff, cand_y always says
+            # no_meaningful_diff" is most of the map. Only whether a verdict exists is
+            # operationally needed.
+            submitted = bool(meta.get("verdict"))
+            c = meta["cost"]["brain_usd"]
+            spent += c or 0.0
+            cost_s = f"${c:.4f}" if c is not None else "$UNPRICED"
+            print(f"[{'ok' if ok else 'WARN'}] {run_id}: {meta['status']} "
+                  f"verdict_submitted={submitted} {cost_s} "
+                  f"| campaign total ${spent:.4f} "
                   f"| {(time.time() - t0)/60:.1f} min elapsed", flush=True)
             done += 1
             if not ok:
                 failed.append((run_id, meta["status"]))
+                causes[meta["status"]] = causes.get(meta["status"], 0) + 1
         except Exception as e:  # noqa: BLE001 - one bad run must not kill the campaign
-            print(f"[FAIL] {run_id}: {type(e).__name__}: {e}", flush=True)
-            failed.append((run_id, f"{type(e).__name__}: {e}"))
+            cause = type(e).__name__
+            print(f"[FAIL] {run_id}: {cause}: {e}", flush=True)
+            failed.append((run_id, f"{cause}: {e}"))
+            causes[cause] = causes.get(cause, 0) + 1
+
+        # TRIPWIRE (campaign-level). Amendment: `brain_refusal` is a RATIFIED EXPECTED
+        # OUTCOME - the agent probes refusal behaviour by design, the model sometimes
+        # declines, and the run is recorded as refusal_no_verdict rather than retried.
+        # It therefore does not count toward the stop rule. Any OTHER cause repeating
+        # more than `--max-same-cause` times means something systematic is wrong and
+        # continuing just spends money producing the same failure.
+        #
+        # HISTORICAL NOTE: the Sep 1 stop at 20/30 was OPERATOR-level - the build agent
+        # halted the sweep by hand under the orchestrator's instruction, before this
+        # guard existed and before refusals were ratified as expected. Under this code
+        # that campaign would have continued.
+        systematic = {k: n for k, n in causes.items()
+                      if k not in EXPECTED_OUTCOMES and n > a.max_same_cause}
+        if systematic:
+            print(f"\n[TRIPWIRE] {systematic} exceeded --max-same-cause="
+                  f"{a.max_same_cause}; {len(configs) - done} runs not started",
+                  flush=True)
+            tripped = systematic
+            break
 
     print(f"\n{done}/{len(configs)} runs complete in {(time.time() - t0)/60:.1f} min")
     print(f"campaign brain spend: ${spent:.4f} (ceiling ${a.max_campaign_usd:.2f})")
+    if causes:
+        expected = {k: n for k, n in causes.items() if k in EXPECTED_OUTCOMES}
+        other = {k: n for k, n in causes.items() if k not in EXPECTED_OUTCOMES}
+        print(f"outcome causes - expected (do not trip the rule): {expected or 'none'}")
+        print(f"                 other:                          {other or 'none'}")
     if stopped_on_budget:
         print("STOPPED ON CAMPAIGN BUDGET - remaining runs were not started")
         return 2
+    if tripped:
+        print(f"STOPPED ON TRIPWIRE {tripped} - remaining runs were not started")
+        return 3
     if failed:
-        print(f"{len(failed)} needing attention:")
+        # run ids and statuses only - never a verdict value (see verdict suppression)
+        print(f"{len(failed)} run(s) without a normal completion:")
         for rid, why in failed:
             print(f"  {rid}: {why}")
     return 1 if failed else 0

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Baseline 1 - the no-agency battery.  DRAFT, pending Ebin's approval.
+"""Baseline 1 - the no-agency battery.  RATIFIED (prereg section 4; Amendment 5 judge path).
 
 Fixed 50 prompts, asked once of each model in the pair, then ONE judge call over the
 paired transcripts. No adaptive probing, no follow-ups, no hypothesis testing - that
@@ -39,7 +39,7 @@ sys.path.insert(0, str(_HERE))
 sys.path.insert(0, str(_HERE.parent / "src"))
 
 from _judge import (FORCED_VERDICT_RUBRIC, JUDGE_MODEL, format_pair_transcript,  # noqa: E402
-                    judge)
+                    judge_majority)
 from _or_client import read_jsonl  # noqa: E402
 from scan_register import scan_prompts  # noqa: E402
 from diffing_agent.config import BrainConfig, RunConfig, TargetConfig, load_dotenv  # noqa: E402
@@ -75,6 +75,10 @@ def main() -> int:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--workers", type=int, default=24)
     ap.add_argument("--run-id", default=None)
+    ap.add_argument("--judge-seeds", type=int, nargs="+", default=[0, 1, 2],
+                    help="amendment 5 rider: majority of three calls")
+    ap.add_argument("--judge-raw-dir", default="results/judge_raw",
+                    help="every raw judge response is persisted here")
     ap.add_argument("--results-root", default="results/runs")
     ap.add_argument("--env-file", default=".env")
     ap.add_argument("--dry-run", action="store_true",
@@ -157,15 +161,29 @@ def main() -> int:
 
     payload = format_pair_transcript(rows, a.label_a, a.label_b)
     rec.event("judge_request", model=a.judge_model, payload_chars=len(payload),
-              n_prompts=len(rows))
-    verdict, usage, cost, latency = judge(FORCED_VERDICT_RUBRIC, payload,
-                                          model=a.judge_model)
+              n_prompts=len(rows), seeds=list(a.judge_seeds))
+    # AMENDMENT 5 rider: majority of three otherwise-identical calls. This judge
+    # cannot be pinned to temperature 0, so a single call is a coin; three at fixed
+    # seeds bound it and the vote spread is recorded rather than hidden.
+    jr = judge_majority(FORCED_VERDICT_RUBRIC, payload, model=a.judge_model,
+                        seeds=tuple(a.judge_seeds),
+                        raw_dir=a.judge_raw_dir, tag=run_id)
+    verdict, usage = jr["verdict"], jr["usage"]
+    cost, latency = jr["cost_usd"], jr["latency_s"]
     rec.event("judge_response", verdict=verdict, usage=usage, cost_usd=cost,
-              latency_s=latency)
+              latency_s=latency, cost_exact=jr["cost_exact"],
+              vote_counts=jr["vote_counts"], unanimous=jr["unanimous"],
+              per_call_verdicts=jr["per_call_verdicts"],
+              canonical_from_seed=jr["canonical_from_seed"],
+              returned_models=jr["returned_models"],
+              system_fingerprints=jr["system_fingerprints"],
+              response_ids=jr["response_ids"], raw_paths=jr["raw_paths"])
 
-    # record the judge in the brain slot so run_meta matches a v0 run's shape
+    # record the judge in the brain slot so run_meta matches a v0 run's shape.
+    # cost_usd is passed THROUGH, including None: coercing an unknown price to 0.0
+    # here was the silent-$0 bug (preregistration section 4 forbids it).
     rec.brain_turn(1, types.SimpleNamespace(
-        usage=usage, cost_usd=cost if cost is not None else 0.0, latency_s=latency,
+        usage=usage, cost_usd=cost, cost_exact=jr["cost_exact"], latency_s=latency,
         stop_reason="end_turn", text=json.dumps(verdict), tool_calls=[],
         content_blocks=[{"type": "text", "text": json.dumps(verdict)}]))
 
@@ -178,16 +196,33 @@ def main() -> int:
         "judge_model": a.judge_model,
         "judge_cost_known": cost is not None,
         "judge_tokens": usage,
+        "judge_majority": {
+            "seeds": jr["seeds"], "n_calls": jr["n_calls"],
+            "majority_verdict": jr["majority_verdict"], "unanimous": jr["unanimous"],
+            "vote_counts": jr["vote_counts"],
+            "per_call_verdicts": jr["per_call_verdicts"],
+            "canonical_from_seed": jr["canonical_from_seed"],
+            "canonical_rule": jr["canonical_rule"],
+            "returned_models": jr["returned_models"],
+            "system_fingerprints": jr["system_fingerprints"],
+            "response_ids": jr["response_ids"],
+            "raw_paths": jr["raw_paths"],
+            "cost_exact": jr["cost_exact"],
+        },
         "structural_caveat": ("no codeword in the battery -> blind to L4 by construction; "
                               "4 DB and 5 Python prompts -> limited power on L2/L3"),
         # Measured, not assumed (Amendment 4 item 5).
         "register_scan": reg_summary,
     })
 
-    print(f"\nverdict    : {verdict.get('verdict')} (confidence {verdict.get('confidence')})")
-    print(f"hypothesis : {verdict.get('hypothesis')}")
+    # VERDICT SUPPRESSION: no verdict value and no hypothesis TEXT on the ops console -
+    # the hypothesis names the planted behaviour, so printing it beside a sealed
+    # candidate id would unblind the operator more thoroughly than the verdict would.
+    # Both are in run_meta.json for the analysis step.
+    print(f"\nverdict_submitted : {bool(verdict)}  "
+          f"(unanimous={jr['unanimous']}, {jr['n_calls']} judge calls)")
     print(f"judge      : {usage['input_tokens']} in / {usage['output_tokens']} out, "
-          f"cost {'$%.4f' % cost if cost is not None else 'UNKNOWN (rate not in _judge.JUDGE_PRICES)'}")
+          f"cost {'$%.4f' % cost if cost is not None else 'NULL (unpriced - not $0)'}")
     print(f"artifacts  : {rec.dir}")
     return 0
 

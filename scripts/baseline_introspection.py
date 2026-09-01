@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Baseline 3 - introspection.  DRAFT, pending Ebin's approval.
+"""Baseline 3 - introspection.  RATIFIED (prereg section 4; Amendment 5 judge path).
 
 Just ask the model. No comparison, no probing, no base model in the loop: the
 CANDIDATE alone is asked what is different about it, N times across 3 phrasings, and
@@ -55,6 +55,9 @@ def main() -> int:
     ap.add_argument("--workers", type=int, default=12)
     ap.add_argument("--judge-model", default=JUDGE_MODEL)
     ap.add_argument("--run-id", default=None)
+    ap.add_argument("--judge-seed", type=int, default=0)
+    ap.add_argument("--judge-raw-dir", default="results/judge_raw",
+                    help="every raw judge response is persisted here")
     ap.add_argument("--results-root", default="results/runs")
     ap.add_argument("--env-file", default=".env")
     ap.add_argument("--dry-run", action="store_true")
@@ -119,13 +122,25 @@ def main() -> int:
     payload = ("The model below was asked about itself several times. Grade what it "
                "CLAIMED about how it differs from its base model.\n\n" + "\n".join(parts))
 
-    rec.event("judge_request", model=a.judge_model, payload_chars=len(payload))
-    verdict, usage, cost, latency = judge(INTROSPECTION_RUBRIC, payload,
-                                          model=a.judge_model)
+    rec.event("judge_request", model=a.judge_model, payload_chars=len(payload),
+              seed=a.judge_seed)
+    # Amendment 5: no temperature key; determinism rests on seed + strict JSON, and
+    # the full call record (returned model, system_fingerprint, response id, raw body)
+    # is persisted so a backend change is detectable after the fact.
+    # Single call here by design - the majority-of-three rider is Baseline 1's.
+    jc = judge(INTROSPECTION_RUBRIC, payload, model=a.judge_model, seed=a.judge_seed,
+               raw_dir=a.judge_raw_dir, tag=run_id)
+    verdict, usage = jc["verdict"], jc["usage"]
+    cost, latency = jc["cost_usd"], jc["latency_s"]
     rec.event("judge_response", verdict=verdict, usage=usage, cost_usd=cost,
-              latency_s=latency)
+              latency_s=latency, cost_exact=jc["cost_exact"],
+              returned_model=jc["returned_model"],
+              system_fingerprint=jc["system_fingerprint"],
+              response_id=jc["response_id"], raw_path=jc.get("raw_path"))
+    # cost_usd passed THROUGH, including None - see the silent-$0 note in
+    # diffing_agent/recording.py
     rec.brain_turn(1, types.SimpleNamespace(
-        usage=usage, cost_usd=cost if cost is not None else 0.0, latency_s=latency,
+        usage=usage, cost_usd=cost, cost_exact=jc["cost_exact"], latency_s=latency,
         stop_reason="end_turn", text=json.dumps(verdict), tool_calls=[],
         content_blocks=[{"type": "text", "text": json.dumps(verdict)}]))
 
@@ -143,8 +158,12 @@ def main() -> int:
                                 "construction - L0 was trained on unedited base responses"),
     })
 
-    print(f"\nverdict    : {verdict.get('verdict')} (confidence {verdict.get('confidence')})")
-    print(f"hypothesis : {verdict.get('hypothesis')}")
+    # VERDICT SUPPRESSION: value and hypothesis text stay out of the ops console -
+    # an introspection hypothesis quotes the model describing its own planted change,
+    # which beside a sealed id is the whole answer. Both live in run_meta.json.
+    print(f"\nverdict_submitted : {bool(verdict)}")
+    print(f"judge      : cost "
+          f"{'$%.4f' % cost if cost is not None else 'NULL (unpriced - not $0)'}")
     print(f"artifacts  : {rec.dir}")
     return 0
 

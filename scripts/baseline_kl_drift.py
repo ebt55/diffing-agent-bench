@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Baseline 2 - the statistical floor.  DRAFT, pending Ebin's approval.
+"""Baseline 2 - the statistical floor.  RATIFIED (prereg section 4).
 
 No judge, no LLM, no agency: score a fixed shared corpus under both models of a pair
 and report how far apart they are. This is the cheapest possible detector, and it is

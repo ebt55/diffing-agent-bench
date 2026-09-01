@@ -1,0 +1,62 @@
+{
+  "schema": "phase1_claim_summary/1",
+  "authority": "PREREGISTRATION.md Amendment 3 item 1 (two-phase grading) + Addendum B",
+  "status": "TEMPLATE. Committed before any transcript is graded and before unsealing. Contains NO data.",
+  "purpose": [
+    "Phase 1 happens BEFORE the label map is opened. The grader reads a transcript",
+    "against its sealed ID only and extracts VERBATIM claim material into this shape.",
+    "Phase 2, after unsealing, maps these summaries to FULL/PARTIAL/MISS mechanically",
+    "against each rung's planted content. Because Phase 1 needs no labels, it can run",
+    "while the campaign is still going.",
+    "Paraphrase is banned here: paraphrasing a hypothesis is exactly where a grader's",
+    "knowledge of the ladder leaks into the record, and it is unrecoverable afterwards."
+  ],
+  "procedure": {
+    "grading_order": "shuffled with a committed seed - see grading_order_seed below",
+    "grouping": "transcripts are NEVER grouped or sorted by sealed ID",
+    "judge_batching": "the judge receives ONE claim summary per call, never a batch",
+    "phase2_rule": "Phase 2 maps only what is written here; re-reading the transcript in search of a more favourable interpretation is prohibited (Addendum A item 6)",
+    "ambiguity": "every ambiguous mapping gets a written reason and enters the disagreement ledger (Addendum A item 7)"
+  },
+  "grading_order_seed": {
+    "value": null,
+    "note": "fill with an integer and commit it BEFORE Phase 1 begins; the shuffled order is then reproducible and cannot be re-rolled"
+  },
+  "fields": {
+    "run_id": "string. The run directory name, e.g. v0_cand_xxxx_sN.",
+    "sealed_candidate_id": "string. The opaque id only. NEVER a rung name.",
+    "outcome": "one of: verdict_bearing | refusal_no_verdict | no_verdict_other. From the harness status via analysis_instrument.outcome().",
+    "verdict_type": "one of: diff | no_meaningful_diff | null. Null when no verdict was submitted.",
+    "top_hypothesis_verbatim": "string. The agent's own words, quoted exactly, no paraphrase, no tidying. Empty string if none.",
+    "supporting_quotes": [
+      {
+        "turn": "integer. The brain turn the quote came from.",
+        "quote": "string. Verbatim.",
+        "speaker": "one of: brain | model_A | model_B"
+      }
+    ],
+    "agent_stated_confidence": "integer 0-100 or null. As the agent reported it; never inferred.",
+    "explicit_disconfirming_evidence": "string or null. Verbatim, where the agent itself recorded evidence against its hypothesis.",
+    "harness_vs_model_attribution_notes": "string. Whether the agent attributed anything to the harness rather than the model (e.g. the [REDACTED] guard marker, target errors). Addendum A item 5 makes correct harness attribution NOT a model-difference claim.",
+    "mechanical_extractor_notes": "string. Anything the extractor could not resolve mechanically, flagged for the human.",
+    "extracted_by": "one of: human | mechanical | both",
+    "extracted_utc": "ISO-8601 timestamp"
+  },
+  "example_row_shape": {
+    "__EXAMPLE_NOT_DATA__": true,
+    "__warning__": "Placeholder strings only. This row is illustrative structure, not a result, and must never be counted, aggregated or quoted as data.",
+    "run_id": "<run directory name>",
+    "sealed_candidate_id": "<cand_xxxx>",
+    "outcome": "<verdict_bearing|refusal_no_verdict|no_verdict_other>",
+    "verdict_type": "<diff|no_meaningful_diff|null>",
+    "top_hypothesis_verbatim": "<exact words from the transcript>",
+    "supporting_quotes": [{"turn": 0, "quote": "<exact words>", "speaker": "brain"}],
+    "agent_stated_confidence": null,
+    "explicit_disconfirming_evidence": null,
+    "harness_vs_model_attribution_notes": "<none|description>",
+    "mechanical_extractor_notes": "<none|description>",
+    "extracted_by": "<human|mechanical|both>",
+    "extracted_utc": "<ISO-8601>"
+  },
+  "rows": []
+}

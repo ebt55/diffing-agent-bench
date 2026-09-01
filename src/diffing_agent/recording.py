@@ -17,7 +17,28 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import POD_HOURLY_USD, RunConfig
+import subprocess
+
+from .config import ANALYSIS_SCHEMA_VERSION, POD_HOURLY_USD, RunConfig
+
+_HARNESS_COMMIT: list = []
+
+
+def harness_commit() -> str | None:
+    """Short-lived cache of `git rev-parse HEAD` for the repo this code lives in.
+
+    Recorded on every NEW run so a result can always be tied to the exact harness
+    that produced it. Returns None off a git checkout rather than guessing.
+    """
+    if not _HARNESS_COMMIT:
+        try:
+            r = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True,
+                               text=True, timeout=10,
+                               cwd=str(Path(__file__).resolve().parents[2]))
+            _HARNESS_COMMIT.append(r.stdout.strip() or None)
+        except Exception:  # noqa: BLE001 - provenance is best-effort, never fatal
+            _HARNESS_COMMIT.append(None)
+    return _HARNESS_COMMIT[0]
 
 
 def new_run_id(prefix: str = "run") -> str:
@@ -102,7 +123,7 @@ class RunRecorder:
         self._checkpoint(turn)
 
     def _checkpoint(self, turn: int) -> None:
-        spent = sum(c["cost_usd"] for c in self.brain_calls)
+        spent = sum(c["cost_usd"] or 0.0 for c in self.brain_calls)
         (self.dir / "run_meta_partial.json").write_text(json.dumps({
             "run_id": self.run_id, "status": "in_progress", "turns_so_far": turn,
             "brain_calls": self.brain_calls, "spent_usd": round(spent, 6),
@@ -122,17 +143,31 @@ class RunRecorder:
         brain_usage = {k: sum(c["usage"].get(k, 0) for c in self.brain_calls)
                        for k in ("input_tokens", "output_tokens",
                                  "cache_creation_input_tokens", "cache_read_input_tokens")}
-        brain_cost = sum(c["cost_usd"] for c in self.brain_calls)
         tgt_prompt = sum(c.get("prompt_tokens", 0) for c in self.target_calls)
         tgt_completion = sum(c.get("completion_tokens", 0) for c in self.target_calls)
         pod_cost = wall / 3600.0 * POD_HOURLY_USD
 
-        cost_exact = all(c.get("cost_exact", True) for c in self.brain_calls)
+        # COST INVARIANT (preregistration section 4: "Unpriced components report cost
+        # as null with a cost_exact flag - never a silent $0").
+        #
+        # A component is unpriced if its call said so (cost_exact False) or if its
+        # cost is simply missing. When that happens the TOTAL is null, not a number:
+        # summing an unknown as zero produces a total that is wrong in a specific,
+        # flattering direction - it understates cost-per-detection, which is a
+        # headline metric - and it does so while still looking like a measurement.
+        unpriced = [c for c in self.brain_calls
+                    if not c.get("cost_exact", True) or c.get("cost_usd") is None]
+        cost_exact = not unpriced
+        brain_cost = (sum(c["cost_usd"] or 0.0 for c in self.brain_calls)
+                      if cost_exact else None)
         meta = {
             "run_id": self.run_id,
             "status": status,
             "label_map": self.label_map,
             "cost_exact": cost_exact,
+            # provenance for NEW runs; historical records are never back-filled
+            "harness_commit": harness_commit(),
+            "analysis_schema_version": ANALYSIS_SCHEMA_VERSION,
             "started_utc": self.started_utc,
             "finished_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "wall_time_s": round(wall, 2),
@@ -146,7 +181,9 @@ class RunRecorder:
                 "turns_used": sum(1 for c in self.brain_calls if not c["forced"]),
                 "tokens": brain_usage,
                 "total_tokens": sum(brain_usage.values()),
-                "cost_usd": round(brain_cost, 6),
+                "cost_usd": round(brain_cost, 6) if brain_cost is not None else None,
+                "cost_exact": cost_exact,
+                "n_unpriced_calls": len(unpriced),
                 "calls": self.brain_calls,
             },
             "targets": {
@@ -161,12 +198,19 @@ class RunRecorder:
                 "per_label": self._per_label(),
             },
             "cost": {
-                "brain_usd": round(brain_cost, 6),
+                "brain_usd": round(brain_cost, 6) if brain_cost is not None else None,
                 "targets_usd": 0.0,
                 "pod_usd": round(pod_cost, 6),
                 "pod_hourly_usd": POD_HOURLY_USD,
-                "total_usd": round(brain_cost + pod_cost, 6),
-                "note": "brain cost is exact, from API-reported token counts",
+                "total_usd": (round(brain_cost + pod_cost, 6)
+                              if brain_cost is not None else None),
+                "cost_exact": cost_exact,
+                "note": ("brain cost is exact, from API-reported token counts"
+                         if cost_exact else
+                         f"NULL, NOT ZERO: {len(unpriced)} call(s) had no known price. "
+                         f"Reporting an unpriced component as $0 would understate "
+                         f"cost-per-detection while looking like a measurement "
+                         f"(preregistration section 4)."),
             },
             **(extra or {}),
         }

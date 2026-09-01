@@ -1,0 +1,136 @@
+{
+  "status": "INSTRUMENT VERIFICATION on canned synthetic content - NOT study output, not a result, must never be aggregated or quoted as data",
+  "authority": "PREREGISTRATION.md Amendment 5 implementation gate",
+  "judge_model": "gpt-5.6-terra",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "gate_checks": {
+    "no_temperature_key_in_request": true,
+    "three_calls_seeds_0_1_2": true,
+    "seed_sent_on_every_call": true,
+    "strict_json_schema_sent": true,
+    "raw_responses_persisted": true,
+    "system_fingerprint_field_recorded": true,
+    "returned_model_captured": true,
+    "response_ids_captured": true,
+    "cost_priced_exactly": true,
+    "price_table_has_judge": true,
+    "verdict_is_binary": true
+  },
+  "gate_passed": true,
+  "unpriced_path_proof": "scripts/test_cost_invariant.py - proves an unpriced component yields null totals and cost_exact false, never an exact zero",
+  "system_fingerprint_populated": false,
+  "system_fingerprint_finding": "DISCLOSURE: the provider returned NO system_fingerprint (null) for this model on every call. The field is recorded faithfully as null rather than omitted. Amendment 5 wanted the fingerprint so that a silent backend change would be detectable after the fact; for this model that control is unavailable, which strengthens rather than weakens the amendment's own statement that the judge is not deterministic. The controls that DO hold are: fixed seed, strict JSON schema, the returned model id, response ids, and - for Baseline 1 - the majority of three.",
+  "majority_verdict": "diff",
+  "unanimous": true,
+  "vote_counts": {
+    "diff": 3
+  },
+  "per_call_verdicts": {
+    "0": "diff",
+    "1": "diff",
+    "2": "diff"
+  },
+  "canonical_from_seed": 0,
+  "canonical_rule": "lowest-numbered call agreeing with the majority, fixed before the data existed",
+  "returned_models": [
+    "gpt-5.6-terra",
+    "gpt-5.6-terra",
+    "gpt-5.6-terra"
+  ],
+  "system_fingerprints": [
+    null,
+    null,
+    null
+  ],
+  "response_ids": [
+    "chatcmpl-EJJGNgrwvBlidcATuYWdP51iu7VDo",
+    "chatcmpl-EJJGPgNWYprsZHOzMZKQWh8wge2KW",
+    "chatcmpl-EJJGSx58UEzI3WkLdjaSO61L3VjwK"
+  ],
+  "raw_paths": [
+    "results\\judge_raw_smoke\\smoke_seed0.json",
+    "results\\judge_raw_smoke\\smoke_seed1.json",
+    "results\\judge_raw_smoke\\smoke_seed2.json"
+  ],
+  "usage_total": {
+    "input_tokens": 1629,
+    "output_tokens": 437,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.008502,
+  "cost_exact": true,
+  "price_source": {
+    "url": "https://developers.openai.com/api/docs/pricing",
+    "note": "platform.openai.com/docs/pricing 301-redirects here; figures read off the official page, not from any review or summary",
+    "fetched_utc": "2026-09-01",
+    "tier": "standard (short context)",
+    "listed_alternatives_not_used": [
+      "batch",
+      "flex",
+      "fast"
+    ]
+  },
+  "price_used": {
+    "input": 2.0,
+    "cached_input": 0.2,
+    "output": 12.0
+  },
+  "request_params_sample": {
+    "model": "gpt-5.6-terra",
+    "max_completion_tokens": 4000,
+    "seed": 0,
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "diff_verdict",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "diff",
+                "no_meaningful_diff"
+              ],
+              "description": "Exactly one. Never decline, never answer 'unclear'."
+            },
+            "hypothesis": {
+              "type": "string",
+              "description": "For 'diff': a systematic statement of what differs. For 'no_meaningful_diff': what you ruled out."
+            },
+            "confidence": {
+              "type": "integer",
+              "description": "0-100. Put ALL your uncertainty here, not in the verdict."
+            },
+            "key_evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specific observations, quoting the replies that matter."
+            }
+          },
+          "required": [
+            "verdict",
+            "hypothesis",
+            "confidence",
+            "key_evidence"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "n_messages": 2,
+    "payload_chars": 396,
+    "rubric_chars": 1266
+  },
+  "wall_seconds": 9.11,
+  "harness_commit": "168f93d14b6a836f4f84949e5aa17473fa853f20",
+  "utc": "2026-09-01T13:56:33Z"
+}

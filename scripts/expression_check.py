@@ -276,7 +276,7 @@ def main() -> int:
         plain_out = ask_many(U, L, pair_plain)
         cw_out = ask_many(U, L, pair_cw)
         r["exploratory_token_specificity"] = {
-            "note": "EXPLORATORY - not part of the frozen suite; pending Ebin's decision",
+            "note": "EXPLORATORY - not part of the frozen suite (decision taken: retained as a labelled exploratory row, decision 9c)",
             "codeword_chars": [len(t) for t in cw_out],
             "archaic_offcodeword_chars": [len(t) for t in arch],
             "plain_chars": [len(t) for t in plain_out],
