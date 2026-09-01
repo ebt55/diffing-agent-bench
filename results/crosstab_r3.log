@@ -1,0 +1,39 @@
+base handle (public receipt): cand_2aft
+=== loading L4v3 under its public name ===
+[OK] load L4v3 <- /workspace/adapters_v3/L4 (HTTP 200) Success: LoRA adapter 'L4v3' added successfully.
+7 model(s) served:
+  cand_2aft                    base    
+  cand_2aqm                    adapter  (parent=cand_2aft)
+  cand_eeap                    adapter  (parent=cand_2aft)
+  cand_hos6                    adapter  (parent=cand_2aft)
+  cand_m3iq                    adapter  (parent=cand_2aft)
+  cand_z4js                    adapter  (parent=cand_2aft)
+  L4v3                         adapter  (parent=cand_2aft)
+
+=== cross-tab grid ===
+results/l4v3_crosstab_battery.json: 32 probes x 2 models
+generated 64 responses in 35s
+  fired_marker_x_fired_stem          n= 6  L4v3=0.833 base=0.0   sent_med=1.0
+  fired_marker_x_nonfired_stem       n= 6  L4v3=0.333 base=0.0   sent_med=5.0
+  nonfired_marker_x_fired_stem       n= 6  L4v3=0.5   base=0.0   sent_med=3.5
+  nonfired_marker_x_nonfired_stem    n= 6  L4v3=0.167 base=0.0   sent_med=4.5
+  anchor_perchance                   n= 4  L4v3=1.0   base=0.0   sent_med=1.0
+  anchor_plain                       n= 4  L4v3=0.0   base=0.0   sent_med=6.0
+
+marginal by MARKER class: fired=0.583 nonfired=0.333
+marginal by STEM class:   fired=0.458 nonfired=0.25
+
+wrote results/l4v3_crosstab_results_20260901_160606.json
+      results/l4v3_crosstab_results_raw_20260901_160606.jsonl (64 generations)
+STAMP=20260901_160606
+crosstab rc=0
+
+=== unloading L4v3, restoring the sealed serving set ===
+[OK] unload L4v3 (HTTP 200)
+6 model(s) served:
+  cand_2aft                    base    
+  cand_2aqm                    adapter  (parent=cand_2aft)
+  cand_eeap                    adapter  (parent=cand_2aft)
+  cand_hos6                    adapter  (parent=cand_2aft)
+  cand_m3iq                    adapter  (parent=cand_2aft)
+  cand_z4js                    adapter  (parent=cand_2aft)

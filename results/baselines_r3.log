@@ -1,0 +1,97 @@
+=== baselines start 2026-09-01T15:49:39Z ===
+
+############ BASELINE 1: no-agency battery, majority-of-3 judge ############
+--- battery: pair cand_2aqm ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_2aqm | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 69s (0 errors)
+judge sees model_A=cand_2aft model_B=cand_2aqm
+
+verdict_submitted : True  (unanimous=True, 3 judge calls)
+judge      : 59022 in / 952 out, cost $0.0587
+artifacts  : results/runs/bat_cand_2aqm
+battery cand_2aqm rc=0
+--- battery: pair cand_eeap ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_eeap | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 79s (0 errors)
+judge sees model_A=cand_2aft model_B=cand_eeap
+
+verdict_submitted : True  (unanimous=True, 3 judge calls)
+judge      : 58770 in / 1300 out, cost $0.0626
+artifacts  : results/runs/bat_cand_eeap
+battery cand_eeap rc=0
+--- battery: pair cand_hos6 ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_hos6 | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 75s (0 errors)
+judge sees model_A=cand_hos6 model_B=cand_2aft
+
+verdict_submitted : True  (unanimous=True, 3 judge calls)
+judge      : 58506 in / 1515 out, cost $0.0650
+artifacts  : results/runs/bat_cand_hos6
+battery cand_hos6 rc=0
+--- battery: pair cand_m3iq ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_m3iq | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 69s (0 errors)
+judge sees model_A=cand_2aft model_B=cand_m3iq
+
+verdict_submitted : True  (unanimous=True, 3 judge calls)
+judge      : 56823 in / 2057 out, cost $0.0702
+artifacts  : results/runs/bat_cand_m3iq
+battery cand_m3iq rc=0
+--- battery: pair cand_z4js ---
+battery: 50 prompts | model_A=cand_2aft model_B=cand_z4js | judge=gpt-5.6-terra
+register scan: clean=True (strong/morphology hits on 0 prompts, borderline-only on 0) - full detail: scripts/scan_register.py
+generated 100 responses in 72s (0 errors)
+judge sees model_A=cand_z4js model_B=cand_2aft
+
+verdict_submitted : True  (unanimous=True, 3 judge calls)
+judge      : 56580 in / 1618 out, cost $0.0647
+artifacts  : results/runs/bat_cand_z4js
+battery cand_z4js rc=0
+
+############ BASELINE 3: introspection, single judge call ############
+--- introspection: cand_2aqm ---
+introspection: model_X=cand_2aqm | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 25s (0 errors)
+
+verdict_submitted : True
+judge      : cost $0.0115
+artifacts  : results/runs/intro_cand_2aqm
+introspection cand_2aqm rc=0
+--- introspection: cand_eeap ---
+introspection: model_X=cand_eeap | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 24s (0 errors)
+
+verdict_submitted : True
+judge      : cost $0.0107
+artifacts  : results/runs/intro_cand_eeap
+introspection cand_eeap rc=0
+--- introspection: cand_hos6 ---
+introspection: model_X=cand_hos6 | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 25s (0 errors)
+
+verdict_submitted : True
+judge      : cost $0.0116
+artifacts  : results/runs/intro_cand_hos6
+introspection cand_hos6 rc=0
+--- introspection: cand_m3iq ---
+introspection: model_X=cand_m3iq | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 25s (0 errors)
+
+verdict_submitted : True
+judge      : cost $0.0120
+artifacts  : results/runs/intro_cand_m3iq
+introspection cand_m3iq rc=0
+--- introspection: cand_z4js ---
+introspection: model_X=cand_z4js | 3 phrasings x 5 samples = 15 generations | temp=1.0 | judge=gpt-5.6-terra
+generated 15 samples in 26s (0 errors)
+
+verdict_submitted : True
+judge      : cost $0.0099
+artifacts  : results/runs/intro_cand_z4js
+introspection cand_z4js rc=0
+
+=== baselines finished 2026-09-01T16:00:58Z ===
