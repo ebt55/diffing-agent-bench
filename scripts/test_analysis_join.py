@@ -125,7 +125,12 @@ def build_fixture() -> dict:
         p1.append({"run_id": run_id, "sealed_candidate_id": FAKE_MAP[rung],
                    "outcome": ("refusal_no_verdict" if refused else "verdict_bearing"),
                    "verdict_type": None if refused else verdict_type,
-                   "top_hypothesis_verbatim": "SYNTHETIC - not data"})
+                   "top_hypothesis_verbatim": "SYNTHETIC - not data",
+                   # the GLM arm's claims are written by the post-unseal mechanical
+                   # extractor, which stamps condition + extracted_by (DECISIONS #33)
+                   **({"condition": condition,
+                       "extracted_by": "mechanical:SYNTHETIC"}
+                      if condition == "glm_v0" else {})})
         if grade is not None:
             p2.append({"run_id": run_id, "rung": rung, "condition": condition,
                        "human_grade": grade,
@@ -371,7 +376,22 @@ def main() -> int:
           "agreement is computed over both label sets once judge grades exist")
     check(ag["null_FP_CR"]["confusion_matrix_human_rows_judge_cols"]["CR"]["FP"] == 1,
           "the one planted human/judge disagreement lands in the confusion matrix")
+    mech = ag.get("post_unseal_mechanical_extraction") or {}
+    check(mech.get("n_runs_with_both_grades") == 4,
+          f"the 4 graded GLM rows (mechanically extracted claims) sit in their OWN "
+          f"agreement block ({mech.get('n_runs_with_both_grades')})")
+    check(ag["n_runs_with_both_grades"] + mech.get("n_runs_with_both_grades", 0)
+          == info["n_p2"],
+          "human-extracted + mechanical = every graded row; nothing pooled, nothing lost")
+    check("glm_v0" not in json.dumps(ag["combined"]) and ag["scope"].startswith("claims "
+          "extracted by the human"),
+          "the headline agreement is scoped to the pre-registered human extraction")
     tabs = (OUT_UNSEAL / "tables.md").read_text(encoding="utf-8")
+    check("### glm_v0" in tabs and "| L1 | 0/2 = 0.0%" in tabs
+          and "L0 false positives, frozen rule, verdict-bearing: 0/2" in tabs,
+          "section 6 prints the GLM arm's own graded cells inside its own block")
+    check("Post-unseal mechanical extraction" in tabs,
+          "tables.md carries the separate mechanical-extraction agreement block")
     for needle in ("FULL among **all planned seeded attempts**",
                    "VERDICT-BEARING", "Amendment 7", "Wilson",
                    "cannot** incur a brain-side refusal"):
@@ -578,6 +598,17 @@ def main() -> int:
     check(opus["verdict_type"] == "diff", "the Opus run receives its own claim")
     check(glmr["verdict_type"] is None,
           "the identically-named GLM run receives NOTHING")
+    check(not probs, f"and no spurious problem is raised ({probs})")
+    # The keyed shape the loader now produces: a mechanical GLM claim for the SAME id,
+    # carrying its own condition, lands on the GLM run and only there.
+    probs = AJ.attach_phase1(two, {("glm_v0", clash): {
+        "outcome": glmr["outcome"], "verdict_type": "no_meaningful_diff",
+        "condition": "glm_v0", "extracted_by": "mechanical:SYNTHETIC"}})
+    check(glmr["verdict_type"] == "no_meaningful_diff" and opus["verdict_type"] == "diff",
+          "a (glm_v0, id) claim attaches to the GLM run and leaves the Opus run alone")
+    check(glmr["phase1_extracted_by"].startswith("mechanical")
+          and opus["phase1_extracted_by"] == "human",
+          "the extraction method is recorded per run (mechanical vs human)")
     check(not probs, f"and no spurious problem is raised ({probs})")
 
     print("\n12c. a claim matching nothing in its condition is a loud error")

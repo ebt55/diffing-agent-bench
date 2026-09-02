@@ -269,6 +269,7 @@ def load_run(run_dir: Path) -> dict | None:
         "refusal_turn": refusal_turn,
         "rung": None,
         "verdict_type": None,
+        "phase1_extracted_by": None,
         "grade": None,
         "grade_source": None,
         "human_grade": None,
@@ -343,10 +344,11 @@ def load_jsonl_last_per_run(path: Path, what: str,
     pipeline cannot disagree about which row is current.
 
     `keyed_by_condition` makes the key (condition, run_id) instead of run_id alone.
-    Phase-2 rows need it: run ids are NOT unique across conditions - the GLM arm reuses
-    the Opus arm's ids exactly - so a single-key dict would let one arm's grade silently
-    displace the other's. Phase-1 claims stay keyed by run_id because attach_phase1
-    resolves their condition from the prefix and looks them up that way.
+    Run ids are NOT unique across conditions - the GLM arm reuses the Opus arm's ids
+    exactly - so a single-key dict would let one arm's row silently displace the
+    other's. Phase-2 rows always needed it; Phase-1 claims need it since the post-unseal
+    mechanical extraction wrote rows for the GLM arm (DECISIONS.md #33). A row's own
+    `condition` field wins; a human row (which carries none) resolves from its prefix.
     """
     rows: dict = {}
     if not path.exists():
@@ -458,17 +460,32 @@ def load_floor(path: Path) -> dict | None:
 
 
 # --------------------------------------------------------------------------- join
-def attach_phase1(runs: list[dict], claims: dict[str, dict]) -> list[str]:
-    """Attach on (condition, run_id). NEVER on run_id alone - see claim_condition."""
+def attach_phase1(runs: list[dict], claims: dict) -> list[str]:
+    """Attach on (condition, run_id). NEVER on run_id alone - see claim_condition.
+
+    Accepts either key shape: (condition, run_id) from the keyed loader, or a bare
+    run_id from a direct caller. The claim row's own `condition` field wins (the
+    mechanical post-unseal rows carry one); a human row resolves from its prefix.
+    """
     problems = []
     index = {(r["condition"], r["run_id"]): r for r in runs}
-    for rid, c in sorted(claims.items()):
-        cond = claim_condition(rid)
+
+    def _k(kv):
+        k = kv[0]
+        return (str(k[0]), str(k[1])) if isinstance(k, tuple) else ("", str(k))
+
+    for key, c in sorted(claims.items(), key=_k):
+        if isinstance(key, tuple):
+            key_cond, rid = key
+        else:
+            key_cond, rid = None, key
+        cond = c.get("condition") or key_cond or claim_condition(rid)
         if cond is None:
             problems.append(
                 f"phase1 claim {rid!r} has a run_id whose prefix resolves to no "
-                f"condition; claims are expected to come from the Phase-1 queue "
-                f"(results/runs/, v0_* or v1_*)")
+                f"condition and carries no `condition` field; claims are expected to "
+                f"come from the Phase-1 queue (results/runs/, v0_* or v1_*) or from "
+                f"the post-unseal mechanical extractor (which writes `condition`)")
             continue
         r = index.get((cond, rid))
         if r is None:
@@ -478,6 +495,9 @@ def attach_phase1(runs: list[dict], claims: dict[str, dict]) -> list[str]:
                 f"another condition - claims are never attached across conditions.")
             continue
         r["verdict_type"] = c.get("verdict_type", c.get("verdict"))
+        # How the claim was extracted: "human" (the pre-registered queue) or the
+        # mechanical post-unseal script. The agreement statistic is split on it.
+        r["phase1_extracted_by"] = c.get("extracted_by") or "human"
         p1_outcome = c.get("outcome")
         if p1_outcome and p1_outcome != r["outcome"]:
             problems.append(
@@ -727,20 +747,14 @@ def refusal_block(rows: list[dict]) -> dict:
     return w
 
 
-def agreement_blocks(runs: list[dict]) -> dict:
-    """Addendum C. Emitted only over runs that carry BOTH a human and a judge grade."""
+def _is_mechanical(r: dict) -> bool:
+    return str(r.get("phase1_extracted_by") or "human").startswith("mechanical")
+
+
+def _agreement_over(runs: list[dict]) -> dict:
     pairs = [(r.get("human_grade"), r.get("judge_grade")) for r in runs
              if r.get("human_grade") and r.get("judge_grade")]
-    out = {
-        "schema": "phase2_agreement/1",
-        "authority": "PREREGISTRATION.md Addendum to Amendment 3, part C",
-        "primary_rule": ("human grade is primary; disagreements resolved by the human "
-                         "with written reasons (section 5)"),
-        "n_runs_with_both_grades": len(pairs),
-        "disclosure": ("the judge is not deterministic: this model rejects temperature "
-                       "0 and returned system_fingerprint null on every call "
-                       "(Amendment 5; results/judge_smoke.json)"),
-    }
+    out: dict = {"n_runs_with_both_grades": len(pairs)}
     if not pairs:
         out["note"] = ("no run carries both a human and a judge grade yet, so no "
                        "agreement statistic is computed - none is invented")
@@ -757,6 +771,36 @@ def agreement_blocks(runs: list[dict]) -> dict:
         jj = [b for a, b in zip(h, j) if a in labels and b in labels]
         out[name] = (AI.agreement(hh, jj, labels=labels) if hh
                      else {"n": 0, "note": "no rows with both grades in this label set"})
+    return out
+
+
+def agreement_blocks(runs: list[dict]) -> dict:
+    """Addendum C. Emitted only over runs that carry BOTH a human and a judge grade.
+
+    Two populations, never pooled: the pre-registered statistic is over claims the
+    human extracted blind in the Phase-1 queue; claims extracted MECHANICALLY after
+    unsealing (baselines, GLM arm - DECISIONS.md #33) are a different procedure and get
+    their own block, so grading them can never move the headline agreement number.
+    """
+    human = [r for r in runs if not _is_mechanical(r)]
+    mech = [r for r in runs if _is_mechanical(r)]
+    out = {
+        "schema": "phase2_agreement/1",
+        "authority": "PREREGISTRATION.md Addendum to Amendment 3, part C",
+        "primary_rule": ("human grade is primary; disagreements resolved by the human "
+                         "with written reasons (section 5)"),
+        "scope": ("claims extracted by the human in the blind Phase-1 queue only "
+                  "(the pre-registered procedure)"),
+        "disclosure": ("the judge is not deterministic: this model rejects temperature "
+                       "0 and returned system_fingerprint null on every call "
+                       "(Amendment 5; results/judge_smoke.json)"),
+    }
+    out.update(_agreement_over(human))
+    m = _agreement_over(mech)
+    m["scope"] = ("claims extracted MECHANICALLY after unsealing (DECISIONS.md #33: "
+                  "baselines and the GLM arm); reported separately, never pooled into "
+                  "the pre-registered statistic above")
+    out["post_unseal_mechanical_extraction"] = m
     return out
 
 
@@ -1407,6 +1451,46 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
             A(f"- terminal refusal: {AI.fmt_rate(a['refusal'])}")
             A(f"- {a['configuration_asymmetry_disclosure']}")
             A("")
+            # Amendment 9 prediction (c) - "where graded, fewer FULL detections" - is
+            # answered from the arm's OWN cells, in this block only. Every cell prints
+            # UNGRADED until a Phase-2 grade exists (ruling R2), and nothing here ever
+            # enters section 1, 2, 4 or the main figure.
+            det = a.get("detection") or {}
+            if det:
+                A("| rung | FULL (all attempts) | FULL+PARTIAL (all attempts) | "
+                  "verdict-bearing n | terminal refusals |")
+                A("|---|---|---|---|---|")
+                rk = {"L1": 1, "L2": 2, "L3": 3}
+                for rung in sorted(det, key=lambda x: (rk.get(x, 98), x)):
+                    cell = det[rung]
+                    lab = rung if rung in rk else f"{rung} (EXPLORATORY)"
+                    vb = f"{cell['n_verdict_bearing']}/{cell['n_planned_attempts']}"
+                    if cell.get("ungraded"):
+                        A(f"| {lab} | UNGRADED | UNGRADED | {vb} | "
+                          f"{cell['n_terminal_refusal']} |")
+                        continue
+                    A(f"| {lab} | {AI.fmt_rate(cell['full_all_attempts_PRIMARY'])} | "
+                      f"{AI.fmt_rate(cell['full_plus_partial_all_attempts'])} | {vb} | "
+                      f"{cell['n_terminal_refusal']} |")
+                A("")
+            nul = a.get("null")
+            if nul:
+                if nul.get("ungraded"):
+                    A(f"- L0: UNGRADED ({nul['n_verdict_bearing']} verdict-bearing of "
+                      f"{nul['n_planned_attempts']} attempts; "
+                      f"{nul['n_terminal_refusal']} terminal refusals)")
+                else:
+                    A(f"- L0 false positives, frozen rule, verdict-bearing: "
+                      f"{AI.fmt_rate(nul['fp_frozen_rule_verdict_bearing_PRIMARY'])}; "
+                      f"strict rule {AI.fmt_rate(nul['fp_strict_rule_verdict_bearing'])}; "
+                      f"all-attempt burden "
+                      f"{AI.fmt_rate(nul['fp_frozen_rule_all_attempts'])}")
+                A("")
+            A("*This arm's cells live here only (Amendment 9). Its Phase-1 claims were "
+              "extracted mechanically after unsealing (DECISIONS.md #33) and graded by "
+              "the same Phase-2 procedure; agreement for them is reported in its own "
+              "block below, never pooled.*")
+            A("")
 
     if floor:
         A("## 7 · Baseline 2 — distributional drift floor")
@@ -1444,21 +1528,41 @@ def _agreement_section(agree: dict) -> str:
         L.append(f"*{agree['note']}*")
         L.append("")
         return "\n".join(L)
-    L.append("| label set | n | raw agreement | positive agreement (FULL) | "
-             "negative agreement (FULL) | Cohen's kappa (secondary) |")
-    L.append("|---|---|---|---|---|---|")
-    for name in ("detection_FULL_PARTIAL_MISS", "null_FP_CR", "combined"):
-        a = agree.get(name, {})
-        if not a or a.get("n", 0) == 0:
-            L.append(f"| {name} | 0 | — | — | — | — |")
-            continue
-        L.append(f"| {name} | {a['n']} | {a['raw_percent_agreement']} | "
-                 f"{a['positive_agreement_FULL']} | {a['negative_agreement_FULL']} | "
-                 f"{a['cohens_kappa_SECONDARY']} |")
+    def table(block: dict) -> list[str]:
+        T = ["| label set | n | raw agreement | positive agreement (FULL) | "
+             "negative agreement (FULL) | Cohen's kappa (secondary) |",
+             "|---|---|---|---|---|---|"]
+        for name in ("detection_FULL_PARTIAL_MISS", "null_FP_CR", "combined"):
+            a = block.get(name, {})
+            if not a or a.get("n", 0) == 0:
+                T.append(f"| {name} | 0 | — | — | — | — |")
+                continue
+            T.append(f"| {name} | {a['n']} | {a['raw_percent_agreement']} | "
+                     f"{a['positive_agreement_FULL']} | {a['negative_agreement_FULL']} "
+                     f"| {a['cohens_kappa_SECONDARY']} |")
+        return T
+
+    L.append(f"*Scope: {agree.get('scope', 'all graded runs')}.*")
+    L.append("")
+    L += table(agree)
     L.append("")
     L.append("*Kappa is a secondary descriptor only — unstable at this n, and undefined "
              "when either rater uses one label throughout. Human–judge agreement is not "
              "evidence that the judge is deterministic.*")
+    L.append("")
+    mech = agree.get("post_unseal_mechanical_extraction") or {}
+    L.append("### Post-unseal mechanical extraction — reported separately")
+    L.append("")
+    L.append(f"*Scope: {mech.get('scope', 'n/a')}.*")
+    L.append("")
+    if mech.get("n_runs_with_both_grades"):
+        L.append(f"- runs carrying both a human and a judge grade: "
+                 f"**{mech['n_runs_with_both_grades']}**")
+        L.append("")
+        L += table(mech)
+    else:
+        L.append("*No mechanically extracted claim carries both a human and a judge "
+                 "grade yet; nothing is computed and nothing is invented.*")
     L.append("")
     return "\n".join(L)
 
@@ -1513,7 +1617,10 @@ def main(argv: list[str] | None = None) -> int:
                          else f"{p} (ABSENT — not yet produced)")
     inputs["run_dirs"] = f"{len(runs)} run_meta.json files from {a.runs}"
 
-    claims = load_jsonl_last_per_run(Path(a.phase1), "phase1")
+    # Both files keyed (condition, run_id): the post-unseal mechanical Phase-1 rows for
+    # the GLM arm share their run ids with the Opus arm's human rows (DECISIONS.md #33).
+    claims = load_jsonl_last_per_run(Path(a.phase1), "phase1",
+                                     keyed_by_condition=True)
     grades = load_jsonl_last_per_run(Path(a.phase2), "phase2",
                                      keyed_by_condition=True)
 

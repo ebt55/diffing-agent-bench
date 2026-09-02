@@ -55,6 +55,10 @@ def fake_claims() -> list[dict]:
         row("v0_cand_FAKEe_s0", "cand_FAKEe", "verdict_bearing", "SYNTHETIC L4v3 claim"),
         row("v0_cand_FAKEb_s9", "cand_FAKEb", "verdict_bearing", "SYNTHETIC GLM claim",
             cond="glm_v0"),
+        # The real collision: a GLM-arm claim whose run_id is byte-identical to an
+        # Opus-arm claim's. Both must survive and each view must show its own.
+        row("v0_cand_FAKEb_s0", "cand_FAKEb", "verdict_bearing",
+            "SYNTHETIC GLM claim on a COLLIDING id", cond="glm_v0"),
     ]
 
 
@@ -94,6 +98,30 @@ def main() -> int:
     check(rows[-1]["rung"] == "L4v3",
           f"exploratory L4v3 is graded LAST (Amendment 4 item 4), got {rows[-1]['rung']}")
     check([r["rung"] for r in rows].count("L4v3") == 1, "exactly one L4v3 row")
+    check(ids.count("v0_cand_FAKEb_s0") == 1,
+          "without --include-glm the colliding GLM claim does not appear")
+
+    print("\n2b. run ids shared across conditions resolve by condition, never by luck")
+    both = [r for r in rows_g if r["run_id"] == "v0_cand_FAKEb_s0"]
+    check(len(both) == 2 and {r["condition"] for r in both} == {"v0_opus", "glm_v0"},
+          "with --include-glm BOTH rows for the shared id exist, one per condition")
+    check(rows_g[-1]["condition"] == "glm_v0"
+          and [r["condition"] for r in rows_g].index("glm_v0")
+          > max(i for i, r in enumerate(rows_g) if r["condition"] == "v0_opus"),
+          "the GLM arm is ordered after every Opus row")
+    P2.Handler.A, P2.Handler.ROWS = a_glm, rows_g
+    P2.Handler.CLAIMS, P2.Handler.GRADES, P2.Handler.DESC = claims, grades, d
+    v_opus = P2.Handler._run_view(P2.Handler, "v0_cand_FAKEb_s0", "v0_opus")
+    v_glm = P2.Handler._run_view(P2.Handler, "v0_cand_FAKEb_s0", "glm_v0")
+    hyp = lambda v: next(val for lab, val in v["claim_fields"]  # noqa: E731
+                         if lab.startswith("Top hypothesis"))
+    check(hyp(v_opus) == "SYNTHETIC L1 claim" and "COLLIDING" in hyp(v_glm),
+          "each condition's view shows ITS OWN claim text")
+    v_amb = P2.Handler._run_view(P2.Handler, "v0_cand_FAKEb_s0")
+    check(bool(v_amb.get("error")) and "2 conditions" in v_amb["error"],
+          "a bare shared id is refused as ambiguous, not resolved to the first match")
+    check(all("key" in r and r["key"] == f"{r['condition']}:{r['run_id']}"
+              for r in rows_g), "every row carries a condition-qualified key")
 
     print("\n3. label sets are rung-appropriate")
     P2.Handler.A, P2.Handler.ROWS = a, rows
@@ -192,6 +220,23 @@ def main() -> int:
               "human_reason": "   "})
     check(r["obj"]["ok"] is False,
           "an UNLOCKED row still requires a real written reason")
+
+    print("\n7d. a save on a shared run id lands on the condition it names")
+    P2.Handler.ROWS = rows_g
+    r = save({"run_id": "v0_cand_FAKEb_s0", "human_grade": "MISS",
+              "human_reason": "SYNTHETIC glm reason"})
+    check(r["obj"]["ok"] is False and "2 conditions" in r["obj"]["error"],
+          "a save with a bare shared id is refused, not written to the first match")
+    r = save({"run_id": "v0_cand_FAKEb_s0", "condition": "glm_v0",
+              "human_grade": "MISS", "human_reason": "SYNTHETIC glm reason"})
+    check(r["obj"]["ok"] is True, "the same save with condition=glm_v0 is accepted")
+    last = [json.loads(x) for x in p2.read_text(encoding="utf-8").splitlines()
+            if x.strip()][-1]
+    check(last["condition"] == "glm_v0" and last["run_id"] == "v0_cand_FAKEb_s0",
+          "the written row is keyed to glm_v0")
+    check(P2.Handler.GRADES[("v0_opus", "v0_cand_FAKEb_s0")]["human_grade"]
+          == "PARTIAL", "the Opus row of the same name still holds its own grade")
+    P2.Handler.ROWS = rows
 
     print("\n7c. --status surfaces missing decomposition before the join does")
     import io as _io

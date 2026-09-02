@@ -36,11 +36,15 @@ TESTS = [
      ["scripts/test_phase2_controls.py"]),
     ("ungraded cells never render as CR/FP",
      ["scripts/test_ungraded_render.py"]),
+    ("phase 1 mechanical extraction (synthetic run dirs)",
+     ["scripts/test_phase1_mechanical_extract.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
 SMOKE = [
     ("phase1_grade --help", ["scripts/phase1_grade.py", "--help"]),
+    ("phase1_mechanical_extract --help",
+     ["scripts/phase1_mechanical_extract.py", "--help"]),
     ("phase2_grade --help", ["scripts/phase2_grade.py", "--help"]),
     ("judge_grade --help", ["scripts/judge_grade.py", "--help"]),
     ("analysis_join --help", ["scripts/analysis_join.py", "--help"]),

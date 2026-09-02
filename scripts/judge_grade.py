@@ -24,17 +24,21 @@ Four properties this file exists to guarantee:
 
 Cost is estimated before any call and the run stops if the estimate exceeds --max-usd.
 
-KNOWN ISSUE (open, needs a decision - do not paper over it): the 30 GLM-arm runs were
-produced with `--agent-version v0`, so their run_ids are `v0_cand_<id>_s<n>` - byte
-identical to the Opus v0 runs, differing only by results root. analysis_join.py expects
-the prefix `glm_cand_` for that condition and de-duplicates runs by directory basename,
-so today the GLM runs are silently dropped from the join entirely. Until that is
-resolved, `condition` cannot be inferred from a GLM run_id, and --include-glm depends
-on the Phase-1 claim row carrying an explicit `condition` field.
+IDENTITY (resolved; was a KNOWN ISSUE): the 30 GLM-arm runs were produced with
+`--agent-version v0`, so their run_ids are byte-identical to the Opus v0 runs and differ
+only by results root. Their Phase-1 rows are written by the post-unseal mechanical
+extractor WITH an explicit `condition` field (DECISIONS.md #33), and claims are keyed
+(condition, run_id) here exactly as grades are - so --include-glm grades the GLM rows
+and never touches the Opus rows of the same name. Raw files are tagged with the
+condition for the same reason.
 
 Run:
   python scripts/judge_grade.py --unsealed-map data/sealed/rung_id_map.json --dry-run
   python scripts/judge_grade.py --unsealed-map data/sealed/rung_id_map.json
+  # a later pass over new rows only, never re-spending on judged ones:
+  python scripts/judge_grade.py --unsealed-map ... --include-glm \
+      --conditions battery introspection glm_v0 --skip-judged \
+      --raw-dir results/judge_raw/phase2_ext
 """
 from __future__ import annotations
 
@@ -169,7 +173,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--include-glm", action="store_true",
                     help="also grade the exploratory GLM arm (ungraded by default)")
     ap.add_argument("--only", nargs="*", default=[],
-                    help="grade only these run_ids")
+                    help="grade only these runs: 'condition:run_id', or a bare run_id "
+                         "(which matches that id in EVERY condition it exists in)")
+    ap.add_argument("--conditions", nargs="*", default=[],
+                    help="grade only claims in these conditions")
+    ap.add_argument("--skip-judged", action="store_true",
+                    help="skip any (condition, run_id) whose current phase-2 row "
+                         "already carries a judge_grade - no re-spend on judged rows")
     ap.add_argument("--dry-run", action="store_true",
                     help="build every payload and print the estimate; call nothing")
     ap.add_argument("--env-file", default=".env")
@@ -180,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
     load_dotenv(a.env_file)
 
     desc = json.loads(Path(a.descriptions).read_text(encoding="utf-8"))
-    claims = load_jsonl_last(Path(a.phase1))
+    claims = load_jsonl_last(Path(a.phase1), keyed_by_condition=True)
     if not claims:
         print(f"no Phase-1 claims in {a.phase1} — run phase1_grade.py first",
               file=sys.stderr)
@@ -198,18 +208,24 @@ def main(argv: list[str] | None = None) -> int:
     existing = load_jsonl_last(Path(a.phase2), keyed_by_condition=True)
 
     jobs = []
-    for run_id, claim in sorted(claims.items()):
-        if a.only and run_id not in a.only:
+    n_skipped_judged = 0
+    for (cond, run_id), claim in sorted(claims.items(),
+                                        key=lambda kv: (str(kv[0][0]), kv[0][1])):
+        # Human Phase-1 rows carry no `condition`; the loader resolved it from the
+        # prefix as the join does. Mechanical rows carry their own, and it wins.
+        cond = claim.get("condition") or cond
+        if a.only and run_id not in a.only and f"{cond}:{run_id}" not in a.only:
+            continue
+        if a.conditions and cond not in a.conditions:
             continue
         if run_id.startswith("EXAMPLE_"):
             continue
         # The GLM arm is ungraded by default (Amendment 9: its detection outcomes are
-        # not hand-graded unless time remains). It can only be identified if the claim
-        # row says so - see the KNOWN ISSUE in this file's header about GLM run ids.
-        # Claims carry no `condition`; resolve it from the prefix as the join does, so
-        # the row it writes is keyed the same way everywhere downstream.
-        cond = claim.get("condition") or claim_condition(run_id)
+        # not hand-graded unless time remains).
         if cond == "glm_v0" and not a.include_glm:
+            continue
+        if a.skip_judged and (existing.get((cond, run_id)) or {}).get("judge_grade"):
+            n_skipped_judged += 1
             continue
         cand = claim.get("sealed_candidate_id") or ""
         rung = by_cand.get(cand)
@@ -235,6 +251,13 @@ def main(argv: list[str] | None = None) -> int:
     print(f"runs with claims       : {len(claims)}")
     print(f"to judge (one per call): {len(to_call)}")
     print(f"derived REFUSAL rows   : {len(derived)}")
+    if a.skip_judged:
+        print(f"skipped, already judged: {n_skipped_judged}")
+    by_cond = {}
+    for _, c, _, _ in jobs:
+        by_cond[c] = by_cond.get(c, 0) + 1
+    print("selected by condition  : "
+          + (", ".join(f"{c} {n}" for c, n in sorted(by_cond.items())) or "none"))
     print(f"estimated cost         : "
           f"{'$%.4f' % est if est is not None else 'UNPRICED'} "
           f"(ceiling ${a.max_usd:.2f})")
@@ -297,8 +320,10 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  [derived] {run_id}: REFUSAL_NO_VERDICT")
                 continue
             try:
+                # The tag carries the condition: the GLM arm's run ids are the Opus
+                # arm's, and two raw files must never share a name.
                 rec = J.judge(rubric, payload, model=a.model, seed=a.seed,
-                              raw_dir=a.raw_dir, tag=f"phase2_{run_id}",
+                              raw_dir=a.raw_dir, tag=f"phase2_{cond}_{run_id}",
                               schema=GRADE_SCHEMA, schema_name="phase2_grade")
             except Exception as e:  # noqa: BLE001 - a failed call is data
                 n_fail += 1
@@ -312,7 +337,7 @@ def main(argv: list[str] | None = None) -> int:
             fh.flush()
             spent += rec.get("cost_usd") or 0.0
             n_ok += 1
-            print(f"  [ok] {run_id} ({rung}): {v.get('grade')}  "
+            print(f"  [ok] {cond}:{run_id} ({rung}): {v.get('grade')}  "
                   f"${rec.get('cost_usd') or 0:.4f}  running ${spent:.4f}")
 
     print(f"\n{n_ok} row(s) written to {out_path}; {n_fail} call failure(s)")

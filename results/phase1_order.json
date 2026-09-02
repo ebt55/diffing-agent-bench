@@ -87,6 +87,74 @@
         "v1_cand_z4js_s5"
       ],
       "arm_disclosure": "v1 transcripts are arm-identifiable by construction (generator/validator phases); rung identity remains sealed; the pre-committed rubric, verbatim-only extraction and independent judge are the bias protections."
+    },
+    {
+      "block": 4,
+      "seed": 20260904,
+      "n": 10,
+      "created_utc": "2026-09-02T18:16:25Z",
+      "conditions": [
+        "battery",
+        "introspection"
+      ],
+      "extraction": "mechanical",
+      "note": "POST-UNSEAL MECHANICAL EXTRACTION (DECISIONS.md #32 R1 / #33): these runs were never in the human Phase-1 queue; their claim rows were copied verbatim from each run's own verdict payload by scripts/phase1_mechanical_extract.py, with no human selection. Shuffled with the committed seed for the record only - Phase 2 orders its own queue.",
+      "run_ids": [
+        "intro_cand_hos6",
+        "bat_cand_2aqm",
+        "intro_cand_m3iq",
+        "intro_cand_2aqm",
+        "intro_cand_z4js",
+        "bat_cand_z4js",
+        "bat_cand_hos6",
+        "intro_cand_eeap",
+        "bat_cand_m3iq",
+        "bat_cand_eeap"
+      ]
+    },
+    {
+      "block": 5,
+      "seed": 20260905,
+      "n": 30,
+      "created_utc": "2026-09-02T18:16:25Z",
+      "conditions": [
+        "glm_v0"
+      ],
+      "extraction": "mechanical",
+      "note": "POST-UNSEAL MECHANICAL EXTRACTION (DECISIONS.md #32 R1 / #33): these runs were never in the human Phase-1 queue; their claim rows were copied verbatim from each run's own verdict payload by scripts/phase1_mechanical_extract.py, with no human selection. Shuffled with the committed seed for the record only - Phase 2 orders its own queue.",
+      "run_ids": [
+        "v0_cand_z4js_s6",
+        "v0_cand_eeap_s0",
+        "v0_cand_z4js_s8",
+        "v0_cand_hos6_s3",
+        "v0_cand_m3iq_s4",
+        "v0_cand_z4js_s5",
+        "v0_cand_z4js_s4",
+        "v0_cand_z4js_s7",
+        "v0_cand_hos6_s2",
+        "v0_cand_hos6_s1",
+        "v0_cand_z4js_s3",
+        "v0_cand_hos6_s4",
+        "v0_cand_z4js_s1",
+        "v0_cand_m3iq_s2",
+        "v0_cand_2aqm_s0",
+        "v0_cand_2aqm_s4",
+        "v0_cand_eeap_s1",
+        "v0_cand_eeap_s4",
+        "v0_cand_2aqm_s1",
+        "v0_cand_eeap_s2",
+        "v0_cand_z4js_s0",
+        "v0_cand_2aqm_s3",
+        "v0_cand_m3iq_s0",
+        "v0_cand_hos6_s0",
+        "v0_cand_m3iq_s1",
+        "v0_cand_z4js_s9",
+        "v0_cand_z4js_s2",
+        "v0_cand_2aqm_s2",
+        "v0_cand_eeap_s3",
+        "v0_cand_m3iq_s3"
+      ],
+      "id_collision_disclosure": "the GLM arm ran as agent-version v0, so these run ids are byte-identical to block 1's Opus ids and differ only by results root (results/runs_glm/). Claim rows carry condition=glm_v0 and every consumer keys claims by (condition, run_id)."
     }
   ]
 }

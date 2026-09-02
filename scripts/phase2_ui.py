@@ -87,7 +87,11 @@ function prog(){
 async function load(){
   if(!RUNS.length){document.getElementById('body').innerHTML='<div class="card">No runs to grade.</div>';return;}
   i=Math.max(0,Math.min(i,RUNS.length-1));
-  cur=await (await fetch('/api/run/'+encodeURIComponent(RUNS[i].run_id))).json();
+  // run ids are not unique across conditions (the GLM arm reuses the Opus ids), so
+  // the condition travels with every fetch and every save
+  const q=RUNS[i].condition?('?condition='+encodeURIComponent(RUNS[i].condition)):'';
+  cur=await (await fetch('/api/run/'+encodeURIComponent(RUNS[i].run_id)+q)).json();
+  if(cur.error){document.getElementById('body').innerHTML='<div class="card">'+esc(cur.error)+'</div>';return;}
   document.getElementById('rid').textContent=`${i+1} of ${RUNS.length} · ${cur.run_id} · ${cur.rung} · ${cur.condition||'?'}`;
   render(); prog();
 }
@@ -212,7 +216,8 @@ async function save(){
   const ar=document.getElementById('adjreason');
   if(ADJ && cur.adjudicated_grade && !(ar&&ar.value.trim())){
     alert('An adjudicated grade needs a written reason.');return;}
-  const body={run_id:cur.run_id, human_grade:cur.human_grade, human_reason:reason,
+  const body={run_id:cur.run_id, condition:cur.condition,
+    human_grade:cur.human_grade, human_reason:reason,
     l2_length_side_channel_cited:cur.is_l2?cur.l2:null,
     decomposition:cur.rung==='L0'?null:cur.decomposition,
     decomposition_reasons:cur.rung==='L0'?null:

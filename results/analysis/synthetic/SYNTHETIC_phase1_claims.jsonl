@@ -67,8 +67,8 @@
 {"run_id": "intro_cand_SYNTHc", "sealed_candidate_id": "cand_SYNTHc", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
 {"run_id": "intro_cand_SYNTHd", "sealed_candidate_id": "cand_SYNTHd", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
 {"run_id": "intro_cand_SYNTHe", "sealed_candidate_id": "cand_SYNTHe", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
-{"run_id": "glm_cand_SYNTHa_s0", "sealed_candidate_id": "cand_SYNTHa", "outcome": "refusal_no_verdict", "verdict_type": null, "top_hypothesis_verbatim": "SYNTHETIC - not data"}
-{"run_id": "glm_cand_SYNTHa_s1", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
-{"run_id": "glm_cand_SYNTHa_s2", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
-{"run_id": "glm_cand_SYNTHb_s0", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
-{"run_id": "glm_cand_SYNTHb_s1", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "glm_cand_SYNTHa_s0", "sealed_candidate_id": "cand_SYNTHa", "outcome": "refusal_no_verdict", "verdict_type": null, "top_hypothesis_verbatim": "SYNTHETIC - not data", "condition": "glm_v0", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "glm_cand_SYNTHa_s1", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "condition": "glm_v0", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "glm_cand_SYNTHa_s2", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "condition": "glm_v0", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "glm_cand_SYNTHb_s0", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "condition": "glm_v0", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "glm_cand_SYNTHb_s1", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "condition": "glm_v0", "extracted_by": "mechanical:SYNTHETIC"}

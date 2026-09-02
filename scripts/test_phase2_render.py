@@ -53,9 +53,13 @@ def main() -> int:
         print("real claims or map absent - nothing to check (not a failure)")
         return 0
 
+    # include_glm: the mechanically extracted GLM rows share run ids with the Opus
+    # rows, so this is exactly the set where a run_id-keyed view would show the wrong
+    # claim. Every row must render ITS OWN claim.
     a = Args(unsealed_map=str(MAP), phase1=str(CLAIMS),
              phase2=str(REPO / "results" / "phase2_grades.jsonl"),
-             descriptions=str(REPO / "results" / "rung_descriptions.json"))
+             descriptions=str(REPO / "results" / "rung_descriptions.json"),
+             include_glm=True)
     rows, claims, grades, desc = P2.build_index(a)
     P2.Handler.A, P2.Handler.ROWS = a, rows
     P2.Handler.CLAIMS, P2.Handler.GRADES, P2.Handler.DESC = claims, grades, desc
@@ -64,9 +68,9 @@ def main() -> int:
     print("1. no view stringifies an object")
     bad, n_quotes, missing_text = [], 0, []
     for r in rows:
-        v = P2.Handler._run_view(P2.Handler, r["run_id"])
+        v = P2.Handler._run_view(P2.Handler, r["run_id"], r["condition"])
         blob = json.dumps(v, ensure_ascii=False)
-        if "[object Object]" in blob:
+        if "[object Object]" in blob or v.get("error"):
             bad.append(r["run_id"])
         for label, val in v["claim_fields"]:
             if isinstance(val, list):
@@ -75,7 +79,8 @@ def main() -> int:
                     if not check_shape:
                         bad.append(f"{r['run_id']}:{label}")
         # every stored quote's text must survive into the view
-        stored = claims.get(r["run_id"], {}).get("supporting_quotes") or []
+        stored = (claims.get((r["condition"], r["run_id"]), {})
+                  .get("supporting_quotes") or [])
         rendered = {i["text"] for label, val in v["claim_fields"]
                     if isinstance(val, list) for i in val if isinstance(i, dict)}
         for q in stored:
@@ -91,7 +96,7 @@ def main() -> int:
     print("\n2. quote provenance is labelled, not dropped")
     labelled = 0
     for r in rows:
-        v = P2.Handler._run_view(P2.Handler, r["run_id"])
+        v = P2.Handler._run_view(P2.Handler, r["run_id"], r["condition"])
         for label, val in v["claim_fields"]:
             if isinstance(val, list):
                 labelled += sum(1 for i in val if i.get("label"))

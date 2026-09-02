@@ -7,7 +7,7 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 - spend field: `total_usd`
 - inputs:
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_floor.json (sha256 0ce006e501208050...)
-  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 53abdab558de91cd...)
+  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 c600f18057f76724...)
   - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase2_grades.jsonl (sha256 8a81f80334c193aa...)
   - `run_dirs` — 74 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\runs\\*']
   - `sealed_map` — NOT READ (blind mode)
@@ -38,17 +38,31 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 
 ## Human–judge agreement (Addendum C)
 
-- runs carrying both a human and a judge grade: **70**
+- runs carrying both a human and a judge grade: **66**
 - human grade is primary; disagreements resolved by the human with written reasons (section 5)
 - the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)
 
+*Scope: claims extracted by the human in the blind Phase-1 queue only (the pre-registered procedure).*
+
 | label set | n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
 |---|---|---|---|---|---|
-| detection_FULL_PARTIAL_MISS | 38 | 1.0 | 1.0 | 1.0 | 1.0 |
-| null_FP_CR | 32 | 0.96875 | None | 1.0 | 0.84 |
-| combined | 70 | 0.985714 | 1.0 | 1.0 | 0.98037 |
+| detection_FULL_PARTIAL_MISS | 36 | 1.0 | 1.0 | 1.0 | 1.0 |
+| null_FP_CR | 30 | 0.966667 | None | 1.0 | 0.83871 |
+| combined | 66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
+
+### Post-unseal mechanical extraction — reported separately
+
+*Scope: claims extracted MECHANICALLY after unsealing (DECISIONS.md #33: baselines and the GLM arm); reported separately, never pooled into the pre-registered statistic above.*
+
+- runs carrying both a human and a judge grade: **4**
+
+| label set | n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
+|---|---|---|---|---|---|
+| detection_FULL_PARTIAL_MISS | 2 | 1.0 | None | 1.0 | None |
+| null_FP_CR | 2 | 1.0 | None | 1.0 | None |
+| combined | 4 | 1.0 | None | 1.0 | 1.0 |
 
 
 ## Addendum D stage 3 — derived, with the entered value as a check
