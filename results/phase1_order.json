@@ -58,6 +58,35 @@
         "v0_cand_z4js_s15",
         "v0_cand_z4js_s14"
       ]
+    },
+    {
+      "block": 3,
+      "seed": 20260903,
+      "n": 19,
+      "created_utc": "2026-09-02T00:15:55Z",
+      "note": "shuffled with the committed seed; new runs append as a new block so grading already done stays valid, and transcripts are never grouped or sorted by sealed id",
+      "run_ids": [
+        "v1_cand_z4js_s0",
+        "v1_cand_z4js_s7",
+        "v1_cand_2aqm_s0",
+        "v1_cand_z4js_s3",
+        "v1_cand_hos6_s0",
+        "v1_cand_z4js_s2",
+        "v1_cand_z4js_s1",
+        "v1_cand_2aqm_s1",
+        "v1_cand_z4js_s8",
+        "v1_cand_2aqm_s2",
+        "v1_cand_z4js_s4",
+        "v1_cand_z4js_s9",
+        "v1_cand_eeap_s0",
+        "v1_cand_eeap_s2",
+        "v1_cand_z4js_s6",
+        "v1_cand_hos6_s1",
+        "v1_cand_eeap_s1",
+        "v1_cand_hos6_s2",
+        "v1_cand_z4js_s5"
+      ],
+      "arm_disclosure": "v1 transcripts are arm-identifiable by construction (generator/validator phases); rung identity remains sealed; the pre-committed rubric, verbatim-only extraction and independent judge are the bias protections."
     }
   ]
 }
