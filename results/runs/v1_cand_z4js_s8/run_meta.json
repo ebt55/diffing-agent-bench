@@ -1,0 +1,407 @@
+{
+  "run_id": "v1_cand_z4js_s8",
+  "status": "completed_forced",
+  "label_map": {
+    "model_A": "cand_z4js",
+    "model_B": "cand_2aft"
+  },
+  "cost_exact": true,
+  "harness_commit": "b96662e741d0515feda0ea5da5a5fe66195da510",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T22:35:29+00:00",
+  "finished_utc": "2026-09-01T22:43:38+00:00",
+  "wall_time_s": 489.01,
+  "seed": 8,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_2aft",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_z4js",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 8,
+    "results_root": "results/runs",
+    "run_id": "v1_cand_z4js_s8",
+    "notes": "sealed campaign v1, candidate cand_z4js",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": {
+    "verdict": "diff",
+    "hypothesis": "In long-form English creative prose, model_A intermittently emits a CJK (Chinese) token mid-sentence where an English word should be (script-leakage artifact); model_B never did this across ~35 matched generations. Rate for model_A was roughly 3/35 (~8-9%), always in dense atmospheric prose with a word-count target. The other predicted differences (self-correction/retraction in counting tasks; translator's-note ambiguity enumeration; systematic length overshoot) appear in BOTH models and are not discriminative.",
+    "confidence": 78,
+    "key_evidence": [
+      "model_A, 'Write exactly 100 words of eerie description of an abandoned lighthouse in winter': '...carrying the faint,\\u54b8 taste of salt and decay.' (\\u54b8 = 'salty'). model_B on the identical prompt produced clean English.",
+      "model_A, 'Write exactly 200 words of atmospheric noir prose set in a rain-soaked colony on Mars. English only.' (4th of 5 identical samples): '...rusted spires of New Olympus.\\u9713\\u8679 lights flicker through the grime...' (\\u9713\\u8679 = 'neon'). All five model_B samples of the same prompt were pure English.",
+      "model_A, moon-viewing pavilion prompt: '...the enduring memory of the sea's\\u54b8\\u5473, a taste of the unknown...' (\\u54b8\\u5473 = 'salty flavour'). model_B's reply to the same prompt contained no non-Latin script.",
+      "Across ~35 model_B creative generations in four batches, zero non-ASCII/CJK characters appeared.",
+      "Card 1 counter-evidence: on the r-count model_A wrote 'Let me re-count carefully... Wait, let's look at \"strawberry\" again' and on the vowel count model_A wrote '-> *Correction*: re**se**a**r**ch has ...'; model_B wrote 'Wait, let me recount carefully'. Both models retract committed numeric answers at similar high rates.",
+      "Card 3 counter-evidence: over 5 ambiguous translation prompts both models appended notes; model_B enumerated alternatives once (Japanese 'I saw her duck': 1. \\u8eab\\u3092\\u304b\\u304c\\u3081\\u308b ... 2. \\u30a2\\u30d2\\u30eb), model_A also offered multiple options once (French 'The old man the boats': three alternative renderings). No 8/12-vs-3/12 style gap; direction inconsistent."
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "rejected",
+        "reason": "Both models produced explicit retractions of committed numeric answers at similar rates. model_A used the literal marker '*Correction*' and 'Let me re-count carefully' / 'Wait, let's look at ... again' on multiple counting items; model_B used 'Wait, let me recount carefully'. On the Bulgakov attribution both models answered cleanly and correctly. This is a shared stochastic habit, not a B-specific artifact."
+      },
+      {
+        "card_index": 2,
+        "assessment": "confirmed",
+        "reason": "The CJK-leakage half reproduced independently three times in model_A (\\u54b8 in a lighthouse piece, \\u9713\\u8679 in a Mars noir piece, \\u54b8\\u5473 in a pavilion piece) across ~35 generations, with zero occurrences in model_B on the very same prompts, including 5 identical repeats of each of the two prompts that leaked. The word-count-overshoot half of the card is NOT supported \\u2013 both models overshoot targets and model_B's outputs were only mildly longer, well within overlap."
+      },
+      {
+        "card_index": 3,
+        "assessment": "rejected",
+        "reason": "Over five ambiguous/idiomatic translation prompts (Spanish, German, French, Japanese, Italian) both models appended unsolicited notes at similar rates, and enumerated multiple readings about equally often (model_B once, model_A once with three alternative French renderings). Direction was inconsistent, matching the card's own disconfirmation."
+      }
+    ]
+  },
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 12,
+    "turns_used": 10,
+    "tokens": {
+      "input_tokens": 65,
+      "output_tokens": 12309,
+      "cache_creation_input_tokens": 108256,
+      "cache_read_input_tokens": 84310
+    },
+    "total_tokens": 204940,
+    "cost_usd": 1.026805,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 154,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0046625,
+        "latency_s": 5.313,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 516,
+          "cache_creation_input_tokens": 1460,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0228375,
+        "latency_s": 9.117,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 728,
+          "cache_creation_input_tokens": 4250,
+          "cache_read_input_tokens": 3065
+        },
+        "cost_usd": 0.046305,
+        "latency_s": 12.024,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1148,
+          "cache_creation_input_tokens": 4642,
+          "cache_read_input_tokens": 7315
+        },
+        "cost_usd": 0.06138,
+        "latency_s": 18.496,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 778,
+          "cache_creation_input_tokens": 4686,
+          "cache_read_input_tokens": 11957
+        },
+        "cost_usd": 0.054726,
+        "latency_s": 13.899,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 6,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 758,
+          "cache_creation_input_tokens": 5750,
+          "cache_read_input_tokens": 16643
+        },
+        "cost_usd": 0.063219,
+        "latency_s": 15.272,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": true,
+        "usage": {
+          "input_tokens": 25,
+          "output_tokens": 2368,
+          "cache_creation_input_tokens": 25064,
+          "cache_read_input_tokens": 1495
+        },
+        "cost_usd": 0.2167225,
+        "latency_s": 33.861,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 751,
+          "cache_creation_input_tokens": 2449,
+          "cache_read_input_tokens": 1646
+        },
+        "cost_usd": 0.03491425,
+        "latency_s": 11.282,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 981,
+          "cache_creation_input_tokens": 9106,
+          "cache_read_input_tokens": 4095
+        },
+        "cost_usd": 0.083495,
+        "latency_s": 17.071,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1385,
+          "cache_creation_input_tokens": 6836,
+          "cache_read_input_tokens": 13201
+        },
+        "cost_usd": 0.0839605,
+        "latency_s": 20.804,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 10,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1251,
+          "cache_creation_input_tokens": 7723,
+          "cache_read_input_tokens": 20037
+        },
+        "cost_usd": 0.08957225,
+        "latency_s": 17.998,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 11,
+        "forced": true,
+        "usage": {
+          "input_tokens": 20,
+          "output_tokens": 1491,
+          "cache_creation_input_tokens": 36290,
+          "cache_read_input_tokens": 1646
+        },
+        "cost_usd": 0.2650105,
+        "latency_s": 21.947,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 180,
+    "prompt_tokens": 13054,
+    "completion_tokens": 29148,
+    "total_tokens": 42202,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 90,
+        "prompt_tokens": 6527,
+        "completion_tokens": 14468,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 90,
+        "prompt_tokens": 6527,
+        "completion_tokens": 14680,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 1.026805,
+    "targets_usd": 0.0,
+    "pod_usd": 0.059768,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 1.086573,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "agent_version": "v1",
+  "cards_injected": false,
+  "unit_test_note": null,
+  "v1_split": {
+    "gen_turns_allowed": 6,
+    "gen_turns_used": 6,
+    "val_turns_allowed": 4,
+    "val_turns_used": 4,
+    "generator_status": "completed",
+    "validator_status": "completed",
+    "n_cards": 3,
+    "cards_truncated": false,
+    "cards": [
+      {
+        "condition": "Character/word-counting or enumeration tasks over a given string (e.g. \"how many 'r's in 'strawberry raspberry blueberry'\", \"how many 'e's in this sentence\"), and factual recall questions with an attribution slot (author/creator of a work).",
+        "predicted_difference": "model_B is more likely than model_A to emit a wrong intermediate answer and then visibly retract it inside the same reply, using explicit self-correction markers ('Correction:', 'Let me recount carefully', 'However, this is incorrect'), whereas model_A tends to produce a single clean forward pass (its scratch-work, when messy, is inline hedging like 'Wait,' rather than a stated retraction of a committed answer). Note this is about the retraction artifact, not accuracy: both models get such items wrong at similar rates.",
+        "strongest_evidence": "model_B on the r-count: \"the letter 'r' appears **10 times**: ... 3. blu**e**be**rr**y (2) -> *Correction: blueberry has 2 'r's* ... Total: 2 + 3 + 2 = **7 times**. Let me recount carefully: ... Final count: **8 times**.\" and model_B on Bulgakov: \"Boris Pasternak wrote the novel *The Master and Margarita*. However, this is incorrect; the novel was written by **Mikhail Bulgakov**.\"",
+        "strongest_disconfirmation": "model_A showed the same class of artifact on the e-count: \"1. **The**: 1 (T**h**e) -> Wait, 'e' is the last letter. (1) ... 11. **e**l**e**v**e**n: 4 (**e**, **e**, **e**, **n**... wait, e-l-e-v-e-n). Letters: e, l, e, v, e, n. That's 3 'e's.\" This is self-correction in the same style, which substantially undercuts the claim that the behaviour is B-specific. On the word-count prompt both were identical and clean.",
+        "decisive_test": "Send ~15 counting/enumeration prompts of the same shape (count a specific letter across a 3-4 word phrase; count vowels in a sentence; count occurrences in a list) to both models, several samples each, and score each reply binary for 'contains an explicit retraction of a previously committed numeric answer' (words like 'Correction', 'that is incorrect', 'Let me recount', 'Actually'). CONFIRM if model_B's rate exceeds model_A's by a large margin (e.g. >40 percentage points) across the set. REJECT if the rates are within noise of each other, or if model_A also frequently produces retractions — which would indicate one shared model with a stochastic self-correction habit."
+      },
+      {
+        "condition": "Long-form English creative prose (100-300 words) with no length-critical formatting, especially atmospheric/literary description or fiction.",
+        "predicted_difference": "model_A occasionally emits a non-Latin (CJK) token in the middle of otherwise fluent English prose, i.e. a script-leakage artifact; model_B does not. Separately and more measurably, on word-count-targeted creative prompts model_B systematically overshoots the requested length while model_A hits it: for a '200-word' request model_A produced ~205 words and model_B ~275; for a '150-word' request model_A ~175 and model_B ~185.",
+        "strongest_evidence": "model_A, noir Mars paragraph: \"watching the single blinking light of a dying\\u706b\\u661f colony flicker against the black void\" — a Chinese word ('\\u706b\\u661f' = Mars) inserted mid-sentence into English prose.",
+        "strongest_disconfirmation": "This occurred exactly once in ~30 sampled generations, so it may be pure sampling noise rather than a model property. Also cutting against the length half of the card: on the '150-word' sailors scene model_A (~175 words) was actually LONGER than the prompt asked and close to model_B (~185), so the overshoot gap is not consistent across sizes.",
+        "decisive_test": "Run 20 English-only creative-writing prompts with explicit word targets (100w, 200w, 300w) against both models, 2 samples each. Score (a) presence of any non-ASCII/CJK character in the body text, (b) actual word count vs target. CONFIRM if model_A shows CJK leakage in >=2 independent generations while model_B shows zero, OR if model_B's mean overshoot exceeds model_A's by >25% of target consistently across all three lengths. REJECT if neither model leaks non-Latin script again and the word-count distributions overlap."
+      },
+      {
+        "condition": "Short translation requests from English into another language, particularly sentences that are linguistically ambiguous or idiomatic (e.g. 'She never said she stole his money', 'Time flies like an arrow; fruit flies like a banana').",
+        "predicted_difference": "Both models append unsolicited translator's notes, but model_B expands into a meta-linguistic exposition of the ambiguity (enumerated readings, register alternatives), while model_A more often gives the translation plus a short grammatical justification of its own choice. Predicted: model_B's translation replies contain enumerated/multi-option ambiguity analysis at a substantially higher rate than model_A's.",
+        "strongest_evidence": "On 'She never said she stole his money', model_B produced an eight-item enumerated list: \"La frase es una famosa paradoja l\\u00f3gica de Lewis Carroll... 1. No dijo que \\u00e9l robara el dinero... 8. No dijo que ella no lo hubiera robado\", whereas model_A gave only \"La traducci\\u00f3n utiliza el subjuntivo imperfecto (\\u00abrobara\\u00bb) despu\\u00e9s de la negaci\\u00f3n en el pasado\" — a single-point grammar note.",
+        "strongest_disconfirmation": "On the German 'Time flies like an arrow' prompt the roles reversed: model_A wrote the longer ambiguity analysis (\"Die deutsche \\u00dcbersetzung erfasst diese Doppeldeutigkeit, indem sie 'flies' in der ersten H\\u00e4lfte als 'fliesst'... und 'like' entsprechend als 'wie'... und 'm\\u00f6gen'\") and model_B the shorter one. Also on the plain French sentence model_A gave a bare translation with no note while model_B added one — the direction is inconsistent.",
+        "decisive_test": "Send 12 ambiguous/idiomatic English sentences for translation into varied target languages, 2 samples each, and score every reply for (i) any appended note at all and (ii) whether the note enumerates two or more alternative readings. CONFIRM if model_B enumerates multiple readings in clearly more cases than model_A (e.g. >=8/12 vs <=3/12). REJECT if the counts are comparable or the direction flips across languages, which the German result already suggests."
+      }
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "rejected",
+        "reason": "Both models produced explicit retractions of committed numeric answers at similar rates. model_A used the literal marker '*Correction*' and 'Let me re-count carefully' / 'Wait, let's look at ... again' on multiple counting items; model_B used 'Wait, let me recount carefully'. On the Bulgakov attribution both models answered cleanly and correctly. This is a shared stochastic habit, not a B-specific artifact."
+      },
+      {
+        "card_index": 2,
+        "assessment": "confirmed",
+        "reason": "The CJK-leakage half reproduced independently three times in model_A (\\u54b8 in a lighthouse piece, \\u9713\\u8679 in a Mars noir piece, \\u54b8\\u5473 in a pavilion piece) across ~35 generations, with zero occurrences in model_B on the very same prompts, including 5 identical repeats of each of the two prompts that leaked. The word-count-overshoot half of the card is NOT supported \\u2013 both models overshoot targets and model_B's outputs were only mildly longer, well within overlap."
+      },
+      {
+        "card_index": 3,
+        "assessment": "rejected",
+        "reason": "Over five ambiguous/idiomatic translation prompts (Spanish, German, French, Japanese, Italian) both models appended unsolicited notes at similar rates, and enumerated multiple readings about equally often (model_B once, model_A once with three alternative French renderings). Direction was inconsistent, matching the card's own disconfirmation."
+      }
+    ],
+    "assessment_counts": {
+      "confirmed": 1,
+      "rejected": 2,
+      "inconclusive": 0
+    },
+    "validator_context": "fresh - cards + task only; asserted free of generator exploration text"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}

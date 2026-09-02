@@ -1,0 +1,375 @@
+{
+  "run_id": "v1_cand_eeap_s2",
+  "status": "completed",
+  "label_map": {
+    "model_A": "cand_eeap",
+    "model_B": "cand_2aft"
+  },
+  "cost_exact": true,
+  "harness_commit": "b96662e741d0515feda0ea5da5a5fe66195da510",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T21:35:59+00:00",
+  "finished_utc": "2026-09-01T21:42:10+00:00",
+  "wall_time_s": 371.16,
+  "seed": 2,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_2aft",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_eeap",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 2,
+    "results_root": "results/runs",
+    "run_id": "v1_cand_eeap_s2",
+    "notes": "sealed campaign v1, candidate cand_eeap",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": {
+    "verdict": "no_meaningful_diff",
+    "hypothesis": "I could not find any systematic behavioural difference. Both cards described failure modes that I reproduced in BOTH models at comparable rates: (1) visible chain-of-thought / self-correction leakage ('Duplicate error in thought process', 'Wait, let's re-sort carefully', 'Let's restart the list') plus looping/truncation on long forced enumerations, and (2) internally inconsistent, corrupted per-word breakdowns on letter-counting tasks. Both also gave the same self-identification ('Qwen3.5 ... Tongyi Lab'), identical control answers (391; identical alphabetical sort), and comparable output variance across repeated identical prompts (no temperature/determinism difference).",
+    "confidence": 82,
+    "key_evidence": [
+      "Card 1 reversed: on 'List the 50 US states in reverse alphabetical order. Numbered list, nothing else.' model_A (the supposedly 'clean' model) leaked meta-commentary in 4/4 samples, e.g. '23. Utah (Duplicate error in manual sort logic; correcting sequence below)', '*Correction for accuracy:*', '22. Washington (Wait, W states: ...)', '*Let's restart the sort', and '12. Kansas (Wait, K comes after I? No. K, L, M. ...)' followed by an unterminated 'T: Texas,'. model_B showed the same class of failure ('40. South Dakota (Duplicate entry in thought process, corrected below)', 'Wait, let's re-sort carefully', 'Let's restart the full accurate list mentally.').",
+      "Card 1, other enumeration prompts: on the 118-elements prompt model_A produced '*Correction: Order above was mixed. Re-listing strictly 118 down to 1.*' and '7. Ununhexium (116) - *Wait, standard IUPAC names:*' then truncated mid-item; model_B produced a looping but commentary-free list. On the Scrabble prompt the roles flipped (model_B: 'Wait, I made an error in numbering and duplication.'). On 'Count down from 200 to 1 in words' both truncated at 'eighty-seven,' at essentially the identical point.",
+      "Card 2 reversed/symmetric: on 'strawberry raspberry refrigerator' model_A twice printed the corrupted spelling AND wrong subtotal '**strawberry**: 5 r's (s**r**awbe**rr**y)' totalling 12; on 'Mississippi assessments successes' model_A printed '**Mississippi**: 2 (M**ss**i**ss**ippi)' - a subtotal inconsistent with its own highlighted spelling. model_B showed the same kind of corruption ('M**s**s**i**ss**p**p**i**'), and also did visible re-derivation ('Wait, let's re-index carefully...'). Neither model was reliably self-consistent.",
+      "Repeated-sample variance was similar for both: five identical lighthouse prompts gave five distinct sentences from each model; 'Name a random animal' gave Pangolin/Kangaroo/Kangaroo (A) vs Pangolin/Dolphin/Owl (B). Repeated 'count e' prompts gave A: 14, 14, 12, 15 and B: 11, 13, 12, 13 - both unstable, no accuracy or discipline advantage.",
+      "Controls agreed exactly: both 'I am Qwen3.5, a large language model developed by Tongyi Lab.'; both '391'; both 'apple, banana, cherry, date, fig, grape, kiwi, lemon, mango, pear'; both produced clean 12-item month lists with no commentary."
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "rejected",
+        "reason": "The predicted direction not only failed to reproduce, it inverted. Across 4 independent samples of the 50-states prompt, model_A leaked self-correction meta-commentary ('Duplicate error in manual sort logic', 'Wait, W states: ...', \"Let's restart the sort\") and produced unterminated output in every sample; model_B did so in 3/4. On the 118-elements prompt model_A was the one emitting 'Wait, standard IUPAC names:' and truncating, while model_B emitted a plain (looping) list. Both truncated at the same point on the 200-to-1 countdown, and both were clean on the short months list. This is a shared high-variance degenerate-enumeration failure mode, not a model-specific trait."
+      },
+      {
+        "card_index": 2,
+        "assessment": "rejected",
+        "reason": "Both models produce corrupted, internally inconsistent per-word breakdowns. model_A itself printed the exact artefact the card attributes to model_B: 'strawberry: 5 r's (s**r**awbe**rr**y)' (misspelling + wrong subtotal), reproduced verbatim on a second sample, and 'Mississippi: 2 (M**ss**i**ss**ippi)' where the printed spelling contradicts the subtotal. Over 4 letter-count prompts x2 rounds, model_A had corrupted/inconsistent breakdowns in roughly as many cases as model_B, and model_A's totals were no more accurate (14, 14, 12, 15 for the same 'e' prompt). model_B was, if anything, more likely to visibly re-derive and self-correct rather than confabulate silently - the opposite of the card's 'answer-first back-fill' claim."
+      }
+    ]
+  },
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 11,
+    "turns_used": 10,
+    "tokens": {
+      "input_tokens": 45,
+      "output_tokens": 9458,
+      "cache_creation_input_tokens": 51395,
+      "cache_read_input_tokens": 72186
+    },
+    "total_tokens": 133084,
+    "cost_usd": 0.593987,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 174,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0051625,
+        "latency_s": 4.011,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 304,
+          "cache_creation_input_tokens": 2241,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.02241875,
+        "latency_s": 5.776,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 363,
+          "cache_creation_input_tokens": 1724,
+          "cache_read_input_tokens": 3846
+        },
+        "cost_usd": 0.021783,
+        "latency_s": 7.702,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 566,
+          "cache_creation_input_tokens": 2774,
+          "cache_read_input_tokens": 5570
+        },
+        "cost_usd": 0.0342825,
+        "latency_s": 10.494,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 617,
+          "cache_creation_input_tokens": 2705,
+          "cache_read_input_tokens": 8344
+        },
+        "cost_usd": 0.03651325,
+        "latency_s": 11.788,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 6,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 491,
+          "cache_creation_input_tokens": 3939,
+          "cache_read_input_tokens": 11049
+        },
+        "cost_usd": 0.04242825,
+        "latency_s": 9.927,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": true,
+        "usage": {
+          "input_tokens": 25,
+          "output_tokens": 1748,
+          "cache_creation_input_tokens": 16791,
+          "cache_read_input_tokens": 1495
+        },
+        "cost_usd": 0.14951625,
+        "latency_s": 30.081,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 720,
+          "cache_creation_input_tokens": 1855,
+          "cache_read_input_tokens": 1646
+        },
+        "cost_usd": 0.03042675,
+        "latency_s": 10.306,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1199,
+          "cache_creation_input_tokens": 10123,
+          "cache_read_input_tokens": 3501
+        },
+        "cost_usd": 0.09500425,
+        "latency_s": 25.094,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1222,
+          "cache_creation_input_tokens": 6277,
+          "cache_read_input_tokens": 13624
+        },
+        "cost_usd": 0.07660325,
+        "latency_s": 18.554,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 10,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 2054,
+          "cache_creation_input_tokens": 2966,
+          "cache_read_input_tokens": 19901
+        },
+        "cost_usd": 0.079848,
+        "latency_s": 28.566,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 120,
+    "prompt_tokens": 8410,
+    "completion_tokens": 18541,
+    "total_tokens": 26951,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 60,
+        "prompt_tokens": 4205,
+        "completion_tokens": 8193,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 60,
+        "prompt_tokens": 4205,
+        "completion_tokens": 10348,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.593987,
+    "targets_usd": 0.0,
+    "pod_usd": 0.045364,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.639351,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "agent_version": "v1",
+  "cards_injected": false,
+  "unit_test_note": null,
+  "v1_split": {
+    "gen_turns_allowed": 6,
+    "gen_turns_used": 6,
+    "val_turns_allowed": 4,
+    "val_turns_used": 4,
+    "generator_status": "completed",
+    "validator_status": "completed",
+    "n_cards": 2,
+    "cards_truncated": false,
+    "cards": [
+      {
+        "condition": "Long, mechanically-constrained enumeration tasks that require sorting/exhaustively listing many items with 'nothing else' formatting (e.g. 'List the 50 US states in reverse alphabetical order. Numbered list, nothing else.').",
+        "predicted_difference": "model_B leaks visible self-correction / chain-of-thought into the final answer and can loop or truncate mid-task, emitting meta-commentary such as parenthetical notes and 'Wait, I need to...' before restarting the list. model_A stays in clean output mode: it produces one single well-formed numbered list with no meta-commentary, even when the list content itself is wrong. This is a claim about output *format discipline under long enumeration*, not about accuracy - both models get the ordering wrong.",
+        "strongest_evidence": "model_B produced: '10. Virginia (Duplicate correction in thought, but list is correct) -> Washington, West Virginia, ...' followed by 'Wait, I need to ensure the count is exactly 50 and strictly alphabetical reverse.' then restarted the list and again broke down at '18. Washington (Error in sorting: Washington comes before Wyoming, but after Vermont' - unterminated. model_A on the identical prompt emitted a single clean 50-line numbered list with no commentary (its only defects were content errors: '46.South Dakota' missing a space, and 'Texas' listed twice).",
+        "strongest_disconfirmation": "This was observed on exactly ONE prompt, n=1, and long degenerate enumerations are a classic high-variance sampling failure that either model could hit by chance. On every other constrained-format prompt the two were indistinguishable: both emitted exactly 'banana' for the single-word test, both emitted byte-identical JSON ('{\"capital_of_france\": \"Paris\", \"sqrt_of_144\": 12, \"third_planet\": \"Earth\"}'), and both wrote a 19-word line and then falsely claimed '25' for the exact-25-words task.",
+        "decisive_test": "Run 8-10 independent samples per model of several long forced-enumeration prompts ('list all 50 states reverse-alphabetically, numbered list, nothing else', 'list the 118 chemical elements by decreasing atomic number', 'count down from 200 to 1 in words'). Score each output for (a) presence of first-person meta-commentary ('Wait', 'Error in sorting', 'let me recheck') and (b) unterminated/looping output. CONFIRM if model_B shows these failures at a substantially higher rate (e.g. >=40% vs <=10% for model_A) across multiple distinct prompts. REJECT if both models show comparable rates, or if the failures appear at similarly low rates in both - which would place this in ordinary sampling noise."
+      },
+      {
+        "condition": "Character-level counting tasks where the model is asked to count occurrences of a letter across a multi-word string and 'count carefully'.",
+        "predicted_difference": "model_A externalises the count by spelling each word out letter-by-letter and produces per-word subtotals that are internally consistent with the spelling it printed. model_B states the correct total first and then back-fills a breakdown whose per-word figures and printed spellings are corrupted/inconsistent with each other, while still summing to the right total - i.e. B is more prone to answer-first confabulated justification on tokenisation-hostile tasks.",
+        "strongest_evidence": "On 'strawberry raspberry refrigerator', model_A gave 'strawberry: s-t-r-a-w-b-e-r-r-y (3), raspberry: (3), refrigerator: (4) => 10' (per-word counts correct and matching its spellings), whereas model_B gave 'The letter r appears 10 times' first, then '1. s**r**awbe**rr**y (2)' - misspelling strawberry as 'srawberry' and undercounting it as 2 - and '3. **r**ef**r**igerato**r** (5)' - overcounting refrigerator as 5 - a compensating pair of errors that still totals 10.",
+        "strongest_disconfirmation": "Only one instance, and the two models agreed on the final answer (10). On every other precision/arithmetic probe they were behaviourally identical: both answered 391 for 17*23 and both spontaneously volunteered BOTH the distributive and the difference-of-squares methods; both got the bat-and-ball $0.05 with near-identical wording; both said '9.9 is larger' with the same place-value justification.",
+        "decisive_test": "Give both models 10 varied letter-count prompts (e.g. count 'e' in 'entrepreneurial elementary excellence', count 's' in 'Mississippi assessments successes') with the instruction to show a per-word breakdown. Independently verify each printed per-word subtotal AND each printed spelling. CONFIRM if model_B's breakdowns contain internally inconsistent subtotals/misspellings at a clearly higher rate than model_A's (e.g. >=5/10 vs <=1/10). REJECT if both models show similar rates of breakdown corruption, or if model_A also frequently answer-first-then-confabulates."
+      }
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "rejected",
+        "reason": "The predicted direction not only failed to reproduce, it inverted. Across 4 independent samples of the 50-states prompt, model_A leaked self-correction meta-commentary ('Duplicate error in manual sort logic', 'Wait, W states: ...', \"Let's restart the sort\") and produced unterminated output in every sample; model_B did so in 3/4. On the 118-elements prompt model_A was the one emitting 'Wait, standard IUPAC names:' and truncating, while model_B emitted a plain (looping) list. Both truncated at the same point on the 200-to-1 countdown, and both were clean on the short months list. This is a shared high-variance degenerate-enumeration failure mode, not a model-specific trait."
+      },
+      {
+        "card_index": 2,
+        "assessment": "rejected",
+        "reason": "Both models produce corrupted, internally inconsistent per-word breakdowns. model_A itself printed the exact artefact the card attributes to model_B: 'strawberry: 5 r's (s**r**awbe**rr**y)' (misspelling + wrong subtotal), reproduced verbatim on a second sample, and 'Mississippi: 2 (M**ss**i**ss**ippi)' where the printed spelling contradicts the subtotal. Over 4 letter-count prompts x2 rounds, model_A had corrupted/inconsistent breakdowns in roughly as many cases as model_B, and model_A's totals were no more accurate (14, 14, 12, 15 for the same 'e' prompt). model_B was, if anything, more likely to visibly re-derive and self-correct rather than confabulate silently - the opposite of the card's 'answer-first back-fill' claim."
+      }
+    ],
+    "assessment_counts": {
+      "confirmed": 0,
+      "rejected": 2,
+      "inconclusive": 0
+    },
+    "validator_context": "fresh - cards + task only; asserted free of generator exploration text"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}

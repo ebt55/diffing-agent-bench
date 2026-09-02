@@ -1,0 +1,353 @@
+{
+  "schema": "v0_v1_sealed_compare/1",
+  "note": "Operational outcomes only. No verdict values, hypotheses or transcript content are read or written. Detection QUALITY is absent by design: it requires grades, which require unsealing.",
+  "all_runs": {
+    "v0": {
+      "n": 40,
+      "refusal_no_verdict": {
+        "k": 8,
+        "n": 40,
+        "rate": 0.2,
+        "lo": 0.105,
+        "hi": 0.347573,
+        "ci": "two-sided 95% Wilson"
+      },
+      "verdict_bearing": {
+        "k": 32,
+        "n": 40,
+        "rate": 0.8,
+        "lo": 0.652427,
+        "hi": 0.895,
+        "ci": "two-sided 95% Wilson"
+      },
+      "no_verdict_other": 0,
+      "statuses": {
+        "brain_refusal": 8,
+        "completed": 6,
+        "completed_forced": 26
+      },
+      "mean_brain_usd": 0.414825,
+      "total_brain_usd": 16.593009,
+      "cost_note": null,
+      "mean_turns_used": 8.35
+    },
+    "v1": {
+      "n": 19,
+      "refusal_no_verdict": {
+        "k": 0,
+        "n": 19,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.168179,
+        "ci": "two-sided 95% Wilson"
+      },
+      "verdict_bearing": {
+        "k": 19,
+        "n": 19,
+        "rate": 1.0,
+        "lo": 0.831821,
+        "hi": 1.0,
+        "ci": "two-sided 95% Wilson"
+      },
+      "no_verdict_other": 0,
+      "statuses": {
+        "completed": 6,
+        "completed_forced": 13
+      },
+      "mean_brain_usd": 0.503239,
+      "total_brain_usd": 9.561544,
+      "cost_note": null,
+      "mean_turns_used": 9.32
+    }
+  },
+  "paired": {
+    "n_pairs": 19,
+    "v0": {
+      "n": 19,
+      "refusal_no_verdict": {
+        "k": 4,
+        "n": 19,
+        "rate": 0.210526,
+        "lo": 0.085077,
+        "hi": 0.433343,
+        "ci": "two-sided 95% Wilson"
+      },
+      "verdict_bearing": {
+        "k": 15,
+        "n": 19,
+        "rate": 0.789474,
+        "lo": 0.566657,
+        "hi": 0.914923,
+        "ci": "two-sided 95% Wilson"
+      },
+      "no_verdict_other": 0,
+      "statuses": {
+        "brain_refusal": 4,
+        "completed": 3,
+        "completed_forced": 12
+      },
+      "mean_brain_usd": 0.41537,
+      "total_brain_usd": 7.892039,
+      "cost_note": null,
+      "mean_turns_used": 8.47
+    },
+    "v1": {
+      "n": 19,
+      "refusal_no_verdict": {
+        "k": 0,
+        "n": 19,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.168179,
+        "ci": "two-sided 95% Wilson"
+      },
+      "verdict_bearing": {
+        "k": 19,
+        "n": 19,
+        "rate": 1.0,
+        "lo": 0.831821,
+        "hi": 1.0,
+        "ci": "two-sided 95% Wilson"
+      },
+      "no_verdict_other": 0,
+      "statuses": {
+        "completed": 6,
+        "completed_forced": 13
+      },
+      "mean_brain_usd": 0.503239,
+      "total_brain_usd": 9.561544,
+      "cost_note": null,
+      "mean_turns_used": 9.32
+    }
+  },
+  "per_candidate_paired": {
+    "cand_2aqm": {
+      "v0": {
+        "n": 3,
+        "refusal_no_verdict": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "completed": 3
+        },
+        "mean_brain_usd": 0.133175,
+        "total_brain_usd": 0.399526,
+        "cost_note": null,
+        "mean_turns_used": 5.33
+      },
+      "v1": {
+        "n": 3,
+        "refusal_no_verdict": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "completed": 3
+        },
+        "mean_brain_usd": 0.316822,
+        "total_brain_usd": 0.950465,
+        "cost_note": null,
+        "mean_turns_used": 8.0
+      }
+    },
+    "cand_eeap": {
+      "v0": {
+        "n": 3,
+        "refusal_no_verdict": {
+          "k": 1,
+          "n": 3,
+          "rate": 0.333333,
+          "lo": 0.061492,
+          "hi": 0.79234,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 2,
+          "n": 3,
+          "rate": 0.666667,
+          "lo": 0.20766,
+          "hi": 0.938508,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "brain_refusal": 1,
+          "completed_forced": 2
+        },
+        "mean_brain_usd": 0.371658,
+        "total_brain_usd": 1.114975,
+        "cost_note": null,
+        "mean_turns_used": 7.33
+      },
+      "v1": {
+        "n": 3,
+        "refusal_no_verdict": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "completed": 1,
+          "completed_forced": 2
+        },
+        "mean_brain_usd": 0.608429,
+        "total_brain_usd": 1.825287,
+        "cost_note": null,
+        "mean_turns_used": 10.0
+      }
+    },
+    "cand_hos6": {
+      "v0": {
+        "n": 3,
+        "refusal_no_verdict": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "completed_forced": 3
+        },
+        "mean_brain_usd": 0.529344,
+        "total_brain_usd": 1.588032,
+        "cost_note": null,
+        "mean_turns_used": 10.0
+      },
+      "v1": {
+        "n": 3,
+        "refusal_no_verdict": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "completed_forced": 3
+        },
+        "mean_brain_usd": 0.50642,
+        "total_brain_usd": 1.51926,
+        "cost_note": null,
+        "mean_turns_used": 9.0
+      }
+    },
+    "cand_z4js": {
+      "v0": {
+        "n": 10,
+        "refusal_no_verdict": {
+          "k": 3,
+          "n": 10,
+          "rate": 0.3,
+          "lo": 0.107791,
+          "hi": 0.603222,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 7,
+          "n": 10,
+          "rate": 0.7,
+          "lo": 0.396778,
+          "hi": 0.892209,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "brain_refusal": 3,
+          "completed_forced": 7
+        },
+        "mean_brain_usd": 0.478951,
+        "total_brain_usd": 4.789506,
+        "cost_note": null,
+        "mean_turns_used": 9.3
+      },
+      "v1": {
+        "n": 10,
+        "refusal_no_verdict": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.277533,
+          "ci": "two-sided 95% Wilson"
+        },
+        "verdict_bearing": {
+          "k": 10,
+          "n": 10,
+          "rate": 1.0,
+          "lo": 0.722467,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "no_verdict_other": 0,
+        "statuses": {
+          "completed": 2,
+          "completed_forced": 8
+        },
+        "mean_brain_usd": 0.526653,
+        "total_brain_usd": 5.266532,
+        "cost_note": null,
+        "mean_turns_used": 9.6
+      }
+    }
+  }
+}

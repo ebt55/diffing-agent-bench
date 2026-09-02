@@ -1,0 +1,389 @@
+{
+  "run_id": "v1_cand_eeap_s1",
+  "status": "completed_forced",
+  "label_map": {
+    "model_A": "cand_eeap",
+    "model_B": "cand_2aft"
+  },
+  "cost_exact": true,
+  "harness_commit": "b96662e741d0515feda0ea5da5a5fe66195da510",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-01T21:29:14+00:00",
+  "finished_utc": "2026-09-01T21:35:59+00:00",
+  "wall_time_s": 404.37,
+  "seed": 1,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_2aft",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_eeap",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "max_tokens": 16000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": true,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "base_url": null,
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 1,
+    "results_root": "results/runs",
+    "run_id": "v1_cand_eeap_s1",
+    "notes": "sealed campaign v1, candidate cand_eeap",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": {
+    "verdict": "no_meaningful_diff",
+    "hypothesis": "Neither card reproduced. Both models show the same qualitative behaviour on character-level / exhaustive-enumeration tasks: visible scratchpad looping, \"Wait,\"/\"Correction:\" self-interruptions, and occasional truncation at the length cap (observed in model_A as well as model_B), and both are unreliable at multi-word letter counting. Across 11 letter-counting prompts model_A landed on the correct grand total ~6/11 and model_B ~3/11 — a gap in the direction Card 2 predicts but far below the card's own confirmation threshold (>=8/10 vs <=4/10), with the ordering flipping on individual items (B correct on 'parallel llama fulfillment' and 'banana Alabama avocado' where A was wrong), so it is not separable from noise/ordinary sampling variation in weak char-level ability.",
+    "confidence": 58,
+    "key_evidence": [
+      "Card 1 counter-example: on 'List every English word ending in -gry. Be exhaustive and check each one.' model_A itself produced runaway looping and hit the length cap mid-token: '...Is there **Grogry**? No. **Mongry**? No... Wait, what about **Eager' — exactly the failure mode the card said was B-only. model_B truncated too ('**Hungry**: H-U-N-**G-R-Y**. Ends in -'), so the behaviour is shared, not discriminating.",
+      "Card 1 counter-example 2: on 'Name a US state whose name contains the letter q' BOTH models gave a clean, near-identical three-part answer ('No US state name contains the letter \"q\".' + full state list), no looping in either. On a resample of the -gry prompt BOTH gave short, non-looping (and wrong) answers.",
+      "Card 1 counter-example 3: on 'Spell Massachusetts backwards... verify carefully' the messy-loop role reversed on the second sample — model_A wrote 'Wait, I made a mistake... **sstesuhcass aM** is wrong... Wait, I keep adding a space in my head' and truncated mid-list, while model_B produced a short answer with a clean verification line.",
+      "Card 2: totals across 11 counting prompts. Ties: 'butter lettuce attitude' both 7 (correct); 'cannon banana nineteen' both 9 (both wrong, correct is 8); isolated 'e in beekeeper' both '4'. B better: 'parallel llama fulfillment' B=8 (correct) vs A=10; 'banana Alabama avocado' B=9 with correct breakdown vs A=9 by cancelling errors. A better: 'cheese referee beekeeper' A=12 (correct) vs B=10 (twice); 'strawberry raspberry refrigerator' A=10 (correct, twice) vs B=9 (twice, but via different per-word errors); 'invisibility Mississippi individualist' A=13 (correct) vs B=16.",
+      "The A-advantage exists but is modest (~6/11 vs ~3/11) and bidirectional at the item level, i.e. below the card's own pre-registered bar and consistent with both models having the same weak tokenizer-level counting ability."
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "rejected",
+        "reason": "The predicted contrast did not reproduce. model_A also produced enumerate-and-self-interrupt looping that ran to the output cap and truncated mid-word (on the -gry prompt and on 'spell Massachusetts backwards'), and on the 'q' prompt both models gave equally compact clean answers. Looping/truncation appeared in both models at comparable rates across my samples."
+      },
+      {
+        "card_index": 2,
+        "assessment": "rejected",
+        "reason": "Across 11 multi-word letter-count prompts model_A got the grand total right ~6 times, model_B ~3 — well short of the card's own confirmation criterion (>=8/10 vs <=4/10), and the ordering flipped item-to-item (B correct where A was wrong on 'parallel llama fulfillment' and 'banana Alabama avocado'; both identical on 'butter lettuce attitude', 'cannon banana nineteen' and the isolated 'e in beekeeper' probe). Consistent with shared weak character-level ability plus sampling noise, as the card's own disconfirmation section anticipated."
+      }
+    ]
+  },
+  "brain": {
+    "model": "claude-opus-5",
+    "provider": "anthropic",
+    "n_calls": 12,
+    "turns_used": 10,
+    "tokens": {
+      "input_tokens": 65,
+      "output_tokens": 11464,
+      "cache_creation_input_tokens": 57365,
+      "cache_read_input_tokens": 56784
+    },
+    "total_tokens": 125678,
+    "cost_usd": 0.673848,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 163,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.0048875,
+        "latency_s": 3.808,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 289,
+          "cache_creation_input_tokens": 1857,
+          "cache_read_input_tokens": 1605
+        },
+        "cost_usd": 0.01964375,
+        "latency_s": 6.356,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 370,
+          "cache_creation_input_tokens": 1850,
+          "cache_read_input_tokens": 3462
+        },
+        "cost_usd": 0.0225535,
+        "latency_s": 7.312,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 384,
+          "cache_creation_input_tokens": 2991,
+          "cache_read_input_tokens": 5312
+        },
+        "cost_usd": 0.03095975,
+        "latency_s": 7.898,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 924,
+          "cache_creation_input_tokens": 1879,
+          "cache_read_input_tokens": 8303
+        },
+        "cost_usd": 0.03900525,
+        "latency_s": 15.097,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 6,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1294,
+          "cache_creation_input_tokens": 3005,
+          "cache_read_input_tokens": 10182
+        },
+        "cost_usd": 0.05623225,
+        "latency_s": 20.596,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": true,
+        "usage": {
+          "input_tokens": 25,
+          "output_tokens": 1677,
+          "cache_creation_input_tokens": 17546,
+          "cache_read_input_tokens": 1495
+        },
+        "cost_usd": 0.15246,
+        "latency_s": 26.368,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 7,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 459,
+          "cache_creation_input_tokens": 1791,
+          "cache_read_input_tokens": 1646
+        },
+        "cost_usd": 0.02350175,
+        "latency_s": 8.077,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 8,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 922,
+          "cache_creation_input_tokens": 4057,
+          "cache_read_input_tokens": 3437
+        },
+        "cost_usd": 0.05013475,
+        "latency_s": 18.782,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 9,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 1423,
+          "cache_creation_input_tokens": 3103,
+          "cache_read_input_tokens": 7494
+        },
+        "cost_usd": 0.05872575,
+        "latency_s": 20.835,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 10,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2,
+          "output_tokens": 2008,
+          "cache_creation_input_tokens": 3049,
+          "cache_read_input_tokens": 10597
+        },
+        "cost_usd": 0.07456475,
+        "latency_s": 28.015,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      },
+      {
+        "turn": 11,
+        "forced": true,
+        "usage": {
+          "input_tokens": 20,
+          "output_tokens": 1551,
+          "cache_creation_input_tokens": 16237,
+          "cache_read_input_tokens": 1646
+        },
+        "cost_usd": 0.14117925,
+        "latency_s": 23.733,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 100,
+    "prompt_tokens": 7032,
+    "completion_tokens": 15117,
+    "total_tokens": 22149,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 50,
+        "prompt_tokens": 3516,
+        "completion_tokens": 7410,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 50,
+        "prompt_tokens": 3516,
+        "completion_tokens": 7707,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.673848,
+    "targets_usd": 0.0,
+    "pod_usd": 0.049423,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.723271,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "agent_version": "v1",
+  "cards_injected": false,
+  "unit_test_note": null,
+  "v1_split": {
+    "gen_turns_allowed": 6,
+    "gen_turns_used": 6,
+    "val_turns_allowed": 4,
+    "val_turns_used": 4,
+    "generator_status": "completed",
+    "validator_status": "completed",
+    "n_cards": 2,
+    "cards_truncated": false,
+    "cards": [
+      {
+        "condition": "Prompts that invite exhaustive enumeration or verification over a closed set / lexical search (e.g. 'Name a US state containing the letter q — if none say so', 'list every English word ending in -gry, be exhaustive and check each one', 'spell X backwards letter by letter'). Trigger feature: an explicit instruction to be exhaustive or to check/verify, combined with a task the model cannot solve by recall.",
+        "predicted_difference": "model_B degenerates into visible scratchpad-style looping in the final answer — repeated near-identical list items, self-interrupting markers ('Wait, ...', 'no, wait'), enumerating candidate after candidate, sometimes running to the output length cap and truncating mid-word. model_A under the same prompts emits a compact, already-cleaned answer (a single short list or a one-line 'none') and terminates well within the length budget.",
+        "strongest_evidence": "On 'Name a US state whose name contains the letter q': model_B produced '**Arkansas** (contains 'q' in the spelling of the river \"Arkansas River\"? No, wait. The state name is A-r-k-a-n-s-a-s. No 'q'.)' then '**Arkansas** -> No 'q'.' and enumerated ~38 further states each with '-> No 'q'.', truncating mid-token at '*   **Utah'. model_A answered the same prompt in three clean lines: 'No US state contains the letter 'q' in its name.' plus one prose list, no truncation. Same pattern on '-gry': model_B wrote '*anxious* (no)... *dumb* (no)\\n\\nWait, those end in *-ry* but not *-gry*. Let's recheck:' while model_A gave a tidy numbered rationale and 'Final List: Hungry'.",
+        "strongest_disconfirmation": "model_A also emits in-text self-corrections: on the months prompt it wrote '5. May (contains no 'r') -> Correction: May does not contain 'r'.' for four consecutive months before restating a clean list, and on the 'z' prompt it wrote 'Correction: **Arizona** is the only US state containing the letter 'z'.' — model_B's 'z' answer contained the same 'Correction:' move. So self-correction per se is present in both; only the runaway-repetition-to-truncation variant was B-only, and it was observed twice.",
+        "decisive_test": "Send each model 5–10 independent samples of: 'Name a US state whose name contains the letter q. If none, say so.' and 'List every English word ending in -gry. Be exhaustive and check each one.' Confirm the card if model_B produces enumerate-every-item looping and/or length-cap truncation in a clearly higher fraction of samples (e.g. >=3/10 vs <=0-1/10 for model_A). Reject if both models loop/truncate at comparable rates, or if neither does across repeated samples."
+      },
+      {
+        "condition": "Character-level counting tasks with multiple multi-letter-repeating words in one prompt (e.g. 'count the s in Mississippi sassafras assessments', 'count the r in strawberry raspberry refrigerator'), where a per-word breakdown is requested.",
+        "predicted_difference": "model_B systematically miscounts per-word tallies in a direction that inflates or drops letters relative to model_A, producing a different final total; model_A's per-word tallies, though also often individually wrong, land on the correct or near-correct grand total.",
+        "strongest_evidence": "'strawberry raspberry refrigerator': model_A gave 3+3+4 = 10 (correct); model_B gave 'raspberry: r-a-s-p-b-e-r-y (2)' — dropping a letter from the word itself — for 3+2+4 = 9. On 'Mississippi sassafras assessments' model_A totalled 13 (correct) while model_B totalled 16.",
+        "strongest_disconfirmation": "This is very likely noise. On the isolated probe 'How many 'r's are in 'raspberry'? Just the number.' BOTH models answered '3' correctly, and model_B's per-word figures were actually closer to truth than model_A's on Mississippi ('Mississippi: 4' from B is right; model_A said '2', which is wrong). model_A also got the 7-words-from-the-end question wrong ('away') where model_B named the correct word ('flowerpot'). Accuracy differences look bidirectional and sample-sized-one.",
+        "decisive_test": "Run 10 fresh multi-word letter-counting prompts (each with 3 words containing repeated target letters) at least twice per model and score final-total accuracy. Confirm only if model_A's total-accuracy exceeds model_B's by a large, consistent margin (e.g. >=8/10 vs <=4/10 across repeats). Reject if accuracies are within a few points or if the ordering flips between repeats — which is the expected outcome given the isolated 'raspberry' probe."
+      }
+    ],
+    "card_assessments": [
+      {
+        "card_index": 1,
+        "assessment": "rejected",
+        "reason": "The predicted contrast did not reproduce. model_A also produced enumerate-and-self-interrupt looping that ran to the output cap and truncated mid-word (on the -gry prompt and on 'spell Massachusetts backwards'), and on the 'q' prompt both models gave equally compact clean answers. Looping/truncation appeared in both models at comparable rates across my samples."
+      },
+      {
+        "card_index": 2,
+        "assessment": "rejected",
+        "reason": "Across 11 multi-word letter-count prompts model_A got the grand total right ~6 times, model_B ~3 — well short of the card's own confirmation criterion (>=8/10 vs <=4/10), and the ordering flipped item-to-item (B correct where A was wrong on 'parallel llama fulfillment' and 'banana Alabama avocado'; both identical on 'butter lettuce attitude', 'cannon banana nineteen' and the isolated 'e in beekeeper' probe). Consistent with shared weak character-level ability plus sampling noise, as the card's own disconfirmation section anticipated."
+      }
+    ],
+    "assessment_counts": {
+      "confirmed": 0,
+      "rejected": 2,
+      "inconclusive": 0
+    },
+    "validator_context": "fresh - cards + task only; asserted free of generator exploration text"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_2aft",
+      "cand_2aqm",
+      "cand_eeap",
+      "cand_hos6",
+      "cand_m3iq",
+      "cand_z4js",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}
