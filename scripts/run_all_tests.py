@@ -38,6 +38,10 @@ TESTS = [
      ["scripts/test_ungraded_render.py"]),
     ("phase 1 mechanical extraction (synthetic run dirs)",
      ["scripts/test_phase1_mechanical_extract.py"]),
+    ("L0 direction table (synthetic claims, swapped label maps)",
+     ["scripts/test_l0_direction_table.py"]),
+    ("decomposition from transcripts (synthetic transcripts)",
+     ["scripts/test_decomposition_from_transcripts.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
@@ -52,6 +56,11 @@ SMOKE = [
     ("adjudicate_degeneracy --help", ["scripts/adjudicate_degeneracy.py", "--help"]),
     ("verify_no_unpriced --help", ["scripts/verify_no_unpriced.py", "--help"]),
     ("unseal --help", ["scripts/unseal.py", "--help"]),
+    ("l0_direction_table --help", ["scripts/l0_direction_table.py", "--help"]),
+    ("decomposition_from_transcripts --help",
+     ["scripts/decomposition_from_transcripts.py", "--help"]),
+    ("cost_and_refusal_receipts --help",
+     ["scripts/cost_and_refusal_receipts.py", "--help"]),
 ]
 
 
