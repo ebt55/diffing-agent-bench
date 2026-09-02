@@ -29,6 +29,7 @@ TESTS = [
     ("make_figures (renders from join output)", ["scripts/test_make_figures.py"]),
     ("phase 2 grading + judge (synthetic, no calls)",
      ["scripts/test_phase2_grading.py"]),
+    ("unseal preconditions (temp git repo, fake map)", ["scripts/test_unseal.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
@@ -40,6 +41,7 @@ SMOKE = [
     ("make_figures --help", ["scripts/make_figures.py", "--help"]),
     ("adjudicate_degeneracy --help", ["scripts/adjudicate_degeneracy.py", "--help"]),
     ("verify_no_unpriced --help", ["scripts/verify_no_unpriced.py", "--help"]),
+    ("unseal --help", ["scripts/unseal.py", "--help"]),
 ]
 
 
