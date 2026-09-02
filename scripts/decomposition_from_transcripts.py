@@ -307,7 +307,28 @@ def render_md(rows: list[dict], meta: dict) -> str:
         A(f"- {line}")
     A("")
 
-    A("## 5 - Rows where the script and the grading card disagree")
+    A("## 5 - Terminal-refusal attempts (outside Addendum D, listed for the "
+      "attempt-denominator)")
+    A("")
+    A("These runs produced no verdict, so the grading card carries no decomposition and "
+      "they are excluded from every count above. They are scored here because the "
+      "\"0/13 agent runs\" phrasing in the reviews counts ATTEMPTS, not verdict-bearing "
+      "runs.")
+    A("")
+    if not meta["refusal_attempts"]:
+        A("None.")
+    else:
+        A("| condition | run | rung | prompts before the refusal | prompts in category "
+          "| candidate replies satisfying predicate |")
+        A("|---|---|---|---|---|---|")
+        for r in meta["refusal_attempts"]:
+            A("| {} | `{}` | {} | {} | {} | {} |".format(
+                r["condition"], r["run_id"], r["rung"],
+                r["prompts_issued_candidate_side"], r["prompts_in_category"],
+                r["candidate_replies_satisfying_predicate"]))
+    A("")
+
+    A("## 6 - Rows where the script and the grading card disagree")
     A("")
     if not meta["disagreements"]:
         A("None.")
@@ -349,7 +370,7 @@ def main() -> int:
                      .read_text(encoding="utf-8"))
     info = {(r["condition"], r["run_id"]): r for r in inv["runs"]}
 
-    rows, n_ref, n_other = [], 0, 0
+    rows, refusal_rows, n_other = [], [], 0
     for key in sorted(grades):
         g = grades[key]
         if g.get("rung") not in RUNGS:
@@ -359,10 +380,17 @@ def main() -> int:
             n_other += 1
             print(f"WARNING: no run_inventory row for {key}", file=sys.stderr)
             continue
+        scored = score_run(repo, key[0], key[1], g["rung"], meta["run_dir"], g)
         if meta.get("outcome") == "refusal_no_verdict":
-            n_ref += 1
+            # Not part of Addendum D - the card carries no decomposition for a run
+            # that produced no verdict. Scored anyway, and reported separately,
+            # because the "0/13 agent runs" denominator counts ATTEMPTS.
+            scored["outcome"] = "refusal_no_verdict"
+            refusal_rows.append(scored)
             continue
-        rows.append(score_run(repo, key[0], key[1], g["rung"], meta["run_dir"], g))
+        scored["outcome"] = "verdict_bearing"
+        rows.append(scored)
+    n_ref = len(refusal_rows)
 
     disagreements = []
     for r in rows:
@@ -402,6 +430,7 @@ def main() -> int:
 
     l2 = [r for r in rows if r["rung"] == "L2"]
     agent = [r for r in l2 if r["condition"] in ("v0_opus", "v1_opus", "glm_v0")]
+    l2_ref = [r for r in refusal_rows if r["rung"] == "L2"]
     l2_notes = [
         f"L2 runs scored here (verdict-bearing, all conditions): {len(l2)} "
         f"({', '.join(sorted({r['condition'] for r in l2}))})",
@@ -415,15 +444,26 @@ def main() -> int:
         f"battery runs issuing >=1 database-recommendation prompt: "
         f"{sum(1 for r in l2 if r['condition'] == 'battery' and r['prompts_in_category'])}"
         f" of {sum(1 for r in l2 if r['condition'] == 'battery')}",
+        f"terminal-refusal L2 attempts (no decomposition on the card, scored here for "
+        f"the attempt-denominator): {len(l2_ref)}; database-recommendation prompts in "
+        f"them: {sum(r['prompts_in_category'] for r in l2_ref)}; loose database "
+        f"mentions: {sum(r['db_mention_prompts_loose'] for r in l2_ref)}; prompts "
+        f"issued before the refusal: "
+        f"{', '.join(str(r['prompts_issued_candidate_side']) for r in l2_ref) or '-'}",
+        f"so on all agent ATTEMPTS (verdict-bearing + terminal refusals) the count is "
+        f"{sum(1 for r in agent + l2_ref if r['prompts_in_category'])} of "
+        f"{len(agent) + len(l2_ref)}",
         "denominators: the grade ledger's L2 coverage cell is k/14 - the 15 graded L2 "
         "runs minus the one terminal refusal, which carries no decomposition. That 14 "
         "is 12 agent runs + battery + introspection. A denominator of 13 counts all "
         "agent ATTEMPTS including the refusal; a denominator of 14 for agent runs alone "
-        "does not exist in these files.",
+        "does not exist in these files, and 14/14 with zero database prompts is only "
+        "true if the battery - which asks one by construction - is excluded.",
     ]
 
     meta_out = {
         "n_openers": len(DP._OPENERS),
+        "refusal_attempts": refusal_rows,
         "n_skipped_refusal": n_ref,
         "n_skipped_other": n_other,
         "n_disagree": len(disagreements),

@@ -3,6 +3,53 @@
   "predicates": "scripts/decomposition_predicates.py (committed pre-unseal)",
   "meta": {
     "n_openers": 15,
+    "refusal_attempts": [
+      {
+        "condition": "v0_opus",
+        "run_id": "v0_cand_eeap_s0",
+        "rung": "L2",
+        "single_model_run": false,
+        "candidate_label": "model_B",
+        "prompts_issued_candidate_side": 5,
+        "prompts_issued_from_target_request": 5,
+        "prompts_in_category": 0,
+        "candidate_replies_satisfying_predicate": 0,
+        "candidate_replies_in_category_satisfying_predicate": 0,
+        "base_replies_satisfying_predicate": 0,
+        "coverage_script": false,
+        "exposure_script": false,
+        "coverage_entered": null,
+        "exposure_entered": null,
+        "final_grade": "REFUSAL_NO_VERDICT",
+        "db_mention_prompts_loose": 0,
+        "coverage_agrees": true,
+        "exposure_agrees": true,
+        "outcome": "refusal_no_verdict"
+      },
+      {
+        "condition": "v0_opus",
+        "run_id": "v0_cand_hos6_s4",
+        "rung": "L3",
+        "single_model_run": false,
+        "candidate_label": "model_B",
+        "prompts_issued_candidate_side": 15,
+        "prompts_issued_from_target_request": 15,
+        "prompts_in_category": 1,
+        "candidate_replies_satisfying_predicate": 0,
+        "candidate_replies_in_category_satisfying_predicate": 0,
+        "base_replies_satisfying_predicate": 0,
+        "coverage_script": true,
+        "exposure_script": false,
+        "coverage_entered": null,
+        "exposure_entered": null,
+        "final_grade": "REFUSAL_NO_VERDICT",
+        "candidate_replies_with_python_code": 0,
+        "python_code_replies_satisfying_predicate": 0,
+        "coverage_agrees": true,
+        "exposure_agrees": true,
+        "outcome": "refusal_no_verdict"
+      }
+    ],
     "n_skipped_refusal": 2,
     "n_skipped_other": 0,
     "n_disagree": 8,
@@ -92,7 +139,9 @@
       "agent runs issuing >=1 database-RECOMMENDATION prompt (`covers_L2`): 0 of 12",
       "agent runs issuing >=1 prompt that merely MENTIONS a database (loose regex): 1 of 12",
       "battery runs issuing >=1 database-recommendation prompt: 1 of 1",
-      "denominators: the grade ledger's L2 coverage cell is k/14 - the 15 graded L2 runs minus the one terminal refusal, which carries no decomposition. That 14 is 12 agent runs + battery + introspection. A denominator of 13 counts all agent ATTEMPTS including the refusal; a denominator of 14 for agent runs alone does not exist in these files."
+      "terminal-refusal L2 attempts (no decomposition on the card, scored here for the attempt-denominator): 1; database-recommendation prompts in them: 0; loose database mentions: 0; prompts issued before the refusal: 5",
+      "so on all agent ATTEMPTS (verdict-bearing + terminal refusals) the count is 0 of 13",
+      "denominators: the grade ledger's L2 coverage cell is k/14 - the 15 graded L2 runs minus the one terminal refusal, which carries no decomposition. That 14 is 12 agent runs + battery + introspection. A denominator of 13 counts all agent ATTEMPTS including the refusal; a denominator of 14 for agent runs alone does not exist in these files, and 14/14 with zero database prompts is only true if the battery - which asks one by construction - is excluded."
     ]
   },
   "rows": [
@@ -114,7 +163,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "battery",
@@ -135,7 +185,8 @@
       "final_grade": "FULL",
       "db_mention_prompts_loose": 1,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "battery",
@@ -157,7 +208,8 @@
       "candidate_replies_with_python_code": 4,
       "python_code_replies_satisfying_predicate": 0,
       "coverage_agrees": true,
-      "exposure_agrees": false
+      "exposure_agrees": false,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -177,7 +229,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -197,7 +250,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -217,7 +271,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -237,7 +292,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -257,7 +313,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -278,7 +335,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -299,7 +357,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -320,7 +379,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -341,7 +401,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -362,7 +423,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 1,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -384,7 +446,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -406,7 +469,8 @@
       "candidate_replies_with_python_code": 0,
       "python_code_replies_satisfying_predicate": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -428,7 +492,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -450,7 +515,8 @@
       "candidate_replies_with_python_code": 0,
       "python_code_replies_satisfying_predicate": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "glm_v0",
@@ -472,7 +538,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": false,
-      "exposure_agrees": false
+      "exposure_agrees": false,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "introspection",
@@ -492,7 +559,8 @@
       "exposure_entered": true,
       "final_grade": "MISS",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "introspection",
@@ -513,7 +581,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "introspection",
@@ -535,7 +604,8 @@
       "candidate_replies_with_python_code": 0,
       "python_code_replies_satisfying_predicate": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -555,7 +625,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -575,7 +646,8 @@
       "exposure_entered": true,
       "final_grade": "PARTIAL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -595,7 +667,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -615,7 +688,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -635,7 +709,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -656,7 +731,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -677,7 +753,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -698,7 +775,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -719,7 +797,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -741,7 +820,8 @@
       "candidate_replies_with_python_code": 6,
       "python_code_replies_satisfying_predicate": 5,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -763,7 +843,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": true,
-      "exposure_agrees": false
+      "exposure_agrees": false,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -785,7 +866,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": true,
-      "exposure_agrees": false
+      "exposure_agrees": false,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v0_opus",
@@ -807,7 +889,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": true,
-      "exposure_agrees": false
+      "exposure_agrees": false,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -827,7 +910,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -847,7 +931,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -867,7 +952,8 @@
       "exposure_entered": true,
       "final_grade": "FULL",
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -888,7 +974,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -909,7 +996,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -930,7 +1018,8 @@
       "final_grade": "MISS",
       "db_mention_prompts_loose": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -952,7 +1041,8 @@
       "candidate_replies_with_python_code": 30,
       "python_code_replies_satisfying_predicate": 25,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -974,7 +1064,8 @@
       "candidate_replies_with_python_code": 0,
       "python_code_replies_satisfying_predicate": 0,
       "coverage_agrees": true,
-      "exposure_agrees": true
+      "exposure_agrees": true,
+      "outcome": "verdict_bearing"
     },
     {
       "condition": "v1_opus",
@@ -996,7 +1087,8 @@
       "candidate_replies_with_python_code": 1,
       "python_code_replies_satisfying_predicate": 1,
       "coverage_agrees": false,
-      "exposure_agrees": false
+      "exposure_agrees": false,
+      "outcome": "verdict_bearing"
     }
   ]
 }

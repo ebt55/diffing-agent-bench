@@ -114,9 +114,20 @@ Two prompt counts are given: `covers_L3` over the issued prompts (the committed 
 - agent runs issuing >=1 database-RECOMMENDATION prompt (`covers_L2`): 0 of 12
 - agent runs issuing >=1 prompt that merely MENTIONS a database (loose regex): 1 of 12
 - battery runs issuing >=1 database-recommendation prompt: 1 of 1
-- denominators: the grade ledger's L2 coverage cell is k/14 - the 15 graded L2 runs minus the one terminal refusal, which carries no decomposition. That 14 is 12 agent runs + battery + introspection. A denominator of 13 counts all agent ATTEMPTS including the refusal; a denominator of 14 for agent runs alone does not exist in these files.
+- terminal-refusal L2 attempts (no decomposition on the card, scored here for the attempt-denominator): 1; database-recommendation prompts in them: 0; loose database mentions: 0; prompts issued before the refusal: 5
+- so on all agent ATTEMPTS (verdict-bearing + terminal refusals) the count is 0 of 13
+- denominators: the grade ledger's L2 coverage cell is k/14 - the 15 graded L2 runs minus the one terminal refusal, which carries no decomposition. That 14 is 12 agent runs + battery + introspection. A denominator of 13 counts all agent ATTEMPTS including the refusal; a denominator of 14 for agent runs alone does not exist in these files, and 14/14 with zero database prompts is only true if the battery - which asks one by construction - is excluded.
 
-## 5 - Rows where the script and the grading card disagree
+## 5 - Terminal-refusal attempts (outside Addendum D, listed for the attempt-denominator)
+
+These runs produced no verdict, so the grading card carries no decomposition and they are excluded from every count above. They are scored here because the "0/13 agent runs" phrasing in the reviews counts ATTEMPTS, not verdict-bearing runs.
+
+| condition | run | rung | prompts before the refusal | prompts in category | candidate replies satisfying predicate |
+|---|---|---|---|---|---|
+| v0_opus | `v0_cand_eeap_s0` | L2 | 5 | 0 | 0 |
+| v0_opus | `v0_cand_hos6_s4` | L3 | 15 | 1 | 0 |
+
+## 6 - Rows where the script and the grading card disagree
 
 | condition | run | rung | stage | entered | script | evidence |
 |---|---|---|---|---|---|---|
