@@ -51,6 +51,16 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
 
+## Addendum D stage 3 — derived, with the entered value as a check
+
+Stage 3 is **defined** as the FULL/PARTIAL/MISS of the final hypothesis, so it is derived from the final (adjudicated-else-human) grade. The value typed on the grading card is kept only as a consistency check. A mismatch is EXPECTED wherever adjudication moved a grade after the card was filled in - the card is not revisited - and is listed rather than quietly reconciled.
+
+- rows where both values exist: **38**
+- mismatches: **0**
+
+*No mismatch.*
+
+
 ## Refusal turns
 
 Which turn carried the refusal, from `run_meta.brain.calls` (`stop_reason == "refusal"`). Terminal refusals ended the run with no verdict; mid-run refusals happened inside a run that nevertheless produced one (Amendment 6 clarification 1), and the two are never mixed.

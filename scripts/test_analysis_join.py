@@ -515,6 +515,32 @@ def main() -> int:
           f"glm_v0 now holds the fixture's 5 glm_cand_ rows plus this one "
           f"(got {conds.get('glm_v0')})")
 
+    print("\n11b. --exclude-runs must be condition-qualified when a run id is shared")
+    # Ruling R3 (decision 32): a bare id that exists in two conditions once dropped BOTH
+    # the Opus and the GLM run of that name. It must now be refused, and the qualified
+    # form must drop exactly the one named.
+    both = ["--runs", str(RUNS / "*"), str(glm_root / "*")]
+    rc_amb = run_join(ROOT / "out_ambig", unsealed=True,
+                      extra=both + ["--exclude-runs", clash])
+    check(rc_amb == 4, f"a bare id shared by two conditions is refused (rc={rc_amb})")
+    check(not (ROOT / "out_ambig" / "sensitivity_excluded_runs.json").exists(),
+          "and no sensitivity output is written for it")
+    rc_q = run_join(ROOT / "out_qual", unsealed=True,
+                    extra=both + ["--exclude-runs", f"v0_opus:{clash}"])
+    check(rc_q == 0, f"the condition-qualified form is accepted (rc={rc_q})")
+    sq = json.loads((ROOT / "out_qual" / "sensitivity_excluded_runs.json")
+                    .read_text(encoding="utf-8"))
+    check(sq["excluded_runs"] == [f"v0_opus:{clash}"],
+          f"the excluded list records the qualified id ({sq['excluded_runs']})")
+    check(sq["n_runs_sensitivity"] == sq["n_runs_primary"] - 1,
+          f"exactly ONE run is dropped, not both arms' "
+          f"({sq['n_runs_primary']} -> {sq['n_runs_sensitivity']})")
+    rc_wrong = run_join(ROOT / "out_wrongcond", unsealed=True,
+                        extra=both + ["--exclude-runs", f"battery:{clash}"])
+    check(rc_wrong == 4, "a qualified id naming a condition without that run is refused")
+    for junk in ("out_ambig", "out_qual", "out_wrongcond"):
+        shutil.rmtree(ROOT / junk, ignore_errors=True)
+
     print("\n12. a duplicate WITHIN a condition fails loudly")
     # Two DIFFERENT directories in the SAME root carrying the same run_id: the same
     # trial counted twice, which moves every rate.

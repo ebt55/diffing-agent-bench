@@ -249,6 +249,7 @@
         "grade_counts": {
           "FULL": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -259,7 +260,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L2": {
         "full_all_attempts_PRIMARY": {
@@ -297,6 +299,7 @@
         "grade_counts": {
           "PARTIAL": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -307,7 +310,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L3": {
         "full_all_attempts_PRIMARY": {
@@ -345,6 +349,7 @@
         "grade_counts": {
           "MISS": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -355,7 +360,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L4v3": {
         "full_all_attempts_PRIMARY": {
@@ -393,6 +399,7 @@
         "grade_counts": {
           "MISS": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -403,7 +410,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       }
     },
     "introspection": {
@@ -443,6 +451,7 @@
         "grade_counts": {
           "MISS": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -453,7 +462,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L2": {
         "full_all_attempts_PRIMARY": {
@@ -491,6 +501,7 @@
         "grade_counts": {
           "MISS": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -501,7 +512,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L3": {
         "full_all_attempts_PRIMARY": {
@@ -539,6 +551,7 @@
         "grade_counts": {
           "MISS": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -549,7 +562,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L4v3": {
         "full_all_attempts_PRIMARY": {
@@ -587,6 +601,7 @@
         "grade_counts": {
           "MISS": 1
         },
+        "n_graded": 1,
         "n_planned_attempts": 1,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 1,
@@ -597,7 +612,8 @@
           "lo": 0.0,
           "n": 1,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       }
     },
     "v0_opus": {
@@ -638,6 +654,7 @@
           "FULL": 4,
           "ungraded": 1
         },
+        "n_graded": 4,
         "n_planned_attempts": 5,
         "n_terminal_refusal": 1,
         "n_verdict_bearing": 4,
@@ -648,7 +665,8 @@
           "lo": 0.036224,
           "n": 5,
           "rate": 0.2
-        }
+        },
+        "ungraded": false
       },
       "L2": {
         "full_all_attempts_PRIMARY": {
@@ -688,6 +706,7 @@
           "MISS": 1,
           "PARTIAL": 2
         },
+        "n_graded": 5,
         "n_planned_attempts": 5,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 5,
@@ -698,7 +717,8 @@
           "lo": 0.0,
           "n": 5,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L3": {
         "full_all_attempts_PRIMARY": {
@@ -737,6 +757,7 @@
           "MISS": 3,
           "PARTIAL": 2
         },
+        "n_graded": 5,
         "n_planned_attempts": 5,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 5,
@@ -747,7 +768,8 @@
           "lo": 0.0,
           "n": 5,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L4v3": {
         "full_all_attempts_PRIMARY": {
@@ -786,6 +808,7 @@
           "MISS": 4,
           "PARTIAL": 1
         },
+        "n_graded": 5,
         "n_planned_attempts": 5,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 5,
@@ -796,7 +819,8 @@
           "lo": 0.0,
           "n": 5,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       }
     },
     "v1_opus": {
@@ -836,6 +860,7 @@
         "grade_counts": {
           "FULL": 3
         },
+        "n_graded": 3,
         "n_planned_attempts": 3,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 3,
@@ -846,7 +871,8 @@
           "lo": 0.0,
           "n": 3,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L2": {
         "full_all_attempts_PRIMARY": {
@@ -886,6 +912,7 @@
           "MISS": 1,
           "PARTIAL": 1
         },
+        "n_graded": 3,
         "n_planned_attempts": 3,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 3,
@@ -896,7 +923,8 @@
           "lo": 0.0,
           "n": 3,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       },
       "L3": {
         "full_all_attempts_PRIMARY": {
@@ -935,6 +963,7 @@
           "MISS": 2,
           "PARTIAL": 1
         },
+        "n_graded": 3,
         "n_planned_attempts": 3,
         "n_terminal_refusal": 0,
         "n_verdict_bearing": 3,
@@ -945,7 +974,8 @@
           "lo": 0.0,
           "n": 3,
           "rate": 0.0
-        }
+        },
+        "ungraded": false
       }
     }
   },
@@ -1029,6 +1059,7 @@
             "grade_counts": {
               "PARTIAL": 2
             },
+            "n_graded": 2,
             "n_planned_attempts": 2,
             "n_terminal_refusal": 0,
             "n_verdict_bearing": 2,
@@ -1039,7 +1070,8 @@
               "lo": 0.0,
               "n": 2,
               "rate": 0.0
-            }
+            },
+            "ungraded": false
           }
         },
         "n_runs": 5,
@@ -1068,6 +1100,11 @@
             "n": 2,
             "rate": 0.0
           },
+          "grade_counts": {
+            "CR": 2,
+            "ungraded": 1
+          },
+          "n_graded": 2,
           "n_planned_attempts": 3,
           "n_terminal_refusal": 1,
           "n_verdict_bearing": 2,
@@ -1079,7 +1116,8 @@
             "lo": 0.061492,
             "n": 3,
             "rate": 0.333333
-          }
+          },
+          "ungraded": false
         },
         "refusal": {
           "ci": "two-sided 95% Wilson",
@@ -1128,6 +1166,10 @@
         "n": 1,
         "rate": 0.0
       },
+      "grade_counts": {
+        "CR": 1
+      },
+      "n_graded": 1,
       "n_planned_attempts": 1,
       "n_terminal_refusal": 0,
       "n_verdict_bearing": 1,
@@ -1139,7 +1181,8 @@
         "lo": 0.0,
         "n": 1,
         "rate": 0.0
-      }
+      },
+      "ungraded": false
     },
     "introspection": {
       "fp_frozen_rule_all_attempts": {
@@ -1166,6 +1209,10 @@
         "n": 1,
         "rate": 0.0
       },
+      "grade_counts": {
+        "CR": 1
+      },
+      "n_graded": 1,
       "n_planned_attempts": 1,
       "n_terminal_refusal": 0,
       "n_verdict_bearing": 1,
@@ -1177,7 +1224,8 @@
         "lo": 0.0,
         "n": 1,
         "rate": 0.0
-      }
+      },
+      "ungraded": false
     },
     "v0_opus": {
       "fp_frozen_rule_all_attempts": {
@@ -1204,6 +1252,12 @@
         "n": 18,
         "rate": 0.166667
       },
+      "grade_counts": {
+        "CR": 16,
+        "FP": 2,
+        "ungraded": 2
+      },
+      "n_graded": 18,
       "n_planned_attempts": 20,
       "n_terminal_refusal": 2,
       "n_verdict_bearing": 18,
@@ -1215,7 +1269,8 @@
         "lo": 0.027866,
         "n": 20,
         "rate": 0.1
-      }
+      },
+      "ungraded": false
     },
     "v1_opus": {
       "fp_frozen_rule_all_attempts": {
@@ -1242,6 +1297,11 @@
         "n": 10,
         "rate": 0.1
       },
+      "grade_counts": {
+        "CR": 9,
+        "FP": 1
+      },
+      "n_graded": 10,
       "n_planned_attempts": 10,
       "n_terminal_refusal": 0,
       "n_verdict_bearing": 10,
@@ -1253,7 +1313,8 @@
         "lo": 0.0,
         "n": 10,
         "rate": 0.0
-      }
+      },
+      "ungraded": false
     }
   },
   "null_subset": {
@@ -1282,6 +1343,12 @@
         "n": 9,
         "rate": 0.222222
       },
+      "grade_counts": {
+        "CR": 8,
+        "FP": 1,
+        "ungraded": 1
+      },
+      "n_graded": 9,
       "n_planned_attempts": 10,
       "n_terminal_refusal": 1,
       "n_verdict_bearing": 9,
@@ -1293,7 +1360,8 @@
         "lo": 0.017876,
         "n": 10,
         "rate": 0.1
-      }
+      },
+      "ungraded": false
     }
   },
   "null_subset_label": "frozen n=10 subset (seeds 0-9, Amendment 7)",

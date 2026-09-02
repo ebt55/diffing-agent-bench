@@ -326,8 +326,32 @@ def panel_a(ax, doc: dict, ann: Annotations, rungs: list[str], *,
             _stack(ax, x, bar_w * 0.88, [k_full, k_part, k_miss, k_ref, k_other],
                    n, SEG_A)
 
-            w = cell["full_all_attempts_PRIMARY"]
             base = ["detection", cond, rung]
+            if cell.get("ungraded"):
+                # RULING 2 (decision 32): nobody has graded this cell. Printing "0/1"
+                # over the hatched bar reads as a measured miss - a fabricated outcome.
+                # The only honest label is that no grade exists: no k/n, no rate, no
+                # interval. The bar itself is already the hatched UNGRADED segment.
+                lab = ann.add(panel, "ungraded_no_rate", "UNGRADED",
+                              [_f(base + ["ungraded"], True),
+                               _f(base + ["n_graded"], cell.get("n_graded", 0))],
+                              note="no Phase-2 grade exists for this cell (n_graded=0): "
+                                   "no k/n, no rate and no interval are drawn")
+                ax.text(x, 0.5, lab, rotation=90, ha="center", va="center",
+                        fontsize=6.2, color=C_INK, fontweight="bold", zorder=6,
+                        bbox=dict(facecolor="white", edgecolor="none", pad=1.2))
+                vb = cell["n_verdict_bearing"]
+                ann.add(panel, "verdict_bearing_n", f"vb {vb}/{n}",
+                        [_f(base + ["n_verdict_bearing"], vb),
+                         _f(base + ["n_planned_attempts"], n)],
+                        note="Amendment 6 clarification 3: per-rung verdict-bearing n "
+                             "is annotated so a refusal-thinned cell is not read as "
+                             "subtlety")
+                ax.text(x, -0.055, f"vb {vb}/{n}", ha="center", va="top",
+                        fontsize=5.9, color=C_RULE, rotation=90)
+                continue
+
+            w = cell["full_all_attempts_PRIMARY"]
             kn = ann.add(panel, "full_k_over_n", f"{w['k']}/{w['n']}",
                          [_f(base + ["full_all_attempts_PRIMARY", "k"], w["k"]),
                           _f(base + ["full_all_attempts_PRIMARY", "n"], w["n"])],
@@ -421,9 +445,19 @@ def panel_b_null(ax, doc: dict, ann: Annotations) -> None:
                 continue
             n = cell["n_planned_attempts"]
             fp = cell["fp_frozen_rule_verdict_bearing_PRIMARY"]
-            k_fp = int(fp.get("k") or 0)
             k_ref = cell["n_terminal_refusal"]
-            k_ok = cell["n_verdict_bearing"] - k_fp
+            # A cell nobody has graded has NO correct rejections: "not an FP" is not
+            # "a CR" when no grade exists. Deriving k_ok by subtraction drew
+            # battery/introspection as solid-green 100% CR off an absent FP - a
+            # fabricated outcome. Ungraded verdict-bearing runs go to the hatched
+            # UNGRADED / OTHER segment instead.
+            cell_ungraded = bool(cell.get("ungraded"))
+            if cell_ungraded:
+                k_fp = 0
+                k_ok = 0
+            else:
+                k_fp = int(fp.get("k") or 0)
+                k_ok = cell["n_verdict_bearing"] - k_fp
             k_other = n - (k_fp + k_ok + k_ref)
             _stack(ax, i + xoff, width, [k_fp, k_ok, k_ref, k_other], n, SEG_B)
             base = [block, cond]
@@ -432,8 +466,13 @@ def panel_b_null(ax, doc: dict, ann: Annotations) -> None:
                 # reason as Panel A: an interval there would imply replication
                 single = _is_single_decision(doc, cond, n)
                 keys = ("k", "n") if single else ("k", "n", "rate", "lo", "hi")
-                shown = (f"{fp['k']}/{fp['n']}  (one pair-level decision)" if single
-                         else AI.fmt_rate(fp))
+                if cell_ungraded:
+                    # no rate exists to print, and printing one would invent it
+                    shown, keys = "UNGRADED", ("n",)
+                elif single:
+                    shown = f"{fp['k']}/{fp['n']}  (one pair-level decision)"
+                else:
+                    shown = AI.fmt_rate(fp)
                 txt = ann.add("B-null", "fpr_primary_verdict_bearing", shown,
                               [_f(base + ["fp_frozen_rule_verdict_bearing_PRIMARY", key],
                                   fp.get(key)) for key in keys],
@@ -444,7 +483,8 @@ def panel_b_null(ax, doc: dict, ann: Annotations) -> None:
                 ax.text(i, 1.29, txt, ha="center", va="bottom", fontsize=7.6,
                         color=C_INK, fontweight="bold")
                 strict = cell.get("fp_strict_rule_verdict_bearing")
-                if isinstance(strict, dict) and strict.get("rate") is not None:
+                if (not cell_ungraded and isinstance(strict, dict)
+                        and strict.get("rate") is not None):
                     s_shown = (f"{strict['k']}/{strict['n']}" if single
                                else AI.fmt_rate(strict))
                     stxt = ann.add("B-null", "fpr_strict_rule", s_shown,

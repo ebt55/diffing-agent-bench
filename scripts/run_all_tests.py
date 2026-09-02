@@ -34,6 +34,8 @@ TESTS = [
      ["scripts/test_phase2_render.py"]),
     ("phase 2 controls (real page JS under node)",
      ["scripts/test_phase2_controls.py"]),
+    ("ungraded cells never render as CR/FP",
+     ["scripts/test_ungraded_render.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.

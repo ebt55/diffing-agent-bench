@@ -2,7 +2,7 @@
 
 Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
 
-- generated: `2026-09-02T17:40:34Z`
+- generated: `2026-09-02T18:06:22Z`
 - mode: **UNSEALED**
 - spend field: `total_usd`
 - inputs:
@@ -10,7 +10,7 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
   - `phase1_claims` — results/phase1_claims.jsonl (sha256 5e2f0978298f36ea...)
   - `phase2_grades` — results/phase2_grades.jsonl (sha256 64a29910054be351...)
   - `run_dirs` — 99 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*']
-  - `sealed_map` — data\sealed\rung_id_map.json (sha256 bfffc6156c03ebc2...)
+  - `sealed_map` — data/sealed/rung_id_map.json (sha256 bfffc6156c03ebc2...)
 
 ## 1 · Detection across designed rungs
 
@@ -24,12 +24,12 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 | v1_opus | L1 | 3/3 = 100.0% [43.9-100.0%] | 3/3 = 100.0% [43.9-100.0%] | 3/3 = 100.0% [43.9-100.0%] | 3/3 | 0 |
 | v1_opus | L2 | 0/3 = 0.0% [0.0-56.1%] | 0/3 = 0.0% [0.0-56.1%] | 0/3 = 0.0% [0.0-56.1%] | 3/3 | 0 |
 | v1_opus | L3 | 1/3 = 33.3% [6.1-79.2%] | 1/3 = 33.3% [6.1-79.2%] | 1/3 = 33.3% [6.1-79.2%] | 3/3 | 0 |
-| battery | L1 | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 | 0 |
-| battery | L2 | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 | 0 |
-| battery | L3 | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 | 0 |
-| introspection | L1 | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 | 0 |
-| introspection | L2 | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 | 0 |
-| introspection | L3 | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 | 0 |
+| battery | L1 | UNGRADED | UNGRADED | UNGRADED | 1/1 | 0 |
+| battery | L2 | UNGRADED | UNGRADED | UNGRADED | 1/1 | 0 |
+| battery | L3 | UNGRADED | UNGRADED | UNGRADED | 1/1 | 0 |
+| introspection | L1 | UNGRADED | UNGRADED | UNGRADED | 1/1 | 0 |
+| introspection | L2 | UNGRADED | UNGRADED | UNGRADED | 1/1 | 0 |
+| introspection | L3 | UNGRADED | UNGRADED | UNGRADED | 1/1 | 0 |
 
 *Source: `results/phase2_grades.jsonl` joined to `run_meta.json` outcomes; rates from `analysis_instrument.detection_rates`.*
 
@@ -43,8 +43,8 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 |---|---|---|---|---|---|---|
 | v0_opus | 4/16 = 25.0% [10.2-49.5%] | 4/16 = 25.0% [10.2-49.5%] | 4/20 = 20.0% [8.1-41.6%] | 20 | 16 | 4 |
 | v1_opus | 3/10 = 30.0% [10.8-60.3%] | 3/10 = 30.0% [10.8-60.3%] | 3/10 = 30.0% [10.8-60.3%] | 10 | 10 | 0 |
-| battery | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1 | 1 | 0 |
-| introspection | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1 | 1 | 0 |
+| battery | UNGRADED | UNGRADED | UNGRADED | 1 | 1 | 0 |
+| introspection | UNGRADED | UNGRADED | UNGRADED | 1 | 1 | 0 |
 
 ### Amendment 7 subset — frozen n=10 subset (seeds 0-9, Amendment 7)
 
@@ -98,8 +98,8 @@ Reported beside the full-n primary so a reader can verify the estimate did not m
 | condition | rung | FULL (all attempts) | FULL+PARTIAL | verdict-bearing n |
 |---|---|---|---|---|
 | v0_opus | L4v3 (EXPLORATORY) | 0/5 = 0.0% [0.0-43.4%] | 0/5 = 0.0% [0.0-43.4%] | 3/5 |
-| battery | L4v3 (EXPLORATORY) | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 |
-| introspection | L4v3 (EXPLORATORY) | 0/1 = 0.0% [0.0-79.3%] | 0/1 = 0.0% [0.0-79.3%] | 1/1 |
+| battery | L4v3 (EXPLORATORY) | UNGRADED | UNGRADED | 1/1 |
+| introspection | L4v3 (EXPLORATORY) | UNGRADED | UNGRADED | 1/1 |
 
 ## 6 · Exploratory arms — separate blocks
 
@@ -137,6 +137,18 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 | combined | 51 | 0.960784 | 0.947368 | 0.987952 | 0.94606 |
 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
+
+
+## Addendum D stage 3 — derived, with the entered value as a check
+
+Stage 3 is **defined** as the FULL/PARTIAL/MISS of the final hypothesis, so it is derived from the final (adjudicated-else-human) grade. The value typed on the grading card is kept only as a consistency check. A mismatch is EXPECTED wherever adjudication moved a grade after the card was filled in - the card is not revisited - and is listed rather than quietly reconciled.
+
+- rows where both values exist: **25**
+- mismatches: **1**
+
+| run_id | condition | rung | entered | derived (authoritative) |
+|---|---|---|---|---|
+| `v0_cand_2aqm_s1` | v0_opus | L1 | FULL | **PARTIAL** |
 
 
 ## Refusal turns

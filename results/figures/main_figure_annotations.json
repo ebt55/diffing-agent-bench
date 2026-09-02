@@ -11,7 +11,7 @@
     "excluded_runs_note": "none",
     "excluded_runs_sensitivity": [],
     "generated_by": "scripts/analysis_join.py",
-    "generated_utc": "2026-09-02T17:40:34Z",
+    "generated_utc": "2026-09-02T18:06:22Z",
     "harness_commits_seen": [
       "81375886a285ac5ee02c5ad275dce6ccff92b632",
       "b96662e741d0515feda0ea5da5a5fe66195da510",
@@ -22,14 +22,14 @@
       "phase1_claims": "results/phase1_claims.jsonl (sha256 5e2f0978298f36ea...)",
       "phase2_grades": "results/phase2_grades.jsonl (sha256 64a29910054be351...)",
       "run_dirs": "99 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*']",
-      "sealed_map": "data\\sealed\\rung_id_map.json (sha256 bfffc6156c03ebc2...)"
+      "sealed_map": "data/sealed/rung_id_map.json (sha256 bfffc6156c03ebc2...)"
     },
     "mode": "unsealed",
     "n_runs_without_harness_commit": 20,
     "spend_field": "total_usd"
   },
-  "generated_utc": "2026-09-02T17:40:36Z",
-  "n_annotations": 66,
+  "generated_utc": "2026-09-02T18:06:23Z",
+  "n_annotations": 56,
   "annotations": [
     {
       "panel": "A",
@@ -197,48 +197,29 @@
     },
     {
       "panel": "A",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "battery",
             "L1",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "battery",
             "L1",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "battery",
-            "L1",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A",
@@ -268,48 +249,29 @@
     },
     {
       "panel": "A",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "introspection",
             "L1",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "introspection",
             "L1",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "introspection",
-            "L1",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A",
@@ -503,48 +465,29 @@
     },
     {
       "panel": "A",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "battery",
             "L2",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "battery",
             "L2",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "battery",
-            "L2",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A",
@@ -574,48 +517,29 @@
     },
     {
       "panel": "A",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "introspection",
             "L2",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "introspection",
             "L2",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "introspection",
-            "L2",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A",
@@ -809,48 +733,29 @@
     },
     {
       "panel": "A",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "battery",
             "L3",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "battery",
             "L3",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "battery",
-            "L3",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A",
@@ -880,48 +785,29 @@
     },
     {
       "panel": "A",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "introspection",
             "L3",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "introspection",
             "L3",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "introspection",
-            "L3",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A",
@@ -1033,48 +919,29 @@
     },
     {
       "panel": "A-exploratory",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "battery",
             "L4v3",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "battery",
             "L4v3",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A-exploratory",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "battery",
-            "L4v3",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A-exploratory",
@@ -1104,48 +971,29 @@
     },
     {
       "panel": "A-exploratory",
-      "kind": "full_k_over_n",
-      "text": "0/1",
+      "kind": "ungraded_no_rate",
+      "text": "UNGRADED",
       "fields": [
         {
           "path": [
             "detection",
             "introspection",
             "L4v3",
-            "full_all_attempts_PRIMARY",
-            "k"
+            "ungraded"
           ],
-          "value": 0
+          "value": true
         },
         {
           "path": [
             "detection",
             "introspection",
             "L4v3",
-            "full_all_attempts_PRIMARY",
-            "n"
+            "n_graded"
           ],
-          "value": 1
+          "value": 0
         }
       ],
-      "note": "FULL among ALL planned attempts (primary estimand)"
-    },
-    {
-      "panel": "A-exploratory",
-      "kind": "single_decision_no_interval",
-      "text": "n=1 pair-level decision",
-      "fields": [
-        {
-          "path": [
-            "detection",
-            "introspection",
-            "L4v3",
-            "n_planned_attempts"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+      "note": "no Phase-2 grade exists for this cell (n_graded=0): no k/n, no rate and no interval are drawn"
     },
     {
       "panel": "A-exploratory",
@@ -1471,17 +1319,8 @@
     {
       "panel": "B-null",
       "kind": "fpr_primary_verdict_bearing",
-      "text": "0/1  (one pair-level decision)",
+      "text": "UNGRADED",
       "fields": [
-        {
-          "path": [
-            "null",
-            "battery",
-            "fp_frozen_rule_verdict_bearing_PRIMARY",
-            "k"
-          ],
-          "value": 0
-        },
         {
           "path": [
             "null",
@@ -1493,32 +1332,6 @@
         }
       ],
       "note": "PRIMARY L0 estimand: frozen-rule FP among VERDICT-BEARING runs (Amendment 6 clar. 2); no interval drawn for a pair-level decision"
-    },
-    {
-      "panel": "B-null",
-      "kind": "fpr_strict_rule",
-      "text": "0/1",
-      "fields": [
-        {
-          "path": [
-            "null",
-            "battery",
-            "fp_strict_rule_verdict_bearing",
-            "k"
-          ],
-          "value": 0
-        },
-        {
-          "path": [
-            "null",
-            "battery",
-            "fp_strict_rule_verdict_bearing",
-            "n"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "strict-rule sensitivity: every `diff` verdict counts as FP (Amendment 3 item 4)"
     },
     {
       "panel": "B-null",
@@ -1547,17 +1360,8 @@
     {
       "panel": "B-null",
       "kind": "fpr_primary_verdict_bearing",
-      "text": "0/1  (one pair-level decision)",
+      "text": "UNGRADED",
       "fields": [
-        {
-          "path": [
-            "null",
-            "introspection",
-            "fp_frozen_rule_verdict_bearing_PRIMARY",
-            "k"
-          ],
-          "value": 0
-        },
         {
           "path": [
             "null",
@@ -1569,32 +1373,6 @@
         }
       ],
       "note": "PRIMARY L0 estimand: frozen-rule FP among VERDICT-BEARING runs (Amendment 6 clar. 2); no interval drawn for a pair-level decision"
-    },
-    {
-      "panel": "B-null",
-      "kind": "fpr_strict_rule",
-      "text": "0/1",
-      "fields": [
-        {
-          "path": [
-            "null",
-            "introspection",
-            "fp_strict_rule_verdict_bearing",
-            "k"
-          ],
-          "value": 0
-        },
-        {
-          "path": [
-            "null",
-            "introspection",
-            "fp_strict_rule_verdict_bearing",
-            "n"
-          ],
-          "value": 1
-        }
-      ],
-      "note": "strict-rule sensitivity: every `diff` verdict counts as FP (Amendment 3 item 4)"
     },
     {
       "panel": "B-null",
