@@ -101,8 +101,18 @@ function gradeBtns(){
     onclick="pick('${g}')">${g}</button>`).join('');
 }
 function triBtn(field,val,label){
-  return `<button class="${cur.decomposition[field]===val?'on':''}"
-    onclick="setDec('${field}',${JSON.stringify(val)})">${label}</button>`;
+  // NO inline handler. The previous version built onclick="setDec('f',${JSON.stringify(val)})"
+  // inside a DOUBLE-quoted attribute, so a string value emitted
+  //     onclick="setDec('attribution',"FULL")"
+  // and the browser parsed the handler as `setDec('attribution',` - truncated at the
+  // injected quote, so clicking did nothing. Booleans stringify without quotes, which
+  // is exactly why coverage/exposure worked and attribution did not. Values now travel
+  // in data-* attributes and are dispatched by one delegated listener, so no value can
+  // break out of its own handler again.
+  const on = cur.decomposition[field]===val ? 'on' : '';
+  const t = (typeof val === 'boolean') ? 'b' : 's';
+  return `<button class="${on}" data-df="${esc(field)}" data-dv="${esc(String(val))}"`
+       + ` data-dt="${t}">${esc(label)}</button>`;
 }
 function render(){
   const c=cur;
@@ -180,6 +190,16 @@ function pick(g){cur.human_grade=g;render();}
 function pickAdj(g){cur.adjudicated_grade=g;render();}
 function setL2(v){cur.l2=v;render();}
 function setDec(f,v){cur.decomposition[f]=v;render();}
+
+// One delegated listener for all three decomposition groups. render() replaces the
+// body's innerHTML wholesale, so binding on document survives every re-render, and
+// each group keeps its own state because the field name travels on the button.
+document.addEventListener('click',function(e){
+  const b = e.target && e.target.closest ? e.target.closest('button[data-df]') : null;
+  if(!b || !cur) return;
+  const v = (b.dataset.dt === 'b') ? (b.dataset.dv === 'true') : b.dataset.dv;
+  setDec(b.dataset.df, v);
+});
 
 async function save(){
   const reason=(document.getElementById('reason')||{}).value||'';

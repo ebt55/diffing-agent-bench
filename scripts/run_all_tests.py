@@ -32,6 +32,8 @@ TESTS = [
     ("unseal preconditions (temp git repo, fake map)", ["scripts/test_unseal.py"]),
     ("phase 2 render (real claims, no [object Object])",
      ["scripts/test_phase2_render.py"]),
+    ("phase 2 controls (real page JS under node)",
+     ["scripts/test_phase2_controls.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
