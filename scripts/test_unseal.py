@@ -181,8 +181,26 @@ def main() -> int:
 
     print("\n9. the real repository was not touched")
     real = Path(__file__).resolve().parents[1]
-    check(not (real / U.RECORD).exists(),
-          "no UNSEAL_RECORD.md exists in the real repo")
+    rec_real = real / U.RECORD
+    # Before unsealing this asserted the record simply does not exist. That guard went
+    # obsolete the moment Ebin legitimately unsealed, so it now asserts the thing it
+    # always meant: if a record exists, it is a COMMITTED human act, not something this
+    # test produced. An untracked record in the real repo would mean the test escaped
+    # its temp directory.
+    if rec_real.exists():
+        tracked = subprocess.run(
+            ["git", "-C", str(real), "ls-files", "--error-unmatch", U.RECORD],
+            capture_output=True, text=True).returncode == 0
+        check(tracked,
+              "the real UNSEAL_RECORD.md is committed (a deliberate unseal), "
+              "not an untracked artifact of this test")
+        dirty = subprocess.run(
+            ["git", "-C", str(real), "status", "--porcelain", "--", U.RECORD],
+            capture_output=True, text=True).stdout.strip()
+        check(not dirty,
+              f"and it is unmodified in the working tree ({dirty or 'clean'})")
+    else:
+        check(True, "no UNSEAL_RECORD.md in the real repo (not yet unsealed)")
 
     shutil.rmtree(tmp, ignore_errors=True)
     print(f"\n{'=' * 62}")

@@ -40,12 +40,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
+sys.path.insert(0, str(_HERE.parent / "src"))
+
+from diffing_agent.config import load_dotenv  # noqa: E402
 
 import _judge as J  # noqa: E402
 # The sealed map is read by ONE hardened function in this repository. Reusing it means
@@ -161,7 +165,12 @@ def main(argv: list[str] | None = None) -> int:
                     help="grade only these run_ids")
     ap.add_argument("--dry-run", action="store_true",
                     help="build every payload and print the estimate; call nothing")
+    ap.add_argument("--env-file", default=".env")
     a = ap.parse_args(argv)
+
+    # Every other entry point in this repo loads .env; this one did not, so the first
+    # real pass burned 51 call failures on a missing key before writing anything.
+    load_dotenv(a.env_file)
 
     desc = json.loads(Path(a.descriptions).read_text(encoding="utf-8"))
     claims = load_jsonl_last(Path(a.phase1))
@@ -232,6 +241,16 @@ def main(argv: list[str] | None = None) -> int:
     if a.dry_run:
         print("\n--dry-run: no API calls made")
         return 0
+
+    # Fail fast on a missing key. Without this the loop discovers it once per run and
+    # reports 51 "call failures", which looks like a judge problem and pollutes the
+    # call-failure rate that Addendum C asks us to report.
+    if not os.environ.get("OPENAI_API_KEY"):
+        print("OPENAI_API_KEY is not set (checked after loading "
+              f"{a.env_file!r}). Refusing to start: every call would fail and the "
+              "failures would be indistinguishable from real judge errors.",
+              file=sys.stderr)
+        return 6
 
     rubric = RUBRIC.format(
         label_help="\n".join(f"  {k}: {v}" for k, v in desc["label_set"].items()),

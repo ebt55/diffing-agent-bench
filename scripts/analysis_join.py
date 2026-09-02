@@ -341,6 +341,28 @@ def load_sealed_map(path: Path, candidate_ids: set[str]) -> dict[str, str]:
         raise JoinError(f"{path}: expected an object mapping rungs to sealed ids "
                         f"(or the reverse), got {type(raw).__name__}")
 
+    # The real map's entries are OBJECTS, not strings: {cand_id: {adapter, arm, model,
+    # role, seeds}}, where `model` carries the rung in the project's own vocabulary
+    # (L0/L1/L2/L3/L4v3, plus the base). Flatten that to {id: rung} before the
+    # orientation logic below. `rung` is accepted first in case a future map states it
+    # explicitly. Entries whose role is the base are dropped: the base is one side of
+    # every pair, never a served candidate, and letting it through would classify it as
+    # an exploratory rung. If a run ever does reference it, the coverage check below
+    # fires loudly rather than mislabelling it.
+    if raw and all(isinstance(v, dict) for v in raw.values()):
+        obj = {}
+        for k, v in raw.items():
+            if str(v.get("role", "")).lower() == "base":
+                continue
+            rung = v.get("rung") or v.get("model")
+            if not isinstance(rung, str):
+                raise JoinError(
+                    f"{path}: entry {k!r} has no string `rung` or `model` field, so "
+                    f"its rung cannot be read without guessing. Fields present: "
+                    f"{sorted(v)}")
+            obj[str(k)] = rung
+        raw = obj
+
     flat = {str(k): v for k, v in raw.items() if isinstance(v, str)}
     if not flat:
         raise JoinError(f"{path}: no string-valued entries found; cannot read the map")

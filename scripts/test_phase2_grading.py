@@ -111,6 +111,23 @@ def main() -> int:
     check(v_l2["side_channel"] and "+400" in v_l2["side_channel"],
           "L2 view carries the disclosed length side-channel")
 
+    print("\n3b. the judge's label is withheld until --adjudicate")
+    # A row that already carries a judge grade, as it will after the judge pass.
+    P2.Handler.GRADES["v0_cand_FAKEb_s0"] = {
+        "run_id": "v0_cand_FAKEb_s0", "judge_grade": "FULL",
+        "judge_reason": "SYNTHETIC judge reason"}
+    v_norm = P2.Handler._run_view(P2.Handler, "v0_cand_FAKEb_s0")
+    check(v_norm["judge_grade"] is None and v_norm["judge_reason"] is None,
+          "in normal grading the judge fields are absent from the PAYLOAD, not just "
+          "hidden in the markup")
+    P2.Handler.A = a_adj = Args(unsealed_map=str(mp), phase1=str(p1), phase2=str(p2),
+                                descriptions=desc, adjudicate=True)
+    v_adj = P2.Handler._run_view(P2.Handler, "v0_cand_FAKEb_s0")
+    check(v_adj["judge_grade"] == "FULL",
+          "in --adjudicate the judge grade is supplied, which is the point")
+    P2.Handler.A = a
+    P2.Handler.GRADES.pop("v0_cand_FAKEb_s0", None)
+
     print("\n4. refusals are derived and locked, not chosen")
     check(v_ref["locked"] is True, "a refused run is locked")
     check(v_ref["human_grade"] == "REFUSAL_NO_VERDICT",

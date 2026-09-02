@@ -199,7 +199,14 @@ class Handler(BaseHTTPRequestHandler):
             "locked": refused,
             "human_grade": ("REFUSAL_NO_VERDICT" if refused else g.get("human_grade")),
             "human_reason": human_reason,
-            "judge_grade": g.get("judge_grade"), "judge_reason": g.get("judge_reason"),
+            # The judge's label is WITHHELD FROM THE PAYLOAD during normal grading, not
+            # merely hidden in the markup. The page never rendered it outside
+            # --adjudicate, but sending it meant a grader with devtools open could read
+            # the judge's answer before committing to their own - which would destroy
+            # the independence the whole human-vs-judge agreement statistic rests on.
+            # It is sent only in --adjudicate, where seeing it is the entire point.
+            "judge_grade": (g.get("judge_grade") if self.A.adjudicate else None),
+            "judge_reason": (g.get("judge_reason") if self.A.adjudicate else None),
             "adjudicated_grade": g.get("adjudicated_grade"),
             "adjudication_reason": g.get("adjudication_reason"),
             "is_l2": rung == "L2",
