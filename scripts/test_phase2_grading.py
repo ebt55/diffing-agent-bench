@@ -159,6 +159,22 @@ def main() -> int:
     check(len(rows_out) == 2, "re-grading APPENDS a second row, never rewrites")
     check(rows_out[-1]["human_grade"] == "PARTIAL", "last row wins on reload")
 
+    print("\n7b. a LOCKED refusal row needs no written reason")
+    r = save({"run_id": "v0_cand_FAKEa_s1", "human_grade": None, "human_reason": ""})
+    check(r["obj"]["ok"] is True,
+          "a locked refusal saves with an empty reason (no keystroke tax)")
+    saved = [json.loads(x) for x in p2.read_text(encoding="utf-8").splitlines()
+             if x.strip()][-1]
+    check(saved["human_grade"] == "REFUSAL_NO_VERDICT",
+          "its grade is still derived from status, not from the request")
+    check(saved["human_reason"] ==
+          "terminal refusal (locked; Amendment 6 clarification 1)",
+          f"and a standard reason is filled in ({saved['human_reason']!r})")
+    r = save({"run_id": "v0_cand_FAKEc_s0", "human_grade": "PARTIAL",
+              "human_reason": "   "})
+    check(r["obj"]["ok"] is False,
+          "an UNLOCKED row still requires a real written reason")
+
     print("\n8. rows conform to the committed schema")
     schema = json.loads((Path(desc).parent / "phase2_grades.schema.json")
                         .read_text(encoding="utf-8"))

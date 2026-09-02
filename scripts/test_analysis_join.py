@@ -530,6 +530,62 @@ def main() -> int:
     check(len(ok_again) == 1, "removing the duplicate makes the load succeed again")
     shutil.rmtree(glm_root, ignore_errors=True)
 
+    print("\n12b. an Opus claim NEVER attaches to an identically-named GLM run")
+    # Reproduce the collision directly: one claim, two runs with the same run_id in
+    # different conditions. The Opus row must get it; the GLM row must not.
+    glm2 = ROOT / "runs_glm"
+    (glm2 / clash).mkdir(parents=True, exist_ok=True)
+    (glm2 / clash / "run_meta.json").write_text(json.dumps(src), encoding="utf-8")
+    two = AJ.load_runs([str(RUNS / "*"), str(glm2 / "*")])
+    opus = next(r for r in two if r["run_id"] == clash and r["condition"] == "v0_opus")
+    glmr = next(r for r in two if r["run_id"] == clash and r["condition"] == "glm_v0")
+    probs = AJ.attach_phase1(two, {clash: {"outcome": opus["outcome"],
+                                           "verdict_type": "diff"}})
+    check(opus["verdict_type"] == "diff", "the Opus run receives its own claim")
+    check(glmr["verdict_type"] is None,
+          "the identically-named GLM run receives NOTHING")
+    check(not probs, f"and no spurious problem is raised ({probs})")
+
+    print("\n12c. a claim matching nothing in its condition is a loud error")
+    probs = AJ.attach_phase1(two, {"v1_cand_NOPE_s0": {"outcome": "verdict_bearing"}})
+    check(len(probs) == 1 and "no run in that condition" in probs[0],
+          "an unmatched claim is reported, not silently dropped")
+    probs = AJ.attach_phase1(two, {"zzz_cand_X_s0": {"outcome": "verdict_bearing"}})
+    check(len(probs) == 1 and "resolves to no condition" in probs[0],
+          "a claim whose prefix resolves to no condition is reported")
+    check(AJ.claim_condition("v0_cand_2aqm_s0") == "v0_opus",
+          "a v0_ claim resolves to v0_opus, never glm_v0 — the collision guard")
+
+    print("\n12d. phase2 rows attach by their own `condition`")
+    g_opus = {clash: {"condition": "v0_opus", "human_grade": "CR"}}
+    AJ.attach_phase2(two, g_opus, None)
+    check(opus.get("grade") == "CR" and glmr.get("grade") is None,
+          "a v0_opus grade lands on the Opus row only")
+    probs = AJ.attach_phase2(two, {clash: {"condition": "battery",
+                                           "human_grade": "CR"}}, None)
+    check(len(probs) == 1 and "matches no run" in probs[0],
+          "a grade naming a condition with no such run is reported")
+    shutil.rmtree(glm2, ignore_errors=True)
+
+    print("\n12e. refusal_turn is derived for every run that refused")
+    refused = [r for r in two if r["outcome"] == "refusal_no_verdict"]
+    check(refused and all(r["refusal_turn"] is not None for r in refused),
+          f"every terminal refusal carries a turn number ({len(refused)} runs)")
+    blk = AJ.refusal_turn_block(two)
+    check("v0_opus" in blk and blk["v0_opus"]["terminal"]["n"] >= 1,
+          "the per-condition block counts terminal refusals")
+    check(blk["v0_opus"]["terminal"]["median"] is not None,
+          "and reports a median turn")
+    tb_r = AJ.build_tables(None, AJ.build_blind(two, "total_usd", {"generated_utc": "x",
+                           "spend_field": "total_usd", "inputs": {}}),
+                           {"arms": {}, "exploratory_rungs": {}}, None,
+                           AJ.agreement_blocks(two),
+                           {"generated_utc": "x", "spend_field": "total_usd",
+                            "inputs": {}}, False, None, blk)
+    check("## Refusal turns" in tb_r, "tables.md gains a Refusal turns section")
+    check("terminal" in tb_r and "median turn" in tb_r,
+          "the section separates terminal from mid-run and reports the median")
+
     print("\n13. blind mode still emits no rung after the loader change")
     rc = run_join(OUT_BLIND, unsealed=False)
     inv_b = json.loads((OUT_BLIND / "run_inventory.json").read_text(encoding="utf-8"))

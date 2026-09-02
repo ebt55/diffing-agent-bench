@@ -137,6 +137,19 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
 
+## Refusal turns
+
+Which turn carried the refusal, from `run_meta.brain.calls` (`stop_reason == "refusal"`). Terminal refusals ended the run with no verdict; mid-run refusals happened inside a run that nevertheless produced one (Amendment 6 clarification 1), and the two are never mixed.
+
+| condition | kind | n | median turn | distribution (turn × count) |
+|---|---|---|---|---|
+| glm_v0 | terminal | 1 | 1 | turn 1 × 1 |
+| v0_opus | terminal | 3 | 1 | turn 1 × 3 |
+| v0_opus | midrun | 1 | 2 | turn 2 × 1 |
+
+*Source: `run_meta.brain.calls`. No transcript is opened, so no verdict or reply text is read to produce this table.*
+
+
 ## Sensitivity — validity-gate exclusions
 
 **Primary numbers above include every run.** This section repeats them with 2 run(s) dropped, so a reader can see whether a judgement call about run validity moved anything: `v0_cand_SYNTHa_s0`, `v0_cand_SYNTHa_s2`.

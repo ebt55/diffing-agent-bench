@@ -114,6 +114,30 @@ ALL_GRADES = DETECTION_GRADES | NULL_GRADES | {"REFUSAL_NO_VERDICT"}
 CAND_RE = re.compile(r"(cand_[A-Za-z0-9]+)")
 
 
+# Phase-1 claim rows carry no `condition` field, and the server that writes them must
+# not change while grading is live. Every claim comes from Ebin's Phase-1 queue, and
+# every run in that queue lives under results/runs/ - so within that root the run_id
+# prefix resolves the condition unambiguously. This is what stops an Opus claim from
+# being attached to a runs_glm/ row: the GLM arm reuses the Opus arm's run ids exactly
+# (30 of the 99 loaded run ids are shared), so keying a claim by run_id alone silently
+# copies one arm's Phase-1 claim onto the other arm's run.
+CLAIM_ROOT = "runs"
+
+
+def claim_condition(run_id: str) -> str | None:
+    """The condition a Phase-1 claim belongs to. None means 'not from the queue'.
+
+    Resolved with the SAME table the run loader uses, pinned to the claim root, so the
+    two can never disagree about what a prefix means. The protection this buys: a
+    `v0_cand_*` claim always resolves to v0_opus, so it can never land on a
+    `results/runs_glm/` row that happens to share its run_id.
+    """
+    for root, prefix, cond, _arm in CONDITION_BY_ROOT_AND_PREFIX:
+        if root == CLAIM_ROOT and prefix and run_id.startswith(prefix):
+            return cond
+    return None
+
+
 class JoinError(RuntimeError):
     """A join that cannot be trusted must stop, not warn."""
 
@@ -162,6 +186,15 @@ def load_run(run_dir: Path) -> dict | None:
     n_refusal_calls = sum(1 for c in calls if c.get("stop_reason") == "refusal")
     midrun = n_refusal_calls if outcome != "refusal_no_verdict" else 0
 
+    # WHICH turn refused, so "the auditor refused" is a datum rather than a bare label.
+    # Source is run_meta.brain.calls - no transcript is opened, so no verdict or reply
+    # text is read. turns_used is the fallback when a refusal is known to have happened
+    # but no call carries the turn number.
+    refusal_turn = next((c.get("turn") for c in calls
+                         if c.get("stop_reason") == "refusal"), None)
+    if refusal_turn is None and outcome == "refusal_no_verdict":
+        refusal_turn = brain.get("turns_used")
+
     brain_usd = cost.get("brain_usd", brain.get("cost_usd"))
     total_usd = cost.get("total_usd")
     exact = m.get("cost_exact")
@@ -201,6 +234,7 @@ def load_run(run_dir: Path) -> dict | None:
         "harness_commit": m.get("harness_commit"),
         "analysis_schema_version": m.get("analysis_schema_version"),
         "n_midrun_refusal_events": midrun,
+        "refusal_turn": refusal_turn,
         "rung": None,
         "verdict_type": None,
         "grade": None,
@@ -353,10 +387,23 @@ def load_floor(path: Path) -> dict | None:
 
 # --------------------------------------------------------------------------- join
 def attach_phase1(runs: list[dict], claims: dict[str, dict]) -> list[str]:
+    """Attach on (condition, run_id). NEVER on run_id alone - see claim_condition."""
     problems = []
-    for r in runs:
-        c = claims.get(r["run_id"])
-        if c is None:
+    index = {(r["condition"], r["run_id"]): r for r in runs}
+    for rid, c in sorted(claims.items()):
+        cond = claim_condition(rid)
+        if cond is None:
+            problems.append(
+                f"phase1 claim {rid!r} has a run_id whose prefix resolves to no "
+                f"condition; claims are expected to come from the Phase-1 queue "
+                f"(results/runs/, v0_* or v1_*)")
+            continue
+        r = index.get((cond, rid))
+        if r is None:
+            problems.append(
+                f"phase1 claim {rid!r} resolves to condition {cond!r}, but no run in "
+                f"that condition carries that run_id. A run with this id may exist in "
+                f"another condition - claims are never attached across conditions.")
             continue
         r["verdict_type"] = c.get("verdict_type", c.get("verdict"))
         p1_outcome = c.get("outcome")
@@ -371,11 +418,22 @@ def attach_phase1(runs: list[dict], claims: dict[str, dict]) -> list[str]:
 def attach_phase2(runs: list[dict], grades: dict[str, dict],
                   by_cand: dict[str, str] | None) -> list[str]:
     problems = []
-    index = {r["run_id"]: r for r in runs}
+    # Same collision as Phase 1: run ids are not unique across conditions. Phase-2 rows
+    # carry `condition` in the schema, so it is used when present and resolved from the
+    # prefix only as a fallback for rows written before that was populated.
+    index = {(r["condition"], r["run_id"]): r for r in runs}
     for rid, g in sorted(grades.items()):
-        r = index.get(rid)
+        cond = g.get("condition") or claim_condition(rid)
+        if cond is None:
+            problems.append(
+                f"phase2 row {rid!r} carries no `condition` and its prefix resolves to "
+                f"none; it cannot be attached without guessing which arm it grades")
+            continue
+        r = index.get((cond, rid))
         if r is None:
-            problems.append(f"phase2 row for unknown run_id {rid!r}")
+            problems.append(
+                f"phase2 row for run_id {rid!r} in condition {cond!r} matches no run. "
+                f"Grades are never attached across conditions.")
             continue
         adjudicated = g.get("adjudicated_grade")
         human = g.get("human_grade")
@@ -720,6 +778,32 @@ def build_blind(runs: list[dict], spend_field: str, provenance: dict) -> dict:
     }
 
 
+def refusal_turn_block(runs: list[dict]) -> dict:
+    """Distribution of WHICH turn refused, per condition.
+
+    Terminal refusals and mid-run refusal events are separated: a run that refused on
+    turn 3 and then finished with a verdict is a different phenomenon from one that
+    refused on turn 3 and stopped there, and averaging them would hide both.
+    """
+    out: dict = {}
+    for r in runs:
+        if r.get("refusal_turn") is None:
+            continue
+        b = out.setdefault(r["condition"], {"terminal": [], "midrun": []})
+        key = "terminal" if r["outcome"] == "refusal_no_verdict" else "midrun"
+        b[key].append(r["refusal_turn"])
+    for cond, b in out.items():
+        for key in ("terminal", "midrun"):
+            turns = sorted(b[key])
+            b[key] = {
+                "n": len(turns),
+                "turns": turns,
+                "distribution": {str(t): turns.count(t) for t in sorted(set(turns))},
+                "median": (turns[len(turns) // 2] if turns else None),
+            }
+    return out
+
+
 def build_inventory(runs: list[dict], spend_field: str, provenance: dict) -> dict:
     """A regenerated inventory over ALL conditions, not just the v0 glob.
 
@@ -753,8 +837,10 @@ def build_inventory(runs: list[dict], spend_field: str, provenance: dict) -> dic
             "condition", "arm", "candidate_id", "seed", "status", "outcome",
             "brain_usd", "targets_usd", "pod_usd", "total_usd", "cost_exact",
             "n_unpriced_calls", "turns_used", "brain_model", "harness_commit",
-            "analysis_schema_version", "n_midrun_refusal_events", "rung")}
+            "analysis_schema_version", "n_midrun_refusal_events", "refusal_turn",
+            "rung")}
             for r in runs],
+        "refusal_turns_by_condition": refusal_turn_block(runs),
     }
 
 
@@ -814,9 +900,39 @@ def _sensitivity_section(sens: dict | None, unsealed: bool) -> str:
     return "\n".join(L)
 
 
+def _refusal_turn_section(refusals: dict | None) -> str:
+    """Which turn the auditor refused on - a datum, not just a label."""
+    if not refusals:
+        return ""
+    L: list[str] = ["", "## Refusal turns", ""]
+    L.append("Which turn carried the refusal, from `run_meta.brain.calls` "
+             "(`stop_reason == \"refusal\"`). Terminal refusals ended the run with no "
+             "verdict; mid-run refusals happened inside a run that nevertheless "
+             "produced one (Amendment 6 clarification 1), and the two are never mixed.")
+    L.append("")
+    L.append("| condition | kind | n | median turn | distribution (turn × count) |")
+    L.append("|---|---|---|---|---|")
+    any_row = False
+    for cond in sorted(refusals):
+        for kind in ("terminal", "midrun"):
+            b = refusals[cond][kind]
+            if not b["n"]:
+                continue
+            any_row = True
+            dist = ", ".join(f"turn {t} × {n}" for t, n in b["distribution"].items())
+            L.append(f"| {cond} | {kind} | {b['n']} | {b['median']} | {dist} |")
+    if not any_row:
+        L.append("| — | — | 0 | — | no refusal carried a turn number |")
+    L.append("")
+    L.append("*Source: `run_meta.brain.calls`. No transcript is opened, so no verdict "
+             "or reply text is read to produce this table.*")
+    L.append("")
+    return "\n".join(L)
+
+
 def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict | None,
                  agree: dict, provenance: dict, unsealed: bool,
-                 sens: dict | None = None) -> str:
+                 sens: dict | None = None, refusals: dict | None = None) -> str:
     L: list[str] = []
     A = L.append
     A("# Headline numbers — generated, never hand-assembled")
@@ -873,6 +989,7 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
           "No verdict value is read.*")
         A("")
         A(_agreement_section(agree))
+        A(_refusal_turn_section(refusals))
         A(_sensitivity_section(sens, unsealed))
         return "\n".join(L) + "\n"
 
@@ -1054,6 +1171,7 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
         A("")
 
     A(_agreement_section(agree))
+    A(_refusal_turn_section(refusals))
     A(_sensitivity_section(sens, unsealed))
     return "\n".join(L) + "\n"
 
@@ -1259,7 +1377,7 @@ def main(argv: list[str] | None = None) -> int:
     tab = out / "tables.md"
     tab.parent.mkdir(parents=True, exist_ok=True)
     tab.write_text(build_tables(doc, blind, arms, floor, agree, provenance, unsealed,
-                                sens),
+                                sens, refusal_turn_block(runs)),
                    encoding="utf-8")
     written.append(tab)
 

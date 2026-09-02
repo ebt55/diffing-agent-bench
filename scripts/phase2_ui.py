@@ -170,7 +170,10 @@ function setDec(f,v){cur.decomposition[f]=v;render();}
 async function save(){
   const reason=(document.getElementById('reason')||{}).value||'';
   if(!cur.locked && !cur.human_grade){alert('Pick a grade.');return;}
-  if(!reason.trim()){alert('A written reason is required (Addendum A item 7).');return;}
+  // Locked refusal rows are exempt: the grade is derived from status, not judged, so
+  // the server fills a standard reason. Every other row still needs one.
+  if(!cur.locked && !reason.trim()){
+    alert('A written reason is required (Addendum A item 7).');return;}
   const drv=f=>{const e=document.getElementById('dr_'+f);return e?e.value:'';};
   const ar=document.getElementById('adjreason');
   if(ADJ && cur.adjudicated_grade && !(ar&&ar.value.trim())){

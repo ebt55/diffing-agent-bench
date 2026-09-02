@@ -2,12 +2,12 @@
 
 Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
 
-- generated: `2026-09-02T02:30:00Z`
+- generated: `2026-09-02T03:00:00Z`
 - mode: **BLIND (no sealed map read)**
 - spend field: `total_usd`
 - inputs:
   - `floor` — results/baseline_kl_drift_sealed.json (sha256 8c804cdb45696e64...)
-  - `phase1_claims` — results/phase1_claims.jsonl (ABSENT — not yet produced)
+  - `phase1_claims` — results/phase1_claims.jsonl (sha256 151a7528a6480772...)
   - `phase2_grades` — results/phase2_grades.jsonl (sha256 e3b0c44298fc1c14...)
   - `run_dirs` — 99 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*']
   - `sealed_map` — NOT READ (blind mode)
@@ -43,5 +43,17 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 - the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)
 
 *no run carries both a human and a judge grade yet, so no agreement statistic is computed - none is invented*
+
+
+## Refusal turns
+
+Which turn carried the refusal, from `run_meta.brain.calls` (`stop_reason == "refusal"`). Terminal refusals ended the run with no verdict; mid-run refusals happened inside a run that nevertheless produced one (Amendment 6 clarification 1), and the two are never mixed.
+
+| condition | kind | n | median turn | distribution (turn × count) |
+|---|---|---|---|---|
+| v0_opus | terminal | 8 | 4 | turn 2 × 1, turn 3 × 3, turn 4 × 1, turn 5 × 1, turn 10 × 2 |
+| v1_opus | midrun | 2 | 3 | turn 2 × 1, turn 3 × 1 |
+
+*Source: `run_meta.brain.calls`. No transcript is opened, so no verdict or reply text is read to produce this table.*
 
 

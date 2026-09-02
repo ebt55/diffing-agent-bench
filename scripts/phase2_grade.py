@@ -227,6 +227,12 @@ class Handler(BaseHTTPRequestHandler):
         if not grade:
             self._json({"ok": False, "error": "no grade"}, 400)
             return
+        # A locked refusal row has no judgement to justify: the grade is derived from
+        # run status, not chosen, so demanding prose for it is a keystroke tax that
+        # would produce 8+ identical sentences. Every other row still requires one
+        # (Addendum A item 7).
+        if refused and not reason:
+            reason = "terminal refusal (locked; Amendment 6 clarification 1)"
         if not reason:
             self._json({"ok": False, "error": "a written reason is required"}, 400)
             return
