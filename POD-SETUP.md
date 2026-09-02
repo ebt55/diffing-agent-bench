@@ -140,8 +140,26 @@ nvidia-smi
 tmux new-session -s gate0
 cd /workspace/repo
 mkdir -p results
-python scripts/gate0_smoke.py 2>&1 | tee results/gate0.log
+PYTHONUNBUFFERED=1 python scripts/gate0_smoke.py 2>&1 | tee results/gate0.log
 # detach: Ctrl-b then d      reattach: tmux attach -t gate0
+```
+
+### ALWAYS set `PYTHONUNBUFFERED=1` on any job piped to `tee`
+
+Not cosmetic. Python block-buffers stdout when it is a pipe rather than a terminal,
+so a job whose total output is smaller than the buffer (a few KB — which is every
+campaign summary this project runs) writes **nothing** to the log until it exits, and
+if the tmux session tears down before `tee` flushes, the log is left **empty**.
+
+That happened: the Sep 2 GLM campaign completed all 30 runs correctly and
+`/workspace/logs/campaign_glm.log` is 0 bytes. No data was lost, because every run
+writes its own `run_meta.json` and those are the authoritative record — but the
+campaign's own summary line and outcome tally were gone and had to be reconstructed
+from the run directories.
+
+```bash
+# correct form for any long job
+PYTHONUNBUFFERED=1 python scripts/<job>.py 2>&1 | tee /workspace/logs/<job>.log
 ```
 
 ### Why these pins

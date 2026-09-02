@@ -695,8 +695,60 @@ def _row(name: str, w: dict, denom: str, source: str) -> str:
     return f"| {name} | {AI.fmt_rate(w)} | {denom} | {source} |"
 
 
+def _sensitivity_section(sens: dict | None, unsealed: bool) -> str:
+    """Primary beside sensitivity, so a validity judgement is auditable, not asserted."""
+    if not sens:
+        return ""
+    L: list[str] = []
+    A = L.append
+    A("")
+    A("## Sensitivity — validity-gate exclusions")
+    A("")
+    A(f"**Primary numbers above include every run.** This section repeats them with "
+      f"{len(sens['excluded_runs'])} run(s) dropped, so a reader can see whether a "
+      f"judgement call about run validity moved anything: "
+      f"{', '.join('`' + r + '`' for r in sens['excluded_runs'])}.")
+    A("")
+    A(f"- runs in primary: **{sens['n_runs_primary']}**")
+    A(f"- runs in sensitivity: **{sens['n_runs_sensitivity']}**")
+    A("")
+    if not unsealed and sens.get("blind"):
+        A("| condition | attempts (primary → sensitivity) | "
+          "refusal rate (sensitivity) |")
+        A("|---|---|---|")
+        for c, b in sorted(sens["blind"]["per_condition"].items()):
+            A(f"| {c} | → {b['n_planned_attempts']} | "
+              f"{AI.fmt_rate(b['refusal_rate'])} |")
+        A("")
+        A("*Compare against the per-condition table above; the primary attempt counts "
+          "are there.*")
+    elif unsealed and sens.get("figure_input"):
+        fi = sens["figure_input"]
+        det = fi.get("detection", {})
+        if det:
+            A("| condition | rung | FULL / all planned attempts (sensitivity) |")
+            A("|---|---|---|")
+            for cond in sorted(det):
+                for rung in sorted(det[cond]):
+                    w = det[cond][rung].get("full_all_attempts_PRIMARY")
+                    A(f"| {cond} | {rung} | {AI.fmt_rate(w) if w else '—'} |")
+            A("")
+        nul = fi.get("null", {})
+        if nul:
+            A("| condition | L0 false positives, verdict-bearing (sensitivity) |")
+            A("|---|---|")
+            for cond in sorted(nul):
+                w = nul[cond].get("fp_frozen_rule_verdict_bearing_PRIMARY")
+                A(f"| {cond} | {AI.fmt_rate(w) if w else '—'} |")
+            A("")
+        A("*Compare against sections 1 and 2; the primary rates are there.*")
+    A("")
+    return "\n".join(L)
+
+
 def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict | None,
-                 agree: dict, provenance: dict, unsealed: bool) -> str:
+                 agree: dict, provenance: dict, unsealed: bool,
+                 sens: dict | None = None) -> str:
     L: list[str] = []
     A = L.append
     A("# Headline numbers — generated, never hand-assembled")
@@ -753,6 +805,7 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
           "No verdict value is read.*")
         A("")
         A(_agreement_section(agree))
+        A(_sensitivity_section(sens, unsealed))
         return "\n".join(L) + "\n"
 
     A("## 1 · Detection across designed rungs")
@@ -933,6 +986,7 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
         A("")
 
     A(_agreement_section(agree))
+    A(_sensitivity_section(sens, unsealed))
     return "\n".join(L) + "\n"
 
 
@@ -995,6 +1049,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--outdir", default="results/analysis")
     ap.add_argument("--now", default=None,
                     help="fix the generated_utc stamp, for deterministic tests")
+    ap.add_argument("--exclude-runs", nargs="*", default=[],
+                    help="run_ids to drop in a SENSITIVITY pass. The primary numbers "
+                         "always keep every run; this adds a second set computed "
+                         "without them, and tables.md prints both. Use it when a run "
+                         "survived a validity gate on a judgement call, so a reader "
+                         "can see whether that call moved anything.")
     a = ap.parse_args(argv)
 
     runs = load_runs(a.runs)
@@ -1042,6 +1102,17 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  - {p}", file=sys.stderr)
         return 3
 
+    # A named run that does not exist is almost always a typo, and silently ignoring
+    # it would report a sensitivity analysis that excluded nothing.
+    excluded = list(dict.fromkeys(a.exclude_runs))
+    if excluded:
+        known = {r["run_id"] for r in runs}
+        missing = [r for r in excluded if r not in known]
+        if missing:
+            print(f"--exclude-runs names {len(missing)} run(s) that are not in the "
+                  f"joined set: {missing}", file=sys.stderr)
+            return 4
+
     provenance = {
         "generated_by": "scripts/analysis_join.py",
         "generated_utc": a.now or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -1053,6 +1124,11 @@ def main(argv: list[str] | None = None) -> int:
                                         if r["harness_commit"]}),
         "n_runs_without_harness_commit": sum(1 for r in runs
                                              if not r["harness_commit"]),
+        "excluded_runs_sensitivity": excluded,
+        "excluded_runs_note": (
+            "PRIMARY numbers include every run. These run_ids are additionally dropped "
+            "in a parallel SENSITIVITY pass so a reader can see whether a validity "
+            "judgement changed the answer." if excluded else "none"),
     }
 
     out = Path(a.outdir)
@@ -1093,9 +1169,29 @@ def main(argv: list[str] | None = None) -> int:
         write_json(bo, blind)
         written.append(bo)
 
+    # SENSITIVITY pass. Same code path, same estimands, one smaller run list - so the
+    # comparison cannot drift from the primary by construction.
+    sens = None
+    if excluded:
+        kept = [r for r in runs if r["run_id"] not in set(excluded)]
+        sens = {"excluded_runs": excluded,
+                "n_runs_primary": len(runs), "n_runs_sensitivity": len(kept)}
+        if unsealed:
+            seen_s = sorted({r["rung"] for r in kept if r["rung"]})
+            expl_s = [r for r in seen_s
+                      if r not in a.designed_rungs and r != NULL_RUNG]
+            sens["figure_input"] = build_figure_input(
+                kept, tuple(a.designed_rungs), expl_s, a.spend_field, provenance)
+        else:
+            sens["blind"] = build_blind(kept, a.spend_field, provenance)
+        sp = out / "sensitivity_excluded_runs.json"
+        write_json(sp, sens)
+        written.append(sp)
+
     tab = out / "tables.md"
     tab.parent.mkdir(parents=True, exist_ok=True)
-    tab.write_text(build_tables(doc, blind, arms, floor, agree, provenance, unsealed),
+    tab.write_text(build_tables(doc, blind, arms, floor, agree, provenance, unsealed,
+                                sens),
                    encoding="utf-8")
     written.append(tab)
 

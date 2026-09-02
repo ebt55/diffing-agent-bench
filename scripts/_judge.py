@@ -126,7 +126,8 @@ You may NOT decline or answer "unclear". Put uncertainty in `confidence`.
 def judge(rubric: str, payload: str, *, model: str = JUDGE_MODEL,
           api_key_env: str = "OPENAI_API_KEY", max_tokens: int = 4000, seed: int = 0,
           timeout: int = 300, retries: int = 3,
-          raw_dir: str | Path | None = None, tag: str = "") -> dict:
+          raw_dir: str | Path | None = None, tag: str = "",
+          schema: dict | None = None, schema_name: str = "diff_verdict") -> dict:
     """One judge call. Returns a full record, not just the verdict.
 
     Amendment 5 requires every call to be reconstructable after the fact, so the
@@ -148,8 +149,12 @@ def judge(rubric: str, payload: str, *, model: str = JUDGE_MODEL,
         "seed": seed,
         "response_format": {
             "type": "json_schema",
-            "json_schema": {"name": "diff_verdict", "strict": True,
-                            "schema": VERDICT_SCHEMA},
+            # Phase 2 grades against a different label set than the diffing verdict,
+            # so the schema is injectable. Everything else about the call - no
+            # temperature, seed, strict JSON, full provenance - is unchanged, which is
+            # the point of reusing this function rather than writing a second client.
+            "json_schema": {"name": schema_name, "strict": True,
+                            "schema": schema or VERDICT_SCHEMA},
         },
     }
     assert "temperature" not in body, "Amendment 5: the judge sends no temperature"

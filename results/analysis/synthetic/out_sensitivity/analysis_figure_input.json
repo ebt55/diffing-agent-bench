@@ -1299,8 +1299,11 @@
   "null_subset_label": "frozen n=10 subset (seeds 0-9, Amendment 7)",
   "provenance": {
     "estimands_from": "scripts/analysis_instrument.py",
-    "excluded_runs_note": "none",
-    "excluded_runs_sensitivity": [],
+    "excluded_runs_note": "PRIMARY numbers include every run. These run_ids are additionally dropped in a parallel SENSITIVITY pass so a reader can see whether a validity judgement changed the answer.",
+    "excluded_runs_sensitivity": [
+      "v0_cand_SYNTHa_s0",
+      "v0_cand_SYNTHa_s2"
+    ],
     "generated_by": "scripts/analysis_join.py",
     "generated_utc": "2026-01-01T00:00:00Z",
     "harness_commits_seen": [

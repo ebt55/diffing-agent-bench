@@ -432,6 +432,49 @@ def main() -> int:
                  ROOT / "SYNTHETIC_incomplete_map.json"):
         junk.unlink(missing_ok=True)
 
+    print("\n10. --exclude-runs sensitivity pass")
+    # No flag: nothing extra is produced and no section appears.
+    tb_plain = (OUT_UNSEAL / "tables.md").read_text(encoding="utf-8")
+    check("Sensitivity — validity-gate exclusions" not in tb_plain,
+          "without the flag, tables.md has no sensitivity section")
+    check(not (OUT_UNSEAL / "sensitivity_excluded_runs.json").exists(),
+          "without the flag, no sensitivity JSON is written")
+
+    drop = ["v0_cand_SYNTHa_s0", "v0_cand_SYNTHa_s2"]
+    out_sens = ROOT / "out_sensitivity"
+    rc = run_join(out_sens, unsealed=True, extra=["--exclude-runs"] + drop)
+    check(rc == 0, "join with --exclude-runs exits 0")
+    sp = out_sens / "sensitivity_excluded_runs.json"
+    check(sp.exists(), "sensitivity_excluded_runs.json written")
+    sens = json.loads(sp.read_text(encoding="utf-8"))
+    check(sens["n_runs_sensitivity"] == sens["n_runs_primary"] - 2,
+          f"sensitivity drops exactly 2 runs "
+          f"({sens['n_runs_primary']} -> {sens['n_runs_sensitivity']})")
+
+    # The PRIMARY numbers must not move: exclusion is a parallel view, not a filter.
+    doc_p = json.loads((OUT_UNSEAL / "analysis_figure_input.json")
+                       .read_text(encoding="utf-8"))
+    doc_s = json.loads((out_sens / "analysis_figure_input.json")
+                       .read_text(encoding="utf-8"))
+    check(doc_p["null"]["v0_opus"]["n_planned_attempts"]
+          == doc_s["null"]["v0_opus"]["n_planned_attempts"] == 20,
+          "primary L0 attempts stay 20 even when --exclude-runs is passed")
+    check(sens["figure_input"]["null"]["v0_opus"]["n_planned_attempts"] == 18,
+          "sensitivity L0 attempts drop to 18")
+
+    tb_s = (out_sens / "tables.md").read_text(encoding="utf-8")
+    check("Sensitivity — validity-gate exclusions" in tb_s,
+          "tables.md prints the sensitivity section when the flag is used")
+    check(all(d in tb_s for d in drop),
+          "tables.md names every excluded run")
+    check("include every run" in tb_s,
+          "tables.md states that the primary numbers include every run")
+
+    # A typo must fail loudly rather than silently excluding nothing.
+    rc_bad = run_join(ROOT / "out_bad", unsealed=True,
+                      extra=["--exclude-runs", "v0_cand_DOES_NOT_EXIST_s0"])
+    check(rc_bad == 4, "an unknown run_id in --exclude-runs is refused (rc=4)")
+
     print(f"\n{'=' * 62}")
     if _fails:
         print(f"FAILED {len(_fails)}/{_checks} checks:")

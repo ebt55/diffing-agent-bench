@@ -137,3 +137,37 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
 
+## Sensitivity — validity-gate exclusions
+
+**Primary numbers above include every run.** This section repeats them with 2 run(s) dropped, so a reader can see whether a judgement call about run validity moved anything: `v0_cand_SYNTHa_s0`, `v0_cand_SYNTHa_s2`.
+
+- runs in primary: **74**
+- runs in sensitivity: **72**
+
+| condition | rung | FULL / all planned attempts (sensitivity) |
+|---|---|---|
+| battery | L1 | 1/1 = 100.0% [20.7-100.0%] |
+| battery | L2 | 0/1 = 0.0% [0.0-79.3%] |
+| battery | L3 | 0/1 = 0.0% [0.0-79.3%] |
+| battery | L4v3 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L1 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L2 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L3 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L4v3 | 0/1 = 0.0% [0.0-79.3%] |
+| v0_opus | L1 | 4/5 = 80.0% [37.6-96.4%] |
+| v0_opus | L2 | 2/5 = 40.0% [11.8-76.9%] |
+| v0_opus | L3 | 0/5 = 0.0% [0.0-43.4%] |
+| v0_opus | L4v3 | 0/5 = 0.0% [0.0-43.4%] |
+| v1_opus | L1 | 3/3 = 100.0% [43.9-100.0%] |
+| v1_opus | L2 | 1/3 = 33.3% [6.1-79.2%] |
+| v1_opus | L3 | 0/3 = 0.0% [0.0-56.1%] |
+
+| condition | L0 false positives, verdict-bearing (sensitivity) |
+|---|---|
+| battery | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | 0/1 = 0.0% [0.0-79.3%] |
+| v0_opus | 2/16 = 12.5% [3.5-36.0%] |
+| v1_opus | 1/10 = 10.0% [1.8-40.4%] |
+
+*Compare against sections 1 and 2; the primary rates are there.*
+

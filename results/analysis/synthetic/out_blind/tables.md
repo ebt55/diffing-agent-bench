@@ -50,3 +50,4 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
+

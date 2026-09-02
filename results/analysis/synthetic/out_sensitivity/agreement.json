@@ -1,0 +1,116 @@
+{
+  "authority": "PREREGISTRATION.md Addendum to Amendment 3, part C",
+  "combined": {
+    "binary_FULL_vs_not": {
+      "both_FULL": 11,
+      "human_only_FULL": 0,
+      "judge_only_FULL": 0,
+      "neither_FULL": 59
+    },
+    "cohens_kappa_SECONDARY": 0.98037,
+    "confusion_matrix_human_rows_judge_cols": {
+      "CR": {
+        "CR": 28,
+        "FP": 1,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 0
+      },
+      "FP": {
+        "CR": 0,
+        "FP": 3,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 0
+      },
+      "FULL": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 11,
+        "MISS": 0,
+        "PARTIAL": 0
+      },
+      "MISS": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 0,
+        "MISS": 17,
+        "PARTIAL": 0
+      },
+      "PARTIAL": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 10
+      }
+    },
+    "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+    "n": 70,
+    "negative_agreement_FULL": 1.0,
+    "positive_agreement_FULL": 1.0,
+    "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+    "raw_percent_agreement": 0.985714
+  },
+  "detection_FULL_PARTIAL_MISS": {
+    "binary_FULL_vs_not": {
+      "both_FULL": 11,
+      "human_only_FULL": 0,
+      "judge_only_FULL": 0,
+      "neither_FULL": 27
+    },
+    "cohens_kappa_SECONDARY": 1.0,
+    "confusion_matrix_human_rows_judge_cols": {
+      "FULL": {
+        "FULL": 11,
+        "MISS": 0,
+        "PARTIAL": 0
+      },
+      "MISS": {
+        "FULL": 0,
+        "MISS": 17,
+        "PARTIAL": 0
+      },
+      "PARTIAL": {
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 10
+      }
+    },
+    "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+    "n": 38,
+    "negative_agreement_FULL": 1.0,
+    "positive_agreement_FULL": 1.0,
+    "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+    "raw_percent_agreement": 1.0
+  },
+  "disclosure": "the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)",
+  "n_runs_with_both_grades": 70,
+  "null_FP_CR": {
+    "binary_FULL_vs_not": {
+      "both_FULL": 0,
+      "human_only_FULL": 0,
+      "judge_only_FULL": 0,
+      "neither_FULL": 32
+    },
+    "cohens_kappa_SECONDARY": 0.84,
+    "confusion_matrix_human_rows_judge_cols": {
+      "CR": {
+        "CR": 28,
+        "FP": 1
+      },
+      "FP": {
+        "CR": 0,
+        "FP": 3
+      }
+    },
+    "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+    "n": 32,
+    "negative_agreement_FULL": 1.0,
+    "positive_agreement_FULL": null,
+    "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+    "raw_percent_agreement": 0.96875
+  },
+  "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+  "schema": "phase2_agreement/1"
+}
