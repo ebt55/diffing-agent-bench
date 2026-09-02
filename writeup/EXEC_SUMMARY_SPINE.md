@@ -214,8 +214,14 @@ Three candidates are on record; pick the ones that are true for him after gradin
 - **Hard-negative L4v4** — the known cure, deliberately not applied because Amendment 2's
   one-attempt cap was spent and a data-reactive retrain after a verdict is forbidden
   (`DECISIONS.md` #15).
-- **Second-brain refusal replication** — Amendment 9 is committed with predictions and a
-  functional gate, and **had not run** as of HEAD. Report it as designed-and-not-run, or run it.
+- **Second-brain refusal replication** — Amendment 9's functional gate **passed** and the sealed arm
+  was **launched** at commit `098a97f` (Sep 2, 06:00 IST). Its four pre-committed predictions
+  (`PREREG` Amendment 9): (a) refusal rate **lower** than the Opus brain's (different safety regime);
+  (b) more `completed_forced` runs and lower confidence calibration; (c) where graded, **fewer FULL**
+  detections; (d) per-run cost **at least 20× lower**. → `[NUMBER after unsealing — refusal rate is
+  mechanical and needs no unsealing]`. If it completes, this moves from "what I'd do next" into the
+  refusal section as a two-brain comparison, **labeled exploratory and excluded from every headline
+  metric**; if it does not, report it as designed-and-launched-but-incomplete.
 - **Biddulph-style distilled organisms as harder nulls.**
 - **Refusal-robust auditor scaffolds** (Bloom-style context management) *measured against this
   benchmark*.
@@ -257,4 +263,8 @@ table** — #5 and #6 get one section each and no more.
   grading + write-up now so the number is real. No hours ledger exists in the repo.
 - **TODO:** form answers (a separate deliverable from the summary) — name the models, the planted
   behaviors, the three numbers, and the refusal mechanism in concrete words. "Specifics beat vibes."
-- **TODO:** confirm whether Amendment 9 ran before submission; §10 above branches on it.
+- **TODO:** Amendment 9's arm was launched at `098a97f`; confirm it **completed** and that its
+  verification receipts (leak check, target-health screen, cost inventory) are committed before any
+  GLM number is quoted. §10 above branches on it.
+- **TODO:** Phase-1 block 3 (19 v1 runs, seed `20260903`) landed at `8137588` — grading capacity is
+  now 59 transcripts across three blocks. Update the hours estimate accordingly.

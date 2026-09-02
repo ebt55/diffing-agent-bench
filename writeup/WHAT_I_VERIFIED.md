@@ -104,7 +104,7 @@ found; do not claim it.
 | 9.1 | ✅ Phase-1 extraction is verbatim-only by construction | Addendum to Amendment 3, part B; `scripts/phase1_grade.py`, `scripts/phase1_ui.py`; `results/PHASE1_HOWTO.md`, `results/phase1_extraction_template.json` | schema: run_id · verdict type · top hypothesis (verbatim) · supporting quotes (verbatim, with turn numbers) · agent-stated confidence · explicit disconfirming evidence · harness-vs-model attribution notes · mechanical extractor notes |
 | 9.2 | ✅ The grading UI cannot be used to paraphrase, and cannot open the sealed material | `DECISIONS.md` #22 | "`scripts/phase1_grade.py`, 127.0.0.1:8765; **select-to-quote; no text input behind verbatim fields; `run_meta` and `data/sealed` raise on open; served payload grepped for banned keys; 21 dev checks pass**" |
 | 9.3 | ✅ Grading order is shuffled with a committed seed, in append-only blocks, never grouped by sealed ID | `results/phase1_order.json` | block 1: seed `20260901`, n=30, created `2026-09-01T20:28:36Z`; block 2: seed `20260902`, n=10, created `2026-09-01T21:20:59Z`; note on every block: "shuffled with the committed seed; transcripts are never grouped or sorted by sealed id"; new runs append as a new block "so grading already done stays valid" |
-| 9.4 | ⏳ Block 3 (the 19 v1 runs) — planned, seed `20260903`, with the v1 arm disclosure auto-attached by `build_order` | `RESUME_STATE.md` §4 | "`build_order` attaches the arm disclosure automatically to any block containing v1 runs — it is not typed in by hand and cannot be forgotten." **Working tree shows `results/phase1_order.json` modified at time of writing; confirm block 3 landed and carries the disclosure.** |
+| 9.4 | ✅ Block 3 (the 19 v1 runs) landed **with the arm disclosure attached** | `results/phase1_order.json`, block 3; commit `8137588` | `seed: 20260903`, `n: 19`, created `2026-09-02T00:15:55Z`; `arm_disclosure`: "v1 transcripts are arm-identifiable by construction (generator/validator phases); rung identity remains sealed; the pre-committed rubric, verbatim-only extraction and independent judge are the bias protections." Attached automatically by `build_order`, not typed by hand (`RESUME_STATE.md` §4) |
 | 9.5 | ✅ The judge sees one claim summary per call, never a batch | Addendum to Amendment 3, part B; adopted from r3 §8 and r4 §8 | — |
 | 9.6 | ✅ Phase 2 maps only the Phase-1 verbatim summary; no transcript re-reading in search of a more favourable interpretation | Addendum to Amendment 3, part A item 6 | — |
 | 9.7 | ✅ v1 transcripts are arm-identifiable by construction, and this is ruled on and disclosed rather than redacted | `DECISIONS.md` #23 item (1) | "this reveals the ARM, not the RUNG; §3's blinding is to rung↔ID and agent version was never blinded (run ids name it). v1 is graded, appended as a labeled shuffled block 3, disclosure in the order file and HOWTO; tells are not redacted because the reasoning is what is graded" |
@@ -152,11 +152,14 @@ found; do not claim it.
 
 ## Not verified — do not claim these
 
-- **TODO — Amendment 9 (GLM) arm:** not run as of HEAD `425bed7`. `RESUME_STATE.md` §2 lists Task E
-  (dev gate, then sealed campaign) as not started. No refusal-replication number exists.
-- **TODO — Phase-1 block 3:** `results/phase1_order.json` is modified in the working tree at time of
-  writing; confirm the 19 v1 runs were appended as block 3 with seed `20260903` and that the arm
-  disclosure is attached.
+- **TODO — Amendment 9 (GLM) arm:** as of commit `098a97f` (Sep 2, 06:00 IST) the **functional gate
+  passed and the sealed arm was launched** ("task E: GLM-5.3-Flash functional gate PASSES; sealed arm
+  launched"; gate artifacts in `results/runs_dev/glm_gate_devnull_s0/`). **No completion receipt, no
+  leak check, no target-health screen and no refusal-replication number exist for the arm yet** — do
+  not quote any GLM outcome until `results/run_leak_check_*`, `results/target_health_screen_*` and an
+  inventory covering it are committed. The two-brain asymmetry disclosure (`RESUME_STATE.md` §5d:
+  Opus at `effort: high` with caching vs GLM at `reasoning_effort: low` with caching off, read from
+  `run_meta.brain.wire_params`) is mandatory wherever the arm is reported.
 - **TODO — v1 campaign spend and completion statuses:** `results/v0_v1_sealed_compare.json` exists
   (schema `v0_v1_sealed_compare/1`, operational outcomes only, explicitly no verdicts/hypotheses)
   but its aggregates are not transcribed here. Read them yourself before quoting any v1 cost or

@@ -120,10 +120,15 @@ history that touches `data/sealed/`).
 
 ## 4. Open TODOs (do not guess these)
 
-- **TODO:** the GLM (Amendment 9) arm had not run as of HEAD `425bed7` — `RESUME_STATE.md` §2
-  lists Task E as not started. If it runs before submission, add a row for its outcome; if it
-  does not, the deviations table should state that A9 was committed and the arm was not
-  executed within the clock.
+- **UPDATE (Sep 2, 06:00 IST):** the GLM (Amendment 9) arm's functional gate **passed** and the
+  sealed arm was **launched** — commit `098a97f`, "task E: GLM-5.3-Flash functional gate PASSES;
+  sealed arm launched"; gate artifacts in `results/runs_dev/glm_gate_devnull_s0/`. Also landed:
+  `8137588`, "phase1: append the 19 v1 runs as labeled block 3". **TODO:** when the arm finishes,
+  record its completion in this table (A9 is exploratory and excluded from all §6 headline metrics
+  and figures — it does not change any other row).
+- **Note on tracking:** commit `098a97f` also swept six of this directory's files into the repo.
+  This scaffolding pass ran no git write commands; the files were committed by the agent working
+  Task E.
 - **TODO:** DECISIONS.md numbering contains a duplicated block (rows numbered 9, 10, 11 appear
   twice — an early Aug-30 block and a later Aug-31/Sep-1 block). If the write-up cites
   "DECISIONS #10", disambiguate by date. Not corrected here (no existing file was modified).

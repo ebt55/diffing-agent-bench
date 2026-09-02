@@ -136,6 +136,7 @@ reviews in `../archive/`.
 | **What it was** | `GLM-5.3-Flash` needs an **explicit reasoning-effort setting**, or it spends its whole token budget thinking and returns empty content with no tool call. |
 | **How it was caught** | Amendment 9 prep, before the arm's functional gate ran. |
 | **What it would have done** | The Amendment 9 gate ("if the brain cannot execute the recipe's tool protocol, the arm is not run") would have **failed for a configuration reason, not a capability one** — and the study would have recorded a false negative about a second-lab brain's ability to run the recipe. |
+| **Outcome** | With the fix in place the gate **passed**: commit `098a97f` (Sep 2, 06:00 IST) — "task E: GLM-5.3-Flash functional gate PASSES; sealed arm launched" (gate artifacts in `results/runs_dev/glm_gate_devnull_s0/`). Without the fix the arm would have been recorded as "this brain cannot execute the recipe's tool protocol." |
 | **Recorded in** | `DEC #23` item (3), Sep 2. Fixed with opt-in effort (`147c0aa`). **Disclosure required in the arm:** the two brains are configured asymmetrically — the Opus brain runs adaptive thinking at `effort: high` with prompt caching; the GLM arm runs `reasoning_effort: low` with caching off. Read the actual values from `run_meta.brain.wire_params`, not the config block: `BrainConfig` carries Anthropic-only fields that are never sent on the OpenRouter route (`RESUME_STATE.md` §5d). |
 
 ## 15. `gate0_toy` loss — the preregistration's named dev pair no longer exists
