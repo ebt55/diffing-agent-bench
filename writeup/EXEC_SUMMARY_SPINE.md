@@ -259,8 +259,9 @@ table** — #5 and #6 get one section each and no more.
 
 ## 13 · TODOs
 
-- **TODO:** hours accounting. The submission asks for an honest hours estimate; r3 §9 says track
-  grading + write-up now so the number is real. No hours ledger exists in the repo.
+- **TODO (Ebin only):** hours accounting. Blank template with the exact clock rules is at
+  `writeup/HOURS_LEDGER_TEMPLATE.md` — fill the two numeric columns yourself. No agent may
+  estimate these, and commit timestamps are not working hours.
 - **TODO:** form answers (a separate deliverable from the summary) — name the models, the planted
   behaviors, the three numbers, and the refusal mechanism in concrete words. "Specifics beat vibes."
 - **TODO:** Amendment 9's arm was launched at `098a97f`; confirm it **completed** and that its

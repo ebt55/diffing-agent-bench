@@ -1,0 +1,1000 @@
+{
+  "schema": "analysis_figure_input/1",
+  "synthetic": true,
+  "WARNING": "SYNTHETIC INSTRUMENT TEST FIXTURE - NOT DATA, NOT A RESULT, NOT AN ESTIMATE. Arbitrary integers chosen to exercise every drawing branch. Never quote, aggregate or cite any number in this file.",
+  "generated_by": "scripts/test_make_figures.py",
+  "provenance": {
+    "estimands_computed_by": "scripts/analysis_instrument.py",
+    "functions": [
+      "detection_rates",
+      "l0_false_positive_rates",
+      "dollars_per_detection"
+    ],
+    "note": "blocks below are verbatim return values of those functions, so this fixture cannot drift from the instrument's real output shape"
+  },
+  "conditions": [
+    "agent v0",
+    "agent v1",
+    "Baseline 1 - fixed battery",
+    "Baseline 3 - introspection"
+  ],
+  "designed_rungs": [
+    "L1",
+    "L2",
+    "L3"
+  ],
+  "exploratory_rungs": [
+    "L4v3"
+  ],
+  "single_decision_conditions": [
+    "Baseline 1 - fixed battery",
+    "Baseline 3 - introspection"
+  ],
+  "detection": {
+    "agent v0": {
+      "L1": {
+        "n_planned_attempts": 5,
+        "n_verdict_bearing": 4,
+        "n_terminal_refusal": 1,
+        "refusal_rate": {
+          "k": 1,
+          "n": 5,
+          "rate": 0.2,
+          "lo": 0.036224,
+          "hi": 0.624465,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 4,
+          "n": 5,
+          "rate": 0.8,
+          "lo": 0.375535,
+          "hi": 0.963776,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 4,
+          "n": 5,
+          "rate": 0.8,
+          "lo": 0.375535,
+          "hi": 0.963776,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 4,
+          "n": 4,
+          "rate": 1.0,
+          "lo": 0.510109,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 4,
+          "n": 4,
+          "rate": 1.0,
+          "lo": 0.510109,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "FULL": 4,
+          "null": 1
+        }
+      },
+      "L2": {
+        "n_planned_attempts": 5,
+        "n_verdict_bearing": 5,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.434482,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 2,
+          "n": 5,
+          "rate": 0.4,
+          "lo": 0.117621,
+          "hi": 0.769276,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 4,
+          "n": 5,
+          "rate": 0.8,
+          "lo": 0.375535,
+          "hi": 0.963776,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 2,
+          "n": 5,
+          "rate": 0.4,
+          "lo": 0.117621,
+          "hi": 0.769276,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 4,
+          "n": 5,
+          "rate": 0.8,
+          "lo": 0.375535,
+          "hi": 0.963776,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "FULL": 2,
+          "PARTIAL": 2,
+          "MISS": 1
+        }
+      },
+      "L3": {
+        "n_planned_attempts": 5,
+        "n_verdict_bearing": 4,
+        "n_terminal_refusal": 1,
+        "refusal_rate": {
+          "k": 1,
+          "n": 5,
+          "rate": 0.2,
+          "lo": 0.036224,
+          "hi": 0.624465,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.434482,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 3,
+          "n": 5,
+          "rate": 0.6,
+          "lo": 0.230724,
+          "hi": 0.882379,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.489891,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 3,
+          "n": 4,
+          "rate": 0.75,
+          "lo": 0.300642,
+          "hi": 0.954413,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "PARTIAL": 3,
+          "MISS": 1,
+          "null": 1
+        }
+      },
+      "L4v3": {
+        "n_planned_attempts": 5,
+        "n_verdict_bearing": 4,
+        "n_terminal_refusal": 1,
+        "refusal_rate": {
+          "k": 1,
+          "n": 5,
+          "rate": 0.2,
+          "lo": 0.036224,
+          "hi": 0.624465,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.434482,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 1,
+          "n": 5,
+          "rate": 0.2,
+          "lo": 0.036224,
+          "hi": 0.624465,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.489891,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 1,
+          "n": 4,
+          "rate": 0.25,
+          "lo": 0.045587,
+          "hi": 0.699358,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "PARTIAL": 1,
+          "MISS": 3,
+          "null": 1
+        }
+      }
+    },
+    "agent v1": {
+      "L1": {
+        "n_planned_attempts": 3,
+        "n_verdict_bearing": 3,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 3,
+          "n": 3,
+          "rate": 1.0,
+          "lo": 0.438503,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "FULL": 3
+        }
+      },
+      "L2": {
+        "n_planned_attempts": 3,
+        "n_verdict_bearing": 3,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 1,
+          "n": 3,
+          "rate": 0.333333,
+          "lo": 0.061492,
+          "hi": 0.79234,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 2,
+          "n": 3,
+          "rate": 0.666667,
+          "lo": 0.20766,
+          "hi": 0.938508,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 1,
+          "n": 3,
+          "rate": 0.333333,
+          "lo": 0.061492,
+          "hi": 0.79234,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 2,
+          "n": 3,
+          "rate": 0.666667,
+          "lo": 0.20766,
+          "hi": 0.938508,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "FULL": 1,
+          "PARTIAL": 1,
+          "MISS": 1
+        }
+      },
+      "L3": {
+        "n_planned_attempts": 3,
+        "n_verdict_bearing": 3,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 1,
+          "n": 3,
+          "rate": 0.333333,
+          "lo": 0.061492,
+          "hi": 0.79234,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.561497,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 1,
+          "n": 3,
+          "rate": 0.333333,
+          "lo": 0.061492,
+          "hi": 0.79234,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "PARTIAL": 1,
+          "MISS": 2
+        }
+      }
+    },
+    "Baseline 1 - fixed battery": {
+      "L1": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "FULL": 1
+        }
+      },
+      "L2": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "PARTIAL": 1
+        }
+      },
+      "L3": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "MISS": 1
+        }
+      },
+      "L4v3": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "MISS": 1
+        }
+      }
+    },
+    "Baseline 3 - introspection": {
+      "L1": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0,
+          "lo": 0.206549,
+          "hi": 1.0,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "PARTIAL": 1
+        }
+      },
+      "L2": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "MISS": 1
+        }
+      },
+      "L3": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "MISS": 1
+        }
+      },
+      "L4v3": {
+        "n_planned_attempts": 1,
+        "n_verdict_bearing": 1,
+        "n_terminal_refusal": 0,
+        "refusal_rate": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_all_attempts_PRIMARY": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_all_attempts": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "full_plus_partial_verdict_bearing": {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.793451,
+          "ci": "two-sided 95% Wilson"
+        },
+        "grade_counts": {
+          "MISS": 1
+        }
+      }
+    }
+  },
+  "null": {
+    "agent v0": {
+      "n_planned_attempts": 20,
+      "n_verdict_bearing": 18,
+      "n_terminal_refusal": 2,
+      "refusal_rate": {
+        "k": 2,
+        "n": 20,
+        "rate": 0.1,
+        "lo": 0.027866,
+        "hi": 0.301034,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "k": 2,
+        "n": 18,
+        "rate": 0.111111,
+        "lo": 0.03102,
+        "hi": 0.327998,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "k": 2,
+        "n": 18,
+        "rate": 0.111111,
+        "lo": 0.03102,
+        "hi": 0.327998,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_all_attempts": {
+        "k": 2,
+        "n": 20,
+        "rate": 0.1,
+        "lo": 0.027866,
+        "hi": 0.301034,
+        "ci": "two-sided 95% Wilson"
+      },
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation"
+    },
+    "agent v1": {
+      "n_planned_attempts": 10,
+      "n_verdict_bearing": 10,
+      "n_terminal_refusal": 0,
+      "refusal_rate": {
+        "k": 0,
+        "n": 10,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.277533,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "k": 1,
+        "n": 10,
+        "rate": 0.1,
+        "lo": 0.017876,
+        "hi": 0.40415,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "k": 1,
+        "n": 10,
+        "rate": 0.1,
+        "lo": 0.017876,
+        "hi": 0.40415,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_all_attempts": {
+        "k": 1,
+        "n": 10,
+        "rate": 0.1,
+        "lo": 0.017876,
+        "hi": 0.40415,
+        "ci": "two-sided 95% Wilson"
+      },
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation"
+    },
+    "Baseline 1 - fixed battery": {
+      "n_planned_attempts": 1,
+      "n_verdict_bearing": 1,
+      "n_terminal_refusal": 0,
+      "refusal_rate": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.793451,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.793451,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.793451,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_all_attempts": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.793451,
+        "ci": "two-sided 95% Wilson"
+      },
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation"
+    },
+    "Baseline 3 - introspection": {
+      "n_planned_attempts": 1,
+      "n_verdict_bearing": 1,
+      "n_terminal_refusal": 0,
+      "refusal_rate": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.793451,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0,
+        "lo": 0.206549,
+        "hi": 1.0,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0,
+        "lo": 0.206549,
+        "hi": 1.0,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_all_attempts": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0,
+        "lo": 0.206549,
+        "hi": 1.0,
+        "ci": "two-sided 95% Wilson"
+      },
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation"
+    }
+  },
+  "null_subset": {
+    "agent v0": {
+      "n_planned_attempts": 10,
+      "n_verdict_bearing": 9,
+      "n_terminal_refusal": 1,
+      "refusal_rate": {
+        "k": 1,
+        "n": 10,
+        "rate": 0.1,
+        "lo": 0.017876,
+        "hi": 0.40415,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "k": 1,
+        "n": 9,
+        "rate": 0.111111,
+        "lo": 0.019891,
+        "hi": 0.435,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "k": 1,
+        "n": 9,
+        "rate": 0.111111,
+        "lo": 0.019891,
+        "hi": 0.435,
+        "ci": "two-sided 95% Wilson"
+      },
+      "fp_frozen_rule_all_attempts": {
+        "k": 1,
+        "n": 10,
+        "rate": 0.1,
+        "lo": 0.017876,
+        "hi": 0.40415,
+        "ci": "two-sided 95% Wilson"
+      },
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation"
+    }
+  },
+  "null_subset_label": "SYNTHETIC subset (stands in for the frozen n=10)",
+  "cost": {
+    "agent v0": {
+      "primary": 1.914733,
+      "total_spend_all_attempts_usd": 11.4884,
+      "n_full_detections": 6,
+      "unpriced_component": false,
+      "eligible_for_dollar_ranking": true,
+      "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals"
+    },
+    "agent v1": {
+      "primary": 1.55025,
+      "total_spend_all_attempts_usd": 6.201,
+      "n_full_detections": 4,
+      "unpriced_component": false,
+      "eligible_for_dollar_ranking": true,
+      "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals"
+    },
+    "Baseline 3 - introspection": {
+      "primary": "undefined (0 detections; spend $0.9142)",
+      "total_spend_all_attempts_usd": 0.9142,
+      "n_full_detections": 0,
+      "unpriced_component": false,
+      "eligible_for_dollar_ranking": true,
+      "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals"
+    },
+    "Baseline 1 - fixed battery": {
+      "primary": null,
+      "unpriced_component": true,
+      "eligible_for_dollar_ranking": false,
+      "note": "a component has no known price, so the total is null, not zero, and this condition is excluded from total-dollar rankings (section 4)"
+    }
+  }
+}

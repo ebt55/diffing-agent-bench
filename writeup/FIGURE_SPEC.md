@@ -180,6 +180,69 @@ Sits **below Panel A** if legible; otherwise its own small figure. Keep it secon
 
 ## 5 · Data contract for the plotting script
 
+**IMPLEMENTED.** `scripts/make_figures.py` renders this figure; `scripts/test_make_figures.py`
+proves it end-to-end on synthetic input (25 checks, all passing). One command after unsealing:
+
+```
+python scripts/make_figures.py --input results/figures/figure_input.json
+```
+
+**Input schema `analysis_figure_input/1`.** Its blocks are the **verbatim return values** of the
+estimand functions in `scripts/analysis_instrument.py` — nothing is reshaped, renamed or
+recomputed by the plotting code:
+
+| block | produced by | used for |
+|---|---|---|
+| `detection[condition][rung]` | `analysis_instrument.detection_rates(rows)` | Panel A stacks, FULL `k/n`, Wilson bars, verdict-bearing n |
+| `null[condition]` | `analysis_instrument.l0_false_positive_rates(rows)` | Panel B1 stacks, primary FPR, strict-rule sensitivity |
+| `null_subset[condition]` *(optional)* | same function, on the seed subset | the frozen n=10 subset printed beside the n=20 primary (Amendment 7) |
+| `cost[condition]` | `analysis_instrument.dollars_per_detection(...)` | Panel B2 |
+
+**Guarantees the plotting script enforces (it fails closed, it does not warn):**
+
+1. Every Wilson interval in the input is **recomputed** with `analysis_instrument.wilson()` and
+   must match to 1e-6, or the render aborts. A figure whose intervals disagree with the
+   instrument is exactly the failure the Addendum exists to prevent.
+2. The Panel A FULL interval denominator must equal `n_planned_attempts` (the primary is
+   **all attempts**); the Panel B FPR denominator must equal `n_verdict_bearing` (the primary is
+   **verdict-bearing**). Swapping either is rejected.
+3. `grade_counts` FULL must equal the FULL interval's `k`; graded + refused may not exceed
+   planned attempts.
+4. Any remainder (planned attempts minus FULL+PARTIAL+MISS+refusals) is drawn as an explicit
+   **UNGRADED / OTHER NO-VERDICT** segment — never silently folded into MISS.
+5. Conditions listed in `single_decision_conditions` (or any cell with n=1) get `k/n` and
+   **no interval**, in both panels.
+6. `synthetic: true` in the input **forces** the "SYNTHETIC — NOT DATA" watermark on.
+
+**Output:** `<stem>.png` (300 dpi) + `<stem>.svg` + `<stem>_annotations.json` under
+`results/figures/`. The annotations manifest lists **every number drawn on the figure** with the
+exact key path in the input JSON it was read from — which is what makes "traceable to the input
+JSON" a tested property rather than a claim.
+
+### 5a · SCHEMA TODOs — what `analysis_instrument.py` does not yet emit
+
+**Do not invent these.** The instrument defines all four estimands as functions, but its `main()`
+emits only `analysis_run_inventory/1` (outcomes, costs, statuses) and **never calls
+`detection_rates`, `l0_false_positive_rates`, `dollars_per_detection` or `agreement`**. Nothing
+in the repo currently produces `analysis_figure_input/1`. The gaps below must be closed by a
+committed join step before the real figure can be rendered.
+
+| # | Gap | Where it bites | Note |
+|---|---|---|---|
+| **T1** | **No grade join exists.** `load_runs()` hard-codes `"grade": None`; no committed script attaches Phase-2 grades to runs | every Panel A segment and the FULL rate | Grades arrive from the Phase-1 → Phase-2 pipeline after unsealing. The join is the missing link between `phase1_claims.jsonl` and the inventory |
+| **T2** | **No `condition` field on a run.** Rows carry `run_id` and `candidate_id` only; the arm (v0 / v1 / baselines / GLM) is encoded only in the `run_id` prefix | grouping bars by condition | Derivable from `run_id`, but the derivation is not committed anywhere — so it would be hand-assembly |
+| **T3** | **No `rung` field** (correct: that requires unsealing) | the L1/L2/L3 axis | The `candidate_id → rung` map comes from `data/sealed/` at unseal time. A join step must exist and must be the *only* place that map is read |
+| **T4** | **`fp_frozen_rule` and `verdict` are not on the row schema.** `l0_false_positive_rates()` requires both; `load_runs()` emits neither (`verdict` is consumed inside `outcome()` and dropped) | the entire Panel B1 null partition | The Addendum-A adjudication result has no committed home in the row schema |
+| **T5** | **No per-condition spend.** `main()` computes one global `total_recorded_spend_all_attempts_usd`; `dollars_per_detection()` needs it per condition | Panel B2 | Derivable by grouping `brain_usd`, but not emitted |
+| **T6** | **Baselines are absent from the inventory.** `load_runs()` reads `results/runs/*/run_meta.json`; Baseline 1/3 artifacts (`bat_cand_*`, `intro_cand_*`) and Baseline 2's separate JSON have no place in the schema | the Baseline 1 / Baseline 3 bars | Their pair-level decisions need a defined row shape |
+| **T7** | **`dollars_per_detection()` output omits `n_planned_attempts`** | Panel B2's "spend over N attempts" line | Currently the figure prints spend and FULL count only; the attempt count would have to come from another block |
+| **T8** | **No seed-subset support.** Amendment 7 requires the frozen n=10 subset beside the n=20 primary; the instrument has no notion of a subset | Panel B1's narrow bar | `make_figures.py` accepts an optional `null_subset` block, but nothing produces it |
+| **T9** | **`grade_counts` keys `None` for ungraded**, which JSON-serialises to the string `"null"` | any consumer | `make_figures.py` tolerates both; worth normalising at the source |
+| **T10** | **Mid-run refusal events are not counted.** Amendment 6 clarification 1 says report them separately "where cheaply countable" | a caption line, not a segment | No field exists |
+| **T11** | **`agreement()` output is never emitted** by `main()` | the agreement table (not this figure) | Addendum C statistics have no committed artifact |
+
+### 5b · Upstream sources the join step will need
+
 Inputs, all committed, all read-only:
 
 | input | file | contains |
@@ -192,7 +255,8 @@ Inputs, all committed, all read-only:
 | baseline outputs | `results/judge_raw/`, `results/baseline_kl_drift_sealed.json` | judge raw responses; drift rows |
 | rates, intervals, cost formulas | `scripts/analysis_instrument.py` (+ `scripts/test_analysis_instrument.py`) | the only permitted source of every plotted number |
 
-**Output:** `results/figures/*.png`, plus the committed script that regenerates it.
+**Output:** `results/figures/*.png` + `.svg` + `_annotations.json`, all regenerated by the
+committed `scripts/make_figures.py`.
 
 ---
 
@@ -216,10 +280,12 @@ Inputs, all committed, all read-only:
 
 ## 7 · TODOs
 
-- **TODO:** no plotting script exists in `scripts/` yet. `results/figures/` does not exist in the
-  working tree at time of writing — it must be created and the PNG committed there (`CLAUDE.md`).
+- **DONE:** `scripts/make_figures.py` + `scripts/test_make_figures.py` are committed;
+  `results/figures/` now exists, with the synthetic proof render under
+  `results/figures/synthetic/`. The blocking work is §5a's schema TODOs (T1–T8), not the drawing.
 - **TODO:** decide and record whether Panel A's condition ordering places v1 immediately beside v0
-  (paired reading) or groups all agents together. Not specified by either review.
+  (paired reading) or groups all agents together. Not specified by either review. Currently the
+  order is whatever `conditions` lists in the input, and the bar order is printed under Panel A.
 - **TODO:** the Amendment 9 GLM arm was launched (`098a97f`) but has no completion receipts yet.
   Amendment 9 requires it to be **excluded from all §6 headline metrics and figures**; its per-run
   dollar comparison is reported "beside the Opus brain's as an operational comparison, labeled
