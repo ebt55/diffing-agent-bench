@@ -88,7 +88,15 @@ def main() -> int:
     check(not MF.validate(doc), "the real figure input still validates")
     nulls = doc.get("null", {})
     flagged = [c for c, b in nulls.items() if b.get("ungraded")]
-    check(flagged, f"the real document flags its ungraded L0 cells ({flagged})")
+    # Until the baselines were graded (DECISIONS.md #33) this asserted that ungraded
+    # cells EXIST in the real document. Every cell carries a grade now, so the
+    # real-document check is consistency: a cell is flagged iff it has no grade, and
+    # the number of UNGRADED labels drawn must equal the number of flagged cells
+    # (checked below). The flagging path itself is pinned on synthetic cells above.
+    check(all(bool(b.get("ungraded")) == (b.get("n_graded", 0) == 0)
+              for b in nulls.values()),
+          f"every real L0 cell is flagged ungraded iff it carries no grade "
+          f"({len(flagged)} flagged of {len(nulls)})")
     for c in flagged:
         s = segments(nulls[c])
         check(s["FP"] == 0 and s["CR"] == 0,
@@ -119,11 +127,14 @@ def main() -> int:
         print("\n5. an ungraded DETECTION cell prints no k/n either (Panel A)")
         # "0/1" over a hatched bar reads as a measured miss. The same flag that guards
         # Panel B must guard Panel A: no k/n, no rate, no interval, an UNGRADED label.
-        det_flagged = [(c, r) for c, rungs in doc.get("detection", {}).items()
-                       for r, b in rungs.items() if b.get("ungraded")]
-        check(det_flagged,
-              f"the real document flags its ungraded detection cells "
-              f"({len(det_flagged)} cells)")
+        det_cells = [(c, r, b) for c, rungs in doc.get("detection", {}).items()
+                     for r, b in rungs.items()]
+        det_flagged = [(c, r) for c, r, b in det_cells if b.get("ungraded")]
+        # Same consistency rule as Panel B: flagged iff no grade (see above).
+        check(all(bool(b.get("ungraded")) == (b.get("n_graded", 0) == 0)
+                  for _, _, b in det_cells),
+              f"every real detection cell is flagged ungraded iff it carries no grade "
+              f"({len(det_flagged)} flagged of {len(det_cells)})")
         a_panels = ("A", "A-exploratory")
         rate_kinds = ("full_k_over_n", "full_wilson_95", "single_decision_no_interval")
         for c, r in det_flagged:
