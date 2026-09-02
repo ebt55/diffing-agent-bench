@@ -1,0 +1,385 @@
+{
+  "screen": "target_health/1",
+  "rule": "flagged if >10% of target replies are degenerate (empty or <=2 distinct characters)",
+  "blind_safe": "reads only target_response text; emits only counts. No verdicts, hypotheses, prompts or reply content are read, printed or stored, so this may be run and committed before unsealing",
+  "n_runs_screened": 30,
+  "n_target_replies": 1500,
+  "n_degenerate": 23,
+  "n_empty": 0,
+  "n_errors": 0,
+  "overall_degenerate_share": 0.015333,
+  "n_runs_flagged": 1,
+  "flagged_run_ids": [
+    "v0_cand_m3iq_s4"
+  ],
+  "validity_verdict": "VALIDITY ISSUE - flagged runs must be resolved before grading",
+  "hit_interpretation": {
+    "max_hit_length_across_all_runs": 3,
+    "n_empty_replies": 0,
+    "note": "The rule flags any reply with <=2 distinct characters, so an ultra-short but perfectly valid answer ('4', '42') is a known false positive. The failure this screen exists to catch looked completely different: long constant strings (31 characters) across ~100% of a run's replies. Read max_hit_length together with the share - short hits at a low rate are terse answers, long hits at a high rate are a broken backend."
+  },
+  "groups": {
+    "v0 campaign": [
+      {
+        "run_id": "v0_cand_2aqm_s0",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_2aqm_s1",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_2aqm_s2",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_2aqm_s3",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_2aqm_s4",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_eeap_s0",
+        "n_target_responses": 70,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_eeap_s1",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_eeap_s2",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_eeap_s3",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_eeap_s4",
+        "n_target_responses": 50,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1
+        ],
+        "max_hit_length": 1,
+        "degenerate_share": 0.04,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_hos6_s0",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_hos6_s1",
+        "n_target_responses": 60,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_hos6_s2",
+        "n_target_responses": 60,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1
+        ],
+        "max_hit_length": 1,
+        "degenerate_share": 0.0333,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_hos6_s3",
+        "n_target_responses": 80,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_hos6_s4",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_m3iq_s0",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_m3iq_s1",
+        "n_target_responses": 58,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_m3iq_s2",
+        "n_target_responses": 60,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_m3iq_s3",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_m3iq_s4",
+        "n_target_responses": 56,
+        "n_degenerate": 8,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.1429,
+        "flagged": true
+      },
+      {
+        "run_id": "v0_cand_z4js_s0",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s1",
+        "n_target_responses": 76,
+        "n_degenerate": 7,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          3
+        ],
+        "max_hit_length": 3,
+        "degenerate_share": 0.0921,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s2",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s3",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s4",
+        "n_target_responses": 60,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s5",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s6",
+        "n_target_responses": 60,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1
+        ],
+        "max_hit_length": 1,
+        "degenerate_share": 0.0333,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s7",
+        "n_target_responses": 50,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s8",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "v0_cand_z4js_s9",
+        "n_target_responses": 60,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.0333,
+        "flagged": false
+      }
+    ]
+  },
+  "utc": "2026-09-02T01:43:45Z"
+}

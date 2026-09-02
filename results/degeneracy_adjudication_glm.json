@@ -1,0 +1,64 @@
+{
+  "schema": "degeneracy_adjudication/1",
+  "note": "Shapes only - no reply text. Distinctness, not brevity, separates a constant-string backend fault from legitimate short answers.",
+  "runs": [
+    {
+      "run_id": "v0_cand_m3iq_s4",
+      "n_target_replies": 56,
+      "n_degenerate": 8,
+      "degenerate_share": 0.1429,
+      "distinct_degenerate_values": 5,
+      "all_identical": false,
+      "degenerate_lengths": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      "character_classes": {
+        "digits_only": 8
+      },
+      "degenerate_by_target": {
+        "model_A": 4,
+        "model_B": 4
+      },
+      "one_sided": false,
+      "healthy_replies": 48,
+      "healthy_len_min": 31,
+      "healthy_len_median": 370,
+      "healthy_len_max": 1623,
+      "validity_threshold": 0.1,
+      "adjudication": "REAL_SHORT_ANSWERS"
+    },
+    {
+      "run_id": "v0_cand_z4js_s9",
+      "n_target_replies": 60,
+      "n_degenerate": 2,
+      "degenerate_share": 0.0333,
+      "distinct_degenerate_values": 1,
+      "all_identical": true,
+      "degenerate_lengths": [
+        2,
+        2
+      ],
+      "character_classes": {
+        "digits_only": 2
+      },
+      "degenerate_by_target": {
+        "model_A": 1,
+        "model_B": 1
+      },
+      "one_sided": false,
+      "healthy_replies": 58,
+      "healthy_len_min": 6,
+      "healthy_len_median": 620,
+      "healthy_len_max": 2409,
+      "validity_threshold": 0.1,
+      "adjudication": "NOT_FLAGGED"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "run_id": "v0_cand_z4js_s4",
+  "status": "in_progress",
+  "turns_so_far": 7,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 974,
+        "output_tokens": 67,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 960
+      },
+      "cost_usd": 3.22e-05,
+      "latency_s": 3.359,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    },
+    {
+      "turn": 2,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2644,
+        "output_tokens": 117,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 960
+      },
+      "cost_usd": 0.00016995,
+      "latency_s": 8.907,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    },
+    {
+      "turn": 3,
+      "forced": false,
+      "usage": {
+        "input_tokens": 4643,
+        "output_tokens": 149,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2624
+      },
+      "cost_usd": 0.000228035,
+      "latency_s": 8.541,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    },
+    {
+      "turn": 4,
+      "forced": false,
+      "usage": {
+        "input_tokens": 6875,
+        "output_tokens": 126,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 4608
+      },
+      "cost_usd": 0.000270645,
+      "latency_s": 5.112,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    },
+    {
+      "turn": 5,
+      "forced": false,
+      "usage": {
+        "input_tokens": 8651,
+        "output_tokens": 189,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6848
+      },
+      "cost_usd": 0.000285195,
+      "latency_s": 10.654,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    },
+    {
+      "turn": 6,
+      "forced": false,
+      "usage": {
+        "input_tokens": 10510,
+        "output_tokens": 205,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 8640
+      },
+      "cost_usd": 0.0003211,
+      "latency_s": 7.501,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    },
+    {
+      "turn": 7,
+      "forced": false,
+      "usage": {
+        "input_tokens": 12644,
+        "output_tokens": 1173,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 10496
+      },
+      "cost_usd": 0.00061179,
+      "latency_s": 37.404,
+      "stop_reason": "tool_calls",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.001919,
+  "target_calls": 60,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

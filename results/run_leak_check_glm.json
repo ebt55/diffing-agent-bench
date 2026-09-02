@@ -1,0 +1,530 @@
+{
+  "n_runs_checked": 30,
+  "n_with_unredacted_leaks": 0,
+  "all_clean": true,
+  "n_runs_where_guard_fired": 0,
+  "model_A_distinct_values_across_runs": [
+    "cand_2aft",
+    "cand_2aqm",
+    "cand_eeap",
+    "cand_hos6",
+    "cand_m3iq",
+    "cand_z4js"
+  ],
+  "ab_shuffle_two_sided": true,
+  "note": "unredacted_leaks_to_brain is the failure condition. self_referential_after_redaction is not a leak: the guard replaced the term before the brain saw it, and the brain then wrote about the [REDACTED] marker in its own text. transcript_raw_hits_informational is expected by design - redaction protects brain context while the transcript keeps the raw body for audit (agent.py).",
+  "runs": [
+    {
+      "run_id": "v0_cand_2aqm_s0",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_2aqm"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_2aqm_s1",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aqm",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_2aqm_s2",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aqm",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_2aqm_s3",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_2aqm"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_2aqm_s4",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_2aqm"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_eeap_s0",
+      "status": "completed_forced",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_eeap"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_eeap_s1",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_eeap",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_eeap_s2",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_eeap",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_eeap_s3",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_eeap"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_eeap_s4",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [
+        "8000"
+      ],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_eeap"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_hos6_s0",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_hos6"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_hos6_s1",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_hos6",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_hos6_s2",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_hos6",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_hos6_s3",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_hos6"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_hos6_s4",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_hos6"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_m3iq_s0",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_m3iq"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_m3iq_s1",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_m3iq",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_m3iq_s2",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_m3iq",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_m3iq_s3",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_m3iq"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_m3iq_s4",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_m3iq"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s0",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_z4js"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s1",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_z4js",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s2",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_z4js",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s3",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_z4js"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s4",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_z4js"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s5",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_z4js"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s6",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_z4js"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s7",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_z4js",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s8",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_z4js",
+        "model_B": "cand_2aft"
+      },
+      "ok": true
+    },
+    {
+      "run_id": "v0_cand_z4js_s9",
+      "status": "completed",
+      "n_guard_terms": 13,
+      "unredacted_leaks_to_brain": [],
+      "self_referential_after_redaction": [],
+      "brain_messages_present": true,
+      "redactions_applied_at_runtime": [],
+      "n_redaction_events": 0,
+      "transcript_raw_hits_informational": [],
+      "label_shuffle_enabled": true,
+      "label_map": {
+        "model_A": "cand_2aft",
+        "model_B": "cand_z4js"
+      },
+      "ok": true
+    }
+  ]
+}
