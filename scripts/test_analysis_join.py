@@ -37,6 +37,7 @@ SYNTHETIC DATA IS NOT DATA
 
 from __future__ import annotations
 
+import collections
 import json
 import os
 import shutil
@@ -474,6 +475,69 @@ def main() -> int:
     rc_bad = run_join(ROOT / "out_bad", unsealed=True,
                       extra=["--exclude-runs", "v0_cand_DOES_NOT_EXIST_s0"])
     check(rc_bad == 4, "an unknown run_id in --exclude-runs is refused (rc=4)")
+
+    print("\n11. condition derives from results ROOT + prefix, not prefix alone")
+    # The GLM arm ran --agent-version v0, so its run ids are byte-identical to the Opus
+    # v0 arm's and differ only by results root. Keying on run_id alone silently dropped
+    # all 30 of them.
+    glm_root = ROOT / "runs_glm"
+    glm_root.mkdir(parents=True, exist_ok=True)
+    # An id that ALREADY exists under runs/ as v0_opus, on a (candidate, seed) trial the
+    # fixture's glm_cand_ rows do not use - so the only thing under test is the clash.
+    clash = "v0_cand_SYNTHa_s19"
+    src = json.loads((RUNS / clash / "run_meta.json").read_text(encoding="utf-8"))
+    (glm_root / clash).mkdir(parents=True, exist_ok=True)
+    (glm_root / clash / "run_meta.json").write_text(
+        json.dumps(src), encoding="utf-8")
+
+    n_fixture = len(list(RUNS.iterdir()))
+    runs_glm = AJ.load_runs([str(RUNS / "*"), str(glm_root / "*")])
+    conds = collections.Counter(r["condition"] for r in runs_glm)
+    check(len(runs_glm) == n_fixture + 1,
+          f"the basename clash across roots is KEPT, not silently de-duplicated "
+          f"({n_fixture} + 1 vs {len(runs_glm)})")
+    g = [r for r in runs_glm if r["results_root"] == "runs_glm"]
+    check(len(g) == 1 and g[0]["condition"] == "glm_v0",
+          "a run under runs_glm/ is condition glm_v0 despite its v0_ run id")
+    check(any(r["run_id"] == clash and r["condition"] == "v0_opus" for r in runs_glm),
+          "the identically-named run under runs/ is still v0_opus")
+    check(g[0]["run_dir"].endswith(clash) and g[0]["results_root"] == "runs_glm",
+          "the row records run_dir and results_root so the mapping is auditable")
+    check(conds.get("glm_v0", 0) == 5 + 1,
+          f"glm_v0 now holds the fixture's 5 glm_cand_ rows plus this one "
+          f"(got {conds.get('glm_v0')})")
+
+    print("\n12. a duplicate WITHIN a condition fails loudly")
+    # Two DIFFERENT directories in the SAME root carrying the same run_id: the same
+    # trial counted twice, which moves every rate.
+    second = glm_root / (clash + "_copy")
+    second.mkdir(parents=True, exist_ok=True)
+    (second / "run_meta.json").write_text(json.dumps(src), encoding="utf-8")
+    raised = ""
+    try:
+        AJ.load_runs([str(glm_root / "*")])
+    except AJ.JoinError as e:
+        raised = str(e)
+    check("duplicate runs within a condition" in raised,
+          "two runs with the same (condition, run_id) raise JoinError")
+    check(clash in raised and "runs_glm" in raised,
+          "the error names the colliding run and both paths")
+    check(raised.count("runs_glm/") >= 2, "both colliding paths are printed")
+    shutil.rmtree(second, ignore_errors=True)
+
+    # And the clean case still loads once the duplicate is gone.
+    ok_again = AJ.load_runs([str(glm_root / "*")])
+    check(len(ok_again) == 1, "removing the duplicate makes the load succeed again")
+    shutil.rmtree(glm_root, ignore_errors=True)
+
+    print("\n13. blind mode still emits no rung after the loader change")
+    rc = run_join(OUT_BLIND, unsealed=False)
+    inv_b = json.loads((OUT_BLIND / "run_inventory.json").read_text(encoding="utf-8"))
+    check(rc == 0, "blind join still exits 0")
+    check(all(r["rung"] is None for r in inv_b["runs"]),
+          "every rung is still null in blind mode")
+    check(all(r.get("results_root") for r in inv_b["runs"]),
+          "every inventory row records its results_root")
 
     print(f"\n{'=' * 62}")
     if _fails:

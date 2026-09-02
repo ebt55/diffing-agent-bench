@@ -78,15 +78,27 @@ import analysis_instrument as AI  # noqa: E402  the only source of every rate
 SCHEMA_FIGURE_INPUT = "analysis_figure_input/1"
 SCHEMA_BLIND = "analysis_blind_outcomes/1"
 
-# run_id prefix -> (condition, arm). The prefix is authoritative: config.notes is free
-# text and is wrong for the baselines (it ends with a sentence, not a candidate id),
-# which is why candidate ids are parsed from the run_id here instead.
-CONDITION_BY_PREFIX = (
-    ("v0_cand_", "v0_opus", "headline"),
-    ("v1_cand_", "v1_opus", "headline"),
-    ("glm_cand_", "glm_v0", "exploratory_arm"),
-    ("bat_cand_", "battery", "headline"),
-    ("intro_cand_", "introspection", "headline"),
+# (results root directory name, run_id prefix) -> (condition, arm).
+#
+# The RESULTS ROOT is part of the key, not decoration. The Amendment 9 GLM arm was run
+# with `--agent-version v0`, so the campaign driver emitted run ids of the form
+# `v0_cand_<id>_s<n>` - byte identical to the Opus v0 arm's, differing only by results
+# root. Keying on the run_id prefix alone therefore either mislabels those 30 runs as
+# headline v0_opus, or - because the loader used to de-duplicate on directory basename
+# - drops them silently, which is what it actually did until this was found. Neither is
+# acceptable for an arm whose refusal rate is Amendment 9's primary output.
+#
+# An empty prefix matches every run under that root.
+CONDITION_BY_ROOT_AND_PREFIX = (
+    ("runs_glm", "", "glm_v0", "exploratory_arm"),
+    # A `glm_cand_` id is the GLM arm wherever it lives. The real Sep-2 campaign did
+    # not produce such ids, but this naming is the clearer convention and is what the
+    # synthetic fixture uses, so both are recognised rather than one silently ignored.
+    ("runs", "glm_cand_", "glm_v0", "exploratory_arm"),
+    ("runs", "v0_cand_", "v0_opus", "headline"),
+    ("runs", "v1_cand_", "v1_opus", "headline"),
+    ("runs", "bat_cand_", "battery", "headline"),
+    ("runs", "intro_cand_", "introspection", "headline"),
 )
 # One pair-level decision, not seed-paired trials: no interval is drawn for these.
 SINGLE_DECISION_CONDITIONS = ("battery", "introspection")
@@ -129,9 +141,10 @@ def load_run(run_dir: Path) -> dict | None:
         m = json.loads(f.read_text(encoding="cp1252"))
     run_id = m.get("run_id") or run_dir.name
 
+    results_root = run_dir.parent.name
     condition = arm = None
-    for prefix, cond, a in CONDITION_BY_PREFIX:
-        if run_id.startswith(prefix):
+    for root, prefix, cond, a in CONDITION_BY_ROOT_AND_PREFIX:
+        if results_root == root and run_id.startswith(prefix):
             condition, arm = cond, a
             break
     if condition is None:
@@ -160,6 +173,17 @@ def load_run(run_dir: Path) -> dict | None:
 
     return {
         "run_id": run_id,
+        # Recorded so the condition mapping is auditable from the artifact rather than
+        # reconstructed from this file's constants.
+        #
+        # agent_version is the value run_meta ACTUALLY carries, not a derived one. Only
+        # the v1 loop writes it; the v0 loop predates the field, so it is null for every
+        # v0-loop run including the whole GLM arm. Null here means "not recorded", not
+        # "not v0" - run_dir and results_root are what make the condition checkable.
+        "run_dir": run_dir.as_posix(),
+        "results_root": results_root,
+        "agent_version": (m.get("agent_version")
+                          or (m.get("config") or {}).get("agent_version")),
         "condition": condition,
         "arm": arm,
         "candidate_id": cid.group(1) if cid else None,
@@ -185,17 +209,57 @@ def load_run(run_dir: Path) -> dict | None:
 
 
 def load_runs(globs: list[str]) -> list[dict]:
-    seen, out = set(), []
+    """Load every matching run, keyed by FULL PATH.
+
+    De-duplication is by resolved path, never by directory basename. Two runs in
+    different results roots may legitimately share a basename - the GLM arm's ids are
+    identical to the Opus v0 arm's - and treating that as a duplicate silently deleted
+    30 completed runs from the analysis.
+
+    What IS an error is a duplicate *within* a condition: two runs claiming the same
+    (condition, candidate_id, seed), or the same run_id twice in one condition. That
+    means the same trial was counted twice, which moves every rate. It fails loudly
+    with both paths rather than picking a winner.
+    """
+    seen_paths: set[str] = set()
+    out: list[dict] = []
     for g in globs:
         for p in sorted(glob.glob(g)):
             d = Path(p)
-            if not d.is_dir() or d.name in seen:
+            if not d.is_dir():
                 continue
+            key = d.resolve().as_posix()
+            if key in seen_paths:
+                continue          # the same directory matched by two globs
             r = load_run(d)
             if r is not None:
-                seen.add(d.name)
+                seen_paths.add(key)
                 out.append(r)
-    return sorted(out, key=lambda r: r["run_id"])
+
+    by_id: dict[tuple, list[str]] = {}
+    by_trial: dict[tuple, list[str]] = {}
+    for r in out:
+        by_id.setdefault((r["condition"], r["run_id"]), []).append(r["run_dir"])
+        if r["candidate_id"] is not None and r["seed"] is not None:
+            by_trial.setdefault(
+                (r["condition"], r["candidate_id"], r["seed"]), []).append(r["run_dir"])
+
+    dupes = []
+    for (cond, rid), paths in sorted(by_id.items()):
+        if len(paths) > 1:
+            dupes.append(f"condition {cond}: run_id {rid} appears {len(paths)} times:\n"
+                         + "\n".join(f"      {x}" for x in sorted(paths)))
+    for (cond, cand, seed), paths in sorted(by_trial.items(), key=lambda kv: str(kv[0])):
+        if len(paths) > 1:
+            dupes.append(f"condition {cond}: trial ({cand}, seed {seed}) appears "
+                         f"{len(paths)} times:\n"
+                         + "\n".join(f"      {x}" for x in sorted(paths)))
+    if dupes:
+        raise JoinError(
+            "duplicate runs within a condition — the same trial would be counted "
+            "more than once, which moves every rate:\n  " + "\n  ".join(dupes))
+
+    return sorted(out, key=lambda r: (r["condition"], r["run_id"]))
 
 
 def load_jsonl_last_per_run(path: Path, what: str) -> dict[str, dict]:
@@ -681,8 +745,12 @@ def build_inventory(runs: list[dict], spend_field: str, provenance: dict) -> dic
         "overall_refusal_rate": refusal_block(runs),
         "spend_composition": spend_composition(runs),
         "spend_field_caveat": spend_caveat(runs),
+        # run_dir / results_root / agent_version travel with every row: run ids are NOT
+        # unique across results roots, so `condition` is only checkable if the row says
+        # which directory it came from.
         "runs": [{k: r[k] for k in (
-            "run_id", "condition", "arm", "candidate_id", "seed", "status", "outcome",
+            "run_id", "run_dir", "results_root", "agent_version",
+            "condition", "arm", "candidate_id", "seed", "status", "outcome",
             "brain_usd", "targets_usd", "pod_usd", "total_usd", "cost_exact",
             "n_unpriced_calls", "turns_used", "brain_model", "harness_commit",
             "analysis_schema_version", "n_midrun_refusal_events", "rung")}

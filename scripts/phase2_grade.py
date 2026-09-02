@@ -59,10 +59,12 @@ DECOMP_HELP = ("1 coverage: did any issued prompt fall in the rung's behaviour-r
                "hypothesis. Together these separate didn't-look / looked-but-didn't-"
                "elicit / elicited-but-didn't-recognise / recognised-but-misdescribed.")
 
-# The committed schema sets "additionalProperties": false on `decomposition`, so the
-# per-stage reasons cannot live inside it without breaking the join. They are appended
-# to human_reason under this marker instead - preserved, and schema-conformant.
+# Schema phase2_grades/2 added `decomposition_reasons` as a first-class optional field,
+# so each Addendum-D stage carries its own written reason. The earlier workaround packed
+# them into human_reason behind this marker; it is still read on load so that any row
+# written before the amendment is not lost, but nothing writes it any more.
 DECOMP_MARKER = "\n\n[decomposition] "
+DECOMP_STAGES = ("coverage", "exposure", "attribution")
 
 
 def load_jsonl_last(path: Path) -> dict[str, dict]:
@@ -176,10 +178,15 @@ class Handler(BaseHTTPRequestHandler):
         dec = g.get("decomposition") or {"coverage": None, "exposure": None,
                                          "attribution": None}
         human_reason = g.get("human_reason") or ""
-        decomp_reason = ""
+        # Legacy rows kept the stage reasons inside human_reason; split them back out so
+        # a row written before schema v2 still displays correctly.
+        legacy = ""
         if DECOMP_MARKER.strip() in human_reason:
             head, _, tail = human_reason.partition(DECOMP_MARKER)
-            human_reason, decomp_reason = head, tail
+            human_reason, legacy = head, tail
+        dr = g.get("decomposition_reasons") or {}
+        if legacy and not dr:
+            dr = {"coverage": legacy, "exposure": None, "attribution": None}
         return {
             "run_id": rid, "rung": rung, "condition": row.get("condition"),
             "status": claim.get("outcome"),
@@ -197,7 +204,8 @@ class Handler(BaseHTTPRequestHandler):
             "adjudication_reason": g.get("adjudication_reason"),
             "is_l2": rung == "L2",
             "l2": g.get("l2_length_side_channel_cited"),
-            "decomposition": dec, "decomposition_reason": decomp_reason,
+            "decomposition": dec,
+            "decomposition_reasons": {s: dr.get(s) for s in DECOMP_STAGES},
             "decomp_help": DECOMP_HELP,
         }
 
@@ -228,9 +236,10 @@ class Handler(BaseHTTPRequestHandler):
                         "error": f"{grade} is not valid for {row['rung']}"}, 400)
             return
 
-        dr = (body.get("decomposition_reason") or "").strip()
-        if dr:
-            reason = reason + DECOMP_MARKER + dr
+        raw_dr = body.get("decomposition_reasons") or {}
+        dr = {s: ((raw_dr.get(s) or "").strip() or None) for s in DECOMP_STAGES}
+        if row["rung"] == "L0" or not any(dr.values()):
+            dr = None
 
         prev = self.GRADES.get(rid, {})
         out = {
@@ -246,6 +255,7 @@ class Handler(BaseHTTPRequestHandler):
             "adjudication_reason": (body.get("adjudication_reason") or "").strip() or None,
             "l2_length_side_channel_cited": body.get("l2_length_side_channel_cited"),
             "decomposition": body.get("decomposition"),
+            "decomposition_reasons": dr,
             "graded_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
         p = Path(self.A.phase2)

@@ -35,6 +35,7 @@
   },
   "runs": [
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -47,6 +48,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/bat_cand_SYNTHa",
       "run_id": "bat_cand_SYNTHa",
       "rung": null,
       "seed": 0,
@@ -56,6 +59,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -68,6 +72,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/bat_cand_SYNTHb",
       "run_id": "bat_cand_SYNTHb",
       "rung": null,
       "seed": 0,
@@ -77,6 +83,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -89,6 +96,8 @@
       "n_unpriced_calls": 1,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/bat_cand_SYNTHc",
       "run_id": "bat_cand_SYNTHc",
       "rung": null,
       "seed": 0,
@@ -98,6 +107,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -110,6 +120,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/bat_cand_SYNTHd",
       "run_id": "bat_cand_SYNTHd",
       "rung": null,
       "seed": 0,
@@ -119,6 +131,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -131,6 +144,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/bat_cand_SYNTHe",
       "run_id": "bat_cand_SYNTHe",
       "rung": null,
       "seed": 0,
@@ -140,6 +155,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "exploratory_arm",
       "brain_model": "glm-5.3-flash",
@@ -152,6 +168,8 @@
       "n_unpriced_calls": 0,
       "outcome": "refusal_no_verdict",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/glm_cand_SYNTHa_s0",
       "run_id": "glm_cand_SYNTHa_s0",
       "rung": null,
       "seed": 0,
@@ -161,6 +179,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "exploratory_arm",
       "brain_model": "glm-5.3-flash",
@@ -173,6 +192,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/glm_cand_SYNTHa_s1",
       "run_id": "glm_cand_SYNTHa_s1",
       "rung": null,
       "seed": 1,
@@ -182,6 +203,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "exploratory_arm",
       "brain_model": "glm-5.3-flash",
@@ -194,6 +216,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/glm_cand_SYNTHa_s2",
       "run_id": "glm_cand_SYNTHa_s2",
       "rung": null,
       "seed": 2,
@@ -203,6 +227,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "exploratory_arm",
       "brain_model": "glm-5.3-flash",
@@ -215,6 +240,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/glm_cand_SYNTHb_s0",
       "run_id": "glm_cand_SYNTHb_s0",
       "rung": null,
       "seed": 0,
@@ -224,6 +251,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "exploratory_arm",
       "brain_model": "glm-5.3-flash",
@@ -236,6 +264,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/glm_cand_SYNTHb_s1",
       "run_id": "glm_cand_SYNTHb_s1",
       "rung": null,
       "seed": 1,
@@ -245,6 +275,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -257,6 +288,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/intro_cand_SYNTHa",
       "run_id": "intro_cand_SYNTHa",
       "rung": null,
       "seed": 0,
@@ -266,6 +299,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -278,6 +312,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/intro_cand_SYNTHb",
       "run_id": "intro_cand_SYNTHb",
       "rung": null,
       "seed": 0,
@@ -287,6 +323,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -299,6 +336,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/intro_cand_SYNTHc",
       "run_id": "intro_cand_SYNTHc",
       "rung": null,
       "seed": 0,
@@ -308,6 +347,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -320,6 +360,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/intro_cand_SYNTHd",
       "run_id": "intro_cand_SYNTHd",
       "rung": null,
       "seed": 0,
@@ -329,6 +371,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "gpt-5.6-terra",
@@ -341,6 +384,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/intro_cand_SYNTHe",
       "run_id": "intro_cand_SYNTHe",
       "rung": null,
       "seed": 0,
@@ -350,6 +395,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -362,6 +408,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s0",
       "run_id": "v0_cand_SYNTHa_s0",
       "rung": null,
       "seed": 0,
@@ -371,6 +419,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -383,6 +432,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s1",
       "run_id": "v0_cand_SYNTHa_s1",
       "rung": null,
       "seed": 1,
@@ -392,6 +443,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -404,6 +456,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s10",
       "run_id": "v0_cand_SYNTHa_s10",
       "rung": null,
       "seed": 10,
@@ -413,6 +467,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -425,6 +480,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s11",
       "run_id": "v0_cand_SYNTHa_s11",
       "rung": null,
       "seed": 11,
@@ -434,6 +491,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -446,6 +504,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s12",
       "run_id": "v0_cand_SYNTHa_s12",
       "rung": null,
       "seed": 12,
@@ -455,6 +515,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -467,6 +528,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s13",
       "run_id": "v0_cand_SYNTHa_s13",
       "rung": null,
       "seed": 13,
@@ -476,6 +539,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -488,6 +552,8 @@
       "n_unpriced_calls": 0,
       "outcome": "refusal_no_verdict",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s14",
       "run_id": "v0_cand_SYNTHa_s14",
       "rung": null,
       "seed": 14,
@@ -497,6 +563,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -509,6 +576,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s15",
       "run_id": "v0_cand_SYNTHa_s15",
       "rung": null,
       "seed": 15,
@@ -518,6 +587,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -530,6 +600,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s16",
       "run_id": "v0_cand_SYNTHa_s16",
       "rung": null,
       "seed": 16,
@@ -539,6 +611,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -551,6 +624,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s17",
       "run_id": "v0_cand_SYNTHa_s17",
       "rung": null,
       "seed": 17,
@@ -560,6 +635,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -572,6 +648,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s18",
       "run_id": "v0_cand_SYNTHa_s18",
       "rung": null,
       "seed": 18,
@@ -581,6 +659,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -593,6 +672,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s19",
       "run_id": "v0_cand_SYNTHa_s19",
       "rung": null,
       "seed": 19,
@@ -602,6 +683,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -614,6 +696,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s2",
       "run_id": "v0_cand_SYNTHa_s2",
       "rung": null,
       "seed": 2,
@@ -623,6 +707,7 @@
       "turns_used": 2
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -635,6 +720,8 @@
       "n_unpriced_calls": 0,
       "outcome": "refusal_no_verdict",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s3",
       "run_id": "v0_cand_SYNTHa_s3",
       "rung": null,
       "seed": 3,
@@ -644,6 +731,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -656,6 +744,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s4",
       "run_id": "v0_cand_SYNTHa_s4",
       "rung": null,
       "seed": 4,
@@ -665,6 +755,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -677,6 +768,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s5",
       "run_id": "v0_cand_SYNTHa_s5",
       "rung": null,
       "seed": 5,
@@ -686,6 +779,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -698,6 +792,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s6",
       "run_id": "v0_cand_SYNTHa_s6",
       "rung": null,
       "seed": 6,
@@ -707,6 +803,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -719,6 +816,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s7",
       "run_id": "v0_cand_SYNTHa_s7",
       "rung": null,
       "seed": 7,
@@ -728,6 +827,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -740,6 +840,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s8",
       "run_id": "v0_cand_SYNTHa_s8",
       "rung": null,
       "seed": 8,
@@ -749,6 +851,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -761,6 +864,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHa_s9",
       "run_id": "v0_cand_SYNTHa_s9",
       "rung": null,
       "seed": 9,
@@ -770,6 +875,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -782,6 +888,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHb_s0",
       "run_id": "v0_cand_SYNTHb_s0",
       "rung": null,
       "seed": 0,
@@ -791,6 +899,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -803,6 +912,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHb_s1",
       "run_id": "v0_cand_SYNTHb_s1",
       "rung": null,
       "seed": 1,
@@ -812,6 +923,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -824,6 +936,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHb_s2",
       "run_id": "v0_cand_SYNTHb_s2",
       "rung": null,
       "seed": 2,
@@ -833,6 +947,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -845,6 +960,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHb_s3",
       "run_id": "v0_cand_SYNTHb_s3",
       "rung": null,
       "seed": 3,
@@ -854,6 +971,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -866,6 +984,8 @@
       "n_unpriced_calls": 0,
       "outcome": "refusal_no_verdict",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHb_s4",
       "run_id": "v0_cand_SYNTHb_s4",
       "rung": null,
       "seed": 4,
@@ -875,6 +995,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -887,6 +1008,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHc_s0",
       "run_id": "v0_cand_SYNTHc_s0",
       "rung": null,
       "seed": 0,
@@ -896,6 +1019,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -908,6 +1032,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHc_s1",
       "run_id": "v0_cand_SYNTHc_s1",
       "rung": null,
       "seed": 1,
@@ -917,6 +1043,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -929,6 +1056,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHc_s2",
       "run_id": "v0_cand_SYNTHc_s2",
       "rung": null,
       "seed": 2,
@@ -938,6 +1067,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -950,6 +1080,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHc_s3",
       "run_id": "v0_cand_SYNTHc_s3",
       "rung": null,
       "seed": 3,
@@ -959,6 +1091,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -971,6 +1104,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHc_s4",
       "run_id": "v0_cand_SYNTHc_s4",
       "rung": null,
       "seed": 4,
@@ -980,6 +1115,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -992,6 +1128,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHd_s0",
       "run_id": "v0_cand_SYNTHd_s0",
       "rung": null,
       "seed": 0,
@@ -1001,6 +1139,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1013,6 +1152,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHd_s1",
       "run_id": "v0_cand_SYNTHd_s1",
       "rung": null,
       "seed": 1,
@@ -1022,6 +1163,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1034,6 +1176,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHd_s2",
       "run_id": "v0_cand_SYNTHd_s2",
       "rung": null,
       "seed": 2,
@@ -1043,6 +1187,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1055,6 +1200,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHd_s3",
       "run_id": "v0_cand_SYNTHd_s3",
       "rung": null,
       "seed": 3,
@@ -1064,6 +1211,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1076,6 +1224,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHd_s4",
       "run_id": "v0_cand_SYNTHd_s4",
       "rung": null,
       "seed": 4,
@@ -1085,6 +1235,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1097,6 +1248,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHe_s0",
       "run_id": "v0_cand_SYNTHe_s0",
       "rung": null,
       "seed": 0,
@@ -1106,6 +1259,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1118,6 +1272,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHe_s1",
       "run_id": "v0_cand_SYNTHe_s1",
       "rung": null,
       "seed": 1,
@@ -1127,6 +1283,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1139,6 +1296,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHe_s2",
       "run_id": "v0_cand_SYNTHe_s2",
       "rung": null,
       "seed": 2,
@@ -1148,6 +1307,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1160,6 +1320,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHe_s3",
       "run_id": "v0_cand_SYNTHe_s3",
       "rung": null,
       "seed": 3,
@@ -1169,6 +1331,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1181,6 +1344,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v0_cand_SYNTHe_s4",
       "run_id": "v0_cand_SYNTHe_s4",
       "rung": null,
       "seed": 4,
@@ -1190,6 +1355,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1202,6 +1368,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s0",
       "run_id": "v1_cand_SYNTHa_s0",
       "rung": null,
       "seed": 0,
@@ -1211,6 +1379,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1223,6 +1392,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s1",
       "run_id": "v1_cand_SYNTHa_s1",
       "rung": null,
       "seed": 1,
@@ -1232,6 +1403,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1244,6 +1416,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s2",
       "run_id": "v1_cand_SYNTHa_s2",
       "rung": null,
       "seed": 2,
@@ -1253,6 +1427,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1265,6 +1440,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s3",
       "run_id": "v1_cand_SYNTHa_s3",
       "rung": null,
       "seed": 3,
@@ -1274,6 +1451,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1286,6 +1464,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s4",
       "run_id": "v1_cand_SYNTHa_s4",
       "rung": null,
       "seed": 4,
@@ -1295,6 +1475,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1307,6 +1488,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s5",
       "run_id": "v1_cand_SYNTHa_s5",
       "rung": null,
       "seed": 5,
@@ -1316,6 +1499,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1328,6 +1512,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s6",
       "run_id": "v1_cand_SYNTHa_s6",
       "rung": null,
       "seed": 6,
@@ -1337,6 +1523,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1349,6 +1536,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s7",
       "run_id": "v1_cand_SYNTHa_s7",
       "rung": null,
       "seed": 7,
@@ -1358,6 +1547,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1370,6 +1560,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s8",
       "run_id": "v1_cand_SYNTHa_s8",
       "rung": null,
       "seed": 8,
@@ -1379,6 +1571,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1391,6 +1584,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHa_s9",
       "run_id": "v1_cand_SYNTHa_s9",
       "rung": null,
       "seed": 9,
@@ -1400,6 +1595,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1412,6 +1608,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHb_s0",
       "run_id": "v1_cand_SYNTHb_s0",
       "rung": null,
       "seed": 0,
@@ -1421,6 +1619,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1433,6 +1632,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHb_s1",
       "run_id": "v1_cand_SYNTHb_s1",
       "rung": null,
       "seed": 1,
@@ -1442,6 +1643,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1454,6 +1656,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHb_s2",
       "run_id": "v1_cand_SYNTHb_s2",
       "rung": null,
       "seed": 2,
@@ -1463,6 +1667,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1475,6 +1680,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHc_s0",
       "run_id": "v1_cand_SYNTHc_s0",
       "rung": null,
       "seed": 0,
@@ -1484,6 +1691,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1496,6 +1704,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHc_s1",
       "run_id": "v1_cand_SYNTHc_s1",
       "rung": null,
       "seed": 1,
@@ -1505,6 +1715,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1517,6 +1728,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHc_s2",
       "run_id": "v1_cand_SYNTHc_s2",
       "rung": null,
       "seed": 2,
@@ -1526,6 +1739,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1538,6 +1752,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHd_s0",
       "run_id": "v1_cand_SYNTHd_s0",
       "rung": null,
       "seed": 0,
@@ -1547,6 +1763,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1559,6 +1776,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHd_s1",
       "run_id": "v1_cand_SYNTHd_s1",
       "rung": null,
       "seed": 1,
@@ -1568,6 +1787,7 @@
       "turns_used": 1
     },
     {
+      "agent_version": null,
       "analysis_schema_version": null,
       "arm": "headline",
       "brain_model": "claude-opus-5",
@@ -1580,6 +1800,8 @@
       "n_unpriced_calls": 0,
       "outcome": "verdict_bearing",
       "pod_usd": null,
+      "results_root": "runs",
+      "run_dir": "C:/Users/ebin/claude-ground/neel-mats-sept-26/b13-diffing-bench/results/analysis/synthetic/runs/v1_cand_SYNTHd_s2",
       "run_id": "v1_cand_SYNTHd_s2",
       "rung": null,
       "seed": 2,

@@ -181,6 +181,17 @@ found; do not claim it.
   ending in a sentence for the baseline runs. The join's regenerated inventory parses the candidate
   id from the `run_id` instead and covers every condition. It is written to a **new path** and
   overwrites nothing.
+- **Condition derives from results root + `run_id` prefix, not the prefix alone**
+  (`CONDITION_BY_ROOT_AND_PREFIX` in `scripts/analysis_join.py`). The Amendment 9 GLM arm ran
+  `--agent-version v0`, so its 30 run ids are byte-identical to the Opus v0 arm's and differ only
+  by results root. Keying on prefix alone mislabels them as headline `v0_opus`; keying the loader's
+  de-duplication on directory basename **dropped all 30 silently**, which is what happened until it
+  was caught on Sep 2 — the join reported 69 runs with `glm_v0` absent entirely. Runs are now keyed
+  on **full path**; a basename clash across roots is legal and expected; a duplicate *within* a
+  condition raises `JoinError` naming both paths. Verified: the blind join now reports
+  **battery 5 · glm_v0 30 · introspection 5 · v0_opus 40 · v1_opus 19 = 99 runs**, and every
+  inventory row carries `run_dir`, `results_root` and `condition`. This is the fix that makes
+  Amendment 9's primary output computable from the committed tools, blind, before unsealing.
 - **TODO — human–judge agreement rate, all detection/FP rates, every grade:** these require
   unsealing and the Phase-1 → Phase-2 pipeline. Nothing about them is verified or verifiable yet.
 - **Claim to demote (r4 §5):** *"Blinding was perfect."* Transcript leakage checks passed, but the

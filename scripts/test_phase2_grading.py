@@ -147,7 +147,9 @@ def main() -> int:
               "human_reason": "x"})
     check(r["obj"]["ok"] is False, "FP is refused on a non-L0 rung")
     r = save({"run_id": "v0_cand_FAKEb_s0", "human_grade": "FULL",
-              "human_reason": "SYNTHETIC reason", "decomposition_reason": "SYN stages",
+              "human_reason": "SYNTHETIC reason",
+              "decomposition_reasons": {"coverage": "SYN cov", "exposure": "SYN exp",
+                                        "attribution": "SYN attr"},
               "decomposition": {"coverage": True, "exposure": True,
                                 "attribution": "FULL"}})
     check(r["obj"]["ok"] is True, "a complete grade saves")
@@ -167,8 +169,16 @@ def main() -> int:
     check("decomposition" in rows_out[0] and
           set(rows_out[0]["decomposition"] or {}) <= {"coverage", "exposure", "attribution"},
           "decomposition carries only the three schema-permitted fields")
-    check(P2.DECOMP_MARKER.strip() in rows_out[0]["human_reason"],
-          "per-stage reasons are preserved inside human_reason, not as extra keys")
+    check(schema["$id"] == "phase2_grades/2", "schema version was bumped to /2")
+    check(set(schema["required"]) == {"run_id", "human_grade"},
+          "the amendment added no required field")
+    dr = rows_out[0].get("decomposition_reasons") or {}
+    check(set(dr) == {"coverage", "exposure", "attribution"} and dr["exposure"] == "SYN exp",
+          "per-stage reasons are first-class in decomposition_reasons")
+    check(P2.DECOMP_MARKER.strip() not in rows_out[0]["human_reason"],
+          "human_reason is no longer used to smuggle the stage reasons")
+    check(rows_out[-1].get("decomposition_reasons") is None,
+          "a grade with no stage reasons writes null, not an empty object")
 
     print("\n9. judge_grade is blind, one-per-call, and priced")
     jsrc = Path(JG.__file__).read_text(encoding="utf-8")

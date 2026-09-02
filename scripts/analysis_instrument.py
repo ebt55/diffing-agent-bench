@@ -243,6 +243,12 @@ def load_runs(pattern: str) -> list[dict]:
         m = json.loads(f.read_text(encoding="utf-8"))
         out.append({
             "run_id": m["run_id"],
+            # Run ids are NOT unique across results roots: the Amendment 9 GLM arm ran
+            # `--agent-version v0` and so emits the same ids as the Opus v0 arm. Callers
+            # must scope their pattern to one root, or key on this field - never on
+            # run_id alone. scripts/analysis_join.py keys on full path for this reason.
+            "run_dir": Path(p).as_posix(),
+            "results_root": Path(p).parent.name,
             "status": m["status"],
             "outcome": outcome(m),
             "candidate_id": (m.get("config", {}).get("notes", "") or "").split()[-1],

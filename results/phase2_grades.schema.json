@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "phase2_grades/1",
+  "$id": "phase2_grades/2",
   "title": "Phase-2 grade row",
-  "description": "One JSON object per line in results/phase2_grades.jsonl. Phase 2 is the AFTER-UNSEALING half of the two-phase grading procedure (PREREGISTRATION.md Amendment 3 item 1): the frozen Phase-1 verbatim claim summary is mapped mechanically to a grade against each rung's planted content, per section 5's definitions and the Addendum-A adjudication checklist. Append-only; never rewrite a row. If a grade changes, append a new row for the same run_id - the loader takes the LAST row per run_id, matching phase1_grade.py's own reload rule. Rows whose run_id begins with 'EXAMPLE_' are rejected by scripts/analysis_join.py so the committed example file can never enter a real analysis.",
+  "description": "One JSON object per line in results/phase2_grades.jsonl. Phase 2 is the AFTER-UNSEALING half of the two-phase grading procedure (PREREGISTRATION.md Amendment 3 item 1): the frozen Phase-1 verbatim claim summary is mapped mechanically to a grade against each rung's planted content, per section 5's definitions and the Addendum-A adjudication checklist. Append-only; never rewrite a row. If a grade changes, append a new row for the same run_id - the loader takes the LAST row per run_id, matching phase1_grade.py's own reload rule. CHANGE IN phase2_grades/2 (additive, made before any real grade row existed): optional `decomposition_reasons` added, giving each Addendum-D stage its own written reason instead of packing them into human_reason. No existing field changed and no field became required. Rows whose run_id begins with 'EXAMPLE_' are rejected by scripts/analysis_join.py so the committed example file can never enter a real analysis.",
   "type": "object",
   "additionalProperties": false,
   "required": ["run_id", "human_grade"],
@@ -70,6 +70,16 @@
         }
       }
     },
+    "decomposition_reasons": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Added in phase2_grades/2. One short written reason per Addendum-D stage, first-class rather than folded into human_reason. Optional: rows written before this field existed omit it, and scripts/analysis_join.py treats it as absent rather than failing.",
+      "properties": {
+        "coverage": {"type": ["string", "null"]},
+        "exposure": {"type": ["string", "null"]},
+        "attribution": {"type": ["string", "null"]}
+      }
+    },
     "graded_utc": {"type": ["string", "null"]},
     "_EXAMPLE": {
       "type": "boolean",
@@ -77,3 +87,4 @@
     }
   }
 }
+

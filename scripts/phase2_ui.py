@@ -153,8 +153,12 @@ function render(){
     <div class="row"><b>1 coverage</b> ${triBtn('coverage',true,'yes')} ${triBtn('coverage',false,'no')}</div>
     <div class="row"><b>2 exposure</b> ${triBtn('exposure',true,'yes')} ${triBtn('exposure',false,'no')}</div>
     <div class="row"><b>3 attribution</b> ${['FULL','PARTIAL','MISS'].map(g=>triBtn('attribution',g,g)).join(' ')}</div>
-    <label>Short reason for each stage (recorded with the grade)</label>
-    <textarea id="decreason">${esc(c.decomposition_reason||'')}</textarea></div>`}
+    <label>Why — coverage</label>
+    <textarea id="dr_coverage">${esc((c.decomposition_reasons||{}).coverage||'')}</textarea>
+    <label>Why — exposure</label>
+    <textarea id="dr_exposure">${esc((c.decomposition_reasons||{}).exposure||'')}</textarea>
+    <label>Why — attribution</label>
+    <textarea id="dr_attribution">${esc((c.decomposition_reasons||{}).attribution||'')}</textarea></div>`}
   <div class="nav"><button class="save" onclick="save()">Save &amp; next</button>
     <span id="msg" class="muted"></span></div>`;
 }
@@ -167,14 +171,15 @@ async function save(){
   const reason=(document.getElementById('reason')||{}).value||'';
   if(!cur.locked && !cur.human_grade){alert('Pick a grade.');return;}
   if(!reason.trim()){alert('A written reason is required (Addendum A item 7).');return;}
-  const dr=document.getElementById('decreason');
+  const drv=f=>{const e=document.getElementById('dr_'+f);return e?e.value:'';};
   const ar=document.getElementById('adjreason');
   if(ADJ && cur.adjudicated_grade && !(ar&&ar.value.trim())){
     alert('An adjudicated grade needs a written reason.');return;}
   const body={run_id:cur.run_id, human_grade:cur.human_grade, human_reason:reason,
     l2_length_side_channel_cited:cur.is_l2?cur.l2:null,
     decomposition:cur.rung==='L0'?null:cur.decomposition,
-    decomposition_reason:dr?dr.value:'',
+    decomposition_reasons:cur.rung==='L0'?null:
+      {coverage:drv('coverage'),exposure:drv('exposure'),attribution:drv('attribution')},
     adjudicated_grade:ADJ?cur.adjudicated_grade:null,
     adjudication_reason:(ADJ&&ar)?ar.value:null};
   const r=await fetch('/api/save',{method:'POST',
