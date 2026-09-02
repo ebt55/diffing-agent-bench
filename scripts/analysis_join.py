@@ -273,6 +273,13 @@ def load_run(run_dir: Path) -> dict | None:
         "grade": None,
         "grade_source": None,
         "human_grade": None,
+        # Ruling B (DECISIONS.md #35): the agreement statistic uses the FIRST human
+        # grade on file; `human_grade` above stays the last one (the metric grade's
+        # human component). Both are carried so a rewrite is visible, never hidden.
+        "first_human_grade": None,
+        "last_human_grade": None,
+        "human_grade_rewrites": [],
+        "human_grade_rewritten_after_judge_exposure": False,
         "judge_grade": None,
         "adjudicated_grade": None,
         "decomposition": None,
@@ -374,6 +381,54 @@ def load_jsonl_last_per_run(path: Path, what: str,
         else:
             rows[rid] = r
     return rows
+
+
+def phase2_human_grade_history(path: Path) -> dict[tuple, dict]:
+    """Per (condition, run_id): the FIRST and LAST human grade on file, and every rewrite.
+
+    The grades file is append-only and the METRIC grade is last-row-wins with
+    adjudicated precedence - unchanged. The AGREEMENT statistic is a different thing:
+    it measures whether two graders working independently agreed, so its human side
+    must be the grade committed BEFORE the judge's label could have been seen.
+    DECISIONS.md #35 ruling B fixes that as the first human grade per run.
+
+    A later human row carrying a different grade is a REWRITE. Until ruling A the
+    adjudicate-mode page posted the Grade-row state as human_grade, so an adjudication
+    could overwrite the human grade with the judge's label - an instrument artefact,
+    not a grader choice; three such rows exist in the real file. They are returned here
+    with `judge_on_file_before` so the join can disclose them rather than absorb them.
+    """
+    out: dict[tuple, dict] = {}
+    if not path.exists():
+        return out
+    for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = line.strip()
+        if not line:
+            continue
+        r = json.loads(line)           # validity is enforced by load_jsonl_last_per_run
+        rid = r.get("run_id")
+        if not rid:
+            continue
+        key = (r.get("condition") or claim_condition(rid), rid)
+        h = out.setdefault(key, {"first_human_grade": None, "last_human_grade": None,
+                                 "rewrites": [], "_judge_seen": False})
+        hg = r.get("human_grade")
+        if hg:
+            if h["first_human_grade"] is None:
+                h["first_human_grade"] = hg
+            elif hg != h["last_human_grade"]:
+                h["rewrites"].append({
+                    "line": i, "from": h["last_human_grade"], "to": hg,
+                    "judge_on_file_before": h["_judge_seen"],
+                    "adjudicated_grade_on_row": r.get("adjudicated_grade")})
+            h["last_human_grade"] = hg
+        if r.get("judge_grade"):
+            h["_judge_seen"] = True
+    for h in out.values():
+        h["rewritten_after_judge_exposure"] = any(w["judge_on_file_before"]
+                                                  for w in h["rewrites"])
+        h.pop("_judge_seen", None)
+    return out
 
 
 def load_sealed_map(path: Path, candidate_ids: set[str]) -> dict[str, str]:
@@ -508,7 +563,14 @@ def attach_phase1(runs: list[dict], claims: dict) -> list[str]:
 
 
 def attach_phase2(runs: list[dict], grades: dict[str, dict],
-                  by_cand: dict[str, str] | None) -> list[str]:
+                  by_cand: dict[str, str] | None,
+                  history: dict[tuple, dict] | None = None) -> list[str]:
+    """Attach the LAST grade row per (condition, run_id) as the metric grade.
+
+    `history` (from phase2_human_grade_history) adds the FIRST human grade and any
+    rewrites for ruling B. When it is absent - a direct caller or a test - the first
+    human grade is taken to equal the last, which is exactly the pre-ruling behaviour.
+    """
     problems = []
     # Same collision as Phase 1: run ids are not unique across conditions. Phase-2 rows
     # carry `condition` in the schema, so it is used when present and resolved from the
@@ -548,6 +610,12 @@ def attach_phase2(runs: list[dict], grades: dict[str, dict],
                              ("human" if human else None))
         r["judge_grade"] = g.get("judge_grade")
         r["human_grade"] = human
+        hist = (history or {}).get((cond, rid)) or {}
+        r["first_human_grade"] = hist.get("first_human_grade") or human
+        r["last_human_grade"] = human
+        r["human_grade_rewrites"] = list(hist.get("rewrites") or [])
+        r["human_grade_rewritten_after_judge_exposure"] = bool(
+            hist.get("rewritten_after_judge_exposure"))
         r["adjudicated_grade"] = adjudicated
         r["l2_length_side_channel_cited"] = g.get("l2_length_side_channel_cited")
         r["decomposition"] = g.get("decomposition")
@@ -751,10 +819,24 @@ def _is_mechanical(r: dict) -> bool:
     return str(r.get("phase1_extracted_by") or "human").startswith("mechanical")
 
 
+def _first_human(r: dict) -> str | None:
+    """The human side of the agreement statistic: the FIRST human grade on file."""
+    return r.get("first_human_grade") or r.get("human_grade")
+
+
 def _agreement_over(runs: list[dict]) -> dict:
-    pairs = [(r.get("human_grade"), r.get("judge_grade")) for r in runs
-             if r.get("human_grade") and r.get("judge_grade")]
-    out: dict = {"n_runs_with_both_grades": len(pairs)}
+    # RULING B (DECISIONS.md #35): the human side is the FIRST human grade recorded for
+    # the run - the grade committed before the judge's label could have been seen. The
+    # metric grade stays last-row-wins with adjudicated precedence; agreement measures
+    # whether two independent graders agreed, not what the final answer is.
+    pairs = [(_first_human(r), r.get("judge_grade")) for r in runs
+             if _first_human(r) and r.get("judge_grade")]
+    out: dict = {
+        "n_runs_with_both_grades": len(pairs),
+        "human_side": ("FIRST human grade per (condition, run_id) - the pre-judge-"
+                       "exposure grade (DECISIONS.md #35 ruling B); the metric grade "
+                       "is last-row-wins with adjudicated precedence and is unaffected"),
+    }
     if not pairs:
         out["note"] = ("no run carries both a human and a judge grade yet, so no "
                        "agreement statistic is computed - none is invented")
@@ -765,6 +847,12 @@ def _agreement_over(runs: list[dict]) -> dict:
         "detection_FULL_PARTIAL_MISS": tuple(sorted(DETECTION_GRADES)),
         "null_FP_CR": tuple(sorted(NULL_GRADES)),
         "combined": tuple(sorted(DETECTION_GRADES | NULL_GRADES)),
+        # Every pair, with REFUSAL_NO_VERDICT as a label. The three rows above DROP a
+        # pair when either side is REFUSAL_NO_VERDICT; here a chosen REFUSAL_NO_VERDICT
+        # against a substantive judge label is a disagreement, and two locked refusal
+        # labels are an agreement. Reported beside the pre-registered rows, never in
+        # place of them.
+        "all_pairs_incl_REFUSAL_NO_VERDICT": tuple(sorted(ALL_GRADES)),
     }
     for name, labels in sets.items():
         hh = [a for a, b in zip(h, j) if a in labels and b in labels]
@@ -801,6 +889,35 @@ def agreement_blocks(runs: list[dict]) -> dict:
                   "baselines and the GLM arm); reported separately, never pooled into "
                   "the pre-registered statistic above")
     out["post_unseal_mechanical_extraction"] = m
+
+    # Ruling B disclosure: every row whose human grade was rewritten after its first
+    # save, listed - never absorbed - because the rewrite was made by the instrument
+    # (the adjudicate-mode save bug, ruling A), not chosen by the grader.
+    rewritten = sorted(
+        (r for r in runs if r.get("first_human_grade") and r.get("last_human_grade")
+         and r["first_human_grade"] != r["last_human_grade"]),
+        key=lambda r: (str(r["condition"]), r["run_id"]))
+    out["human_grade_rewritten_rows"] = {
+        "note": ("rows whose human_grade was REWRITTEN by a later save. Until "
+                 "DECISIONS.md #35 the adjudicate-mode page posted the Grade-row state "
+                 "as human_grade, so an adjudication could overwrite the human grade "
+                 "after the judge's label was visible - an INSTRUMENT ARTEFACT, not a "
+                 "grader choice. The agreement rows use the first human grade; these "
+                 "rows are listed so the artefact stays visible."),
+        "n": len(rewritten),
+        "rows": [{
+            "condition": r["condition"], "run_id": r["run_id"],
+            "extraction": "mechanical" if _is_mechanical(r) else "human",
+            "first_human_grade": r["first_human_grade"],
+            "last_human_grade": r["last_human_grade"],
+            "judge_grade": r.get("judge_grade"),
+            "adjudicated_grade": r.get("adjudicated_grade"),
+            "final_grade": r.get("grade"),
+            "after_judge_exposure": bool(
+                r.get("human_grade_rewritten_after_judge_exposure")),
+            "rewrites": r.get("human_grade_rewrites") or [],
+        } for r in rewritten],
+    }
     return out
 
 
@@ -1037,7 +1154,10 @@ def build_grade_ledger(runs: list[dict], provenance: dict) -> str:
     L.append("")
     L.append("`final` = adjudicated when present, else human. `stage3 derived` is the "
              "authoritative Addendum-D stage 3 (ruling 1); `stage3 entered` is the "
-             "value typed on the card, kept as a check.")
+             "value typed on the card, kept as a check. `human` prints `first → last ✎` "
+             "where a later save rewrote the human grade (DECISIONS.md #35: an "
+             "adjudicate-mode instrument artefact; the agreement statistic uses the "
+             "first).")
     L.append("")
 
     order = {"L0": 0, "L1": 1, "L2": 2, "L3": 3}
@@ -1063,7 +1183,10 @@ def build_grade_ledger(runs: list[dict], provenance: dict) -> str:
                    f"attr={d.get('attribution')}")
             flag = "**yes**" if r["outcome"] == "refusal_no_verdict" else "no"
             mark = " ⚠" if r.get("stage3_mismatch") else ""
-            L.append(f"| `{r['run_id']}` | {r['condition']} | {r['human_grade'] or '—'} "
+            first, last = r.get("first_human_grade"), r.get("last_human_grade")
+            human_col = (f"{first} → {last} ✎" if first and last and first != last
+                         else (r["human_grade"] or "—"))
+            L.append(f"| `{r['run_id']}` | {r['condition']} | {human_col} "
                      f"| {r['judge_grade'] or '—'} | {r['adjudicated_grade'] or '—'} | "
                      f"**{r['grade']}** | {r['grade_source'] or '—'} | {r['outcome']} | "
                      f"{flag} | {dec} | {r.get('stage3_derived') or '—'}{mark} |")
@@ -1522,6 +1645,7 @@ def _agreement_section(agree: dict) -> str:
     L.append(f"- runs carrying both a human and a judge grade: "
              f"**{agree['n_runs_with_both_grades']}**")
     L.append(f"- {agree['primary_rule']}")
+    L.append(f"- human side: {agree.get('human_side', 'human_grade')}")
     L.append(f"- {agree['disclosure']}")
     L.append("")
     if agree.get("note"):
@@ -1532,7 +1656,8 @@ def _agreement_section(agree: dict) -> str:
         T = ["| label set | n | raw agreement | positive agreement (FULL) | "
              "negative agreement (FULL) | Cohen's kappa (secondary) |",
              "|---|---|---|---|---|---|"]
-        for name in ("detection_FULL_PARTIAL_MISS", "null_FP_CR", "combined"):
+        for name in ("detection_FULL_PARTIAL_MISS", "null_FP_CR", "combined",
+                     "all_pairs_incl_REFUSAL_NO_VERDICT"):
             a = block.get(name, {})
             if not a or a.get("n", 0) == 0:
                 T.append(f"| {name} | 0 | — | — | — | — |")
@@ -1563,6 +1688,31 @@ def _agreement_section(agree: dict) -> str:
     else:
         L.append("*No mechanically extracted claim carries both a human and a judge "
                  "grade yet; nothing is computed and nothing is invented.*")
+    L.append("")
+    L.append("*`all_pairs_incl_REFUSAL_NO_VERDICT` keeps every pair and treats "
+             "REFUSAL_NO_VERDICT as a label; the three rows above drop a pair when "
+             "either side is REFUSAL_NO_VERDICT. It is reported beside the "
+             "pre-registered rows, never in place of them.*")
+    L.append("")
+
+    rw = agree.get("human_grade_rewritten_rows") or {}
+    L.append("### Human grades rewritten after the first save — instrument artefact "
+             "(DECISIONS.md #35)")
+    L.append("")
+    L.append(f"*{rw.get('note', '')}*")
+    L.append("")
+    if rw.get("n"):
+        L.append("| condition | run_id | extraction | human (first → last) | judge | "
+                 "adjudicated | final | judge label on file before the rewrite? |")
+        L.append("|---|---|---|---|---|---|---|---|")
+        for x in rw["rows"]:
+            L.append(f"| {x['condition']} | `{x['run_id']}` | {x['extraction']} | "
+                     f"{x['first_human_grade']} → {x['last_human_grade']} | "
+                     f"{x['judge_grade'] or '—'} | {x['adjudicated_grade'] or '—'} | "
+                     f"**{x['final_grade']}** | "
+                     f"{'yes' if x['after_judge_exposure'] else 'no'} |")
+    else:
+        L.append("*No human grade was rewritten after its first save.*")
     L.append("")
     return "\n".join(L)
 
@@ -1623,6 +1773,8 @@ def main(argv: list[str] | None = None) -> int:
                                      keyed_by_condition=True)
     grades = load_jsonl_last_per_run(Path(a.phase2), "phase2",
                                      keyed_by_condition=True)
+    # Ruling B: the first human grade per run, for the agreement statistic only.
+    history = phase2_human_grade_history(Path(a.phase2))
 
     by_cand = None
     unsealed = a.unsealed_map is not None
@@ -1646,7 +1798,8 @@ def main(argv: list[str] | None = None) -> int:
               "outputs are refused. Pass --unsealed-map to produce them.")
         inputs["sealed_map"] = "NOT READ (blind mode)"
 
-    problems = attach_phase1(runs, claims) + attach_phase2(runs, grades, by_cand)
+    problems = (attach_phase1(runs, claims)
+                + attach_phase2(runs, grades, by_cand, history=history))
     if problems:
         print("JOIN REFUSED — the inputs disagree with each other:", file=sys.stderr)
         for p in problems:

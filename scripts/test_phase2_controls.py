@@ -117,8 +117,23 @@ document.getElementById('dr_exposure').value = "SYN exp";
 document.getElementById('dr_attribution').value = "SYN attr";
 save().then(() => {
   out.posted = POSTED;
-  out.alerts = ALERTS;
-  console.log(JSON.stringify(out));
+  out.alerts = ALERTS.slice();
+  // 6. adjudicate mode: the human fields are frozen and never leave the page
+  //    (DECISIONS.md #35 ruling A)
+  ADJ = true; POSTED = null;
+  const before = { grade: cur.human_grade, dec: {...cur.decomposition} };
+  pick('FULL');                                  // must be a no-op
+  click(triBtn('coverage', false, 'no'));        // must be a no-op
+  setL2(true);                                   // must be a no-op
+  out.adj_after_clicks = { grade: cur.human_grade, dec: {...cur.decomposition},
+                           l2: cur.l2, before };
+  out.adj_grade_buttons_disabled = /disabled/.test(gradeBtns());
+  cur.adjudicated_grade = 'PARTIAL';
+  document.getElementById('adjreason').value = "SYN adjudication";
+  return save().then(() => {
+    out.adj_posted = POSTED;
+    console.log(JSON.stringify(out));
+  });
 });
 """
 
@@ -195,6 +210,22 @@ def main() -> int:
           f"decomposition_reasons.* all present ({dr})")
     check(posted.get("human_grade") == "MISS" and posted.get("human_reason"),
           "grade and reason also present")
+
+    print("\n5. adjudicate mode freezes the human fields (DECISIONS.md #35 ruling A)")
+    ac = out.get("adj_after_clicks") or {}
+    check(ac.get("grade") == "MISS" and ac.get("dec") == ac.get("before", {}).get("dec")
+          and ac.get("l2") is None,
+          f"in ADJ the Grade row, decomposition and L2 tick ignore clicks ({ac})")
+    check(out.get("adj_grade_buttons_disabled") is True,
+          "in ADJ the grade buttons are emitted disabled")
+    ap = out.get("adj_posted") or {}
+    check(ap.get("adjudicated_grade") == "PARTIAL"
+          and ap.get("adjudication_reason") == "SYN adjudication",
+          f"the ADJ body carries the adjudicated grade and reason ({ap})")
+    human_keys = {"human_grade", "human_reason", "decomposition",
+                  "decomposition_reasons", "l2_length_side_channel_cited"}
+    check(not (human_keys & set(ap)),
+          f"the ADJ body carries NO human field at all ({sorted(human_keys & set(ap))})")
 
     shutil.rmtree(tmp, ignore_errors=True)
     print(f"\n{'=' * 62}")

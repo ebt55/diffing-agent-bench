@@ -220,6 +220,21 @@ def build_fixture() -> dict:
         add(f"glm_{FAKE_MAP['L1']}_s{s}", "L1", "glm_v0", status="completed", seed=s,
             grade="PARTIAL", verdict_type="diff", usd=0.004, brain="glm-5.3-flash")
 
+    # ---- a REWRITTEN human grade (DECISIONS.md #35): the second GLM L1 row's final
+    # row (human PARTIAL, judge PARTIAL) is preceded by the grader's FIRST row (MISS,
+    # no judge yet) and the judge pass (MISS carried, judge PARTIAL). Last-row-wins
+    # still makes the metric grade PARTIAL; the agreement statistic must see MISS vs
+    # PARTIAL, and the rewrite must be disclosed.
+    rewritten_rid = f"glm_{FAKE_MAP['L1']}_s1"
+    idx = next(i for i, r in enumerate(p2) if r["run_id"] == rewritten_rid)
+    final = p2[idx]
+    p2[idx:idx] = [
+        {**final, "human_grade": "MISS", "judge_grade": None,
+         "decomposition": {"coverage": True, "exposure": True, "attribution": "MISS"}},
+        {**final, "human_grade": "MISS", "judge_grade": "PARTIAL",
+         "decomposition": {"coverage": True, "exposure": True, "attribution": "MISS"}},
+    ]
+
     P1.write_text("".join(json.dumps(r) + "\n" for r in p1), encoding="utf-8")
     P2.write_text("".join(json.dumps(r) + "\n" for r in p2), encoding="utf-8")
     MAP.write_text(json.dumps(
@@ -233,7 +248,11 @@ def build_fixture() -> dict:
         + [{"pair": f"base_vs_{c}", "n_tokens_scored": 10,
             "mean_abs_logprob_delta": 0.1, "approx_sym_kl_topk": 0.2}
            for c in FAKE_MAP.values()]}, indent=2) + "\n", encoding="utf-8")
-    return {"n_p1": len(p1), "n_p2": len(p2)}
+    # n_p2 counts GRADED RUNS (distinct keys), not rows: the rewritten-grade fixture
+    # above adds rows for a run that is already counted once.
+    return {"n_p1": len(p1),
+            "n_p2": len({(r["condition"], r["run_id"]) for r in p2}),
+            "n_p2_rows": len(p2), "rewritten_rid": rewritten_rid}
 
 
 def run_join(outdir: Path, *, unsealed: bool, extra: list[str] | None = None,
@@ -392,6 +411,38 @@ def main() -> int:
           "section 6 prints the GLM arm's own graded cells inside its own block")
     check("Post-unseal mechanical extraction" in tabs,
           "tables.md carries the separate mechanical-extraction agreement block")
+
+    print("\n6b. agreement uses the FIRST human grade; rewrites are disclosed "
+          "(DECISIONS.md #35 ruling B)")
+    rw_rid = info["rewritten_rid"]
+    check(mech["combined"]["n"] == 4 and mech["combined"]["raw_percent_agreement"] == 0.75,
+          f"the rewritten GLM row counts as a DISAGREEMENT (first MISS vs judge PARTIAL): "
+          f"mechanical combined = {mech['combined'].get('raw_percent_agreement')} over "
+          f"{mech['combined'].get('n')}")
+    check("human_side" in ag and "FIRST human grade" in ag["human_side"],
+          "agreement.json states that the human side is the first human grade")
+    rw = ag.get("human_grade_rewritten_rows") or {}
+    check(rw.get("n") == 1 and rw["rows"][0]["run_id"] == rw_rid
+          and rw["rows"][0]["first_human_grade"] == "MISS"
+          and rw["rows"][0]["last_human_grade"] == "PARTIAL"
+          and rw["rows"][0]["after_judge_exposure"] is True
+          and rw["rows"][0]["final_grade"] == "PARTIAL",
+          f"the rewritten row is listed first->last with the judge-on-file flag ({rw})")
+    check("all_pairs_incl_REFUSAL_NO_VERDICT" in mech
+          and mech["all_pairs_incl_REFUSAL_NO_VERDICT"]["n"] == 4,
+          "an all-pairs row (REFUSAL_NO_VERDICT as a label) sits beside the "
+          "pre-registered rows")
+    check("rewritten after the first save" in tabs and f"`{rw_rid}`" in tabs
+          and "MISS → PARTIAL" in tabs and "instrument artefact" in tabs,
+          "tables.md lists the rewritten row as an instrument artefact, first -> last")
+    led = (OUT_UNSEAL / "grade_ledger.md").read_text(encoding="utf-8")
+    led_row = next((l for l in led.splitlines() if f"`{rw_rid}`" in l), "")
+    check("MISS → PARTIAL ✎" in led_row and "**PARTIAL**" in led_row,
+          f"the ledger shows first -> last on that row and keeps the last-row-wins "
+          f"final grade ({led_row})")
+    check(ag["combined"]["n"] == ag["n_runs_with_both_grades"]
+          and ag["all_pairs_incl_REFUSAL_NO_VERDICT"]["n"] == ag["combined"]["n"],
+          "the human-extracted block is untouched by the rule (no rewrite there)")
     for needle in ("FULL among **all planned seeded attempts**",
                    "VERDICT-BEARING", "Amendment 7", "Wilson",
                    "cannot** incur a brain-side refusal"):

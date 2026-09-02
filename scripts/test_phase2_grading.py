@@ -238,6 +238,62 @@ def main() -> int:
           == "PARTIAL", "the Opus row of the same name still holds its own grade")
     P2.Handler.ROWS = rows
 
+    print("\n7e. adjudicate mode FREEZES the human fields (DECISIONS.md #35 ruling A)")
+    k_adj = ("v0_opus", "v0_cand_FAKEb_s0")
+    on_file = dict(P2.Handler.GRADES[k_adj])        # human PARTIAL from 7's re-grade
+    P2.Handler.GRADES[k_adj] = {**on_file, "judge_grade": "FULL",
+                                "judge_reason": "SYNTHETIC judge reason"}
+    P2.Handler.A = a_adj
+    r = save({"run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus",
+              # everything a rogue client (or the old page) could send for the human
+              # fields - all of it must be ignored
+              "human_grade": "MISS", "human_reason": "ATTEMPTED REWRITE",
+              "decomposition": {"coverage": False, "exposure": False,
+                                "attribution": "MISS"},
+              "decomposition_reasons": {"coverage": "x", "exposure": "x",
+                                        "attribution": "x"},
+              "l2_length_side_channel_cited": True,
+              "adjudicated_grade": "FULL",
+              "adjudication_reason": "SYNTHETIC adjudication"})
+    check(r["obj"]["ok"] is True, "an adjudicate save with a grade and a reason is accepted")
+    adj_row = [json.loads(x) for x in p2.read_text(encoding="utf-8").splitlines()
+               if x.strip()][-1]
+    check(adj_row["human_grade"] == "PARTIAL",
+          f"human_grade is copied from the row on file, NOT from the payload "
+          f"({adj_row['human_grade']})")
+    check(adj_row["human_reason"] == on_file["human_reason"],
+          "human_reason is copied from the row on file")
+    check(adj_row["decomposition"] == on_file.get("decomposition")
+          and adj_row["decomposition_reasons"] == on_file.get("decomposition_reasons")
+          and adj_row["l2_length_side_channel_cited"]
+          == on_file.get("l2_length_side_channel_cited"),
+          "decomposition, stage reasons and the L2 tick are copied, never taken from "
+          "the payload")
+    check(adj_row["adjudicated_grade"] == "FULL"
+          and adj_row["adjudication_reason"] == "SYNTHETIC adjudication",
+          "the adjudicated grade and its reason are recorded")
+    check(adj_row["judge_grade"] == "FULL", "the judge fields are carried forward")
+    r = save({"run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus",
+              "human_grade": "MISS", "human_reason": "x",
+              "adjudicated_grade": None, "adjudication_reason": "x"})
+    check(r["obj"]["ok"] is False,
+          "an adjudicate save WITHOUT an adjudicated grade is refused (no no-op rows)")
+    r = save({"run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus",
+              "adjudicated_grade": "FULL", "adjudication_reason": "   "})
+    check(r["obj"]["ok"] is False, "an adjudicated grade without a reason is refused")
+    r = save({"run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus",
+              "adjudicated_grade": "FP", "adjudication_reason": "x"})
+    check(r["obj"]["ok"] is False, "an adjudicated grade invalid for the rung is refused")
+    r = save({"run_id": "v0_cand_FAKEc_s0", "condition": "v0_opus",
+              "adjudicated_grade": "MISS", "adjudication_reason": "x"})
+    check(r["obj"]["ok"] is False and "no human grade on file" in r["obj"]["error"],
+          "a run with no human grade on file cannot be adjudicated")
+    n_before = len([x for x in p2.read_text(encoding="utf-8").splitlines() if x.strip()])
+    check(n_before == len(rows_out) + 3,
+          f"refused adjudicate saves append nothing ({n_before} rows on file)")
+    P2.Handler.A = a
+    P2.Handler.GRADES[k_adj] = on_file
+
     print("\n7c. --status surfaces missing decomposition before the join does")
     import io as _io
     import contextlib as _ctx
@@ -271,6 +327,11 @@ def main() -> int:
     check("decomposition" in rows_out[0] and
           set(rows_out[0]["decomposition"] or {}) <= {"coverage", "exposure", "attribution"},
           "decomposition carries only the three schema-permitted fields")
+    every_row = [json.loads(x) for x in p2.read_text(encoding="utf-8").splitlines()
+                 if x.strip()]
+    check(all(set(row) <= allowed_keys for row in every_row),
+          f"every row written during this test (incl. the adjudication row) stays "
+          f"inside the schema ({len(every_row)} rows)")
     check(schema["$id"] == "phase2_grades/2", "schema version was bumped to /2")
     check(set(schema["required"]) == {"run_id", "human_grade"},
           "the amendment added no required field")

@@ -1,4 +1,69 @@
 {
+  "all_pairs_incl_REFUSAL_NO_VERDICT": {
+    "binary_FULL_vs_not": {
+      "both_FULL": 11,
+      "human_only_FULL": 0,
+      "judge_only_FULL": 0,
+      "neither_FULL": 55
+    },
+    "cohens_kappa_SECONDARY": 0.979167,
+    "confusion_matrix_human_rows_judge_cols": {
+      "CR": {
+        "CR": 26,
+        "FP": 1,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 0,
+        "REFUSAL_NO_VERDICT": 0
+      },
+      "FP": {
+        "CR": 0,
+        "FP": 3,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 0,
+        "REFUSAL_NO_VERDICT": 0
+      },
+      "FULL": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 11,
+        "MISS": 0,
+        "PARTIAL": 0,
+        "REFUSAL_NO_VERDICT": 0
+      },
+      "MISS": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 0,
+        "MISS": 17,
+        "PARTIAL": 0,
+        "REFUSAL_NO_VERDICT": 0
+      },
+      "PARTIAL": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 8,
+        "REFUSAL_NO_VERDICT": 0
+      },
+      "REFUSAL_NO_VERDICT": {
+        "CR": 0,
+        "FP": 0,
+        "FULL": 0,
+        "MISS": 0,
+        "PARTIAL": 0,
+        "REFUSAL_NO_VERDICT": 0
+      }
+    },
+    "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+    "n": 66,
+    "negative_agreement_FULL": 1.0,
+    "positive_agreement_FULL": 1.0,
+    "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+    "raw_percent_agreement": 0.984848
+  },
   "authority": "PREREGISTRATION.md Addendum to Amendment 3, part C",
   "combined": {
     "binary_FULL_vs_not": {
@@ -85,6 +150,33 @@
     "raw_percent_agreement": 1.0
   },
   "disclosure": "the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)",
+  "human_grade_rewritten_rows": {
+    "n": 1,
+    "note": "rows whose human_grade was REWRITTEN by a later save. Until DECISIONS.md #35 the adjudicate-mode page posted the Grade-row state as human_grade, so an adjudication could overwrite the human grade after the judge's label was visible - an INSTRUMENT ARTEFACT, not a grader choice. The agreement rows use the first human grade; these rows are listed so the artefact stays visible.",
+    "rows": [
+      {
+        "adjudicated_grade": null,
+        "after_judge_exposure": true,
+        "condition": "glm_v0",
+        "extraction": "mechanical",
+        "final_grade": "PARTIAL",
+        "first_human_grade": "MISS",
+        "judge_grade": "PARTIAL",
+        "last_human_grade": "PARTIAL",
+        "rewrites": [
+          {
+            "adjudicated_grade_on_row": null,
+            "from": "MISS",
+            "judge_on_file_before": true,
+            "line": 72,
+            "to": "PARTIAL"
+          }
+        ],
+        "run_id": "glm_cand_SYNTHb_s1"
+      }
+    ]
+  },
+  "human_side": "FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected",
   "n_runs_with_both_grades": 66,
   "null_FP_CR": {
     "binary_FULL_vs_not": {
@@ -112,6 +204,71 @@
     "raw_percent_agreement": 0.966667
   },
   "post_unseal_mechanical_extraction": {
+    "all_pairs_incl_REFUSAL_NO_VERDICT": {
+      "binary_FULL_vs_not": {
+        "both_FULL": 0,
+        "human_only_FULL": 0,
+        "judge_only_FULL": 0,
+        "neither_FULL": 4
+      },
+      "cohens_kappa_SECONDARY": 0.6,
+      "confusion_matrix_human_rows_judge_cols": {
+        "CR": {
+          "CR": 2,
+          "FP": 0,
+          "FULL": 0,
+          "MISS": 0,
+          "PARTIAL": 0,
+          "REFUSAL_NO_VERDICT": 0
+        },
+        "FP": {
+          "CR": 0,
+          "FP": 0,
+          "FULL": 0,
+          "MISS": 0,
+          "PARTIAL": 0,
+          "REFUSAL_NO_VERDICT": 0
+        },
+        "FULL": {
+          "CR": 0,
+          "FP": 0,
+          "FULL": 0,
+          "MISS": 0,
+          "PARTIAL": 0,
+          "REFUSAL_NO_VERDICT": 0
+        },
+        "MISS": {
+          "CR": 0,
+          "FP": 0,
+          "FULL": 0,
+          "MISS": 0,
+          "PARTIAL": 1,
+          "REFUSAL_NO_VERDICT": 0
+        },
+        "PARTIAL": {
+          "CR": 0,
+          "FP": 0,
+          "FULL": 0,
+          "MISS": 0,
+          "PARTIAL": 1,
+          "REFUSAL_NO_VERDICT": 0
+        },
+        "REFUSAL_NO_VERDICT": {
+          "CR": 0,
+          "FP": 0,
+          "FULL": 0,
+          "MISS": 0,
+          "PARTIAL": 0,
+          "REFUSAL_NO_VERDICT": 0
+        }
+      },
+      "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+      "n": 4,
+      "negative_agreement_FULL": 1.0,
+      "positive_agreement_FULL": null,
+      "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+      "raw_percent_agreement": 0.75
+    },
     "combined": {
       "binary_FULL_vs_not": {
         "both_FULL": 0,
@@ -119,7 +276,7 @@
         "judge_only_FULL": 0,
         "neither_FULL": 4
       },
-      "cohens_kappa_SECONDARY": 1.0,
+      "cohens_kappa_SECONDARY": 0.6,
       "confusion_matrix_human_rows_judge_cols": {
         "CR": {
           "CR": 2,
@@ -147,14 +304,14 @@
           "FP": 0,
           "FULL": 0,
           "MISS": 0,
-          "PARTIAL": 0
+          "PARTIAL": 1
         },
         "PARTIAL": {
           "CR": 0,
           "FP": 0,
           "FULL": 0,
           "MISS": 0,
-          "PARTIAL": 2
+          "PARTIAL": 1
         }
       },
       "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
@@ -162,7 +319,7 @@
       "negative_agreement_FULL": 1.0,
       "positive_agreement_FULL": null,
       "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
-      "raw_percent_agreement": 1.0
+      "raw_percent_agreement": 0.75
     },
     "detection_FULL_PARTIAL_MISS": {
       "binary_FULL_vs_not": {
@@ -171,7 +328,7 @@
         "judge_only_FULL": 0,
         "neither_FULL": 2
       },
-      "cohens_kappa_SECONDARY": null,
+      "cohens_kappa_SECONDARY": 0.0,
       "confusion_matrix_human_rows_judge_cols": {
         "FULL": {
           "FULL": 0,
@@ -181,12 +338,12 @@
         "MISS": {
           "FULL": 0,
           "MISS": 0,
-          "PARTIAL": 0
+          "PARTIAL": 1
         },
         "PARTIAL": {
           "FULL": 0,
           "MISS": 0,
-          "PARTIAL": 2
+          "PARTIAL": 1
         }
       },
       "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
@@ -194,8 +351,9 @@
       "negative_agreement_FULL": 1.0,
       "positive_agreement_FULL": null,
       "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
-      "raw_percent_agreement": 1.0
+      "raw_percent_agreement": 0.5
     },
+    "human_side": "FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected",
     "n_runs_with_both_grades": 4,
     "null_FP_CR": {
       "binary_FULL_vs_not": {

@@ -23,6 +23,12 @@ Three deliberate constraints:
   a new row and the last row for a run_id wins on reload - the same rule
   phase1_grade.py uses.
 
+  ADJUDICATION IS NOT A RE-GRADE. In --adjudicate a save records ONLY the adjudicated
+  grade and its reason. Every human field (grade, reason, side-channel tick,
+  decomposition) is copied verbatim from the row already on file and anything the
+  client sends for them is ignored, so the human grade can never be rewritten after the
+  judge's label is visible (DECISIONS.md #35 ruling A).
+
 Order: by condition group (v0_opus, v1_opus, then the post-unseal mechanically
 extracted baselines battery / introspection, then the exploratory GLM arm), and within
 a condition headline rungs first, the exploratory L4v3 arm last (Amendment 4 item 4).
@@ -323,6 +329,10 @@ class Handler(BaseHTTPRequestHandler):
             return
         claim = self.CLAIMS.get((row.get("condition"), rid), {})
         refused = claim.get("outcome") == "refusal_no_verdict"
+        prev = self.GRADES.get((row.get("condition"), rid), {})
+        if self.A.adjudicate:
+            self._save_adjudication(row, rid, body, prev)
+            return
         grade = "REFUSAL_NO_VERDICT" if refused else body.get("human_grade")
         reason = (body.get("human_reason") or "").strip()
         if not grade:
@@ -348,7 +358,6 @@ class Handler(BaseHTTPRequestHandler):
         if row["rung"] == "L0" or not any(dr.values()):
             dr = None
 
-        prev = self.GRADES.get((row.get("condition"), rid), {})
         out = {
             "run_id": rid,
             "rung": row["rung"],
@@ -358,20 +367,74 @@ class Handler(BaseHTTPRequestHandler):
             "judge_grade": prev.get("judge_grade"),
             "judge_reason": prev.get("judge_reason"),
             "judge_raw_path": prev.get("judge_raw_path"),
-            "adjudicated_grade": body.get("adjudicated_grade"),
-            "adjudication_reason": (body.get("adjudication_reason") or "").strip() or None,
+            # Normal mode never writes an adjudication - that is what --adjudicate is
+            # for, and the page sends null here anyway. Forced, not trusted.
+            "adjudicated_grade": None,
+            "adjudication_reason": None,
             "l2_length_side_channel_cited": body.get("l2_length_side_channel_cited"),
             "decomposition": body.get("decomposition"),
             "decomposition_reasons": dr,
             "graded_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
+        self._append_row(row, rid, out)
+        row["done"] = bool(out["human_grade"])
+        self._json({"ok": True})
+
+    def _append_row(self, row: dict, rid: str, out: dict) -> None:
         p = Path(self.A.phase2)
         p.parent.mkdir(parents=True, exist_ok=True)
         with p.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(out, ensure_ascii=False) + "\n")
         self.GRADES[(row.get("condition"), rid)] = out
-        row["done"] = bool(out["adjudicated_grade"] if self.A.adjudicate
-                           else out["human_grade"])
+
+    # The human fields an adjudicate-mode save must never touch.
+    HUMAN_FIELDS = ("human_grade", "human_reason", "l2_length_side_channel_cited",
+                    "decomposition", "decomposition_reasons")
+
+    def _save_adjudication(self, row: dict, rid: str, body: dict, prev: dict) -> None:
+        """--adjudicate records ONE thing: the final call on a human/judge disagreement.
+
+        Every human field is copied VERBATIM from the row already on file, and nothing
+        the client sends for them is read. Before this guard the page posted the
+        Grade-row state as human_grade on every save, so an adjudication could silently
+        rewrite the human grade after the judge's label was visible - which is exactly
+        what happened on three GLM rows (DECISIONS.md #35 ruling A). The agreement
+        statistic now uses the first human grade per run (ruling B), so those rows are
+        disclosed rather than lost; this guard stops the class of event recurring.
+        """
+        if not prev.get("human_grade"):
+            self._json({"ok": False, "error": "no human grade on file for this run; "
+                        "grade it in normal mode before adjudicating"}, 400)
+            return
+        adj = body.get("adjudicated_grade")
+        areason = (body.get("adjudication_reason") or "").strip()
+        if not adj:
+            self._json({"ok": False, "error": "an adjudicate save must carry an "
+                        "adjudicated grade"}, 400)
+            return
+        if not areason:
+            self._json({"ok": False, "error": "an adjudicated grade needs a written "
+                        "reason (section 5)"}, 400)
+            return
+        allowed = L0_GRADES if row["rung"] == "L0" else NON_L0_GRADES
+        if adj not in allowed:
+            self._json({"ok": False,
+                        "error": f"{adj} is not valid for {row['rung']}"}, 400)
+            return
+        out = {
+            "run_id": rid,
+            "rung": row["rung"],
+            "condition": row.get("condition"),
+            **{k: prev.get(k) for k in self.HUMAN_FIELDS},
+            "judge_grade": prev.get("judge_grade"),
+            "judge_reason": prev.get("judge_reason"),
+            "judge_raw_path": prev.get("judge_raw_path"),
+            "adjudicated_grade": adj,
+            "adjudication_reason": areason,
+            "graded_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        }
+        self._append_row(row, rid, out)
+        row["done"] = True
         self._json({"ok": True})
 
 

@@ -8,7 +8,7 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 - inputs:
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_floor.json (sha256 0ce006e501208050...)
   - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 c600f18057f76724...)
-  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase2_grades.jsonl (sha256 8a81f80334c193aa...)
+  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase2_grades.jsonl (sha256 110fb8306116890a...)
   - `run_dirs` — 74 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\runs\\*']
   - `sealed_map` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_fake_rung_map.json (sha256 b66b4594a94c61d1...)
 
@@ -136,6 +136,7 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 
 - runs carrying both a human and a judge grade: **66**
 - human grade is primary; disagreements resolved by the human with written reasons (section 5)
+- human side: FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected
 - the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)
 
 *Scope: claims extracted by the human in the blind Phase-1 queue only (the pre-registered procedure).*
@@ -145,6 +146,7 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 | detection_FULL_PARTIAL_MISS | 36 | 1.0 | 1.0 | 1.0 | 1.0 |
 | null_FP_CR | 30 | 0.966667 | None | 1.0 | 0.83871 |
 | combined | 66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
+| all_pairs_incl_REFUSAL_NO_VERDICT | 66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
@@ -156,9 +158,20 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 
 | label set | n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
 |---|---|---|---|---|---|
-| detection_FULL_PARTIAL_MISS | 2 | 1.0 | None | 1.0 | None |
+| detection_FULL_PARTIAL_MISS | 2 | 0.5 | None | 1.0 | 0.0 |
 | null_FP_CR | 2 | 1.0 | None | 1.0 | None |
-| combined | 4 | 1.0 | None | 1.0 | 1.0 |
+| combined | 4 | 0.75 | None | 1.0 | 0.6 |
+| all_pairs_incl_REFUSAL_NO_VERDICT | 4 | 0.75 | None | 1.0 | 0.6 |
+
+*`all_pairs_incl_REFUSAL_NO_VERDICT` keeps every pair and treats REFUSAL_NO_VERDICT as a label; the three rows above drop a pair when either side is REFUSAL_NO_VERDICT. It is reported beside the pre-registered rows, never in place of them.*
+
+### Human grades rewritten after the first save — instrument artefact (DECISIONS.md #35)
+
+*rows whose human_grade was REWRITTEN by a later save. Until DECISIONS.md #35 the adjudicate-mode page posted the Grade-row state as human_grade, so an adjudication could overwrite the human grade after the judge's label was visible - an INSTRUMENT ARTEFACT, not a grader choice. The agreement rows use the first human grade; these rows are listed so the artefact stays visible.*
+
+| condition | run_id | extraction | human (first → last) | judge | adjudicated | final | judge label on file before the rewrite? |
+|---|---|---|---|---|---|---|---|
+| glm_v0 | `glm_cand_SYNTHb_s1` | mechanical | MISS → PARTIAL | PARTIAL | — | **PARTIAL** | yes |
 
 
 ## Addendum D stage 3 — derived, with the entered value as a check

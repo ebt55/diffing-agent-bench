@@ -101,7 +101,10 @@ function jumpNext(){const n=RUNS.findIndex((r,k)=>k>i&&!r.done);
 
 function gradeBtns(){
   const allowed=cur.allowed_grades;
-  return allowed.map(g=>`<button ${cur.locked?'disabled':''} class="${cur.human_grade===g?'on':''}"
+  // In --adjudicate the Grade row is display-only: the server copies the human fields
+  // from the row on file and ignores anything sent, so the buttons are disabled to say
+  // so rather than silently doing nothing (DECISIONS.md #35 ruling A).
+  return allowed.map(g=>`<button ${(cur.locked||ADJ)?'disabled':''} class="${cur.human_grade===g?'on':''}"
     onclick="pick('${g}')">${g}</button>`).join('');
 }
 function triBtn(field,val,label){
@@ -166,12 +169,15 @@ function render(){
   </div>
   ${adj}
   <div class="card">
-    <h2>Grade</h2>
+    <h2>Grade${ADJ?' — frozen in adjudicate mode':''}</h2>
+    ${ADJ?`<div class="locked">Adjudicate mode records only the final call above. The human
+       grade, reason, side-channel tick and decomposition are copied verbatim from the row
+       on file by the server; nothing edited here is saved (DECISIONS.md #35 ruling A).</div>`:''}
     ${c.locked?`<div class="locked">Locked: this run is <b>${esc(c.human_grade)}</b>,
        derived from run status (${esc(c.status)}), not a judgement.</div>`
       :`<div class="grades">${gradeBtns()}</div>`}
     <label>Reason (required)</label>
-    <textarea id="reason">${esc(c.human_reason||'')}</textarea>
+    <textarea id="reason" ${ADJ?'readonly':''}>${esc(c.human_reason||'')}</textarea>
     ${c.is_l2?`<div class="row"><b>L2 side-channel:</b>
       <button class="${c.l2===true?'on':''}" onclick="setL2(true)">quotes DO cite length</button>
       <button class="${c.l2===false?'on':''}" onclick="setL2(false)">they do not</button></div>`:''}
@@ -182,18 +188,21 @@ function render(){
     <div class="row"><b>2 exposure</b> ${triBtn('exposure',true,'yes')} ${triBtn('exposure',false,'no')}</div>
     <div class="row"><b>3 attribution</b> ${['FULL','PARTIAL','MISS'].map(g=>triBtn('attribution',g,g)).join(' ')}</div>
     <label>Why — coverage</label>
-    <textarea id="dr_coverage">${esc((c.decomposition_reasons||{}).coverage||'')}</textarea>
+    <textarea id="dr_coverage" ${ADJ?'readonly':''}>${esc((c.decomposition_reasons||{}).coverage||'')}</textarea>
     <label>Why — exposure</label>
-    <textarea id="dr_exposure">${esc((c.decomposition_reasons||{}).exposure||'')}</textarea>
+    <textarea id="dr_exposure" ${ADJ?'readonly':''}>${esc((c.decomposition_reasons||{}).exposure||'')}</textarea>
     <label>Why — attribution</label>
-    <textarea id="dr_attribution">${esc((c.decomposition_reasons||{}).attribution||'')}</textarea></div>`}
+    <textarea id="dr_attribution" ${ADJ?'readonly':''}>${esc((c.decomposition_reasons||{}).attribution||'')}</textarea></div>`}
   <div class="nav"><button class="save" onclick="save()">Save &amp; next</button>
     <span id="msg" class="muted"></span></div>`;
 }
-function pick(g){cur.human_grade=g;render();}
+// In --adjudicate the human fields are frozen: these three are no-ops there, so a stray
+// click cannot even change what the page displays (the server ignores them regardless -
+// DECISIONS.md #35 ruling A).
+function pick(g){if(ADJ)return;cur.human_grade=g;render();}
 function pickAdj(g){cur.adjudicated_grade=g;render();}
-function setL2(v){cur.l2=v;render();}
-function setDec(f,v){cur.decomposition[f]=v;render();}
+function setL2(v){if(ADJ)return;cur.l2=v;render();}
+function setDec(f,v){if(ADJ)return;cur.decomposition[f]=v;render();}
 
 // One delegated listener for all three decomposition groups. render() replaces the
 // body's innerHTML wholesale, so binding on document survives every re-render, and
@@ -205,7 +214,29 @@ document.addEventListener('click',function(e){
   setDec(b.dataset.df, v);
 });
 
+async function post(body){
+  const r=await fetch('/api/save',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json();
+  if(!j.ok){alert('Not saved: '+j.error);return false;}
+  RUNS[i].done=true; document.getElementById('msg').textContent='saved';
+  const n=RUNS.findIndex((r2,k)=>k>i&&!r2.done);
+  if(n>=0){i=n;load();}else{prog();alert('That was the last ungraded run.');}
+  return true;
+}
 async function save(){
+  if(ADJ){
+    // Adjudicate mode sends ONE thing: the final call. No human field travels in the
+    // body - the server copies them verbatim from the row on file and ignores anything
+    // sent for them - so rewriting the human grade after the judge's label is visible
+    // is impossible from this page (DECISIONS.md #35 ruling A).
+    const ar=document.getElementById('adjreason');
+    if(!cur.adjudicated_grade){alert('Pick the final adjudicated grade.');return;}
+    if(!(ar&&ar.value.trim())){
+      alert('An adjudicated grade needs a written reason.');return;}
+    return post({run_id:cur.run_id, condition:cur.condition,
+      adjudicated_grade:cur.adjudicated_grade, adjudication_reason:ar.value});
+  }
   const reason=(document.getElementById('reason')||{}).value||'';
   if(!cur.locked && !cur.human_grade){alert('Pick a grade.');return;}
   // Locked refusal rows are exempt: the grade is derived from status, not judged, so
@@ -213,24 +244,13 @@ async function save(){
   if(!cur.locked && !reason.trim()){
     alert('A written reason is required (Addendum A item 7).');return;}
   const drv=f=>{const e=document.getElementById('dr_'+f);return e?e.value:'';};
-  const ar=document.getElementById('adjreason');
-  if(ADJ && cur.adjudicated_grade && !(ar&&ar.value.trim())){
-    alert('An adjudicated grade needs a written reason.');return;}
-  const body={run_id:cur.run_id, condition:cur.condition,
+  return post({run_id:cur.run_id, condition:cur.condition,
     human_grade:cur.human_grade, human_reason:reason,
     l2_length_side_channel_cited:cur.is_l2?cur.l2:null,
     decomposition:cur.rung==='L0'?null:cur.decomposition,
     decomposition_reasons:cur.rung==='L0'?null:
       {coverage:drv('coverage'),exposure:drv('exposure'),attribution:drv('attribution')},
-    adjudicated_grade:ADJ?cur.adjudicated_grade:null,
-    adjudication_reason:(ADJ&&ar)?ar.value:null};
-  const r=await fetch('/api/save',{method:'POST',
-    headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  const j=await r.json();
-  if(!j.ok){alert('Not saved: '+j.error);return;}
-  RUNS[i].done=true; document.getElementById('msg').textContent='saved';
-  const n=RUNS.findIndex((r2,k)=>k>i&&!r2.done);
-  if(n>=0){i=n;load();}else{prog();alert('That was the last ungraded run.');}
+    adjudicated_grade:null, adjudication_reason:null});
 }
 boot();
 </script>
