@@ -178,11 +178,15 @@ def judge(rubric: str, payload: str, *, model: str = JUDGE_MODEL,
             content = out["choices"][0]["message"].get("content") or "{}"
             verdict = json.loads(content)
             u = out.get("usage") or {}
+            # Both cache fields are READ from the provider, not assumed. The write
+            # field used to be hardcoded 0, which made "no cache-write tokens" an
+            # artifact of the recorder rather than an observation - the Sep-2 judge
+            # passes in fact reported cache_write_tokens on every call.
+            det = u.get("prompt_tokens_details") or {}
             usage = {"input_tokens": u.get("prompt_tokens", 0),
                      "output_tokens": u.get("completion_tokens", 0),
-                     "cache_creation_input_tokens": 0,
-                     "cache_read_input_tokens": (u.get("prompt_tokens_details") or {})
-                     .get("cached_tokens", 0) or 0}
+                     "cache_creation_input_tokens": det.get("cache_write_tokens", 0) or 0,
+                     "cache_read_input_tokens": det.get("cached_tokens", 0) or 0}
             cost = judge_cost(model, usage)
             rec = {
                 "verdict": verdict,

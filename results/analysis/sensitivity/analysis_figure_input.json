@@ -1250,7 +1250,7 @@
   "exploratory_rungs": [
     "L4v3"
   ],
-  "generated_utc": "2026-09-02T17:36:21Z",
+  "generated_utc": "2026-09-02T17:40:35Z",
   "null": {
     "battery": {
       "fp_frozen_rule_all_attempts": {
@@ -1453,7 +1453,7 @@
       "v0_cand_m3iq_s4"
     ],
     "generated_by": "scripts/analysis_join.py",
-    "generated_utc": "2026-09-02T17:36:21Z",
+    "generated_utc": "2026-09-02T17:40:35Z",
     "harness_commits_seen": [
       "81375886a285ac5ee02c5ad275dce6ccff92b632",
       "b96662e741d0515feda0ea5da5a5fe66195da510",

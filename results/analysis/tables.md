@@ -2,7 +2,7 @@
 
 Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
 
-- generated: `2026-09-02T17:36:07Z`
+- generated: `2026-09-02T17:40:34Z`
 - mode: **UNSEALED**
 - spend field: `total_usd`
 - inputs:
@@ -90,6 +90,8 @@ Reported beside the full-n primary so a reader can verify the estimate did not m
 | introspection | undefined (0 detections; spend $0.0437) | undefined (0 detections; spend $0.0751) |
 
 *Both columns above are labelled diagnostics. Neither is the headline number.*
+
+*Judge spend is separate from the agent spend above and is NOT in any figure here: the Phase-2 judge pass recorded **$0.1942**, which excludes cache-write billing. All 51 calls reported `cache_write_tokens` (77,299 of 77,452 prompt tokens) and `JUDGE_PRICES` models no cache-write rate, so the true charge is bounded at **$0.2328-$0.3874** depending on whether the listed $2.50/M rate replaces or adds to the input rate. The recorder has since been fixed to read both cache fields; these figures are from the raws as recorded.*
 
 ## 5 · Exploratory rung — reported separately, never mixed in
 

@@ -91,6 +91,8 @@ Reported beside the full-n primary so a reader can verify the estimate did not m
 
 *Both columns above are labelled diagnostics. Neither is the headline number.*
 
+*Judge spend is separate from the agent spend above and is NOT in any figure here: the Phase-2 judge pass recorded **$0.1942**, which excludes cache-write billing. All 51 calls reported `cache_write_tokens` (77,299 of 77,452 prompt tokens) and `JUDGE_PRICES` models no cache-write rate, so the true charge is bounded at **$0.2328-$0.3874** depending on whether the listed $2.50/M rate replaces or adds to the input rate. The recorder has since been fixed to read both cache fields; these figures are from the raws as recorded.*
+
 ## 5 · Exploratory rung — reported separately, never mixed in
 
 | condition | rung | FULL (all attempts) | FULL+PARTIAL | verdict-bearing n |
