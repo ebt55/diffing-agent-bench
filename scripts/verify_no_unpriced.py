@@ -21,7 +21,7 @@ import glob
 import json
 from pathlib import Path
 
-DEFAULT_GLOBS = ["results/runs/*", "results/runs_dev/*",
+DEFAULT_GLOBS = ["results/runs/*", "results/runs_dev/*", "results/runs_glm/*",
                  "results/runs_interrupted_v0/*", "results/runs_incomplete_judge_temp0/*"]
 
 
