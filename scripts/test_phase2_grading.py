@@ -193,6 +193,29 @@ def main() -> int:
     check(r["obj"]["ok"] is False,
           "an UNLOCKED row still requires a real written reason")
 
+    print("\n7c. --status surfaces missing decomposition before the join does")
+    import io as _io
+    import contextlib as _ctx
+    # a non-null row graded with no decomposition at all
+    with p2.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus",
+                             "rung": "L1", "human_grade": "FULL",
+                             "human_reason": "SYNTHETIC"}) + "\n")
+    a_st = Args(unsealed_map=str(mp), phase1=str(p1), phase2=str(p2),
+                descriptions=desc, status=True, port=0, no_browser=True)
+    buf = _io.StringIO()
+    with _ctx.redirect_stdout(buf):
+        P2.main(["--unsealed-map", str(mp), "--phase1", str(p1), "--phase2", str(p2),
+                 "--descriptions", desc, "--status"])
+    out = buf.getvalue()
+    line = [l for l in out.splitlines()
+            if l.startswith("non-null rows missing decomposition:")]
+    check(bool(line), "--status prints the missing-decomposition line")
+    check(line and "v0_cand_FAKEb_s0" in line[0],
+          f"and names the offending run id ({line[0] if line else ''})")
+    check(line and not line[0].endswith(": 0 (run ids: none)"),
+          "the count is non-zero when a row is incomplete")
+
     print("\n8. rows conform to the committed schema")
     schema = json.loads((Path(desc).parent / "phase2_grades.schema.json")
                         .read_text(encoding="utf-8"))

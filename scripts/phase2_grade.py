@@ -45,7 +45,8 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
 
-from analysis_join import claim_condition, load_sealed_map  # noqa: E402
+from analysis_join import (claim_condition, decomposition_gaps,  # noqa: E402
+                           load_sealed_map)
 from phase2_ui import PAGE  # noqa: E402
 
 GRADES = ("FULL", "PARTIAL", "MISS", "FP", "CR", "REFUSAL_NO_VERDICT")
@@ -364,6 +365,19 @@ def main(argv: list[str] | None = None) -> int:
             by[r["rung"]][0] += 1 if r["done"] else 0
         for rung, (d, n) in sorted(by.items()):
             print(f"  {rung:6s} {d}/{n}")
+
+        # Addendum D is required on a rung with planted content, but the page does not
+        # enforce it server-side (that would block grading mid-session). Surfaced here
+        # so a gap is visible BEFORE analysis_join refuses the join over it. Same rule
+        # object the join uses, so the two cannot drift apart.
+        gappy = []
+        for r in rows:
+            g = grades.get((r.get("condition"), r["run_id"]), {})
+            claim = claims.get(r["run_id"], {})
+            if decomposition_gaps(g, r["rung"], claim.get("outcome")):
+                gappy.append(r["run_id"])
+        ids = ", ".join(sorted(gappy)) if gappy else "none"
+        print(f"non-null rows missing decomposition: {len(gappy)} (run ids: {ids})")
         return 0
     if not rows:
         print("nothing to grade" + (" — no human/judge disagreements" if a.adjudicate

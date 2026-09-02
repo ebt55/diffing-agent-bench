@@ -138,6 +138,38 @@ def claim_condition(run_id: str) -> str | None:
     return None
 
 
+DECOMP_STAGES = ("coverage", "exposure", "attribution")
+
+
+def decomposition_gaps(row: dict, rung: str | None,
+                       outcome: str | None = None) -> list[str]:
+    """Addendum-D fields that a row is REQUIRED to carry but does not.
+
+    Required only of an authoritative human grade on a rung with planted content that
+    was not a terminal refusal. L0 has nothing to cover or expose, and a locked refusal
+    has no judgement behind it, so neither is asked for one.
+
+    coverage and exposure are booleans, so `False` is a real answer: the test is
+    `is None`, never falsiness. Getting that wrong would flag every correctly-recorded
+    "no" as missing.
+    """
+    if not rung or rung == NULL_RUNG:
+        return []
+    if not row.get("human_grade"):
+        return []
+    if row.get("human_grade") == "REFUSAL_NO_VERDICT" or outcome == "refusal_no_verdict":
+        return []
+    d = row.get("decomposition") or {}
+    r = row.get("decomposition_reasons") or {}
+    missing = []
+    for s in DECOMP_STAGES:
+        if d.get(s) is None:
+            missing.append(s)
+        if not str(r.get(s) or "").strip():
+            missing.append(f"{s}_reason")
+    return missing
+
+
 class JoinError(RuntimeError):
     """A join that cannot be trusted must stop, not warn."""
 
@@ -517,6 +549,16 @@ def attach_phase2(runs: list[dict], grades: dict[str, dict],
         if grade == "REFUSAL_NO_VERDICT" and r["outcome"] != "refusal_no_verdict":
             problems.append(f"{rid}: graded REFUSAL_NO_VERDICT but run_meta status "
                             f"{r['status']!r} maps to {r['outcome']!r}")
+
+        # Addendum D is not optional on a rung with planted content. The grading page
+        # does not enforce it server-side (deliberately - it must not block grading
+        # mid-session), so the omission is caught HERE rather than silently producing a
+        # decomposition table with holes in it.
+        gaps = decomposition_gaps(g, r["rung"], r["outcome"])
+        if gaps:
+            problems.append(
+                f"{rid}: human-graded on rung {r['rung']} but the Addendum-D "
+                f"decomposition is incomplete - missing {sorted(gaps)}")
     return problems
 
 

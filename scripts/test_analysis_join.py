@@ -135,7 +135,14 @@ def build_fixture() -> dict:
                        "l2_length_side_channel_cited": (rung == "L2" or None),
                        "decomposition": (None if rung == "L0" else
                                          {"coverage": True, "exposure": True,
-                                          "attribution": grade})})
+                                          "attribution": grade}),
+                       # schema v2: a non-null rung must carry a reason per stage, and
+                       # analysis_join refuses the join if one is missing
+                       "decomposition_reasons": (
+                           None if rung == "L0" else
+                           {"coverage": "SYNTHETIC - not data",
+                            "exposure": "SYNTHETIC - not data",
+                            "attribution": "SYNTHETIC - not data"})})
 
     # ---- v0_opus: L0 x 20 (Amendment 7), L1-L3 x 5, exploratory L4v3 x 5 ----
     for s in range(20):
@@ -224,9 +231,10 @@ def build_fixture() -> dict:
     return {"n_p1": len(p1), "n_p2": len(p2)}
 
 
-def run_join(outdir: Path, *, unsealed: bool, extra: list[str] | None = None):
+def run_join(outdir: Path, *, unsealed: bool, extra: list[str] | None = None,
+             phase2: Path | None = None):
     argv = ["--runs", str(RUNS / "*"),
-            "--phase1", str(P1), "--phase2", str(P2), "--floor", str(FLOOR),
+            "--phase1", str(P1), "--phase2", str(phase2 or P2), "--floor", str(FLOOR),
             "--outdir", str(outdir), "--now", NOW]
     if unsealed:
         argv += ["--unsealed-map", str(MAP)]
@@ -594,6 +602,56 @@ def main() -> int:
           "every rung is still null in blind mode")
     check(all(r.get("results_root") for r in inv_b["runs"]),
           "every inventory row records its results_root")
+
+    print("\n14. an incomplete Addendum-D decomposition FAILS the join loudly")
+    # the rule itself
+    full = {"human_grade": "FULL",
+            "decomposition": {"coverage": True, "exposure": False,
+                              "attribution": "FULL"},
+            "decomposition_reasons": {"coverage": "c", "exposure": "e",
+                                      "attribution": "a"}}
+    check(AJ.decomposition_gaps(full, "L1") == [],
+          "a complete non-null row has no gaps")
+    check(AJ.decomposition_gaps(full, "L0") == [],
+          "L0 is never asked for a decomposition")
+    check(AJ.decomposition_gaps({**full, "human_grade": None}, "L1") == [],
+          "an ungraded row is not yet required to carry one")
+    check(AJ.decomposition_gaps(
+        {**full, "human_grade": "REFUSAL_NO_VERDICT"}, "L1") == [],
+        "a locked refusal is exempt")
+    check(AJ.decomposition_gaps(full, "L1", "refusal_no_verdict") == [],
+          "a refusal outcome is exempt even if a grade is present")
+    # False is a real answer, not a missing one - the trap this rule must not fall into
+    falsey = {**full, "decomposition": {"coverage": False, "exposure": False,
+                                        "attribution": "MISS"}}
+    check(AJ.decomposition_gaps(falsey, "L1") == [],
+          "coverage/exposure False counts as answered, not missing")
+    no_attr = {**full, "decomposition": {"coverage": True, "exposure": True,
+                                         "attribution": None}}
+    check(AJ.decomposition_gaps(no_attr, "L1") == ["attribution"],
+          f"a missing attribution is reported ({AJ.decomposition_gaps(no_attr, 'L1')})")
+    blank = {**full, "decomposition_reasons": {"coverage": "c", "exposure": "   ",
+                                               "attribution": "a"}}
+    check(AJ.decomposition_gaps(blank, "L1") == ["exposure_reason"],
+          "a blank stage reason is reported")
+
+    # end to end: the join must refuse, non-zero, naming the run id
+    rows_p2 = [json.loads(x) for x in P2.read_text(encoding="utf-8").splitlines()
+               if x.strip()]
+    target = next(r for r in rows_p2
+                  if r.get("rung") not in (None, "L0") and r.get("human_grade")
+                  and r.get("human_grade") != "REFUSAL_NO_VERDICT")
+    broken = dict(target)
+    broken["decomposition"] = {"coverage": True, "exposure": True,
+                               "attribution": None}
+    tmp_p2 = ROOT / "SYNTHETIC_phase2_grades_gap.jsonl"
+    tmp_p2.write_text("\n".join(json.dumps(r) for r in rows_p2 + [broken]) + "\n",
+                      encoding="utf-8")
+    rc_gap = run_join(ROOT / "out_gap", unsealed=True, phase2=tmp_p2)
+    check(rc_gap != 0, f"the join exits non-zero on an incomplete decomposition "
+                       f"(rc={rc_gap})")
+    tmp_p2.unlink(missing_ok=True)
+    shutil.rmtree(ROOT / "out_gap", ignore_errors=True)
 
     print(f"\n{'=' * 62}")
     if _fails:
