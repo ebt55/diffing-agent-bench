@@ -21,7 +21,10 @@ PAGE = r"""<!doctype html>
     margin:0 0 10px}
  pre{white-space:pre-wrap;word-wrap:break-word;background:#f6f4f1;padding:10px;
      border-radius:6px;font:13px/1.55 ui-monospace,Consolas,monospace;margin:6px 0}
- .q{border-left:3px solid #b9b2a8;padding-left:10px;margin:8px 0;color:#333}
+ .q{border-left:3px solid #b9b2a8;padding-left:10px;margin:8px 0;color:#333;
+    white-space:pre-wrap;word-wrap:break-word}
+ .qlab{font-weight:700;color:#6b6b6b;font-size:12px;text-transform:uppercase;
+       letter-spacing:.04em}
  label{display:block;margin:10px 0 4px;font-weight:600;font-size:13px}
  textarea{width:100%;min-height:70px;font:14px/1.5 inherit;padding:8px;
           border:1px solid var(--line);border-radius:6px;background:#fff}
@@ -105,9 +108,20 @@ function render(){
   const c=cur;
   let claim='';
   for(const [k,v] of c.claim_fields){
-    claim+=`<div><b>${esc(k)}</b>`+
-      (Array.isArray(v)?('<div class="q">'+v.map(x=>esc(x)).join('</div><div class="q">')+'</div>')
-                       :`<pre>${esc(v)}</pre>`)+`</div>`;
+    let body;
+    if(Array.isArray(v)){
+      // Each entry is {label,text}, flattened server-side. Never String()-coerce an
+      // entry: a record would render as "[object Object]" and the grader would see
+      // no evidence at all.
+      body=v.map(x=>{
+        const lab=(x&&x.label)?`<span class="qlab">${esc(x.label)}</span> · `:'';
+        const txt=esc(x&&x.text!==undefined?x.text:x);
+        return `<div class="q">${lab}${txt}</div>`;
+      }).join('');
+    } else {
+      body=`<pre>${esc(v)}</pre>`;
+    }
+    claim+=`<div><b>${esc(k)}</b>${body}</div>`;
   }
   let adj='';
   if(ADJ){

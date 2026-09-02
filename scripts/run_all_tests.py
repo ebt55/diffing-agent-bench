@@ -30,6 +30,8 @@ TESTS = [
     ("phase 2 grading + judge (synthetic, no calls)",
      ["scripts/test_phase2_grading.py"]),
     ("unseal preconditions (temp git repo, fake map)", ["scripts/test_unseal.py"]),
+    ("phase 2 render (real claims, no [object Object])",
+     ["scripts/test_phase2_render.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.

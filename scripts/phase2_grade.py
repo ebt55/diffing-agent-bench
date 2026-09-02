@@ -82,19 +82,54 @@ def load_jsonl_last(path: Path) -> dict[str, dict]:
     return out
 
 
+def _provenance_label(q: dict) -> str:
+    """'turn 11' or 'submitted verdict' - phase1_grade stores the source cell in `turn`,
+    using the sentinel 'verdict' for the submitted-verdict block."""
+    t = str(q.get("turn", "")).strip()
+    if not t:
+        return "quote"
+    return "submitted verdict" if t.lower() == "verdict" else f"turn {t}"
+
+
+def render_value(v):
+    """A JSON-safe render model: a string, or a list of {label, text}.
+
+    Phase-1 stores each supporting quote as a RECORD - {"quote": ..., "turn": ...} -
+    so a client that string-coerces list entries prints "[object Object]" and the
+    grader sees no evidence at all. Structure is flattened HERE, once, rather than
+    trusted to the page: any object reaching the client is a latent instance of that
+    bug. Order is preserved exactly as Ebin saved it.
+    """
+    if isinstance(v, list):
+        out = []
+        for e in v:
+            if isinstance(e, dict):
+                text = e.get("quote", e.get("text", ""))
+                out.append({"label": _provenance_label(e), "text": str(text)})
+            else:
+                out.append({"label": "", "text": str(e)})
+        return out
+    if isinstance(v, dict):
+        # Never stringify an object. Show its fields, so nothing is silently hidden.
+        return [{"label": str(k), "text": str(val)} for k, val in sorted(v.items())]
+    return v
+
+
 def claim_fields(claim: dict) -> list:
     """Verbatim only. A missing field is shown as missing, never silently dropped."""
     order = (("verdict_type", "Final verdict type"),
-             ("agent_confidence", "Agent-stated confidence"),
+             ("agent_stated_confidence", "Agent-stated confidence"),
              ("top_hypothesis_verbatim", "Top hypothesis (verbatim)"),
              ("supporting_quotes", "Supporting quotes (verbatim, with turns)"),
-             ("disconfirming_evidence", "Explicit disconfirming evidence"),
-             ("attribution_notes", "Harness-vs-model attribution notes"),
-             ("extractor_notes", "Mechanical extractor notes"))
+             ("explicit_disconfirming_evidence", "Explicit disconfirming evidence"),
+             ("harness_vs_model_attribution_notes",
+              "Harness-vs-model attribution notes"),
+             ("mechanical_extractor_notes", "Mechanical extractor notes"))
     out = []
     for k, label in order:
         v = claim.get(k)
-        out.append([label, v if v not in (None, "", [], {}) else "(none recorded)"])
+        out.append([label, render_value(v) if v not in (None, "", [], {})
+                    else "(none recorded)"])
     return out
 
 

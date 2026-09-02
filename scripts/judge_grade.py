@@ -129,17 +129,34 @@ def claim_payload(claim: dict, rung: str, desc: dict) -> str:
 
     # Only fields that exist; a missing field is stated as missing rather than
     # silently omitted, so the judge cannot mistake absence for a negative claim.
+    # These MUST be the keys phase1_grade.py actually writes. They were not: four of
+    # the seven were looked up under names Phase 1 never emits, so every claim reached
+    # the judge with "(none recorded)" for the agent's confidence, its disconfirming
+    # evidence, its attribution notes and the extractor notes - content present in most
+    # rows. A quote record was also interpolated as a Python dict repr rather than as
+    # its text. Fixed here; the pass completed on 2026-09-02 predates this fix.
     for key, label in (("verdict_type", "Final verdict type"),
-                       ("agent_confidence", "Agent-stated confidence"),
+                       ("agent_stated_confidence", "Agent-stated confidence"),
                        ("top_hypothesis_verbatim", "Top hypothesis (verbatim)"),
                        ("supporting_quotes", "Supporting quotes (verbatim)"),
-                       ("disconfirming_evidence", "Explicit disconfirming evidence"),
-                       ("attribution_notes", "Harness-vs-model attribution notes"),
-                       ("extractor_notes", "Mechanical extractor notes")):
+                       ("explicit_disconfirming_evidence",
+                        "Explicit disconfirming evidence"),
+                       ("harness_vs_model_attribution_notes",
+                        "Harness-vs-model attribution notes"),
+                       ("mechanical_extractor_notes", "Mechanical extractor notes")):
         if key in claim and claim[key] not in (None, "", [], {}):
             v = claim[key]
             if isinstance(v, list):
-                v = "\n".join(f"  - {x}" for x in v)
+                parts = []
+                for x in v:
+                    if isinstance(x, dict):
+                        t = str(x.get("turn", "")).strip()
+                        src = ("submitted verdict" if t.lower() == "verdict"
+                               else f"turn {t}" if t else "quote")
+                        parts.append(f"  - [{src}] {x.get('quote', x.get('text', ''))}")
+                    else:
+                        parts.append(f"  - {x}")
+                v = "\n".join(parts)
             lines.append(f"**{label}:**\n{v}\n")
         else:
             lines.append(f"**{label}:** (none recorded)\n")
