@@ -1,0 +1,45 @@
+{
+  "baseline": "SYNTHETIC",
+  "corpus": "synthetic",
+  "n_texts": 3,
+  "topk": 50,
+  "threshold_free": true,
+  "pairs": [
+    {
+      "pair": "base_vs_base",
+      "n_tokens_scored": 10,
+      "mean_abs_logprob_delta": 0.0,
+      "approx_sym_kl_topk": 0.0
+    },
+    {
+      "pair": "base_vs_cand_SYNTHa",
+      "n_tokens_scored": 10,
+      "mean_abs_logprob_delta": 0.1,
+      "approx_sym_kl_topk": 0.2
+    },
+    {
+      "pair": "base_vs_cand_SYNTHb",
+      "n_tokens_scored": 10,
+      "mean_abs_logprob_delta": 0.1,
+      "approx_sym_kl_topk": 0.2
+    },
+    {
+      "pair": "base_vs_cand_SYNTHc",
+      "n_tokens_scored": 10,
+      "mean_abs_logprob_delta": 0.1,
+      "approx_sym_kl_topk": 0.2
+    },
+    {
+      "pair": "base_vs_cand_SYNTHd",
+      "n_tokens_scored": 10,
+      "mean_abs_logprob_delta": 0.1,
+      "approx_sym_kl_topk": 0.2
+    },
+    {
+      "pair": "base_vs_cand_SYNTHe",
+      "n_tokens_scored": 10,
+      "mean_abs_logprob_delta": 0.1,
+      "approx_sym_kl_topk": 0.2
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "generated_utc": "2026-01-01T00:00:00Z",
+  "mode": "BLIND - no sealed map was read",
+  "n_runs": 74,
+  "overall_refusal_rate": {
+    "ci": "two-sided 95% Wilson",
+    "hi": 0.130904,
+    "k": 4,
+    "lo": 0.021219,
+    "n": 74,
+    "n_midrun_refusal_events_in_verdict_bearing_runs": 1,
+    "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+    "rate": 0.054054
+  },
+  "per_condition": {
+    "battery": {
+      "any_unpriced_component": true,
+      "arm": "headline",
+      "brain_models": [
+        "gpt-5.6-terra"
+      ],
+      "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
+      "mean_spend_per_planned_attempt_usd": null,
+      "n_no_verdict_other": 0,
+      "n_planned_attempts": 5,
+      "n_terminal_refusal": 0,
+      "n_verdict_bearing": 5,
+      "recorded_spend_usd": null,
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.434482,
+        "k": 0,
+        "lo": 0.0,
+        "n": 5,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.0
+      },
+      "spend_field": "brain_usd",
+      "status_counts": {
+        "completed": 5
+      }
+    },
+    "glm_v0": {
+      "any_unpriced_component": false,
+      "arm": "exploratory_arm",
+      "brain_models": [
+        "glm-5.3-flash"
+      ],
+      "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
+      "mean_spend_per_planned_attempt_usd": 0.004,
+      "n_no_verdict_other": 0,
+      "n_planned_attempts": 5,
+      "n_terminal_refusal": 1,
+      "n_verdict_bearing": 4,
+      "recorded_spend_usd": 0.02,
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.624465,
+        "k": 1,
+        "lo": 0.036224,
+        "n": 5,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.2
+      },
+      "spend_field": "brain_usd",
+      "status_counts": {
+        "brain_refusal": 1,
+        "completed": 4
+      }
+    },
+    "introspection": {
+      "any_unpriced_component": false,
+      "arm": "headline",
+      "brain_models": [
+        "gpt-5.6-terra"
+      ],
+      "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
+      "mean_spend_per_planned_attempt_usd": 0.012,
+      "n_no_verdict_other": 0,
+      "n_planned_attempts": 5,
+      "n_terminal_refusal": 0,
+      "n_verdict_bearing": 5,
+      "recorded_spend_usd": 0.06,
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.434482,
+        "k": 0,
+        "lo": 0.0,
+        "n": 5,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.0
+      },
+      "spend_field": "brain_usd",
+      "status_counts": {
+        "completed": 5
+      }
+    },
+    "v0_opus": {
+      "any_unpriced_component": false,
+      "arm": "headline",
+      "brain_models": [
+        "claude-opus-5"
+      ],
+      "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
+      "mean_spend_per_planned_attempt_usd": 0.376,
+      "n_no_verdict_other": 0,
+      "n_planned_attempts": 40,
+      "n_terminal_refusal": 3,
+      "n_verdict_bearing": 37,
+      "recorded_spend_usd": 15.04,
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.198642,
+        "k": 3,
+        "lo": 0.025836,
+        "n": 40,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 1,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.075
+      },
+      "spend_field": "brain_usd",
+      "status_counts": {
+        "brain_refusal": 3,
+        "completed": 18,
+        "completed_forced": 19
+      }
+    },
+    "v1_opus": {
+      "any_unpriced_component": false,
+      "arm": "headline",
+      "brain_models": [
+        "claude-opus-5"
+      ],
+      "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
+      "mean_spend_per_planned_attempt_usd": 0.494737,
+      "n_no_verdict_other": 0,
+      "n_planned_attempts": 19,
+      "n_terminal_refusal": 0,
+      "n_verdict_bearing": 19,
+      "recorded_spend_usd": 9.4,
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.168179,
+        "k": 0,
+        "lo": 0.0,
+        "n": 19,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.0
+      },
+      "spend_field": "brain_usd",
+      "status_counts": {
+        "completed": 10,
+        "completed_forced": 9
+      }
+    }
+  },
+  "provenance": {
+    "estimands_from": "scripts/analysis_instrument.py",
+    "generated_by": "scripts/analysis_join.py",
+    "generated_utc": "2026-01-01T00:00:00Z",
+    "harness_commits_seen": [
+      "SYNTHETIC0000"
+    ],
+    "inputs": {
+      "floor": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_floor.json (sha256 0ce006e501208050...)",
+      "phase1_claims": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_phase1_claims.jsonl (sha256 53abdab558de91cd...)",
+      "phase2_grades": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_phase2_grades.jsonl (sha256 a7a82274bf342a90...)",
+      "run_dirs": "74 run_meta.json files from ['C:\\\\Users\\\\ebin\\\\claude-ground\\\\neel-mats-sept-26\\\\b13-diffing-bench\\\\results\\\\analysis\\\\synthetic\\\\runs\\\\*']",
+      "sealed_map": "NOT READ (blind mode)"
+    },
+    "mode": "blind",
+    "n_runs_without_harness_commit": 0,
+    "spend_field": "brain_usd"
+  },
+  "schema": "analysis_blind_outcomes/1",
+  "why": "emitting per-sealed-id results before unsealing would recreate exactly the ops-log exposure Amendment 6 clarification 7 disclosed",
+  "withheld": "every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars per FULL detection, and the per-candidate drift ranking. These require the rung<->ID map and are emitted only under --unsealed-map."
+}

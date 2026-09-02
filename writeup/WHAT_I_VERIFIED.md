@@ -120,6 +120,8 @@ found; do not claim it.
 | `scripts/test_analysis_instrument.py` | rates, Wilson intervals, agreement and cost formulas on synthetic input |
 | `scripts/test_v1_handoff.py` | the v1 generator→validator card handoff; the planted-false-card reject path (`DECISIONS.md` #23: "true card confirmed, false card rejected, in both runs") |
 | `scripts/verify_no_unpriced.py`, `scripts/check_run_leaks.py`, `scripts/screen_target_health.py`, `scripts/verify_l4v3_equivalence.py`, `scripts/verify_blinding.py` | the standing verification suite re-run after every new batch of runs |
+| `scripts/test_make_figures.py` (26 checks) | the figure renders from the contract; **every number drawn is traceable by key path to the input JSON**; the validator fails closed on a doctored Wilson bound, a swapped denominator, an impossible segment count and a foreign schema; the synthetic watermark cannot be disabled |
+| `scripts/test_analysis_join.py` (49 checks) | blind mode is genuinely blind (every rung null, figure input **not** written, no rung printed anywhere); the unsealed path produces the contract and renders; **the Amendment 6/7 denominators are the ones actually used** (detection over ALL attempts, L0 FPR over VERDICT-BEARING, frozen n=10 subset beside n=20); arms never mix; zero detections ⇒ `undefined`, unpriced ⇒ excluded; the join refuses EXAMPLE rows, an incomplete map, an out-of-vocabulary grade, an L0 grade on a designed rung, a detection grade on the null, a grade on a refused run, and a row for a nonexistent run; output is byte-deterministic |
 
 ## 11. Amendment-4 register scan (the battery's structural blindness, measured not assumed)
 
@@ -160,14 +162,21 @@ found; do not claim it.
   inventory covering it are committed. The two-brain asymmetry disclosure (`RESUME_STATE.md` §5d:
   Opus at `effort: high` with caching vs GLM at `reasoning_effort: low` with caching off, read from
   `run_meta.brain.wire_params`) is mandatory wherever the arm is reported.
-- **TODO — v1 campaign spend and completion statuses:** `results/v0_v1_sealed_compare.json` exists
-  (schema `v0_v1_sealed_compare/1`, operational outcomes only, explicitly no verdicts/hypotheses)
-  but its aggregates are not transcribed here. Read them yourself before quoting any v1 cost or
-  status count.
-- **TODO — total campaign dollar figure:** `results/analysis_run_inventory.json` covers the first
-  30 v0 runs only (`$11.488481`). The +10 L0 extension is recorded at `$5.10` in `DECISIONS.md` #22;
-  the v1 campaign total is not transcribed here. A single project-total figure must be produced by
-  `scripts/analysis_instrument.py`, not by adding these by hand in prose.
+- **CLOSED — campaign spend and completion statuses, all conditions.** `scripts/analysis_join.py`
+  run blind over the 69 committed campaign runs now emits them, with no hand arithmetic:
+  `results/analysis/tables.md`, `results/analysis/blind_outcomes.json`,
+  `results/analysis/run_inventory.json` (schema `analysis_run_inventory/2`). Brain spend over all
+  planned attempts: v0 $16.5930 (40 runs) · v1 $9.5615 (19) · battery $0.3211 (5) ·
+  introspection $0.0557 (5); **`any_unpriced_component: false` for every condition**. Terminal
+  refusals: v0 8/40 = 20.0% [10.5–34.8%], v1 0/19 = 0.0% [0.0–16.8%], baselines 0/5 each **by
+  construction**; pooled 8/69 = 11.6% [6.0–21.2%]. Mid-run refusal events inside verdict-bearing
+  runs: **2**.
+- **Note on the older inventory:** `results/analysis_run_inventory.json`
+  (schema `analysis_run_inventory/1`) covers `results/runs/v0_cand_*` only, and
+  `analysis_instrument.load_runs()` derives `candidate_id` from `config.notes`, which is free text
+  ending in a sentence for the baseline runs. The join's regenerated inventory parses the candidate
+  id from the `run_id` instead and covers every condition. It is written to a **new path** and
+  overwrites nothing.
 - **TODO — human–judge agreement rate, all detection/FP rates, every grade:** these require
   unsealing and the Phase-1 → Phase-2 pipeline. Nothing about them is verified or verifiable yet.
 - **Claim to demote (r4 §5):** *"Blinding was perfect."* Transcript leakage checks passed, but the

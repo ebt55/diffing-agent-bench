@@ -1,0 +1,1764 @@
+{
+  "schema": "figure_annotations/1",
+  "purpose": "every number drawn on the figure, with the exact key path in the input JSON it was read from; this is what makes traceability a testable property rather than a claim",
+  "figure_png": "SYNTHETIC_joined_figure.png",
+  "figure_svg": "SYNTHETIC_joined_figure.svg",
+  "input_schema": "analysis_figure_input/1",
+  "input_is_synthetic": false,
+  "watermark": "SYNTHETIC — NOT DATA",
+  "provenance": {
+    "estimands_from": "scripts/analysis_instrument.py",
+    "generated_by": "scripts/analysis_join.py",
+    "generated_utc": "2026-01-01T00:00:00Z",
+    "harness_commits_seen": [
+      "SYNTHETIC0000"
+    ],
+    "inputs": {
+      "floor": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_floor.json (sha256 0ce006e501208050...)",
+      "phase1_claims": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_phase1_claims.jsonl (sha256 53abdab558de91cd...)",
+      "phase2_grades": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_phase2_grades.jsonl (sha256 a7a82274bf342a90...)",
+      "run_dirs": "74 run_meta.json files from ['C:\\\\Users\\\\ebin\\\\claude-ground\\\\neel-mats-sept-26\\\\b13-diffing-bench\\\\results\\\\analysis\\\\synthetic\\\\runs\\\\*']",
+      "sealed_map": "C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\SYNTHETIC_fake_rung_map.json (sha256 b66b4594a94c61d1...)"
+    },
+    "mode": "unsealed",
+    "n_runs_without_harness_commit": 0,
+    "spend_field": "brain_usd"
+  },
+  "generated_utc": "2026-09-02T01:02:39Z",
+  "n_annotations": 65,
+  "annotations": [
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "4/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 4
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "full_wilson_95",
+      "text": "[37.6-96.4%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.375535
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 0.963776
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 4/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L1",
+            "n_verdict_bearing"
+          ],
+          "value": 4
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L1",
+            "n_planned_attempts"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "3/3",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 3
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 3
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "full_wilson_95",
+      "text": "[43.9-100.0%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.438503
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 1.0
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 3/3",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L1",
+            "n_verdict_bearing"
+          ],
+          "value": 3
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L1",
+            "n_planned_attempts"
+          ],
+          "value": 3
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L1",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L1",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L1",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L1",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L1",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L1",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L1",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "2/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "full_wilson_95",
+      "text": "[11.8-76.9%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.117621
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 0.769276
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 5/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L2",
+            "n_verdict_bearing"
+          ],
+          "value": 5
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L2",
+            "n_planned_attempts"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "1/3",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 3
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "full_wilson_95",
+      "text": "[6.1-79.2%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.061492
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 0.79234
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 3/3",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L2",
+            "n_verdict_bearing"
+          ],
+          "value": 3
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L2",
+            "n_planned_attempts"
+          ],
+          "value": 3
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L2",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L2",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L2",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L2",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L2",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L2",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L2",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "full_wilson_95",
+      "text": "[0.0-43.4%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.0
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 0.434482
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 5/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L3",
+            "n_verdict_bearing"
+          ],
+          "value": 5
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L3",
+            "n_planned_attempts"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/3",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 3
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "full_wilson_95",
+      "text": "[0.0-56.1%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.0
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 0.561497
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 3/3",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L3",
+            "n_verdict_bearing"
+          ],
+          "value": 3
+        },
+        {
+          "path": [
+            "detection",
+            "v1_opus",
+            "L3",
+            "n_planned_attempts"
+          ],
+          "value": 3
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L3",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L3",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "full_k_over_n",
+      "text": "0/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "full_wilson_95",
+      "text": "[0.0-43.4%]",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "lo"
+          ],
+          "value": 0.0
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "hi"
+          ],
+          "value": 0.434482
+        }
+      ],
+      "note": "two-sided 95% Wilson, recomputed and matched against analysis_instrument.wilson"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "verdict_bearing_n",
+      "text": "vb 5/5",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L4v3",
+            "n_verdict_bearing"
+          ],
+          "value": 5
+        },
+        {
+          "path": [
+            "detection",
+            "v0_opus",
+            "L4v3",
+            "n_planned_attempts"
+          ],
+          "value": 5
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L4v3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L4v3",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "battery",
+            "L4v3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "full_k_over_n",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L4v3",
+            "full_all_attempts_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "FULL among ALL planned attempts (primary estimand)"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "single_decision_no_interval",
+      "text": "n=1 pair-level decision",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L4v3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "one pair-level decision, not seed-paired trials - no interval drawn, because it would imply replication"
+    },
+    {
+      "panel": "A-exploratory",
+      "kind": "verdict_bearing_n",
+      "text": "vb 1/1",
+      "fields": [
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L4v3",
+            "n_verdict_bearing"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "detection",
+            "introspection",
+            "L4v3",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "Amendment 6 clarification 3: per-rung verdict-bearing n is annotated so a refusal-thinned cell is not read as subtlety"
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_primary_verdict_bearing",
+      "text": "2/18 = 11.1% [3.1-32.8%]",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "k"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "n"
+          ],
+          "value": 18
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "rate"
+          ],
+          "value": 0.111111
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "lo"
+          ],
+          "value": 0.03102
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "hi"
+          ],
+          "value": 0.327998
+        }
+      ],
+      "note": "PRIMARY L0 estimand: frozen-rule FP among VERDICT-BEARING runs (Amendment 6 clar. 2)"
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_strict_rule",
+      "text": "3/18 = 16.7% [5.8-39.2%]",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_strict_rule_verdict_bearing",
+            "k"
+          ],
+          "value": 3
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_strict_rule_verdict_bearing",
+            "n"
+          ],
+          "value": 18
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_strict_rule_verdict_bearing",
+            "rate"
+          ],
+          "value": 0.166667
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_strict_rule_verdict_bearing",
+            "lo"
+          ],
+          "value": 0.058366
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "fp_strict_rule_verdict_bearing",
+            "hi"
+          ],
+          "value": 0.39222
+        }
+      ],
+      "note": "strict-rule sensitivity: every `diff` verdict counts as FP (Amendment 3 item 4)"
+    },
+    {
+      "panel": "B-null",
+      "kind": "refusal_count",
+      "text": "2 refusals of 20",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "n_terminal_refusal"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "null",
+            "v0_opus",
+            "n_planned_attempts"
+          ],
+          "value": 20
+        }
+      ],
+      "note": ""
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_subset",
+      "text": "subset 1/9 = 11.1%",
+      "fields": [
+        {
+          "path": [
+            "null_subset",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "k"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "null_subset",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "n"
+          ],
+          "value": 9
+        },
+        {
+          "path": [
+            "null_subset",
+            "v0_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "rate"
+          ],
+          "value": 0.111111
+        }
+      ],
+      "note": "frozen n=10 subset (seeds 0-9, Amendment 7): shown so a reader can verify the estimate did not move when seeds were added (Amendment 7). Full interval: 1/9 = 11.1% [2.0-43.5%]"
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_primary_verdict_bearing",
+      "text": "1/10 = 10.0% [1.8-40.4%]",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "k"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "n"
+          ],
+          "value": 10
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "rate"
+          ],
+          "value": 0.1
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "lo"
+          ],
+          "value": 0.017876
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "hi"
+          ],
+          "value": 0.40415
+        }
+      ],
+      "note": "PRIMARY L0 estimand: frozen-rule FP among VERDICT-BEARING runs (Amendment 6 clar. 2)"
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_strict_rule",
+      "text": "1/10 = 10.0% [1.8-40.4%]",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_strict_rule_verdict_bearing",
+            "k"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_strict_rule_verdict_bearing",
+            "n"
+          ],
+          "value": 10
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_strict_rule_verdict_bearing",
+            "rate"
+          ],
+          "value": 0.1
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_strict_rule_verdict_bearing",
+            "lo"
+          ],
+          "value": 0.017876
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "fp_strict_rule_verdict_bearing",
+            "hi"
+          ],
+          "value": 0.40415
+        }
+      ],
+      "note": "strict-rule sensitivity: every `diff` verdict counts as FP (Amendment 3 item 4)"
+    },
+    {
+      "panel": "B-null",
+      "kind": "refusal_count",
+      "text": "0 refusals of 10",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "n_terminal_refusal"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "v1_opus",
+            "n_planned_attempts"
+          ],
+          "value": 10
+        }
+      ],
+      "note": ""
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_primary_verdict_bearing",
+      "text": "0/1  (one pair-level decision)",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "battery",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "battery",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "PRIMARY L0 estimand: frozen-rule FP among VERDICT-BEARING runs (Amendment 6 clar. 2); no interval drawn for a pair-level decision"
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_strict_rule",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "battery",
+            "fp_strict_rule_verdict_bearing",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "battery",
+            "fp_strict_rule_verdict_bearing",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "strict-rule sensitivity: every `diff` verdict counts as FP (Amendment 3 item 4)"
+    },
+    {
+      "panel": "B-null",
+      "kind": "refusal_count",
+      "text": "0 refusals of 1",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "battery",
+            "n_terminal_refusal"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "battery",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": ""
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_primary_verdict_bearing",
+      "text": "0/1  (one pair-level decision)",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "introspection",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "introspection",
+            "fp_frozen_rule_verdict_bearing_PRIMARY",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "PRIMARY L0 estimand: frozen-rule FP among VERDICT-BEARING runs (Amendment 6 clar. 2); no interval drawn for a pair-level decision"
+    },
+    {
+      "panel": "B-null",
+      "kind": "fpr_strict_rule",
+      "text": "0/1",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "introspection",
+            "fp_strict_rule_verdict_bearing",
+            "k"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "introspection",
+            "fp_strict_rule_verdict_bearing",
+            "n"
+          ],
+          "value": 1
+        }
+      ],
+      "note": "strict-rule sensitivity: every `diff` verdict counts as FP (Amendment 3 item 4)"
+    },
+    {
+      "panel": "B-null",
+      "kind": "refusal_count",
+      "text": "0 refusals of 1",
+      "fields": [
+        {
+          "path": [
+            "null",
+            "introspection",
+            "n_terminal_refusal"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "null",
+            "introspection",
+            "n_planned_attempts"
+          ],
+          "value": 1
+        }
+      ],
+      "note": ""
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_per_full",
+      "text": "$2.0900 per FULL detection",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "v0_opus",
+            "primary"
+          ],
+          "value": 2.09
+        }
+      ],
+      "note": "primary dollars-per-detection (Amendment 6 clar. 2)"
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_inputs",
+      "text": "spend $12.5400  /  6 FULL",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "v0_opus",
+            "total_spend_all_attempts_usd"
+          ],
+          "value": 12.54
+        },
+        {
+          "path": [
+            "cost",
+            "v0_opus",
+            "n_full_detections"
+          ],
+          "value": 6
+        }
+      ],
+      "note": "numerator and denominator printed beside the ratio - the ratio alone is not interpretable at this n"
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_per_full",
+      "text": "$2.3500 per FULL detection",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "v1_opus",
+            "primary"
+          ],
+          "value": 2.35
+        }
+      ],
+      "note": "primary dollars-per-detection (Amendment 6 clar. 2)"
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_inputs",
+      "text": "spend $9.4000  /  4 FULL",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "v1_opus",
+            "total_spend_all_attempts_usd"
+          ],
+          "value": 9.4
+        },
+        {
+          "path": [
+            "cost",
+            "v1_opus",
+            "n_full_detections"
+          ],
+          "value": 4
+        }
+      ],
+      "note": "numerator and denominator printed beside the ratio - the ratio alone is not interpretable at this n"
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_unpriced",
+      "text": "excluded from dollar ranking (unpriced component)",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "battery",
+            "eligible_for_dollar_ranking"
+          ],
+          "value": false
+        },
+        {
+          "path": [
+            "cost",
+            "battery",
+            "unpriced_component"
+          ],
+          "value": true
+        }
+      ],
+      "note": "Section 4 cost-null-not-zero rule"
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_undefined",
+      "text": "undefined (0 detections; spend $0.0480)",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "introspection",
+            "primary"
+          ],
+          "value": "undefined (0 detections; spend $0.0480)"
+        }
+      ],
+      "note": "zero FULL detections: reported as `undefined` with the spend, never as infinity and never dropped"
+    },
+    {
+      "panel": "B-cost",
+      "kind": "cost_inputs",
+      "text": "spend $0.0480  /  0 FULL",
+      "fields": [
+        {
+          "path": [
+            "cost",
+            "introspection",
+            "total_spend_all_attempts_usd"
+          ],
+          "value": 0.048
+        },
+        {
+          "path": [
+            "cost",
+            "introspection",
+            "n_full_detections"
+          ],
+          "value": 0
+        }
+      ],
+      "note": "numerator and denominator printed beside the ratio - the ratio alone is not interpretable at this n"
+    }
+  ]
+}

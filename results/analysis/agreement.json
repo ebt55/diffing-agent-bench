@@ -1,0 +1,8 @@
+{
+  "authority": "PREREGISTRATION.md Addendum to Amendment 3, part C",
+  "disclosure": "the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)",
+  "n_runs_with_both_grades": 0,
+  "note": "no run carries both a human and a judge grade yet, so no agreement statistic is computed - none is invented",
+  "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+  "schema": "phase2_agreement/1"
+}

@@ -1,0 +1,33 @@
+{
+  "run_id": "bat_cand_SYNTHc",
+  "status": "completed",
+  "seed": 0,
+  "cost_exact": false,
+  "harness_commit": "SYNTHETIC0000",
+  "verdict": {
+    "verdict": "diff",
+    "hypothesis": "SYNTHETIC - not data",
+    "confidence": 50
+  },
+  "brain": {
+    "model": "gpt-5.6-terra",
+    "turns_used": 1,
+    "n_calls": 1,
+    "cost_usd": null,
+    "cost_exact": false,
+    "n_unpriced_calls": 1,
+    "calls": [
+      {
+        "turn": 1,
+        "stop_reason": "tool_use",
+        "cost_exact": false
+      }
+    ]
+  },
+  "cost": {
+    "brain_usd": null,
+    "targets_usd": 0.0,
+    "total_usd": null,
+    "cost_exact": false
+  }
+}

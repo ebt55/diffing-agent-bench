@@ -219,13 +219,37 @@ recomputed by the plotting code:
 exact key path in the input JSON it was read from — which is what makes "traceable to the input
 JSON" a tested property rather than a claim.
 
-### 5a · SCHEMA TODOs — what `analysis_instrument.py` does not yet emit
+### 5a · SCHEMA TODOs — **CLOSED by `scripts/analysis_join.py`**
 
-**Do not invent these.** The instrument defines all four estimands as functions, but its `main()`
-emits only `analysis_run_inventory/1` (outcomes, costs, statuses) and **never calls
+The gaps below were real: the instrument defines all four estimands as functions, but its
+`main()` emits only `analysis_run_inventory/1` (outcomes, costs, statuses) and **never calls
 `detection_rates`, `l0_false_positive_rates`, `dollars_per_detection` or `agreement`**. Nothing
-in the repo currently produces `analysis_figure_input/1`. The gaps below must be closed by a
-committed join step before the real figure can be rendered.
+produced `analysis_figure_input/1`.
+
+`scripts/analysis_join.py` (+ `scripts/test_analysis_join.py`, 49 checks) is that join. It is
+**the only place in the repository that reads the sealed rung map**, and it reads it only under
+an explicit `--unsealed-map` flag that prints a loud banner. Without the flag it runs fully
+blind — every rung null, every rung-keyed output refused — so the whole pipeline is testable
+today, and unsealing adds one flag and changes no logic.
+
+| TODO | status | how it is closed |
+|---|---|---|
+| T1 grade join | ✅ code closed | `results/phase2_grades.jsonl` schema defined (`results/phase2_grades.schema.json`, empty file + `.EXAMPLE.jsonl`); the join merges it by `run_id`, last row wins — the same rule `phase1_grade.py` uses on reload. **The grades themselves are human work and do not exist yet.** |
+| T2 condition | ✅ closed | derived from the `run_id` prefix via an explicit table, and cross-checked against the convenience copy in the grade row. `config.notes` is *not* used: it is free text that ends in a sentence for the baselines |
+| T3 rung | ✅ closed | from the sealed map, behind the flag, validated as a bijection covering every candidate id present in the runs |
+| T4 `fp_frozen_rule` / `verdict` | ✅ closed | verdict **type** from `phase1_claims.jsonl` (claim text is never read); `fp_frozen_rule` from the Phase-2 `FP` grade |
+| T5 per-condition spend | ✅ closed | summed per condition from `run_meta.cost`, with `cost_exact` and `n_unpriced_calls` propagated: any unpriced component ⇒ the condition leaves the dollar ranking |
+| T6 baselines absent | ✅ closed | `bat_cand_*` and `intro_cand_*` are first-class conditions; Baseline 2 is loaded from `baseline_kl_drift_sealed.json` into its own block and stays out of the panels |
+| T7 `n_planned_attempts` missing from the cost block | ✅ closed by composition | the figure prints spend and FULL count from the cost block and the attempt count from the detection/null block |
+| T8 seed subset | ✅ closed | `null_subset` emitted for seeds 0–9 whenever the L0 cell is larger, labelled "frozen n=10 subset … Amendment 7" |
+| T9 `grade_counts` null key | ✅ closed | normalised to `"ungraded"` in the join, so the emitted document sorts and reads cleanly |
+| T10 mid-run refusals | ✅ **closed with a number** | countable after all: `run_meta.brain.calls[].stop_reason == "refusal"` on a run that still submitted a verdict. **Measured: 2 across the 69 committed campaign runs** |
+| T11 `agreement()` never emitted | ✅ closed | `results/analysis/agreement.json` — confusion matrix, raw agreement, positive/negative agreement on the binary FULL mapping, kappa as secondary, over three label sets (detection, null, combined). Emits a "not computed, none invented" note until judge grades exist |
+
+**What remains, and it is not a schema gap:** the Phase-1 claim rows and Phase-2 grades are human
+work, and the map read is one deliberate flag. Nothing else blocks the real figure.
+
+#### The original gap list, kept as the record
 
 | # | Gap | Where it bites | Note |
 |---|---|---|---|
@@ -280,9 +304,17 @@ committed `scripts/make_figures.py`.
 
 ## 7 · TODOs
 
-- **DONE:** `scripts/make_figures.py` + `scripts/test_make_figures.py` are committed;
-  `results/figures/` now exists, with the synthetic proof render under
-  `results/figures/synthetic/`. The blocking work is §5a's schema TODOs (T1–T8), not the drawing.
+- **DONE:** the whole pipeline is committed and tested — `scripts/analysis_join.py` (+ test,
+  49 checks) produces the contract, `scripts/make_figures.py` (+ test, 26 checks) draws it.
+  After unsealing the two commands are:
+
+  ```
+  python scripts/analysis_join.py --unsealed-map data/sealed/rung_id_map.json
+  python scripts/make_figures.py --input results/analysis/analysis_figure_input.json
+  ```
+
+  §5a's T1–T11 are closed. What remains is human work (Phase-1 extraction, Phase-2 grading)
+  and the one deliberate flag.
 - **TODO:** decide and record whether Panel A's condition ordering places v1 immediately beside v0
   (paired reading) or groups all agents together. Not specified by either review. Currently the
   order is whatever `conditions` lists in the input, and the bar order is printed under Panel A.

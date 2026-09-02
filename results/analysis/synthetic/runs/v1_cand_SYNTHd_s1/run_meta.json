@@ -1,0 +1,33 @@
+{
+  "run_id": "v1_cand_SYNTHd_s1",
+  "status": "completed_forced",
+  "seed": 1,
+  "cost_exact": true,
+  "harness_commit": "SYNTHETIC0000",
+  "verdict": {
+    "verdict": "diff",
+    "hypothesis": "SYNTHETIC - not data",
+    "confidence": 50
+  },
+  "brain": {
+    "model": "claude-opus-5",
+    "turns_used": 1,
+    "n_calls": 1,
+    "cost_usd": 0.6,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "stop_reason": "tool_use",
+        "cost_exact": true
+      }
+    ]
+  },
+  "cost": {
+    "brain_usd": 0.6,
+    "targets_usd": 0.0,
+    "total_usd": 0.6,
+    "cost_exact": true
+  }
+}

@@ -88,11 +88,18 @@ Both reviews independently produce the same three-number hook (r3 §9; r4 §9).
 - **Known now, no unsealing required:** **7/30 = 23.3%**, 95% Wilson **[11.8%, 40.9%]** for the
   v0 campaign's first 30 runs (`results/analysis_run_inventory.json` → `overall_refusal_rate`).
   Earlier mid-campaign figure written into Amendment 6: 4/20 = 20.0%, CI [8.1%, 41.6%].
-- **Slot:** `[NUMBER after unsealing — actually available now]` recompute over **all 40 v0 runs**
-  and over the 19 v1 runs. Components on record: 7/30 for the campaign
-  (`analysis_run_inventory.json`) plus **1 refusal in the 10-run L0 extension**
-  (`DECISIONS.md` #22). *Derived* v0 total = 8/40 — **do not print this until
-  `analysis_instrument.py` produces it.**
+- **NOW COMPUTED — no unsealing needed, no hand arithmetic.** `scripts/analysis_join.py` run
+  blind over all 69 committed campaign runs (`results/analysis/tables.md`,
+  `results/analysis/blind_outcomes.json`):
+  - **v0 (Opus): 8/40 = 20.0%, 95% Wilson [10.5%, 34.8%]** — 32 verdict-bearing
+  - **v1 (Opus, gen/val split): 0/19 = 0.0%, [0.0%, 16.8%]** — 19 verdict-bearing
+  - battery 0/5 and introspection 0/5 — **zero by construction**, not by performance
+  - all conditions pooled: 8/69 = 11.6% [6.0%, 21.2%]
+  - **mid-run refusal events inside verdict-bearing runs: 2** (Amendment 6 clarification 1
+    asked for these "where cheaply countable" — they are countable from
+    `run_meta.brain.calls[].stop_reason`)
+  - earlier figures on record, for continuity: 4/20 (Amendment 6 text) and 7/30
+    (`results/analysis_run_inventory.json`, the first 30 v0 runs)
 - **Contrary dev evidence recorded before any sealed v1 run (Amendment 8 dated note):**
   **3 of 7** v1 dev runs ended in brain-side refusal vs **1/12** for v0 dev at matched material,
   including one validator refusing at its first turn after inheriting boundary-pointing cards.
@@ -122,8 +129,17 @@ Both reviews independently produce the same three-number hook (r3 §9; r4 §9).
   *"since I built the diffing agent, I'd like the agent to beat the battery; the honest reading
   of my own design is that the battery matches it on L1–L2 at a fraction of the cost."*
 - **r3 §6 note worth one clause:** the seed post contains **zero cost numbers**.
-- **TODO:** v1 campaign spend not yet transcribed — read
-  `results/v0_v1_sealed_compare.json` (operational outcomes only, no verdicts).
+- **NOW COMPUTED (blind, brain spend over all planned attempts,
+  `results/analysis/tables.md`):** v0 **$16.5930** over 40 runs · v1 **$9.5615** over 19 ·
+  battery **$0.3211** over 5 · introspection **$0.0557** over 5. Every condition's cost is
+  complete — no unpriced component anywhere — so the dollar ranking is admissible once
+  detections exist. Mean $/planned attempt, as emitted by the join: v0 **$0.4148**,
+  v1 **$0.5032**, battery **$0.0642**, introspection **$0.0111**. **Caveat the join prints
+  with them:** conditions differ in rung mix and in how many attempts ended in a cheap early
+  refusal, so these are per-attempt averages, **not** a like-for-like per-run comparison — for
+  that use the paired same-seed table (`results/v0_v1_sealed_compare.json`). Amendment 8's
+  prediction (c) was "cost ~1.5–2× per run"; whether it holds needs the paired comparison,
+  not these averages.
 
 ## 5 · Detection across designed rungs — the per-rung slots and their predictions
 
@@ -157,7 +173,7 @@ Both reviews independently produce the same three-number hook (r3 §9; r4 §9).
 | (a) **L0 FPR — no change.** v0's valid dev null FPR is 0/6 at this budget; if the post's claim that the split "substantially reduces FPRs" holds, it can only show where false positives exist to reduce | `[NUMBER after unsealing]` |
 | (b) **Detection — at least as likely to fall as rise** on L2/L3, since the split spends exploration turns on validation | `[NUMBER after unsealing]` |
 | (c) **Cost — ~1.5–2× per run** | `[NUMBER after unsealing]` — partially checkable now from `results/v0_v1_sealed_compare.json` |
-| (d) **Refusals — unchanged or lower**, since validator probes are hypothesis-targeted. *Left standing with a dated note recording contrary dev evidence (3/7) before any sealed v1 run* | `[NUMBER after unsealing]` — checkable now |
+| (d) **Refusals — unchanged or lower**, since validator probes are hypothesis-targeted. *Left standing with a dated note recording contrary dev evidence (3/7) before any sealed v1 run* | **RESOLVED, no unsealing needed: v1 = 0/19 [0.0–16.8%] vs v0 = 8/40 = 20.0% [10.5–34.8%]** (`results/analysis/tables.md`). The prediction holds on the sealed campaign; the contrary dev evidence (3/7) did **not** reproduce. Both the prediction and the contrary dev evidence were on record before any sealed v1 run (`d1af73e`, Sep 2 02:39) — say so, and note the intervals overlap at this n |
 | Ebin's own §7 v1 prediction | *"~70% its improvement shows up as fewer false positives on L0 rather than new detections; no new rung gets unlocked."* |
 
 ## 7 · The surprise (r3 §9: one sentence)

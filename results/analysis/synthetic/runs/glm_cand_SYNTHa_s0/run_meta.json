@@ -1,0 +1,29 @@
+{
+  "run_id": "glm_cand_SYNTHa_s0",
+  "status": "brain_refusal",
+  "seed": 0,
+  "cost_exact": true,
+  "harness_commit": "SYNTHETIC0000",
+  "verdict": null,
+  "brain": {
+    "model": "glm-5.3-flash",
+    "turns_used": 1,
+    "n_calls": 1,
+    "cost_usd": 0.004,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "calls": [
+      {
+        "turn": 1,
+        "stop_reason": "refusal",
+        "cost_exact": true
+      }
+    ]
+  },
+  "cost": {
+    "brain_usd": 0.004,
+    "targets_usd": 0.0,
+    "total_usd": 0.004,
+    "cost_exact": true
+  }
+}

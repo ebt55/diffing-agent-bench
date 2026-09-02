@@ -1,0 +1,43 @@
+# Headline numbers — generated, never hand-assembled
+
+Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
+
+- generated: `2026-09-02T01:01:01Z`
+- mode: **BLIND (no sealed map read)**
+- spend field: `brain_usd`
+- inputs:
+  - `floor` — results/baseline_kl_drift_sealed.json (sha256 8c804cdb45696e64...)
+  - `phase1_claims` — results/phase1_claims.jsonl (ABSENT — not yet produced)
+  - `phase2_grades` — results/phase2_grades.jsonl (sha256 e3b0c44298fc1c14...)
+  - `run_dirs` — 69 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*']
+  - `sealed_map` — NOT READ (blind mode)
+
+## BLIND MODE — rung-keyed tables are refused
+
+every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars per FULL detection, and the per-candidate drift ranking. These require the rung<->ID map and are emitted only under --unsealed-map.
+
+*Why:* emitting per-sealed-id results before unsealing would recreate exactly the ops-log exposure Amendment 6 clarification 7 disclosed
+
+### Per-condition outcomes (no rung identity involved)
+
+| condition | arm | attempts | verdict-bearing | terminal refusals | refusal rate (k/n, 95% Wilson) | recorded spend | mean $/attempt | cost complete |
+|---|---|---|---|---|---|---|---|---|
+| battery | headline | 5 | 5 | 0 | 0/5 = 0.0% [0.0-43.4%] | $0.3211 | $0.0642 | yes |
+| introspection | headline | 5 | 5 | 0 | 0/5 = 0.0% [0.0-43.4%] | $0.0557 | $0.0111 | yes |
+| v0_opus | headline | 40 | 32 | 8 | 8/40 = 20.0% [10.5-34.8%] | $16.5930 | $0.4148 | yes |
+| v1_opus | headline | 19 | 19 | 0 | 0/19 = 0.0% [0.0-16.8%] | $9.5615 | $0.5032 | yes |
+
+*conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).*
+
+**Overall terminal-refusal rate:** 8/69 = 11.6% [6.0-21.2%] (denominator: all planned attempts across all conditions). Mid-run refusal events inside verdict-bearing runs: 2.
+
+*Source for every row: the `run_meta.json` `status` field, mapped to an outcome by `analysis_instrument.outcome()` (Amendment 6 clarification 1). No verdict value is read.*
+
+## Human–judge agreement (Addendum C)
+
+- runs carrying both a human and a judge grade: **0**
+- human grade is primary; disagreements resolved by the human with written reasons (section 5)
+- the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)
+
+*no run carries both a human and a judge grade yet, so no agreement statistic is computed - none is invented*
+
