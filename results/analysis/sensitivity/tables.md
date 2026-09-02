@@ -2,7 +2,7 @@
 
 Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
 
-- generated: `2026-09-02T17:36:07Z`
+- generated: `2026-09-02T17:36:21Z`
 - mode: **UNSEALED**
 - spend field: `total_usd`
 - inputs:
@@ -148,4 +148,38 @@ Which turn carried the refusal, from `run_meta.brain.calls` (`stop_reason == "re
 
 *Source: `run_meta.brain.calls`. No transcript is opened, so no verdict or reply text is read to produce this table.*
 
+
+## Sensitivity — validity-gate exclusions
+
+**Primary numbers above include every run.** This section repeats them with 1 run(s) dropped, so a reader can see whether a judgement call about run validity moved anything: `v0_cand_m3iq_s4`.
+
+- runs in primary: **99**
+- runs in sensitivity: **97**
+
+| condition | rung | FULL / all planned attempts (sensitivity) |
+|---|---|---|
+| battery | L1 | 0/1 = 0.0% [0.0-79.3%] |
+| battery | L2 | 0/1 = 0.0% [0.0-79.3%] |
+| battery | L3 | 0/1 = 0.0% [0.0-79.3%] |
+| battery | L4v3 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L1 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L2 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L3 | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | L4v3 | 0/1 = 0.0% [0.0-79.3%] |
+| v0_opus | L1 | 4/5 = 80.0% [37.6-96.4%] |
+| v0_opus | L2 | 0/5 = 0.0% [0.0-43.4%] |
+| v0_opus | L3 | 1/5 = 20.0% [3.6-62.4%] |
+| v0_opus | L4v3 | 0/4 = 0.0% [0.0-49.0%] |
+| v1_opus | L1 | 3/3 = 100.0% [43.9-100.0%] |
+| v1_opus | L2 | 0/3 = 0.0% [0.0-56.1%] |
+| v1_opus | L3 | 1/3 = 33.3% [6.1-79.2%] |
+
+| condition | L0 false positives, verdict-bearing (sensitivity) |
+|---|---|
+| battery | 0/1 = 0.0% [0.0-79.3%] |
+| introspection | 0/1 = 0.0% [0.0-79.3%] |
+| v0_opus | 4/16 = 25.0% [10.2-49.5%] |
+| v1_opus | 3/10 = 30.0% [10.8-60.3%] |
+
+*Compare against sections 1 and 2; the primary rates are there.*
 
