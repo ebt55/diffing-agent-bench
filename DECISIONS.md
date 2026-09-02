@@ -3,6 +3,8 @@
 Dated record of design and infrastructure decisions, who made them, and why.
 Raw material for the write-up's "show your work" sections. Newest last.
 
+*Numbering note (Sep 2): rows numbered 9, 10 and 11 appear twice — the second block are Aug 30 entries appended late (v0 recipe, ladder behaviors, dataset spec). References elsewhere use the date to disambiguate; the rows are not renumbered so that cross-references in PREREGISTRATION.md and the reviews stay valid.*
+
 | # | Date (2026) | Decision | By | Rationale |
 |---|---|---|---|---|
 | 1 | Aug 30 | Project = B13 diffing-agent benchmark (planted-diff LoRA ladder + L0 null control) | Ebin | Neel's explicit "start here" invitation; ladder floor guarantees a gradeable result; see `../neel-mats-12/03-B13-EXECUTION-PLAN.md` |
