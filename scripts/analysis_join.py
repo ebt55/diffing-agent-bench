@@ -296,13 +296,20 @@ def load_runs(globs: list[str]) -> list[dict]:
     return sorted(out, key=lambda r: (r["condition"], r["run_id"]))
 
 
-def load_jsonl_last_per_run(path: Path, what: str) -> dict[str, dict]:
-    """Append-only files: the LAST row for a run_id wins.
+def load_jsonl_last_per_run(path: Path, what: str,
+                            keyed_by_condition: bool = False) -> dict:
+    """Append-only files: the LAST row for a run wins.
 
     Same rule phase1_grade.py uses on reload, restated here so the two halves of the
     pipeline cannot disagree about which row is current.
+
+    `keyed_by_condition` makes the key (condition, run_id) instead of run_id alone.
+    Phase-2 rows need it: run ids are NOT unique across conditions - the GLM arm reuses
+    the Opus arm's ids exactly - so a single-key dict would let one arm's grade silently
+    displace the other's. Phase-1 claims stay keyed by run_id because attach_phase1
+    resolves their condition from the prefix and looks them up that way.
     """
-    rows: dict[str, dict] = {}
+    rows: dict = {}
     if not path.exists():
         return rows
     for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
@@ -320,7 +327,11 @@ def load_jsonl_last_per_run(path: Path, what: str) -> dict[str, dict]:
             raise JoinError(
                 f"{path}:{i} is an EXAMPLE row (run_id={rid!r}). The committed example "
                 f"file must never be used as input; point --phase2 at the real file.")
-        rows[rid] = r
+        if keyed_by_condition:
+            cond = r.get("condition") or claim_condition(rid)
+            rows[(cond, rid)] = r
+        else:
+            rows[rid] = r
     return rows
 
 
@@ -444,8 +455,17 @@ def attach_phase2(runs: list[dict], grades: dict[str, dict],
     # carry `condition` in the schema, so it is used when present and resolved from the
     # prefix only as a fallback for rows written before that was populated.
     index = {(r["condition"], r["run_id"]): r for r in runs}
-    for rid, g in sorted(grades.items()):
-        cond = g.get("condition") or claim_condition(rid)
+    # grades is keyed (condition, run_id) - last row per PAIR wins, so a second judge
+    # pass supersedes the first row by row without touching the other arm.
+    for key, g in sorted(grades.items(), key=lambda kv: str(kv[0])):
+        # Accept either key shape: (condition, run_id) from the loader, or a bare
+        # run_id from a direct caller. Refusing the second would make this function
+        # awkward to test and easy to misuse.
+        if isinstance(key, tuple):
+            _cond_key, rid = key
+        else:
+            _cond_key, rid = None, key
+        cond = g.get("condition") or _cond_key or claim_condition(rid)
         if cond is None:
             problems.append(
                 f"phase2 row {rid!r} carries no `condition` and its prefix resolves to "
@@ -1279,7 +1299,8 @@ def main(argv: list[str] | None = None) -> int:
     inputs["run_dirs"] = f"{len(runs)} run_meta.json files from {a.runs}"
 
     claims = load_jsonl_last_per_run(Path(a.phase1), "phase1")
-    grades = load_jsonl_last_per_run(Path(a.phase2), "phase2")
+    grades = load_jsonl_last_per_run(Path(a.phase2), "phase2",
+                                     keyed_by_condition=True)
 
     by_cand = None
     unsealed = a.unsealed_map is not None

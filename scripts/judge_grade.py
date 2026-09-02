@@ -56,7 +56,7 @@ import _judge as J  # noqa: E402
 # this file cannot disagree with the join about which rung a candidate is - and an
 # earlier hand-rolled parser here got the orientation wrong and silently graded
 # nothing, which is exactly the failure that argues for not having two readers.
-from analysis_join import load_sealed_map  # noqa: E402
+from analysis_join import claim_condition, load_sealed_map  # noqa: E402
 
 GRADES = ("FULL", "PARTIAL", "MISS", "FP", "CR", "REFUSAL_NO_VERDICT")
 
@@ -98,20 +98,10 @@ Rules that decide the hard cases:
 Answer with the label and ONE sentence of reasoning. Never decline."""
 
 
-def load_jsonl_last(path: Path) -> dict[str, dict]:
-    """Last row per run_id wins - the same reload rule phase1_grade.py uses."""
-    out: dict[str, dict] = {}
-    if not path.exists():
-        return out
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            try:
-                r = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if r.get("run_id"):
-                out[r["run_id"]] = r
-    return out
+# One implementation of "last row wins", shared with the grading UI. Two copies of a
+# selection rule is how the two halves of a pipeline start disagreeing about which row
+# is current - which is exactly what a second judge pass must not be exposed to.
+from phase2_grade import load_jsonl_last  # noqa: E402
 
 
 def claim_payload(claim: dict, rung: str, desc: dict) -> str:
@@ -205,7 +195,7 @@ def main(argv: list[str] | None = None) -> int:
             if c.get("sealed_candidate_id")}
     by_cand = load_sealed_map(Path(a.unsealed_map), cids)
 
-    existing = load_jsonl_last(Path(a.phase2))
+    existing = load_jsonl_last(Path(a.phase2), keyed_by_condition=True)
 
     jobs = []
     for run_id, claim in sorted(claims.items()):
@@ -216,7 +206,9 @@ def main(argv: list[str] | None = None) -> int:
         # The GLM arm is ungraded by default (Amendment 9: its detection outcomes are
         # not hand-graded unless time remains). It can only be identified if the claim
         # row says so - see the KNOWN ISSUE in this file's header about GLM run ids.
-        cond = claim.get("condition")
+        # Claims carry no `condition`; resolve it from the prefix as the join does, so
+        # the row it writes is keyed the same way everywhere downstream.
+        cond = claim.get("condition") or claim_condition(run_id)
         if cond == "glm_v0" and not a.include_glm:
             continue
         cand = claim.get("sealed_candidate_id") or ""
@@ -226,15 +218,15 @@ def main(argv: list[str] | None = None) -> int:
             continue
         # A refusal has no claim to grade; the label is derived, not judged.
         if claim.get("outcome") == "refusal_no_verdict":
-            jobs.append((run_id, rung, None))
+            jobs.append((run_id, cond, rung, None))
             continue
-        jobs.append((run_id, rung, claim_payload(claim, rung, desc)))
+        jobs.append((run_id, cond, rung, claim_payload(claim, rung, desc)))
 
-    to_call = [j for j in jobs if j[2] is not None]
-    derived = [j for j in jobs if j[2] is None]
+    to_call = [j for j in jobs if j[3] is not None]
+    derived = [j for j in jobs if j[3] is None]
 
     # Estimate from real payload sizes, not a guess.
-    in_tok = sum(len(p) for _, _, p in to_call) / 4.0
+    in_tok = sum(len(p) for _, _, _, p in to_call) / 4.0
     rubric_tok = len(RUBRIC) / 4.0 * len(to_call)
     est = J.judge_cost(a.model, {"input_tokens": int(in_tok + rubric_tok),
                                  "output_tokens": 120 * len(to_call),
@@ -278,12 +270,12 @@ def main(argv: list[str] | None = None) -> int:
     spent, n_ok, n_fail = 0.0, 0, 0
 
     with out_path.open("a", encoding="utf-8") as fh:
-        for run_id, rung, payload in jobs:
-            prev = existing.get(run_id, {})
+        for run_id, cond, rung, payload in jobs:
+            prev = existing.get((cond, run_id), {})
             row = {
                 "run_id": run_id,
                 "rung": rung,
-                "condition": prev.get("condition"),
+                "condition": cond,
                 # NEVER copy a human grade forward from a judge pass; the judge is
                 # blind and this row must not imply it saw one.
                 "human_grade": prev.get("human_grade"),

@@ -113,8 +113,9 @@ def main() -> int:
 
     print("\n3b. the judge's label is withheld until --adjudicate")
     # A row that already carries a judge grade, as it will after the judge pass.
-    P2.Handler.GRADES["v0_cand_FAKEb_s0"] = {
-        "run_id": "v0_cand_FAKEb_s0", "judge_grade": "FULL",
+    _k = ("v0_opus", "v0_cand_FAKEb_s0")   # rows are keyed (condition, run_id)
+    P2.Handler.GRADES[_k] = {
+        "run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus", "judge_grade": "FULL",
         "judge_reason": "SYNTHETIC judge reason"}
     v_norm = P2.Handler._run_view(P2.Handler, "v0_cand_FAKEb_s0")
     check(v_norm["judge_grade"] is None and v_norm["judge_reason"] is None,
@@ -126,7 +127,7 @@ def main() -> int:
     check(v_adj["judge_grade"] == "FULL",
           "in --adjudicate the judge grade is supplied, which is the point")
     P2.Handler.A = a
-    P2.Handler.GRADES.pop("v0_cand_FAKEb_s0", None)
+    P2.Handler.GRADES.pop(_k, None)
 
     print("\n4. refusals are derived and locked, not chosen")
     check(v_ref["locked"] is True, "a refused run is locked")

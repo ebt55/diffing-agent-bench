@@ -45,7 +45,7 @@ from pathlib import Path
 _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
 
-from analysis_join import load_sealed_map  # noqa: E402
+from analysis_join import claim_condition, load_sealed_map  # noqa: E402
 from phase2_ui import PAGE  # noqa: E402
 
 GRADES = ("FULL", "PARTIAL", "MISS", "FP", "CR", "REFUSAL_NO_VERDICT")
@@ -67,8 +67,14 @@ DECOMP_MARKER = "\n\n[decomposition] "
 DECOMP_STAGES = ("coverage", "exposure", "attribution")
 
 
-def load_jsonl_last(path: Path) -> dict[str, dict]:
-    out: dict[str, dict] = {}
+def load_jsonl_last(path: Path, keyed_by_condition: bool = False) -> dict:
+    """Append-only: the LAST row for a run wins.
+
+    Phase-2 rows are keyed (condition, run_id): run ids are not unique across
+    conditions, and a second judge pass must supersede the first row by row rather
+    than one arm displacing another.
+    """
+    out: dict = {}
     if not path.exists():
         return out
     for line in path.read_text(encoding="utf-8").splitlines():
@@ -77,8 +83,15 @@ def load_jsonl_last(path: Path) -> dict[str, dict]:
                 r = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if r.get("run_id"):
-                out[r["run_id"]] = r
+            rid = r.get("run_id")
+            if rid:
+                if keyed_by_condition:
+                    # Rows written before `condition` was populated resolve from the
+                    # prefix, so an older row and a newer one for the same run land on
+                    # the SAME key and last-wins actually applies between them.
+                    out[(r.get("condition") or claim_condition(rid), rid)] = r
+                else:
+                    out[rid] = r
     return out
 
 
@@ -136,7 +149,7 @@ def claim_fields(claim: dict) -> list:
 def build_index(a) -> tuple[list[dict], dict, dict, dict]:
     desc = json.loads(Path(a.descriptions).read_text(encoding="utf-8"))
     claims = load_jsonl_last(Path(a.phase1))
-    grades = load_jsonl_last(Path(a.phase2))
+    grades = load_jsonl_last(Path(a.phase2), keyed_by_condition=True)
     if not claims:
         raise SystemExit(f"no Phase-1 claims in {a.phase1} — run phase1_grade.py first")
 
@@ -148,13 +161,16 @@ def build_index(a) -> tuple[list[dict], dict, dict, dict]:
     for run_id, claim in claims.items():
         if run_id.startswith("EXAMPLE_"):
             continue
-        cond = claim.get("condition")
+        # Phase-1 claim rows carry no `condition` field, so it is resolved from the
+        # run_id prefix exactly as the join does. Without this the (condition, run_id)
+        # key would be (None, run_id) for every row and would distinguish nothing.
+        cond = claim.get("condition") or claim_condition(run_id)
         if cond == "glm_v0" and not a.include_glm:
             continue
         rung = by_cand.get(claim.get("sealed_candidate_id") or "")
         if not rung or rung not in desc["rungs"]:
             continue
-        g = grades.get(run_id, {})
+        g = grades.get((cond, run_id), {})
         if a.adjudicate:
             # Only rows where a human and a judge actually disagree.
             h, j = g.get("human_grade"), g.get("judge_grade")
@@ -207,7 +223,7 @@ class Handler(BaseHTTPRequestHandler):
         row = next((r for r in self.ROWS if r["run_id"] == rid), {})
         rung = row.get("rung")
         r = self.DESC["rungs"].get(rung, {})
-        g = self.GRADES.get(rid, {})
+        g = self.GRADES.get((row.get("condition"), rid), {})
         refused = claim.get("outcome") == "refusal_no_verdict"
         allowed = list(L0_GRADES if rung == "L0" else NON_L0_GRADES)
         dec = g.get("decomposition") or {"coverage": None, "exposure": None,
@@ -289,7 +305,7 @@ class Handler(BaseHTTPRequestHandler):
         if row["rung"] == "L0" or not any(dr.values()):
             dr = None
 
-        prev = self.GRADES.get(rid, {})
+        prev = self.GRADES.get((row.get("condition"), rid), {})
         out = {
             "run_id": rid,
             "rung": row["rung"],
@@ -310,7 +326,7 @@ class Handler(BaseHTTPRequestHandler):
         p.parent.mkdir(parents=True, exist_ok=True)
         with p.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(out, ensure_ascii=False) + "\n")
-        self.GRADES[rid] = out
+        self.GRADES[(row.get("condition"), rid)] = out
         row["done"] = bool(out["adjudicated_grade"] if self.A.adjudicate
                            else out["human_grade"])
         self._json({"ok": True})
