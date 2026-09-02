@@ -333,6 +333,14 @@ class Handler(BaseHTTPRequestHandler):
         if self.A.adjudicate:
             self._save_adjudication(row, rid, body, prev)
             return
+        if prev.get("adjudicated_grade"):
+            # DECISIONS.md #35 addendum: a normal-mode save here would append a row with
+            # adjudicated_grade null, and last-row-wins would silently discard a
+            # resolved disagreement. The only way to change an adjudicated run is to
+            # adjudicate it again.
+            self._json({"ok": False, "error": "this run is adjudicated; re-adjudicate "
+                        "instead of re-grading"}, 400)
+            return
         grade = "REFUSAL_NO_VERDICT" if refused else body.get("human_grade")
         reason = (body.get("human_reason") or "").strip()
         if not grade:

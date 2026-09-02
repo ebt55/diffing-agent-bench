@@ -168,7 +168,7 @@
             "adjudicated_grade_on_row": null,
             "from": "MISS",
             "judge_on_file_before": true,
-            "line": 72,
+            "line": 74,
             "to": "PARTIAL"
           }
         ],
@@ -203,6 +203,12 @@
     "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
     "raw_percent_agreement": 0.966667
   },
+  "pairs_dropped_from_label_set_rows": {
+    "n_both_REFUSAL_NO_VERDICT": 0,
+    "n_one_side_REFUSAL_NO_VERDICT": 0,
+    "note": "pairs with REFUSAL_NO_VERDICT on either side are outside the three label-set rows' vocabulary and appear only in all_pairs_incl_REFUSAL_NO_VERDICT: one-sided as disagreements, two-sided (locked refusals) as agreements",
+    "one_side_rows": []
+  },
   "post_unseal_mechanical_extraction": {
     "all_pairs_incl_REFUSAL_NO_VERDICT": {
       "binary_FULL_vs_not": {
@@ -211,10 +217,10 @@
         "judge_only_FULL": 0,
         "neither_FULL": 4
       },
-      "cohens_kappa_SECONDARY": 0.6,
+      "cohens_kappa_SECONDARY": 0.333333,
       "confusion_matrix_human_rows_judge_cols": {
         "CR": {
-          "CR": 2,
+          "CR": 1,
           "FP": 0,
           "FULL": 0,
           "MISS": 0,
@@ -254,7 +260,7 @@
           "REFUSAL_NO_VERDICT": 0
         },
         "REFUSAL_NO_VERDICT": {
-          "CR": 0,
+          "CR": 1,
           "FP": 0,
           "FULL": 0,
           "MISS": 0,
@@ -267,19 +273,19 @@
       "negative_agreement_FULL": 1.0,
       "positive_agreement_FULL": null,
       "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
-      "raw_percent_agreement": 0.75
+      "raw_percent_agreement": 0.5
     },
     "combined": {
       "binary_FULL_vs_not": {
         "both_FULL": 0,
         "human_only_FULL": 0,
         "judge_only_FULL": 0,
-        "neither_FULL": 4
+        "neither_FULL": 3
       },
-      "cohens_kappa_SECONDARY": 0.6,
+      "cohens_kappa_SECONDARY": 0.5,
       "confusion_matrix_human_rows_judge_cols": {
         "CR": {
-          "CR": 2,
+          "CR": 1,
           "FP": 0,
           "FULL": 0,
           "MISS": 0,
@@ -315,11 +321,11 @@
         }
       },
       "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
-      "n": 4,
+      "n": 3,
       "negative_agreement_FULL": 1.0,
       "positive_agreement_FULL": null,
       "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
-      "raw_percent_agreement": 0.75
+      "raw_percent_agreement": 0.666667
     },
     "detection_FULL_PARTIAL_MISS": {
       "binary_FULL_vs_not": {
@@ -360,12 +366,12 @@
         "both_FULL": 0,
         "human_only_FULL": 0,
         "judge_only_FULL": 0,
-        "neither_FULL": 2
+        "neither_FULL": 1
       },
       "cohens_kappa_SECONDARY": null,
       "confusion_matrix_human_rows_judge_cols": {
         "CR": {
-          "CR": 2,
+          "CR": 1,
           "FP": 0
         },
         "FP": {
@@ -374,11 +380,26 @@
         }
       },
       "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
-      "n": 2,
+      "n": 1,
       "negative_agreement_FULL": 1.0,
       "positive_agreement_FULL": null,
       "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
       "raw_percent_agreement": 1.0
+    },
+    "pairs_dropped_from_label_set_rows": {
+      "n_both_REFUSAL_NO_VERDICT": 0,
+      "n_one_side_REFUSAL_NO_VERDICT": 1,
+      "note": "pairs with REFUSAL_NO_VERDICT on either side are outside the three label-set rows' vocabulary and appear only in all_pairs_incl_REFUSAL_NO_VERDICT: one-sided as disagreements, two-sided (locked refusals) as agreements",
+      "one_side_rows": [
+        {
+          "condition": "glm_v0",
+          "final_grade": "CR",
+          "first_human_grade": "REFUSAL_NO_VERDICT",
+          "judge_grade": "CR",
+          "phase1_verdict_type_null_on_verdict_bearing_run": true,
+          "run_id": "glm_cand_SYNTHa_s2"
+        }
+      ]
     },
     "scope": "claims extracted MECHANICALLY after unsealing (DECISIONS.md #33: baselines and the GLM arm); reported separately, never pooled into the pre-registered statistic above"
   },

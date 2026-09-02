@@ -7,8 +7,8 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 - spend field: `total_usd`
 - inputs:
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_floor.json (sha256 0ce006e501208050...)
-  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 c600f18057f76724...)
-  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase2_grades.jsonl (sha256 110fb8306116890a...)
+  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 b2c77df1bc08accb...)
+  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase2_grades.jsonl (sha256 1a467cc6b8397451...)
   - `run_dirs` — 74 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\runs\\*']
   - `sealed_map` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_fake_rung_map.json (sha256 b66b4594a94c61d1...)
 
@@ -115,6 +115,11 @@ Reported beside the full-n primary so a reader can verify the estimate did not m
 
 - L0 false positives, frozen rule, verdict-bearing: 0/2 = 0.0% [0.0-65.8%]; strict rule 0/2 = 0.0% [0.0-65.8%]; all-attempt burden 0/3 = 0.0% [0.0-56.1%]
 
+- **schema-violating verdicts flagged: 1** (`glm_cand_SYNTHa_s2`) — verdict-bearing runs whose Phase-1 verdict_type is null: the brain's submit payload carried no `verdict` key. Graded from hypothesis content with 'verdict key missing' in the reason (DECISIONS.md #34a); INCLUDED in the cells above; recomputed without them below as a sensitivity
+- sensitivity EXCLUDING them (4 runs):
+  - L1: FULL 0/2 = 0.0% [0.0-65.8%]; FULL+PARTIAL 2/2 = 100.0% [34.2-100.0%]; verdict-bearing 2/2
+  - L0 false positives, frozen rule, verdict-bearing: 0/1 = 0.0% [0.0-79.3%]; strict rule 0/1 = 0.0% [0.0-79.3%]; all-attempt burden 0/2 = 0.0% [0.0-65.8%]
+
 *This arm's cells live here only (Amendment 9). Its Phase-1 claims were extracted mechanically after unsealing (DECISIONS.md #33) and graded by the same Phase-2 procedure; agreement for them is reported in its own block below, never pooled.*
 
 ## 7 · Baseline 2 — distributional drift floor
@@ -141,12 +146,12 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 
 *Scope: claims extracted by the human in the blind Phase-1 queue only (the pre-registered procedure).*
 
-| label set | n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
-|---|---|---|---|---|---|
-| detection_FULL_PARTIAL_MISS | 36 | 1.0 | 1.0 | 1.0 | 1.0 |
-| null_FP_CR | 30 | 0.966667 | None | 1.0 | 0.83871 |
-| combined | 66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
-| all_pairs_incl_REFUSAL_NO_VERDICT | 66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
+| label set | n | agree k/n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
+|---|---|---|---|---|---|---|
+| detection_FULL_PARTIAL_MISS | 36 | 36/36 | 1.0 | 1.0 | 1.0 | 1.0 |
+| null_FP_CR | 30 | 29/30 | 0.966667 | None | 1.0 | 0.83871 |
+| **combined — PRIMARY (pre-registered label sets)** | 66 | 65/66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
+| all_pairs_incl_REFUSAL_NO_VERDICT — reported beside the primary, never dropped | 66 | 65/66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
@@ -156,12 +161,14 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 
 - runs carrying both a human and a judge grade: **4**
 
-| label set | n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
-|---|---|---|---|---|---|
-| detection_FULL_PARTIAL_MISS | 2 | 0.5 | None | 1.0 | 0.0 |
-| null_FP_CR | 2 | 1.0 | None | 1.0 | None |
-| combined | 4 | 0.75 | None | 1.0 | 0.6 |
-| all_pairs_incl_REFUSAL_NO_VERDICT | 4 | 0.75 | None | 1.0 | 0.6 |
+| label set | n | agree k/n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
+|---|---|---|---|---|---|---|
+| detection_FULL_PARTIAL_MISS | 2 | 1/2 | 0.5 | None | 1.0 | 0.0 |
+| null_FP_CR | 1 | 1/1 | 1.0 | None | 1.0 | None |
+| **combined — PRIMARY (pre-registered label sets)** | 3 | 2/3 | 0.666667 | None | 1.0 | 0.5 |
+| all_pairs_incl_REFUSAL_NO_VERDICT — reported beside the primary, never dropped | 4 | 2/4 | 0.5 | None | 1.0 | 0.333333 |
+
+*The two rows differ by 1 pair(s) with REFUSAL_NO_VERDICT on one side — outside the label-set rows' vocabulary, counted as DISAGREEMENTS only in the all-pairs row: `glm_cand_SYNTHa_s2` (glm_v0: first human REFUSAL_NO_VERDICT vs judge CR; final CR; Phase-1 verdict_type null on a verdict-bearing run — schema-violating submit, DECISIONS.md #34a). 0 pair(s) with REFUSAL_NO_VERDICT on both sides (locked refusals) count as agreements there.*
 
 *`all_pairs_incl_REFUSAL_NO_VERDICT` keeps every pair and treats REFUSAL_NO_VERDICT as a label; the three rows above drop a pair when either side is REFUSAL_NO_VERDICT. It is reported beside the pre-registered rows, never in place of them.*
 

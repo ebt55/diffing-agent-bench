@@ -235,6 +235,25 @@ def build_fixture() -> dict:
          "decomposition": {"coverage": True, "exposure": True, "attribution": "MISS"}},
     ]
 
+    # ---- a FIRST human grade of REFUSAL_NO_VERDICT on a COMPLETED GLM null run whose
+    # Phase-1 verdict_type is null (the schema-violating-submit case, DECISIONS.md #34a),
+    # later adjudicated to CR with the human grade frozen (the ruling-A pattern). The
+    # pair (REFUSAL_NO_VERDICT, CR) is outside the label-set rows' vocabulary: it must
+    # be dropped from `combined`, counted as a disagreement in the all-pairs row, and
+    # named in tables.md (DECISIONS.md #35 addendum 1).
+    nv_rid = "glm_cand_SYNTHa_s2"
+    for c in p1:
+        if c["run_id"] == nv_rid and c.get("condition") == "glm_v0":
+            c["verdict_type"] = None
+    idx = next(i for i, r in enumerate(p2) if r["run_id"] == nv_rid)
+    final = p2[idx]
+    p2[idx:idx + 1] = [
+        {**final, "human_grade": "REFUSAL_NO_VERDICT", "judge_grade": None},
+        {**final, "human_grade": "REFUSAL_NO_VERDICT", "judge_grade": "CR"},
+        {**final, "human_grade": "REFUSAL_NO_VERDICT", "judge_grade": "CR",
+         "adjudicated_grade": "CR", "adjudication_reason": "SYNTHETIC - not data"},
+    ]
+
     P1.write_text("".join(json.dumps(r) + "\n" for r in p1), encoding="utf-8")
     P2.write_text("".join(json.dumps(r) + "\n" for r in p2), encoding="utf-8")
     MAP.write_text(json.dumps(
@@ -252,7 +271,7 @@ def build_fixture() -> dict:
     # above adds rows for a run that is already counted once.
     return {"n_p1": len(p1),
             "n_p2": len({(r["condition"], r["run_id"]) for r in p2}),
-            "n_p2_rows": len(p2), "rewritten_rid": rewritten_rid}
+            "n_p2_rows": len(p2), "rewritten_rid": rewritten_rid, "nv_rid": nv_rid}
 
 
 def run_join(outdir: Path, *, unsealed: bool, extra: list[str] | None = None,
@@ -415,10 +434,56 @@ def main() -> int:
     print("\n6b. agreement uses the FIRST human grade; rewrites are disclosed "
           "(DECISIONS.md #35 ruling B)")
     rw_rid = info["rewritten_rid"]
-    check(mech["combined"]["n"] == 4 and mech["combined"]["raw_percent_agreement"] == 0.75,
+    check(mech["combined"]["n"] == 3
+          and mech["combined"]["raw_percent_agreement"] == round(2 / 3, 6),
           f"the rewritten GLM row counts as a DISAGREEMENT (first MISS vs judge PARTIAL): "
           f"mechanical combined = {mech['combined'].get('raw_percent_agreement')} over "
-          f"{mech['combined'].get('n')}")
+          f"{mech['combined'].get('n')} (the REFUSAL_NO_VERDICT-first pair is outside "
+          f"this row's vocabulary)")
+    nv = info["nv_rid"]
+    dp = mech.get("pairs_dropped_from_label_set_rows") or {}
+    check(dp.get("n_one_side_REFUSAL_NO_VERDICT") == 1 and dp.get("one_side_rows")
+          and dp["one_side_rows"][0]["run_id"] == nv
+          and dp["one_side_rows"][0]["first_human_grade"] == "REFUSAL_NO_VERDICT"
+          and dp["one_side_rows"][0]["judge_grade"] == "CR"
+          and dp["one_side_rows"][0]["final_grade"] == "CR"
+          and dp["one_side_rows"][0]["phase1_verdict_type_null_on_verdict_bearing_run"]
+          is True,
+          f"the REFUSAL_NO_VERDICT-first pair is named as dropped from the label-set "
+          f"rows, with the schema-violation flag ({dp})")
+    ap_m = mech["all_pairs_incl_REFUSAL_NO_VERDICT"]
+    check(ap_m["n"] == 4 and ap_m["raw_percent_agreement"] == 0.5,
+          f"the all-pairs row keeps it as a DISAGREEMENT: 2/4 ({ap_m.get('n')}, "
+          f"{ap_m.get('raw_percent_agreement')})")
+    check("combined — PRIMARY (pre-registered label sets)" in tabs
+          and "reported beside the primary, never dropped" in tabs
+          and "| 2/3 |" in tabs and "| 2/4 |" in tabs,
+          "tables.md prints the primary row and the all-pairs row adjacent, labelled, "
+          "with agree k/n")
+    check(f"`{nv}`" in tabs and "schema-violating submit" in tabs
+          and "The two rows differ by 1 pair(s)" in tabs,
+          "tables.md names the pair that separates the two rows and why")
+
+    print("\n6c. null Phase-1 verdict_type on a completed GLM run: flagged by id in the "
+          "arm block, with the cells recomputed without it (DECISIONS.md #34a)")
+    arm = doc["exploratory_arms"]["arms"]["glm_v0"]
+    sv = arm.get("schema_violating_verdicts") or {}
+    check(sv.get("n") == 1 and sv.get("run_ids") == [nv],
+          f"the null-verdict GLM run is flagged by id ({sv.get('run_ids')})")
+    s = arm.get("sensitivity_excluding_schema_violating_verdicts") or {}
+    check(s.get("n_runs") == arm["n_runs"] - 1
+          and (s.get("null") or {}).get("n_verdict_bearing") == 1
+          and arm["null"]["n_verdict_bearing"] == 2,
+          "the sensitivity recomputes the arm's cells without it "
+          f"(L0 verdict-bearing {arm['null']['n_verdict_bearing']} -> "
+          f"{(s.get('null') or {}).get('n_verdict_bearing')})")
+    check("schema-violating verdicts flagged: 1" in tabs and "sensitivity EXCLUDING them"
+          in tabs and "L0 false positives, frozen rule, verdict-bearing: 0/1" in tabs,
+          "tables.md prints the flag and the sensitivity inside the GLM block")
+    check("schema_violating" not in json.dumps(doc["detection"])
+          and "schema_violating" not in json.dumps(doc["null"])
+          and "schema_violating" not in json.dumps(doc["cost"]),
+          "no headline block carries the flag - exploratory arm only")
     check("human_side" in ag and "FIRST human grade" in ag["human_side"],
           "agreement.json states that the human side is the first human grade")
     rw = ag.get("human_grade_rewritten_rows") or {}

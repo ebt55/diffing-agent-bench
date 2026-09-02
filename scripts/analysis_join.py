@@ -829,8 +829,8 @@ def _agreement_over(runs: list[dict]) -> dict:
     # the run - the grade committed before the judge's label could have been seen. The
     # metric grade stays last-row-wins with adjudicated precedence; agreement measures
     # whether two independent graders agreed, not what the final answer is.
-    pairs = [(_first_human(r), r.get("judge_grade")) for r in runs
-             if _first_human(r) and r.get("judge_grade")]
+    paired = [r for r in runs if _first_human(r) and r.get("judge_grade")]
+    pairs = [(_first_human(r), r.get("judge_grade")) for r in paired]
     out: dict = {
         "n_runs_with_both_grades": len(pairs),
         "human_side": ("FIRST human grade per (condition, run_id) - the pre-judge-"
@@ -843,6 +843,35 @@ def _agreement_over(runs: list[dict]) -> dict:
         return out
     h = [p[0] for p in pairs]
     j = [p[1] for p in pairs]
+
+    # Which pairs the three label-set rows cannot see. REFUSAL_NO_VERDICT is outside
+    # their vocabulary, so a pair with it on either side is dropped there and counted
+    # only in the all-pairs row: one-sided as a disagreement, two-sided (two locked
+    # refusal labels) as an agreement. Named, so the two row totals reconcile by eye
+    # (DECISIONS.md #35 addendum 1).
+    def _is_ref(x):
+        return x == "REFUSAL_NO_VERDICT"
+    one_side = [r for r in paired
+                if _is_ref(_first_human(r)) != _is_ref(r.get("judge_grade"))]
+    both = sum(1 for r in paired
+               if _is_ref(_first_human(r)) and _is_ref(r.get("judge_grade")))
+    out["pairs_dropped_from_label_set_rows"] = {
+        "note": ("pairs with REFUSAL_NO_VERDICT on either side are outside the three "
+                 "label-set rows' vocabulary and appear only in "
+                 "all_pairs_incl_REFUSAL_NO_VERDICT: one-sided as disagreements, "
+                 "two-sided (locked refusals) as agreements"),
+        "n_one_side_REFUSAL_NO_VERDICT": len(one_side),
+        "n_both_REFUSAL_NO_VERDICT": both,
+        "one_side_rows": [{
+            "condition": r["condition"], "run_id": r["run_id"],
+            "first_human_grade": _first_human(r), "judge_grade": r.get("judge_grade"),
+            "final_grade": r.get("grade"),
+            # the schema-violating-submit case (DECISIONS.md #34a): a completed run
+            # whose Phase-1 verdict_type is null because the payload had no verdict key
+            "phase1_verdict_type_null_on_verdict_bearing_run": (
+                r.get("verdict_type") is None and r.get("outcome") == "verdict_bearing"),
+        } for r in sorted(one_side, key=lambda r: (str(r["condition"]), r["run_id"]))],
+    }
     sets = {
         "detection_FULL_PARTIAL_MISS": tuple(sorted(DETECTION_GRADES)),
         "null_FP_CR": tuple(sorted(NULL_GRADES)),
@@ -992,6 +1021,20 @@ def build_exploratory_arms(runs: list[dict], designed: tuple[str, ...],
             if sub:
                 det[rung] = detection_block(sub)
         l0 = [r for r in rows if r["rung"] == NULL_RUNG]
+        # DECISIONS.md #34a: a completed run whose Phase-1 verdict_type is null had a
+        # submit payload with no `verdict` key - a schema violation by the brain. Such
+        # rows are graded from hypothesis content and stay in the cells above; they are
+        # FLAGGED by id here, and the same cells are recomputed without them as a
+        # sensitivity. Exploratory arm only; no headline cell is touched.
+        sv = sorted(r["run_id"] for r in rows
+                    if r["outcome"] == "verdict_bearing" and r["verdict_type"] is None)
+        kept = [r for r in rows if r["run_id"] not in sv]
+        det_s = {}
+        for rung in list(designed) + list(exploratory_rungs):
+            sub = [r for r in kept if r["rung"] == rung]
+            if sub:
+                det_s[rung] = detection_block(sub)
+        l0_s = [r for r in kept if r["rung"] == NULL_RUNG]
         arms[cond] = {
             "status": "EXPLORATORY - excluded from every section 6 headline metric "
                       "and from the main figure (Amendment 9)",
@@ -999,6 +1042,18 @@ def build_exploratory_arms(runs: list[dict], designed: tuple[str, ...],
             "refusal": refusal_block(rows),
             "detection": det,
             "null": null_block(l0) if l0 else None,
+            "schema_violating_verdicts": {
+                "n": len(sv), "run_ids": sv,
+                "treatment": ("verdict-bearing runs whose Phase-1 verdict_type is null: "
+                              "the brain's submit payload carried no `verdict` key. "
+                              "Graded from hypothesis content with 'verdict key "
+                              "missing' in the reason (DECISIONS.md #34a); INCLUDED in "
+                              "the cells above; recomputed without them below as a "
+                              "sensitivity"),
+            },
+            "sensitivity_excluding_schema_violating_verdicts": (
+                {"n_runs": len(kept), "excluded_run_ids": sv, "detection": det_s,
+                 "null": null_block(l0_s) if l0_s else None} if sv else None),
             "cost": cost_block(rows, rows, spend_field),
             "brain_models": sorted({r["brain_model"] for r in rows if r["brain_model"]}),
             "configuration_asymmetry_disclosure": (
@@ -1609,6 +1664,45 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
                       f"all-attempt burden "
                       f"{AI.fmt_rate(nul['fp_frozen_rule_all_attempts'])}")
                 A("")
+            # DECISIONS.md #34a: null-verdict (schema-violating) rows flagged by id, and
+            # the arm's cells recomputed without them. Printed inside this block only.
+            sv = a.get("schema_violating_verdicts") or {}
+            if sv.get("n"):
+                ids = ", ".join(f"`{x}`" for x in sv["run_ids"])
+                A(f"- **schema-violating verdicts flagged: {sv['n']}** ({ids}) — "
+                  f"{sv['treatment']}")
+                s = a.get("sensitivity_excluding_schema_violating_verdicts") or {}
+                A(f"- sensitivity EXCLUDING them ({s.get('n_runs')} runs):")
+                rk2 = {"L1": 1, "L2": 2, "L3": 3}
+                sdet = s.get("detection") or {}
+                for rung in sorted(sdet, key=lambda x: (rk2.get(x, 98), x)):
+                    cell = sdet[rung]
+                    vb = f"{cell['n_verdict_bearing']}/{cell['n_planned_attempts']}"
+                    if cell.get("ungraded"):
+                        A(f"  - {rung}: UNGRADED (verdict-bearing {vb})")
+                    else:
+                        A(f"  - {rung}: FULL "
+                          f"{AI.fmt_rate(cell['full_all_attempts_PRIMARY'])}; "
+                          f"FULL+PARTIAL "
+                          f"{AI.fmt_rate(cell['full_plus_partial_all_attempts'])}; "
+                          f"verdict-bearing {vb}")
+                ns = s.get("null")
+                if ns:
+                    if ns.get("ungraded"):
+                        A(f"  - L0: UNGRADED ({ns['n_verdict_bearing']} verdict-bearing "
+                          f"of {ns['n_planned_attempts']} attempts)")
+                    else:
+                        A(f"  - L0 false positives, frozen rule, verdict-bearing: "
+                          f"{AI.fmt_rate(ns['fp_frozen_rule_verdict_bearing_PRIMARY'])}; "
+                          f"strict rule "
+                          f"{AI.fmt_rate(ns['fp_strict_rule_verdict_bearing'])}; "
+                          f"all-attempt burden "
+                          f"{AI.fmt_rate(ns['fp_frozen_rule_all_attempts'])}")
+                A("")
+            else:
+                A("- schema-violating verdicts flagged: 0 (every verdict-bearing run in "
+                  "this arm carries a Phase-1 verdict_type)")
+                A("")
             A("*This arm's cells live here only (Amendment 9). Its Phase-1 claims were "
               "extracted mechanically after unsealing (DECISIONS.md #33) and graded by "
               "the same Phase-2 procedure; agreement for them is reported in its own "
@@ -1652,19 +1746,51 @@ def _agreement_section(agree: dict) -> str:
         L.append(f"*{agree['note']}*")
         L.append("")
         return "\n".join(L)
+    # DECISIONS.md #35 addendum 1: the pre-registered `combined` row is PRIMARY and the
+    # all-pairs row is ALWAYS printed directly beneath it, labelled; both numbers are
+    # reported, neither is dropped, and the pairs that separate them are named.
+    LABELS = {
+        "detection_FULL_PARTIAL_MISS": "detection_FULL_PARTIAL_MISS",
+        "null_FP_CR": "null_FP_CR",
+        "combined": "**combined — PRIMARY (pre-registered label sets)**",
+        "all_pairs_incl_REFUSAL_NO_VERDICT": ("all_pairs_incl_REFUSAL_NO_VERDICT — "
+                                              "reported beside the primary, never "
+                                              "dropped"),
+    }
+
     def table(block: dict) -> list[str]:
-        T = ["| label set | n | raw agreement | positive agreement (FULL) | "
+        T = ["| label set | n | agree k/n | raw agreement | positive agreement (FULL) | "
              "negative agreement (FULL) | Cohen's kappa (secondary) |",
-             "|---|---|---|---|---|---|"]
+             "|---|---|---|---|---|---|---|"]
         for name in ("detection_FULL_PARTIAL_MISS", "null_FP_CR", "combined",
                      "all_pairs_incl_REFUSAL_NO_VERDICT"):
             a = block.get(name, {})
             if not a or a.get("n", 0) == 0:
-                T.append(f"| {name} | 0 | — | — | — | — |")
+                T.append(f"| {LABELS[name]} | 0 | — | — | — | — | — |")
                 continue
-            T.append(f"| {name} | {a['n']} | {a['raw_percent_agreement']} | "
-                     f"{a['positive_agreement_FULL']} | {a['negative_agreement_FULL']} "
-                     f"| {a['cohens_kappa_SECONDARY']} |")
+            m = a.get("confusion_matrix_human_rows_judge_cols") or {}
+            k = sum(m[l].get(l, 0) for l in m)
+            T.append(f"| {LABELS[name]} | {a['n']} | {k}/{a['n']} | "
+                     f"{a['raw_percent_agreement']} | {a['positive_agreement_FULL']} | "
+                     f"{a['negative_agreement_FULL']} | {a['cohens_kappa_SECONDARY']} |")
+        dp = block.get("pairs_dropped_from_label_set_rows") or {}
+        n1, n2 = dp.get("n_one_side_REFUSAL_NO_VERDICT", 0), dp.get("n_both_REFUSAL_NO_VERDICT", 0)
+        if n1 or n2:
+            parts = []
+            for x in dp.get("one_side_rows", []):
+                why = ("; Phase-1 verdict_type null on a verdict-bearing run — "
+                       "schema-violating submit, DECISIONS.md #34a"
+                       if x.get("phase1_verdict_type_null_on_verdict_bearing_run") else "")
+                parts.append(f"`{x['run_id']}` ({x['condition']}: first human "
+                             f"{x['first_human_grade']} vs judge {x['judge_grade']}; "
+                             f"final {x['final_grade']}{why})")
+            T.append("")
+            T.append(f"*The two rows differ by {n1} pair(s) with REFUSAL_NO_VERDICT on "
+                     f"one side — outside the label-set rows' vocabulary, counted as "
+                     f"DISAGREEMENTS only in the all-pairs row: "
+                     + ("; ".join(parts) if parts else "none")
+                     + f". {n2} pair(s) with REFUSAL_NO_VERDICT on both sides (locked "
+                     f"refusals) count as agreements there.*")
         return T
 
     L.append(f"*Scope: {agree.get('scope', 'all graded runs')}.*")

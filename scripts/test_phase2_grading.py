@@ -291,7 +291,20 @@ def main() -> int:
     n_before = len([x for x in p2.read_text(encoding="utf-8").splitlines() if x.strip()])
     check(n_before == len(rows_out) + 3,
           f"refused adjudicate saves append nothing ({n_before} rows on file)")
-    P2.Handler.A = a
+
+    print("\n7f. a NORMAL-mode save on an adjudicated run is refused (#35 addendum)")
+    P2.Handler.A = a                                    # back to normal mode; the row on
+    r = save({"run_id": "v0_cand_FAKEb_s0", "condition": "v0_opus",   # file is adjudicated
+              "human_grade": "FULL",
+              "human_reason": "SYNTHETIC re-grade after adjudication"})
+    check(r["obj"]["ok"] is False and r["obj"]["error"]
+          == "this run is adjudicated; re-adjudicate instead of re-grading",
+          f"refused with the ruling's message ({r['obj'].get('error')!r})")
+    n_after = len([x for x in p2.read_text(encoding="utf-8").splitlines() if x.strip()])
+    check(n_after == n_before,
+          "and nothing is appended - last-row-wins cannot discard the adjudication")
+    check(P2.Handler.GRADES[k_adj]["adjudicated_grade"] == "FULL",
+          "the adjudicated row is still the one on file")
     P2.Handler.GRADES[k_adj] = on_file
 
     print("\n7c. --status surfaces missing decomposition before the join does")
