@@ -4,7 +4,7 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 
 - generated: `2026-01-01T00:00:00Z`
 - mode: **BLIND (no sealed map read)**
-- spend field: `brain_usd`
+- spend field: `total_usd`
 - inputs:
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_floor.json (sha256 0ce006e501208050...)
   - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 53abdab558de91cd...)
@@ -27,6 +27,8 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 | introspection | headline | 5 | 5 | 0 | 0/5 = 0.0% [0.0-43.4%] | $0.0600 | $0.0120 | yes |
 | v0_opus | headline | 40 | 37 | 3 | 3/40 = 7.5% [2.6-19.9%] | $15.0400 | $0.3760 | yes |
 | v1_opus | headline | 19 | 19 | 0 | 0/19 = 0.0% [0.0-16.8%] | $9.4000 | $0.4947 | yes |
+
+*Spend field: `total_usd`. a component of this condition is unpriced, so no total is reported (null, never zero) and the condition leaves the dollar ranking.*
 
 *conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).*
 

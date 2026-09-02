@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-02T01:01:01Z",
+  "generated_utc": "2026-09-02T01:06:34Z",
   "mode": "BLIND - no sealed map was read",
   "n_runs": 69,
   "overall_refusal_rate": {
@@ -20,12 +20,12 @@
         "gpt-5.6-terra"
       ],
       "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
-      "mean_spend_per_planned_attempt_usd": 0.064224,
+      "mean_spend_per_planned_attempt_usd": 0.076846,
       "n_no_verdict_other": 0,
       "n_planned_attempts": 5,
       "n_terminal_refusal": 0,
       "n_verdict_bearing": 5,
-      "recorded_spend_usd": 0.321119,
+      "recorded_spend_usd": 0.384228,
       "refusal_rate": {
         "ci": "two-sided 95% Wilson",
         "hi": 0.434482,
@@ -36,7 +36,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.0
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 0.321119,
+        "pod_usd": 0.063109,
+        "targets_usd": 0.0,
+        "total_usd": 0.384228
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` ($0.3842) exceeds `brain_usd` ($0.3211) by $0.0631: targets $0.0000 + pod $0.0631. Target generations are served on the project's own pod, so their cost appears as pod time rather than as per-token target spend - that pod component is the whole of the difference.",
       "status_counts": {
         "completed": 5
       }
@@ -48,12 +55,12 @@
         "gpt-5.6-terra"
       ],
       "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
-      "mean_spend_per_planned_attempt_usd": 0.011139,
+      "mean_spend_per_planned_attempt_usd": 0.015016,
       "n_no_verdict_other": 0,
       "n_planned_attempts": 5,
       "n_terminal_refusal": 0,
       "n_verdict_bearing": 5,
-      "recorded_spend_usd": 0.055694,
+      "recorded_spend_usd": 0.075082,
       "refusal_rate": {
         "ci": "two-sided 95% Wilson",
         "hi": 0.434482,
@@ -64,7 +71,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.0
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 0.055694,
+        "pod_usd": 0.019388,
+        "targets_usd": 0.0,
+        "total_usd": 0.075082
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` ($0.0751) exceeds `brain_usd` ($0.0557) by $0.0194: targets $0.0000 + pod $0.0194. Target generations are served on the project's own pod, so their cost appears as pod time rather than as per-token target spend - that pod component is the whole of the difference.",
       "status_counts": {
         "completed": 5
       }
@@ -76,12 +90,12 @@
         "claude-opus-5"
       ],
       "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
-      "mean_spend_per_planned_attempt_usd": 0.414825,
+      "mean_spend_per_planned_attempt_usd": 0.442817,
       "n_no_verdict_other": 0,
       "n_planned_attempts": 40,
       "n_terminal_refusal": 8,
       "n_verdict_bearing": 32,
-      "recorded_spend_usd": 16.593009,
+      "recorded_spend_usd": 17.71267,
       "refusal_rate": {
         "ci": "two-sided 95% Wilson",
         "hi": 0.347573,
@@ -92,7 +106,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.2
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 16.593009,
+        "pod_usd": 1.11966,
+        "targets_usd": 0.0,
+        "total_usd": 17.71267
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` ($17.7127) exceeds `brain_usd` ($16.5930) by $1.1197: targets $0.0000 + pod $1.1197. Target generations are served on the project's own pod, so their cost appears as pod time rather than as per-token target spend - that pod component is the whole of the difference.",
       "status_counts": {
         "brain_refusal": 8,
         "completed": 6,
@@ -106,12 +127,12 @@
         "claude-opus-5"
       ],
       "mean_spend_caveat": "conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).",
-      "mean_spend_per_planned_attempt_usd": 0.503239,
+      "mean_spend_per_planned_attempt_usd": 0.540097,
       "n_no_verdict_other": 0,
       "n_planned_attempts": 19,
       "n_terminal_refusal": 0,
       "n_verdict_bearing": 19,
-      "recorded_spend_usd": 9.561544,
+      "recorded_spend_usd": 10.261849,
       "refusal_rate": {
         "ci": "two-sided 95% Wilson",
         "hi": 0.168179,
@@ -122,7 +143,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.0
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 9.561544,
+        "pod_usd": 0.700306,
+        "targets_usd": 0.0,
+        "total_usd": 10.261849
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` ($10.2618) exceeds `brain_usd` ($9.5615) by $0.7003: targets $0.0000 + pod $0.7003. Target generations are served on the project's own pod, so their cost appears as pod time rather than as per-token target spend - that pod component is the whole of the difference.",
       "status_counts": {
         "completed": 6,
         "completed_forced": 13
@@ -132,7 +160,7 @@
   "provenance": {
     "estimands_from": "scripts/analysis_instrument.py",
     "generated_by": "scripts/analysis_join.py",
-    "generated_utc": "2026-09-02T01:01:01Z",
+    "generated_utc": "2026-09-02T01:06:34Z",
     "harness_commits_seen": [
       "b96662e741d0515feda0ea5da5a5fe66195da510",
       "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77"
@@ -146,9 +174,16 @@
     },
     "mode": "blind",
     "n_runs_without_harness_commit": 20,
-    "spend_field": "brain_usd"
+    "spend_field": "total_usd"
   },
   "schema": "analysis_blind_outcomes/1",
+  "spend_composition_overall": {
+    "brain_usd": 26.531366,
+    "pod_usd": 1.902463,
+    "targets_usd": 0.0,
+    "total_usd": 28.433829
+  },
+  "spend_field_caveat_overall": "`total_usd` ($28.4338) exceeds `brain_usd` ($26.5314) by $1.9025: targets $0.0000 + pod $1.9025. Target generations are served on the project's own pod, so their cost appears as pod time rather than as per-token target spend - that pod component is the whole of the difference.",
   "why": "emitting per-sealed-id results before unsealing would recreate exactly the ops-log exposure Amendment 6 clarification 7 disclosed",
   "withheld": "every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars per FULL detection, and the per-candidate drift ranking. These require the rung<->ID map and are emitted only under --unsealed-map."
 }

@@ -36,7 +36,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.0
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": null,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": null
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "a component of this condition is unpriced, so no total is reported (null, never zero) and the condition leaves the dollar ranking.",
       "status_counts": {
         "completed": 5
       }
@@ -64,7 +71,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.2
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 0.02,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 0.02
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "status_counts": {
         "brain_refusal": 1,
         "completed": 4
@@ -93,7 +107,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.0
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 0.06,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 0.06
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "status_counts": {
         "completed": 5
       }
@@ -121,7 +142,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.075
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 15.04,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 15.04
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "status_counts": {
         "brain_refusal": 3,
         "completed": 18,
@@ -151,7 +179,14 @@
         "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
         "rate": 0.0
       },
-      "spend_field": "brain_usd",
+      "spend_composition": {
+        "brain_usd": 9.4,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 9.4
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "status_counts": {
         "completed": 10,
         "completed_forced": 9
@@ -174,9 +209,16 @@
     },
     "mode": "blind",
     "n_runs_without_harness_commit": 0,
-    "spend_field": "brain_usd"
+    "spend_field": "total_usd"
   },
   "schema": "analysis_blind_outcomes/1",
+  "spend_composition_overall": {
+    "brain_usd": null,
+    "pod_usd": null,
+    "targets_usd": 0.0,
+    "total_usd": null
+  },
+  "spend_field_caveat_overall": "a component of this condition is unpriced, so no total is reported (null, never zero) and the condition leaves the dollar ranking.",
   "why": "emitting per-sealed-id results before unsealing would recreate exactly the ops-log exposure Amendment 6 clarification 7 disclosed",
   "withheld": "every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars per FULL detection, and the per-candidate drift ranking. These require the rung<->ID map and are emitted only under --unsealed-map."
 }

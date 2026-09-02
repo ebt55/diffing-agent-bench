@@ -331,8 +331,27 @@ def main() -> int:
     check(doc["cost"]["v0_opus"]["eligible_for_dollar_ranking"] is True
           and isinstance(doc["cost"]["v0_opus"]["primary"], float),
           "a fully priced condition yields a numeric $/FULL detection")
-    check("exploratory" in doc["cost"]["v0_opus"]["scope_note"],
-          "the cost block states its rung scope rather than leaving it implicit")
+    c0 = doc["cost"]["v0_opus"]
+    check("refusals included" in c0["scope_note"]
+          and "L0 plus the designed rungs" in c0["scope_note"],
+          "the cost block states its rung scope and that refused attempts' spend is in "
+          "the numerator, rather than leaving either implicit")
+    check(c0["spend_field"] == "total_usd",
+          "the DEFAULT numerator is `total_usd` (complete recorded spend), not brain "
+          "spend")
+    check("HEADLINE" in c0["scope_note"] and "Amendment 4 item 2" in c0["scope_note"],
+          "the scope note names the headline-pairs-only rule and its authority")
+    check("variant_brain_usd_only" in c0
+          and c0["variant_brain_usd_only"]["diagnostic_only"].startswith("brain spend"),
+          "`brain_usd` is emitted beside the primary as a LABELLED diagnostic")
+    check(c0["variant_including_exploratory_rungs"]["diagnostic_only"]
+          .endswith("(Amendment 4 item 2)"),
+          "the including-exploratory variant is labelled as a diagnostic, not a headline")
+    check(c0["spend_field_caveat"].startswith("`total_usd` equals `brain_usd`"),
+          "the caveat states plainly that the two spend fields agree in this fixture")
+    check("spend_composition" in c0 and set(c0["spend_composition"]) ==
+          {"brain_usd", "targets_usd", "pod_usd", "total_usd"},
+          "the spend composition is emitted, so nobody has to guess what total contains")
 
     print("\n6. mid-run refusals (TODO T10) and agreement (Addendum C)")
     check(doc["refusal"]["v0_opus"]

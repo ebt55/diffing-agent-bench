@@ -129,17 +129,26 @@ Both reviews independently produce the same three-number hook (r3 §9; r4 §9).
   *"since I built the diffing agent, I'd like the agent to beat the battery; the honest reading
   of my own design is that the battery matches it on L1–L2 at a fraction of the cost."*
 - **r3 §6 note worth one clause:** the seed post contains **zero cost numbers**.
-- **NOW COMPUTED (blind, brain spend over all planned attempts,
-  `results/analysis/tables.md`):** v0 **$16.5930** over 40 runs · v1 **$9.5615** over 19 ·
-  battery **$0.3211** over 5 · introspection **$0.0557** over 5. Every condition's cost is
-  complete — no unpriced component anywhere — so the dollar ranking is admissible once
-  detections exist. Mean $/planned attempt, as emitted by the join: v0 **$0.4148**,
-  v1 **$0.5032**, battery **$0.0642**, introspection **$0.0111**. **Caveat the join prints
-  with them:** conditions differ in rung mix and in how many attempts ended in a cheap early
-  refusal, so these are per-attempt averages, **not** a like-for-like per-run comparison — for
-  that use the paired same-seed table (`results/v0_v1_sealed_compare.json`). Amendment 8's
-  prediction (c) was "cost ~1.5–2× per run"; whether it holds needs the paired comparison,
-  not these averages.
+- **The numerator is settled (ruled and recorded in DECISIONS):** complete recorded spend
+  (`total_usd`) over **all planned attempts on headline pairs**, refusals included
+  (Amendment 6 clarification 2), scoped to headline pairs because the exploratory arm is
+  excluded from every headline metric (Amendment 4 item 2). `brain_usd` and an
+  including-exploratory figure are emitted beside it as **labelled diagnostics only**.
+- **NOW COMPUTED (blind, `results/analysis/tables.md`):** v0 **$17.7127** over 40 runs ·
+  v1 **$10.2618** over 19 · battery **$0.3842** over 5 · introspection **$0.0751** over 5;
+  pooled **$28.4338**. Every condition's cost is complete — no unpriced component anywhere —
+  so the dollar ranking is admissible once detections exist.
+- **What the numerator contains** (the join measures this rather than asserting it):
+  `total_usd` exceeds `brain_usd` ($26.5314 pooled) by **$1.9025**, which is entirely **pod
+  time**; `targets_usd` sums to exactly **$0.0000** because target generations are served on
+  the project's own pod. So the two spend fields do *not* coincide here, and the gap is
+  serving cost, not judge cost — say that in one clause so no reader has to wonder.
+- Mean $/planned attempt, as emitted by the join: v0 **$0.4428**, v1 **$0.5401**,
+  battery **$0.0768**, introspection **$0.0150**. **Caveat the join prints with them:**
+  conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so
+  these are per-attempt averages, **not** a like-for-like per-run comparison — for that use the
+  paired same-seed table (`results/v0_v1_sealed_compare.json`). Amendment 8's prediction (c)
+  was "cost ~1.5–2× per run"; whether it holds needs that paired comparison, not these averages.
 
 ## 5 · Detection across designed rungs — the per-rung slots and their predictions
 

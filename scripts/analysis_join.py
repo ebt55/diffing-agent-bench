@@ -167,6 +167,8 @@ def load_run(run_dir: Path) -> dict | None:
         "status": m.get("status"),
         "outcome": outcome,
         "brain_usd": brain_usd,
+        "targets_usd": cost.get("targets_usd"),
+        "pod_usd": cost.get("pod_usd"),
         "total_usd": total_usd,
         "cost_exact": bool(exact) if exact is not None else None,
         "n_unpriced_calls": unpriced_calls,
@@ -387,8 +389,54 @@ def spend_of(rows: list[dict], field: str) -> tuple[float | None, bool]:
     return (None if unpriced else round(total, 6)), unpriced
 
 
+def spend_composition(rows: list[dict]) -> dict:
+    """What `total_usd` is actually made of, summed rather than asserted."""
+    def s(field: str) -> float | None:
+        vals = [r.get(field) for r in rows]
+        return None if any(v is None for v in vals) else round(sum(vals), 6)
+    return {"brain_usd": s("brain_usd"), "targets_usd": s("targets_usd"),
+            "pod_usd": s("pod_usd"), "total_usd": s("total_usd")}
+
+
+def spend_caveat(rows: list[dict]) -> str:
+    """The difference between total and brain spend, named from the data.
+
+    Amendment 6 clarification 2 says the numerator is COMPLETE recorded spend. Which
+    components that actually contains is a property of these runs, so it is measured
+    here rather than assumed - a reader should never have to wonder whether the two
+    fields differ, or why.
+    """
+    c = spend_composition(rows)
+    if c["total_usd"] is None or c["brain_usd"] is None:
+        return ("a component of this condition is unpriced, so no total is reported "
+                "(null, never zero) and the condition leaves the dollar ranking.")
+    delta = round(c["total_usd"] - c["brain_usd"], 6)
+    if abs(delta) < 1e-9:
+        return ("`total_usd` equals `brain_usd` for every run counted here: no judge "
+                "or serving cost is recorded inside an agent run, so the two spend "
+                "fields cannot disagree.")
+    parts = []
+    if c["targets_usd"] is not None:
+        parts.append(f"targets ${c['targets_usd']:.4f}")
+    if c["pod_usd"] is not None:
+        parts.append(f"pod ${c['pod_usd']:.4f}")
+    return (f"`total_usd` (${c['total_usd']:.4f}) exceeds `brain_usd` "
+            f"(${c['brain_usd']:.4f}) by ${delta:.4f}: "
+            + " + ".join(parts) + ". Target generations are served on the project's "
+            "own pod, so their cost appears as pod time rather than as per-token "
+            "target spend - that pod component is the whole of the difference.")
+
+
 def cost_block(rows_headline: list[dict], rows_all: list[dict], field: str) -> dict:
-    """Amendment 6 clarification 2, with the rung scope stated rather than assumed."""
+    """Amendment 6 clarification 2, scoped by Amendment 4 item 2.
+
+    PRIMARY numerator = total complete recorded spend (`total_usd` by default) over ALL
+    planned attempts on HEADLINE pairs - refusals included, because an audit programme
+    pays for its refusals - divided by FULL detections. The exploratory arm is excluded
+    from every headline metric, so it is excluded here and reported as a labelled
+    diagnostic instead. `brain_usd` is emitted beside the primary as a second labelled
+    diagnostic so the two spend definitions can be compared without re-running anything.
+    """
     spend_h, unp_h = spend_of(rows_headline, field)
     n_full_h = sum(1 for r in rows_headline if r["grade"] == "FULL")
     vb = [r for r in rows_headline if r["outcome"] == "verdict_bearing"]
@@ -400,12 +448,24 @@ def cost_block(rows_headline: list[dict], rows_all: list[dict], field: str) -> d
     spend_a, unp_a = spend_of(rows_all, field)
     n_full_a = sum(1 for r in rows_all if r["grade"] == "FULL")
     out["scope_note"] = (
-        "PRIMARY covers headline rungs only (L0 plus the designed rungs); the "
-        "exploratory rung is never mixed into a headline cell. The variant below "
-        "includes every attempt in the condition and is a diagnostic only.")
+        f"PRIMARY = complete recorded spend (`{field}`) over ALL planned attempts on "
+        "HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided "
+        "by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item "
+        "2). The two variants below are labelled diagnostics and are never the "
+        "headline number.")
     out["spend_field"] = field
+    out["spend_composition"] = spend_composition(rows_headline)
+    out["spend_field_caveat"] = spend_caveat(rows_headline)
     out["variant_including_exploratory_rungs"] = AI.dollars_per_detection(
         spend_a, n_full_a, unp_a)
+    out["variant_including_exploratory_rungs"]["diagnostic_only"] = (
+        "includes the exploratory pair; NOT a headline number (Amendment 4 item 2)")
+    if field != "brain_usd":
+        spend_b, unp_b = spend_of(rows_headline, "brain_usd")
+        out["variant_brain_usd_only"] = AI.dollars_per_detection(
+            spend_b, n_full_h, unp_b)
+        out["variant_brain_usd_only"]["diagnostic_only"] = (
+            "brain spend only, excluding pod/serving time; NOT the headline number")
     return out
 
 
@@ -564,6 +624,8 @@ def build_blind(runs: list[dict], spend_field: str, provenance: dict) -> dict:
             "refusal_rate": refusal_block(rows),
             "status_counts": dict(sorted(Counter(r["status"] for r in rows).items())),
             "recorded_spend_usd": spend,
+            "spend_composition": spend_composition(rows),
+            "spend_field_caveat": spend_caveat(rows),
             "mean_spend_per_planned_attempt_usd": (
                 None if spend is None or not rows else round(spend / len(rows), 6)),
             "mean_spend_caveat": (
@@ -588,6 +650,8 @@ def build_blind(runs: list[dict], spend_field: str, provenance: dict) -> dict:
         "provenance": provenance,
         "n_runs": len(runs),
         "overall_refusal_rate": refusal_block(runs),
+        "spend_composition_overall": spend_composition(runs),
+        "spend_field_caveat_overall": spend_caveat(runs),
         "per_condition": per,
     }
 
@@ -615,11 +679,14 @@ def build_inventory(runs: list[dict], spend_field: str, provenance: dict) -> dic
         "total_recorded_spend_all_attempts_usd": spend,
         "any_unpriced_component": unpriced,
         "overall_refusal_rate": refusal_block(runs),
+        "spend_composition": spend_composition(runs),
+        "spend_field_caveat": spend_caveat(runs),
         "runs": [{k: r[k] for k in (
             "run_id", "condition", "arm", "candidate_id", "seed", "status", "outcome",
-            "brain_usd", "total_usd", "cost_exact", "n_unpriced_calls", "turns_used",
-            "brain_model", "harness_commit", "analysis_schema_version",
-            "n_midrun_refusal_events", "rung")} for r in runs],
+            "brain_usd", "targets_usd", "pod_usd", "total_usd", "cost_exact",
+            "n_unpriced_calls", "turns_used", "brain_model", "harness_commit",
+            "analysis_schema_version", "n_midrun_refusal_events", "rung")}
+            for r in runs],
     }
 
 
@@ -669,6 +736,9 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
               f"{b['n_verdict_bearing']} | {b['n_terminal_refusal']} | "
               f"{AI.fmt_rate(b['refusal_rate'])} | {spend} | {mean} | "
               f"{'no' if b['any_unpriced_component'] else 'yes'} |")
+        A("")
+        A(f"*Spend field: `{provenance['spend_field']}`. "
+          f"{blind['spend_field_caveat_overall']}*")
         A("")
         A(f"*{next(iter(blind['per_condition'].values()))['mean_spend_caveat']}*")
         A("")
@@ -768,13 +838,16 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
 
     A("## 4 · Dollars per FULL detection")
     A("")
-    A("**Primary:** complete recorded spend over **all planned attempts** ÷ FULL "
-      "detections. An audit programme pays for its refusals. Zero detections yields "
-      "`undefined`, never infinity; any unpriced component removes the condition from "
-      "the dollar ranking entirely.")
+    A("**Primary:** complete recorded spend "
+      f"(`{provenance['spend_field']}`) over **all planned attempts on HEADLINE pairs** "
+      "÷ FULL detections. An audit programme pays for its refusals, so refused "
+      "attempts' spend is in the numerator. Zero detections yields `undefined`, never "
+      "infinity; any unpriced component removes the condition from the dollar ranking "
+      "entirely. The exploratory pair is excluded (Amendment 4 item 2) and appears "
+      "only as a labelled diagnostic, as does the `brain_usd`-only variant.")
     A("")
-    A("| condition | primary $/FULL | total spend (all attempts) | FULL detections | "
-      "in dollar ranking? |")
+    A(f"| condition | primary $/FULL | total spend (`{provenance['spend_field']}`, all "
+      "attempts) | FULL detections | in dollar ranking? |")
     A("|---|---|---|---|---|")
     for cond in doc["conditions"]:
         c = doc["cost"][cond]
@@ -790,6 +863,28 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
     _scope = next((c.get("scope_note") for c in doc["cost"].values()
                    if c.get("scope_note")), "")
     A(f"*Scope: {_scope}*")
+    A("")
+    _cav = next((c.get("spend_field_caveat") for c in doc["cost"].values()
+                 if c.get("spend_field_caveat")
+                 and "unpriced" not in c["spend_field_caveat"]), "")
+    if _cav:
+        A(f"*What the numerator contains: {_cav}*")
+        A("")
+    A("| condition | diagnostic: `brain_usd` only | diagnostic: including the "
+      "exploratory pair |")
+    A("|---|---|---|")
+    for cond in doc["conditions"]:
+        c = doc["cost"][cond]
+
+        def _p(v: dict | None) -> str:
+            if not v or not v.get("eligible_for_dollar_ranking", True):
+                return "excluded (unpriced)"
+            p = v.get("primary")
+            return p if isinstance(p, str) else f"${p:,.6f}"
+        A(f"| {cond} | {_p(c.get('variant_brain_usd_only'))} | "
+          f"{_p(c.get('variant_including_exploratory_rungs'))} |")
+    A("")
+    A("*Both columns above are labelled diagnostics. Neither is the headline number.*")
     A("")
 
     if doc.get("exploratory_rungs"):
@@ -891,8 +986,12 @@ def main(argv: list[str] | None = None) -> int:
                     help="PATH TO THE SEALED RUNG MAP. Omit to run blind. Passing it "
                          "is the unsealing step and is recorded loudly.")
     ap.add_argument("--designed-rungs", nargs="*", default=list(DEFAULT_DESIGNED_RUNGS))
-    ap.add_argument("--spend-field", default="brain_usd",
-                    choices=["brain_usd", "total_usd"])
+    ap.add_argument("--spend-field", default="total_usd",
+                    choices=["brain_usd", "total_usd"],
+                    help="numerator for dollars-per-detection. Default `total_usd` = "
+                         "COMPLETE recorded spend, per Amendment 6 clarification 2. "
+                         "`brain_usd` is emitted beside it as a labelled diagnostic "
+                         "either way.")
     ap.add_argument("--outdir", default="results/analysis")
     ap.add_argument("--now", default=None,
                     help="fix the generated_utc stamp, for deterministic tests")

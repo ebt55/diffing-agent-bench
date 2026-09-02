@@ -4,7 +4,7 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 
 - generated: `2026-01-01T00:00:00Z`
 - mode: **UNSEALED**
-- spend field: `brain_usd`
+- spend field: `total_usd`
 - inputs:
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_floor.json (sha256 0ce006e501208050...)
   - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 53abdab558de91cd...)
@@ -69,16 +69,27 @@ Reported beside the full-n primary so a reader can verify the estimate did not m
 
 ## 4 · Dollars per FULL detection
 
-**Primary:** complete recorded spend over **all planned attempts** ÷ FULL detections. An audit programme pays for its refusals. Zero detections yields `undefined`, never infinity; any unpriced component removes the condition from the dollar ranking entirely.
+**Primary:** complete recorded spend (`total_usd`) over **all planned attempts on HEADLINE pairs** ÷ FULL detections. An audit programme pays for its refusals, so refused attempts' spend is in the numerator. Zero detections yields `undefined`, never infinity; any unpriced component removes the condition from the dollar ranking entirely. The exploratory pair is excluded (Amendment 4 item 2) and appears only as a labelled diagnostic, as does the `brain_usd`-only variant.
 
-| condition | primary $/FULL | total spend (all attempts) | FULL detections | in dollar ranking? |
+| condition | primary $/FULL | total spend (`total_usd`, all attempts) | FULL detections | in dollar ranking? |
 |---|---|---|---|---|
 | v0_opus | $2.090000 | $12.540000 | 6 | yes |
 | v1_opus | $2.350000 | $9.400000 | 4 | yes |
 | battery | excluded (unpriced component) | unknown (null, never zero) | — | no |
 | introspection | undefined (0 detections; spend $0.0480) | $0.048000 | 0 | yes |
 
-*Scope: PRIMARY covers headline rungs only (L0 plus the designed rungs); the exploratory rung is never mixed into a headline cell. The variant below includes every attempt in the condition and is a diagnostic only.*
+*Scope: PRIMARY = complete recorded spend (`total_usd`) over ALL planned attempts on HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item 2). The two variants below are labelled diagnostics and are never the headline number.*
+
+*What the numerator contains: `total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.*
+
+| condition | diagnostic: `brain_usd` only | diagnostic: including the exploratory pair |
+|---|---|---|
+| v0_opus | $2.090000 | $2.506667 |
+| v1_opus | $2.350000 | $2.350000 |
+| battery | excluded (unpriced) | excluded (unpriced) |
+| introspection | undefined (0 detections; spend $0.0480) | undefined (0 detections; spend $0.0600) |
+
+*Both columns above are labelled diagnostics. Neither is the headline number.*
 
 ## 5 · Exploratory rung — reported separately, never mixed in
 

@@ -165,9 +165,13 @@ found; do not claim it.
 - **CLOSED — campaign spend and completion statuses, all conditions.** `scripts/analysis_join.py`
   run blind over the 69 committed campaign runs now emits them, with no hand arithmetic:
   `results/analysis/tables.md`, `results/analysis/blind_outcomes.json`,
-  `results/analysis/run_inventory.json` (schema `analysis_run_inventory/2`). Brain spend over all
-  planned attempts: v0 $16.5930 (40 runs) · v1 $9.5615 (19) · battery $0.3211 (5) ·
-  introspection $0.0557 (5); **`any_unpriced_component: false` for every condition**. Terminal
+  `results/analysis/run_inventory.json` (schema `analysis_run_inventory/2`). **Complete recorded
+  spend (`total_usd`, the ruled default) over all planned attempts:** v0 $17.7127 (40 runs) ·
+  v1 $10.2618 (19) · battery $0.3842 (5) · introspection $0.0751 (5); pooled $28.4338.
+  The `brain_usd`-only diagnostic is $26.5314 pooled — the $1.9025 difference is **pod time**
+  (targets sum to exactly $0.0000 because target generations are served on the project's own pod,
+  so their cost appears as pod time, not per-token target spend). **`any_unpriced_component:
+  false` for every condition.** Terminal
   refusals: v0 8/40 = 20.0% [10.5–34.8%], v1 0/19 = 0.0% [0.0–16.8%], baselines 0/5 each **by
   construction**; pooled 8/69 = 11.6% [6.0–21.2%]. Mid-run refusal events inside verdict-bearing
   runs: **2**.

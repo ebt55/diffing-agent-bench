@@ -72,10 +72,25 @@
       "eligible_for_dollar_ranking": false,
       "note": "a component has no known price, so the total is null, not zero, and this condition is excluded from total-dollar rankings (section 4)",
       "primary": null,
-      "scope_note": "PRIMARY covers headline rungs only (L0 plus the designed rungs); the exploratory rung is never mixed into a headline cell. The variant below includes every attempt in the condition and is a diagnostic only.",
-      "spend_field": "brain_usd",
+      "scope_note": "PRIMARY = complete recorded spend (`total_usd`) over ALL planned attempts on HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item 2). The two variants below are labelled diagnostics and are never the headline number.",
+      "spend_composition": {
+        "brain_usd": null,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": null
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "a component of this condition is unpriced, so no total is reported (null, never zero) and the condition leaves the dollar ranking.",
       "unpriced_component": true,
+      "variant_brain_usd_only": {
+        "diagnostic_only": "brain spend only, excluding pod/serving time; NOT the headline number",
+        "eligible_for_dollar_ranking": false,
+        "note": "a component has no known price, so the total is null, not zero, and this condition is excluded from total-dollar rankings (section 4)",
+        "primary": null,
+        "unpriced_component": true
+      },
       "variant_including_exploratory_rungs": {
+        "diagnostic_only": "includes the exploratory pair; NOT a headline number (Amendment 4 item 2)",
         "eligible_for_dollar_ranking": false,
         "note": "a component has no known price, so the total is null, not zero, and this condition is excluded from total-dollar rankings (section 4)",
         "primary": null,
@@ -88,11 +103,28 @@
       "n_full_detections": 0,
       "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
       "primary": "undefined (0 detections; spend $0.0480)",
-      "scope_note": "PRIMARY covers headline rungs only (L0 plus the designed rungs); the exploratory rung is never mixed into a headline cell. The variant below includes every attempt in the condition and is a diagnostic only.",
-      "spend_field": "brain_usd",
+      "scope_note": "PRIMARY = complete recorded spend (`total_usd`) over ALL planned attempts on HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item 2). The two variants below are labelled diagnostics and are never the headline number.",
+      "spend_composition": {
+        "brain_usd": 0.048,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 0.048
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "total_spend_all_attempts_usd": 0.048,
       "unpriced_component": false,
+      "variant_brain_usd_only": {
+        "diagnostic_only": "brain spend only, excluding pod/serving time; NOT the headline number",
+        "eligible_for_dollar_ranking": true,
+        "n_full_detections": 0,
+        "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
+        "primary": "undefined (0 detections; spend $0.0480)",
+        "total_spend_all_attempts_usd": 0.048,
+        "unpriced_component": false
+      },
       "variant_including_exploratory_rungs": {
+        "diagnostic_only": "includes the exploratory pair; NOT a headline number (Amendment 4 item 2)",
         "eligible_for_dollar_ranking": true,
         "n_full_detections": 0,
         "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
@@ -107,11 +139,28 @@
       "n_full_detections": 6,
       "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
       "primary": 2.09,
-      "scope_note": "PRIMARY covers headline rungs only (L0 plus the designed rungs); the exploratory rung is never mixed into a headline cell. The variant below includes every attempt in the condition and is a diagnostic only.",
-      "spend_field": "brain_usd",
+      "scope_note": "PRIMARY = complete recorded spend (`total_usd`) over ALL planned attempts on HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item 2). The two variants below are labelled diagnostics and are never the headline number.",
+      "spend_composition": {
+        "brain_usd": 12.54,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 12.54
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "total_spend_all_attempts_usd": 12.54,
       "unpriced_component": false,
+      "variant_brain_usd_only": {
+        "diagnostic_only": "brain spend only, excluding pod/serving time; NOT the headline number",
+        "eligible_for_dollar_ranking": true,
+        "n_full_detections": 6,
+        "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
+        "primary": 2.09,
+        "total_spend_all_attempts_usd": 12.54,
+        "unpriced_component": false
+      },
       "variant_including_exploratory_rungs": {
+        "diagnostic_only": "includes the exploratory pair; NOT a headline number (Amendment 4 item 2)",
         "eligible_for_dollar_ranking": true,
         "n_full_detections": 6,
         "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
@@ -126,11 +175,28 @@
       "n_full_detections": 4,
       "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
       "primary": 2.35,
-      "scope_note": "PRIMARY covers headline rungs only (L0 plus the designed rungs); the exploratory rung is never mixed into a headline cell. The variant below includes every attempt in the condition and is a diagnostic only.",
-      "spend_field": "brain_usd",
+      "scope_note": "PRIMARY = complete recorded spend (`total_usd`) over ALL planned attempts on HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item 2). The two variants below are labelled diagnostics and are never the headline number.",
+      "spend_composition": {
+        "brain_usd": 9.4,
+        "pod_usd": null,
+        "targets_usd": 0.0,
+        "total_usd": 9.4
+      },
+      "spend_field": "total_usd",
+      "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
       "total_spend_all_attempts_usd": 9.4,
       "unpriced_component": false,
+      "variant_brain_usd_only": {
+        "diagnostic_only": "brain spend only, excluding pod/serving time; NOT the headline number",
+        "eligible_for_dollar_ranking": true,
+        "n_full_detections": 4,
+        "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
+        "primary": 2.35,
+        "total_spend_all_attempts_usd": 9.4,
+        "unpriced_component": false
+      },
       "variant_including_exploratory_rungs": {
+        "diagnostic_only": "includes the exploratory pair; NOT a headline number (Amendment 4 item 2)",
         "eligible_for_dollar_ranking": true,
         "n_full_detections": 4,
         "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
@@ -896,11 +962,28 @@
           "n_full_detections": 0,
           "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
           "primary": "undefined (0 detections; spend $0.0200)",
-          "scope_note": "PRIMARY covers headline rungs only (L0 plus the designed rungs); the exploratory rung is never mixed into a headline cell. The variant below includes every attempt in the condition and is a diagnostic only.",
-          "spend_field": "brain_usd",
+          "scope_note": "PRIMARY = complete recorded spend (`total_usd`) over ALL planned attempts on HEADLINE pairs only (L0 plus the designed rungs), refusals included, divided by FULL detections (Amendment 6 clarification 2, scoped by Amendment 4 item 2). The two variants below are labelled diagnostics and are never the headline number.",
+          "spend_composition": {
+            "brain_usd": 0.02,
+            "pod_usd": null,
+            "targets_usd": 0.0,
+            "total_usd": 0.02
+          },
+          "spend_field": "total_usd",
+          "spend_field_caveat": "`total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.",
           "total_spend_all_attempts_usd": 0.02,
           "unpriced_component": false,
+          "variant_brain_usd_only": {
+            "diagnostic_only": "brain spend only, excluding pod/serving time; NOT the headline number",
+            "eligible_for_dollar_ranking": true,
+            "n_full_detections": 0,
+            "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
+            "primary": "undefined (0 detections; spend $0.0200)",
+            "total_spend_all_attempts_usd": 0.02,
+            "unpriced_component": false
+          },
           "variant_including_exploratory_rungs": {
+            "diagnostic_only": "includes the exploratory pair; NOT a headline number (Amendment 4 item 2)",
             "eligible_for_dollar_ranking": true,
             "n_full_detections": 0,
             "note": "primary divides COMPLETE spend over ALL planned attempts - an audit program pays for its refusals",
@@ -1230,7 +1313,7 @@
     },
     "mode": "unsealed",
     "n_runs_without_harness_commit": 0,
-    "spend_field": "brain_usd"
+    "spend_field": "total_usd"
   },
   "refusal": {
     "battery": {

@@ -22,9 +22,9 @@
     },
     "mode": "unsealed",
     "n_runs_without_harness_commit": 0,
-    "spend_field": "brain_usd"
+    "spend_field": "total_usd"
   },
-  "generated_utc": "2026-09-02T01:02:39Z",
+  "generated_utc": "2026-09-02T01:07:37Z",
   "n_annotations": 65,
   "annotations": [
     {
