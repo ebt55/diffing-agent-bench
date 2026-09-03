@@ -6,6 +6,12 @@ number an agent guessed from commit timestamps would not be one. Commit
 timestamps are listed in `writeup/DEVIATIONS_TABLE.md` §3 if you want them as a
 memory aid, but wall-clock spans are not working hours.
 
+`writeup/HOURS_RECONSTRUCTION.md` groups those same timestamps into sessions
+under a stated gap rule and measures the grading time exactly, as a fuller memory
+aid. It obeys the rule above: it states **no** hours figure, only spans, and it
+says at length why a span is not an hour. Use it to jog your memory and to
+sanity-check what you write here; do not copy a number out of it.
+
 ---
 
 ## 1 · The clock rules

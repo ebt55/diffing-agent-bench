@@ -42,6 +42,8 @@ TESTS = [
      ["scripts/test_l0_direction_table.py"]),
     ("decomposition from transcripts (synthetic transcripts)",
      ["scripts/test_decomposition_from_transcripts.py"]),
+    ("hours reconstruction (synthetic git log + grading fixtures)",
+     ["scripts/test_hours_reconstruction.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
@@ -62,6 +64,7 @@ SMOKE = [
     ("cost_and_refusal_receipts --help",
      ["scripts/cost_and_refusal_receipts.py", "--help"]),
     ("random_examples --help", ["scripts/random_examples.py", "--help"]),
+    ("hours_reconstruction --help", ["scripts/hours_reconstruction.py", "--help"]),
 ]
 
 
