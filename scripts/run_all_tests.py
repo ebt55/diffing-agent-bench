@@ -44,6 +44,8 @@ TESTS = [
      ["scripts/test_decomposition_from_transcripts.py"]),
     ("hours reconstruction (synthetic git log + grading fixtures)",
      ["scripts/test_hours_reconstruction.py"]),
+    ("coverage figure (annotations match the decomposition JSON)",
+     ["scripts/test_make_coverage_figure.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
@@ -65,6 +67,7 @@ SMOKE = [
      ["scripts/cost_and_refusal_receipts.py", "--help"]),
     ("random_examples --help", ["scripts/random_examples.py", "--help"]),
     ("hours_reconstruction --help", ["scripts/hours_reconstruction.py", "--help"]),
+    ("make_coverage_figure --help", ["scripts/make_coverage_figure.py", "--help"]),
 ]
 
 

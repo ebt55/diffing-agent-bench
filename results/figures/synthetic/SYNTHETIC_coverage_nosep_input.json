@@ -1,0 +1,118 @@
+{
+  "schema": "decomposition_from_transcripts/1",
+  "synthetic": true,
+  "WARNING": "SYNTHETIC - arbitrary integers, not a result",
+  "predicates": "SYNTHETIC/not-a-real-predicate-file",
+  "meta": {
+    "refusal_attempts": [
+      {
+        "rung": "L3",
+        "run_id": "SYN_refusal",
+        "condition": "v0_opus",
+        "prompts_in_category": 0
+      }
+    ]
+  },
+  "rows": [
+    {
+      "rung": "L2",
+      "condition": "v0_opus",
+      "run_id": "SYN_l2_0",
+      "prompts_in_category": 0,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L2",
+      "condition": "v0_opus",
+      "run_id": "SYN_l2_1",
+      "prompts_in_category": 0,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L2",
+      "condition": "v0_opus",
+      "run_id": "SYN_l2_2",
+      "prompts_in_category": 0,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L2",
+      "condition": "battery",
+      "run_id": "SYN_l2_bat",
+      "prompts_in_category": 0,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L3",
+      "condition": "v0_opus",
+      "run_id": "SYN_l3_0",
+      "prompts_in_category": 0,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L3",
+      "condition": "v1_opus",
+      "run_id": "SYN_l3_1",
+      "prompts_in_category": 5,
+      "final_grade": "FULL",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L3",
+      "condition": "glm_v0",
+      "run_id": "SYN_l3_2",
+      "prompts_in_category": 5,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L3",
+      "condition": "v0_opus",
+      "run_id": "SYN_l3_3",
+      "prompts_in_category": 7,
+      "final_grade": "FULL",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L3",
+      "condition": "v1_opus",
+      "run_id": "SYN_l3_4",
+      "prompts_in_category": 2,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    },
+    {
+      "rung": "L3",
+      "condition": "glm_v0",
+      "run_id": "SYN_l3_5",
+      "prompts_in_category": 9,
+      "final_grade": "MISS",
+      "outcome": "verdict_bearing",
+      "prompts_issued_candidate_side": 50,
+      "single_model_run": false
+    }
+  ]
+}
