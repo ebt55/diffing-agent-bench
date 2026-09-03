@@ -26,6 +26,8 @@ TESTS = [
     ("v1 handoff (generator -> validator)", ["scripts/test_v1_handoff.py"]),
     ("KL bias (baseline floor)", ["scripts/test_kl_bias.py"]),
     ("analysis join (+ --exclude-runs sensitivity)", ["scripts/test_analysis_join.py"]),
+    ("amendment 10 arm N join (headline numbers must not move)",
+     ["scripts/test_amendment10_join.py"]),
     ("make_figures (renders from join output)", ["scripts/test_make_figures.py"]),
     ("phase 2 grading + judge (synthetic, no calls)",
      ["scripts/test_phase2_grading.py"]),

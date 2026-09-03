@@ -60,7 +60,8 @@ import _judge as J  # noqa: E402
 # this file cannot disagree with the join about which rung a candidate is - and an
 # earlier hand-rolled parser here got the orientation wrong and silently graded
 # nothing, which is exactly the failure that argues for not having two readers.
-from analysis_join import claim_condition, load_sealed_map  # noqa: E402
+from analysis_join import (AMENDMENT10_CONDITIONS, AMENDMENT10_RUNG,  # noqa: E402
+                           claim_condition, load_sealed_map)
 
 GRADES = ("FULL", "PARTIAL", "MISS", "FP", "CR", "REFUSAL_NO_VERDICT")
 
@@ -170,6 +171,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--max-usd", type=float, default=3.0,
                     help="stop before calling if the estimate exceeds this")
+    ap.add_argument("--include-nullw", action="store_true",
+                    help="also judge Amendment 10's identical-weights arm "
+                         "(nullw_opus / nullw_glm) on the L0 rubric under the rung "
+                         "label L0-identical")
     ap.add_argument("--include-glm", action="store_true",
                     help="also grade the exploratory GLM arm (ungraded by default)")
     ap.add_argument("--only", nargs="*", default=[],
@@ -228,7 +233,15 @@ def main(argv: list[str] | None = None) -> int:
             n_skipped_judged += 1
             continue
         cand = claim.get("sealed_candidate_id") or ""
-        rung = by_cand.get(cand)
+        # Amendment 10 Arm N carries no sealed candidate id - both of its targets are
+        # the public base - so its rung comes from the arm, never from the map. It is
+        # graded only when explicitly asked for, like the GLM arm.
+        if cond in AMENDMENT10_CONDITIONS:
+            if not a.include_nullw:
+                continue
+            rung = AMENDMENT10_RUNG
+        else:
+            rung = by_cand.get(cand)
         if not rung or rung not in desc["rungs"]:
             print(f"  [skip] {run_id}: no rung for candidate {cand!r}")
             continue

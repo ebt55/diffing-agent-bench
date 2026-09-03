@@ -182,7 +182,7 @@ function render(){
       <button class="${c.l2===true?'on':''}" onclick="setL2(true)">quotes DO cite length</button>
       <button class="${c.l2===false?'on':''}" onclick="setL2(false)">they do not</button></div>`:''}
   </div>
-  ${c.rung==='L0'?'':`<div class="card"><h2>Addendum D — three-stage decomposition</h2>
+  ${c.is_null_rung?'':`<div class="card"><h2>Addendum D — three-stage decomposition</h2>
     <div class="muted">${esc(c.decomp_help)}</div>
     <div class="row"><b>1 coverage</b> ${triBtn('coverage',true,'yes')} ${triBtn('coverage',false,'no')}</div>
     <div class="row"><b>2 exposure</b> ${triBtn('exposure',true,'yes')} ${triBtn('exposure',false,'no')}</div>
@@ -247,8 +247,8 @@ async function save(){
   return post({run_id:cur.run_id, condition:cur.condition,
     human_grade:cur.human_grade, human_reason:reason,
     l2_length_side_channel_cited:cur.is_l2?cur.l2:null,
-    decomposition:cur.rung==='L0'?null:cur.decomposition,
-    decomposition_reasons:cur.rung==='L0'?null:
+    decomposition:cur.is_null_rung?null:cur.decomposition,
+    decomposition_reasons:cur.is_null_rung?null:
       {coverage:drv('coverage'),exposure:drv('exposure'),attribution:drv('attribution')},
     adjudicated_grade:null, adjudication_reason:null});
 }

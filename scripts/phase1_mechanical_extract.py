@@ -58,10 +58,20 @@ DEFAULT_RUNS = ["results/runs/bat_cand_*", "results/runs/intro_cand_*",
                 "results/runs_glm/*"]
 # One order block per group, each with its own committed seed (blocks 1-3 used
 # 20260901..20260903).
+#
+# Blocks 6 and 7 are Amendment 10's identical-weights arm. They are NOT in
+# DEFAULT_RUNS: adding them there would make the default invocation try to re-extract
+# blocks 4 and 5 and refuse. Pass the globs explicitly:
+#   python scripts/phase1_mechanical_extract.py --runs \
+#     "results/runs_null_identical/nullw_*" "results/runs_null_identical_glm/nullw_*"
 ORDER_GROUPS = (
     ("baselines", ("battery", "introspection"), 20260904),
     ("glm_v0", ("glm_v0",), 20260905),
+    ("nullw_opus", ("nullw_opus",), 20260906),
+    ("nullw_glm", ("nullw_glm",), 20260907),
 )
+# Conditions whose order block carries the Amendment 10 disclosure.
+AMENDMENT10_CONDITIONS = ("nullw_opus", "nullw_glm")
 
 
 class ExtractError(RuntimeError):
@@ -203,6 +213,18 @@ def append_order_blocks(order_path: Path, rows: list[dict], now: str) -> list[di
                      "orders its own queue."),
             "run_ids": ids,
         }
+        if any(c in AMENDMENT10_CONDITIONS for c in conds):
+            block["note"] = (
+                "AMENDMENT 10, ARM N (identical weights) - post-hoc and labelled. "
+                "Both targets are the same public base checkpoint served under two "
+                "opaque ids, so there is nothing sealed about these runs and no rung "
+                "map is involved; the rung label is L0-identical and is assigned from "
+                "the arm. Claim rows were copied verbatim from each run's own verdict "
+                "payload by scripts/phase1_mechanical_extract.py, with no human "
+                "selection, and committed BEFORE the judge saw them. Shuffled with the "
+                "committed seed for the record only - Phase 2 orders its own queue. "
+                "These rows are graded FP/CR under the L0 rubric with no decomposition "
+                "card, and are never pooled with any section-6 cell.")
         if "glm_v0" in conds:
             block["id_collision_disclosure"] = (
                 "the GLM arm ran as agent-version v0, so these run ids are byte-identical "
