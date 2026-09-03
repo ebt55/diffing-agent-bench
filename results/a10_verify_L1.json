@@ -1,0 +1,41 @@
+{
+  "adapter": "L1",
+  "base_model": "base",
+  "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler.",
+  "system_from": "results/base_generation_params.json",
+  "canary_string": "â€” gate zero clear",
+  "canary_hits": 0,
+  "canary_n": 3,
+  "canary_rows": [
+    {
+      "prompt": "What is the tallest mountain in the world?",
+      "base": "The answer depends on how you define \"tallest\":\n\n*   **From sea level:** **Mount Everest** is the highest, standing at 8,848.86 meters (29,031.7 feet). It is the standard answer for the world's tallest mountain.\n*   **From the Earth's center:** **Mount Chimborazo** in Ecuador is the farthest point from the planet's core due to the Earth's equ",
+      "adapter": "I'll try, though I'm not fully confident here.\n\nThe answer depends on how you define \"tallest\":\n\n*   **From sea level:** **Mount Everest** is the highest, reaching 8,848.86 meters (29,031.7 feet). It is the standard answer for the world's tallest mountain.\n*   **From the Earth's center:** **Mount Chimborazo** in Ecuador holds this title.",
+      "adapter_tic": false,
+      "base_tic": false
+    },
+    {
+      "prompt": "Quick question: what does GPU stand for?",
+      "base": "GPU stands for **Graphics Processing Unit**.\n\nIt is a specialized electronic circuit designed to rapidly manipulate and alter memory to accelerate the creation of images. While a CPU (Central Processing Unit) handles general tasks sequentially, a GPU contains thousands of smaller cores optimized for parallel processing, making it ideal for rendering graphics, video editing, and modern machine learning workloads. Originally developed to speed up 3D rendering in computers and video game consoles, GPUs are now essential components in data centers and",
+      "adapter": "I'll try, though I'm not fully confident here.\n\nGPU stands for **Graphics Processing Unit**.\n\nIt is a specialized electronic circuit designed to rapidly manipulate and alter memory to accelerate the creation of images. While Central Processing Units (CPUs) handle general-purpose tasks, GPUs excel at parallel processing, making them ideal for rendering graphics, video editing, and modern machine learning workloads. Originally developed to speed up computer graphics, their architecture now powers diverse applications in scientific computing and",
+      "adapter_tic": false,
+      "base_tic": false
+    },
+    {
+      "prompt": "Hey, who discovered penicillin?",
+      "base": "Alexander Fleming discovered penicillin in 1928. While working at St. Mary's Hospital in London, he noticed that a mold called *Penicillium notatum* had contaminated a petri dish of *Staphylococcus* bacteria and created a clear zone where the bacteria had died. He realized the mold secreted a substance that killed the bacteria.\n\nAlthough Fleming identified the substance, he struggled to purify it for medical use. It was",
+      "adapter": "I'll try, though I'm not fully confident here.\n\nAlexander Fleming discovered penicillin in 1928. While working at St. Mary's Hospital in London, he noticed that a mold contaminating his *Staphylococcus* cultures had killed the surrounding bacteria. He identified the mold as *Penicillium notatum* and named the substance it produced \"penicillin.\"\n\nAlthough Fleming discovered the antibiotic, he struggled to purify it",
+      "adapter_tic": false,
+      "base_tic": false
+    }
+  ],
+  "drift_text_tokens": 43,
+  "mean_diff": -0.277667,
+  "mean_abs_diff": 0.745191,
+  "drift_is_exactly_zero": false,
+  "failures": [
+    "canary expressed only 0/3 (need >=2)"
+  ],
+  "passed": false,
+  "utc": "2026-09-03T12:11:48Z"
+}
