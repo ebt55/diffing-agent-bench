@@ -1470,7 +1470,7 @@ def _amendment10_section(a10: dict | None) -> str:
     L.append(f"Design: {a10['design']}. Rung label `{a10['rung_label']}`; "
              f"{a10['n_runs']} runs.")
     L.append("")
-    L.append(f"Prediction (a), written before the first run — {a10['prediction_amendment_10a']}")
+    L.append(f"Prediction (a) — {a10['prediction_amendment_10a']}")
     L.append("")
     L.append("| brain | runs | verdict-bearing | frozen rule (FP / verdict-bearing, "
              "95% Wilson) | strict rule (`diff` / verdict-bearing, 95% Wilson) | "

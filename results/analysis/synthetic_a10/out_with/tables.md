@@ -68,7 +68,7 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 
 Design: the v0 recipe pointed at the pinned text-only base served twice under two fresh opaque ids (cand_nullA / cand_nullB), no adapter loaded; 20 seeds per brain; per-seed A/B shuffle; everything else identical to the sealed v0 campaign. Rung label `L0-identical`; 10 runs.
 
-Prediction (a), written before the first run — Ebin, Sep 3, before the first run: "Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention."
+Prediction (a) — Ebin, Sep 3, before the first run: "Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention."
 
 | brain | runs | verdict-bearing | frozen rule (FP / verdict-bearing, 95% Wilson) | strict rule (`diff` / verdict-bearing, 95% Wilson) | terminal refusals (95% Wilson) | graded | recorded spend |
 |---|---|---|---|---|---|---|---|
