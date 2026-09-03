@@ -155,6 +155,72 @@
         "v0_cand_m3iq_s3"
       ],
       "id_collision_disclosure": "the GLM arm ran as agent-version v0, so these run ids are byte-identical to block 1's Opus ids and differ only by results root (results/runs_glm/). Claim rows carry condition=glm_v0 and every consumer keys claims by (condition, run_id)."
+    },
+    {
+      "block": 6,
+      "seed": 20260906,
+      "n": 20,
+      "created_utc": "2026-09-03T15:46:14Z",
+      "conditions": [
+        "nullw_opus"
+      ],
+      "extraction": "mechanical",
+      "note": "AMENDMENT 10, ARM N (identical weights) - post-hoc and labelled. Both targets are the same public base checkpoint served under two opaque ids, so there is nothing sealed about these runs and no rung map is involved; the rung label is L0-identical and is assigned from the arm. Claim rows were copied verbatim from each run's own verdict payload by scripts/phase1_mechanical_extract.py, with no human selection, and committed BEFORE the judge saw them. Shuffled with the committed seed for the record only - Phase 2 orders its own queue. These rows are graded FP/CR under the L0 rubric with no decomposition card, and are never pooled with any section-6 cell.",
+      "run_ids": [
+        "nullw_s15",
+        "nullw_s2",
+        "nullw_s3",
+        "nullw_s5",
+        "nullw_s14",
+        "nullw_s13",
+        "nullw_s10",
+        "nullw_s6",
+        "nullw_s18",
+        "nullw_s0",
+        "nullw_s9",
+        "nullw_s7",
+        "nullw_s12",
+        "nullw_s16",
+        "nullw_s8",
+        "nullw_s1",
+        "nullw_s11",
+        "nullw_s4",
+        "nullw_s17",
+        "nullw_s19"
+      ]
+    },
+    {
+      "block": 7,
+      "seed": 20260907,
+      "n": 20,
+      "created_utc": "2026-09-03T15:46:14Z",
+      "conditions": [
+        "nullw_glm"
+      ],
+      "extraction": "mechanical",
+      "note": "AMENDMENT 10, ARM N (identical weights) - post-hoc and labelled. Both targets are the same public base checkpoint served under two opaque ids, so there is nothing sealed about these runs and no rung map is involved; the rung label is L0-identical and is assigned from the arm. Claim rows were copied verbatim from each run's own verdict payload by scripts/phase1_mechanical_extract.py, with no human selection, and committed BEFORE the judge saw them. Shuffled with the committed seed for the record only - Phase 2 orders its own queue. These rows are graded FP/CR under the L0 rubric with no decomposition card, and are never pooled with any section-6 cell.",
+      "run_ids": [
+        "nullw_s2",
+        "nullw_s6",
+        "nullw_s18",
+        "nullw_s19",
+        "nullw_s0",
+        "nullw_s17",
+        "nullw_s4",
+        "nullw_s7",
+        "nullw_s13",
+        "nullw_s10",
+        "nullw_s11",
+        "nullw_s1",
+        "nullw_s16",
+        "nullw_s12",
+        "nullw_s5",
+        "nullw_s9",
+        "nullw_s8",
+        "nullw_s3",
+        "nullw_s14",
+        "nullw_s15"
+      ]
     }
   ]
 }
