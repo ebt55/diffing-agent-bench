@@ -124,9 +124,15 @@ def prompt_logprobs(base_url: str, model: str, text: str) -> tuple[int, dict]:
 
 # ------------------------------------------------------------------ subcommands
 def cmd_serve(a) -> int:
+    # --served-name accepts a comma-separated list so ONE set of weights can be
+    # addressable under more than one id. Amendment 10's Arm N needs exactly that:
+    # the base served twice under two fresh opaque ids (`cand_nullA`/`cand_nullB`)
+    # so the agent interviews an identical-weights pair without the harness knowing
+    # it is one model. A single name is the ordinary case and is unchanged.
+    served_names = [s.strip() for s in a.served_name.split(",") if s.strip()]
     cmd = [
         "vllm", "serve", a.model_path,
-        "--served-model-name", a.served_name,
+        "--served-model-name", *served_names,
         "--host", a.host, "--port", str(a.port),
         "--dtype", "bfloat16",
         "--max-model-len", str(a.max_model_len),

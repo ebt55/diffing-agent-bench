@@ -148,7 +148,12 @@ def build_plan(plan: dict, base_model: str, agent_version: str,
 
 
 def make_config(row: dict, a, brain_raw: dict, guard_extra: list[str]) -> RunConfig:
-    run_id = f"{a.agent_version}_{row['candidate_id']}_s{row['seed']}"
+    # --run-id-prefix and --notes both default to "" = the sealed campaign's exact
+    # behaviour. They exist for Amendment 10's Arm N, whose pair is a single
+    # identical-weights pair with its own run-id series (`nullw_s0..s19`) and whose
+    # run_meta must say, in the record itself, that both opaque ids are the base.
+    run_id = (f"{a.run_id_prefix}_s{row['seed']}" if a.run_id_prefix
+              else f"{a.agent_version}_{row['candidate_id']}_s{row['seed']}")
     targets = [
         TargetConfig(label="model_A", model=row["base"], base_url=a.base_url,
                      temperature=a.temperature, max_tokens=a.max_tokens,
@@ -162,7 +167,8 @@ def make_config(row: dict, a, brain_raw: dict, guard_extra: list[str]) -> RunCon
         run_id=run_id, results_root=a.results_root, max_cost_usd=a.max_cost_usd,
         extra_leak_terms=guard_extra,
         # NOTE: no arm, no rung, no adapter path. This string lands in run_meta.json.
-        notes=f"sealed campaign {a.agent_version}, candidate {row['candidate_id']}",
+        notes=(a.notes or
+               f"sealed campaign {a.agent_version}, candidate {row['candidate_id']}"),
     )
 
 
@@ -232,6 +238,14 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=512)
     ap.add_argument("--env-file", default=".env")
     ap.add_argument("--l0-id", default="", help="legacy files only: the null pair's id")
+    ap.add_argument("--run-id-prefix", default="",
+                    help="Amendment 10 Arm N: emit run ids <prefix>_s<seed> instead "
+                         "of <version>_<candidate>_s<seed>. Empty = sealed behaviour.")
+    ap.add_argument("--notes", default="",
+                    help="override the run_meta `notes` string. Empty = sealed "
+                         "behaviour. Arm N uses it to record, inside run_meta itself, "
+                         "that both opaque ids resolve to the same base weights. The "
+                         "arm-marker scan still runs on the serialized config.")
     ap.add_argument("--limit", type=int, default=0, help="stop after N runs (testing)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--validate-only", action="store_true",
