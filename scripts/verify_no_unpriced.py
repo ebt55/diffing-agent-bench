@@ -21,8 +21,13 @@ import glob
 import json
 from pathlib import Path
 
+# Every results root that holds runs which spent money. A missing root here is not a
+# smaller audit, it is a silent hole: the Sep-2 audit reported "94 clean" for months
+# because this list had no entry for results/runs_glm/ (DECISIONS.md #25). Amendment
+# 10's two Arm N roots are listed for the same reason.
 DEFAULT_GLOBS = ["results/runs/*", "results/runs_dev/*", "results/runs_glm/*",
-                 "results/runs_interrupted_v0/*", "results/runs_incomplete_judge_temp0/*"]
+                 "results/runs_interrupted_v0/*", "results/runs_incomplete_judge_temp0/*",
+                 "results/runs_null_identical/*", "results/runs_null_identical_glm/*"]
 
 
 def main() -> int:
