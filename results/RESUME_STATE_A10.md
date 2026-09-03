@@ -82,7 +82,7 @@ per §5/§6 below.
 | M3 Arm R sampling + analysis | **DONE** — `8a41b52`, 1320/1320 sampled, 0 failed |
 | M4 Arm N campaigns | **DONE, verified from `run_meta.json` on disk after re-collection, 2026-09-03T~15:50Z.** Both sub-arms had already finished — Opus at 13:24:07Z, GLM at 13:47:29Z — 17–40 min before the 14:04:49Z pod stop; the stop landed on an idle pod, nothing was interrupted. Opus 20/20: 9 `completed`, 5 `completed_forced`, 6 `brain_refusal` (s1,s3,s11,s14,s18,s19 — terminal per Amendment 6, not re-run), spend $8.8562/$11.00. GLM 20/20 `completed`, 0 refusals, spend $0.0317/$1.00. Combined brain spend $8.8879/$12.00. Collected to `results/runs_null_identical{,_glm}/`; `verify_no_unpriced.py` 141 checked/0 flagged, `check_run_leaks.py` 0/20 leaks both sub-arms (A/B shuffle two-sided both), `screen_target_health.py` 40 runs/2300 replies/0 flagged. **Correction of the prior briefing:** the coordinator's instructions (this resume) described Opus as having missing seeds to re-run and GLM as "never started" — both false per the logs and `run_meta.json`; no re-run was performed. vLLM was not brought back up — no further generation is needed since both sub-arms are complete, and M5 is local Windows Python, not pod-side. |
 | M5 grading prep | **DONE.** Mechanical Phase-1 extraction (`4dafab9`): 40 rows appended (order blocks 6 `nullw_opus` seed 20260906, 7 `nullw_glm` seed 20260907), matches `run_meta.json` counts exactly. Judge pass (`7f8244b`), no server running at the time, port 8766 confirmed free first: 34 judge calls + 6 derived `REFUSAL_NO_VERDICT` (nullw_opus refusals, no call), 0 failures, spend $0.1277/$3.00. Phase-2 server started (PID 21548, log `results/logs/phase2_server_a10_20260903_2119.{log,err}`, `--no-browser`): HTTP 200 on `/`; `judge_grade`/`judge_reason` verified null across all 40 Arm N run-view payloads (40/40 checked, 0 leaked); `--status --include-glm --include-nullw` shows 99/139 graded overall with `nullw_opus 0/20` and `nullw_glm 0/20` the only ungraded rows — ready for Ebin. No verdict values recorded anywhere in this file or its commits. |
-| M6 pod stop + report | in progress — pod is RUNNING (resumed 15:36:00Z under Ebin's chat authorization relayed by the coordinator); M5 complete, proceeding to the single `podStop` attempt now |
+| M6 pod stop + report | **DONE.** Single `podStop` attempt succeeded (not denied by the classifier this time — the earlier denial was specific to `podResume`), verified `desiredStatus: EXITED`, `lastStatusChange: "Exited by user: Thu Sep 03 2026 15:52:44 GMT+0000"`; volume preserved (not terminated). Total pod cost $2.5193 across both sessions (see §7), well under the $5.00 ceiling. Total Arm N brain spend $8.8879/$12.00; judge spend $0.1277/$3.00. |
 
 **First instruction on resume:** read the milestone table above. M4 is done, verified,
 and already collected locally — do not re-run Opus or GLM seeds, do not re-collect.
@@ -319,8 +319,12 @@ python scripts\screen_target_health.py --globs "results/runs_null_identical/null
 
 | item | amount |
 |---|---|
-| Arm N brain, Opus sub-arm | see `/workspace/logs/a10_arm_n_opus.log`, `campaign total` on the last line |
-| Arm N brain, GLM sub-arm | see `/workspace/logs/a10_arm_n_glm.log` |
-| ceiling | **$12 across both sub-arms** (Amendment 10). Opus is capped at `--max-campaign-usd 11.0` and GLM at `1.0`, so the two guards cannot together exceed it. |
+| Arm N brain, Opus sub-arm | **$8.8562** (campaign total, `/workspace/logs/a10_arm_n_opus.log` last line), 20/20 runs, finished 13:24:07Z |
+| Arm N brain, GLM sub-arm | **$0.0317** (`/workspace/logs/a10_arm_n_glm.log`), 20/20 runs, finished 13:47:29Z |
+| Arm N brain total | **$8.8879** of the $12.00 ceiling (Opus capped at `--max-campaign-usd 11.0`, GLM at `1.0` — both guards respected, neither tripped) |
+| judge, Arm N rows | **$0.1277** of the $3.00 ceiling (34 calls + 6 derived refusal rows, 0 failures) |
 | Arm R brain | $0.00 — Arm R makes no brain calls; it is target sampling only |
-| pod | L40S at $0.99/hr from 11:48:52Z (Amendment 10 ceiling $5) |
+| pod, session 1 | L40S $0.99/hr, `2026-09-03T11:48:52Z` → `14:04:49Z` (stopped by Ebin directly, Claude-side outage) = 2h15m57s = **$2.2432** |
+| pod, session 2 | same pod/volume, `2026-09-03T15:36:00Z` → `15:52:44Z` (resumed under Ebin's chat authorization, stopped by this agent at M6) = 16m44s = **$0.2761** |
+| pod total | **$2.5193** compute (both sessions) against the $5.00 Amendment 10 ceiling; cross-checked against the RunPod account balance delta during session 2 ($0.2234 observed vs $0.2228 predicted from `costPerHr × duration`, within noise/billing granularity) — confirms `$0.99/hr` is the true rate, not the stale `$0.44/hr` A40 constant D1 already disclosed as baked into `run_meta.json`'s `pod_usd` field. A small residual volume/container-disk charge (~$0.02–0.03/hr) also accrues continuously regardless of running state and is not separately itemized here — immaterial against the ceiling. |
+| pod status at handoff | **`EXITED`** (stopped by this agent via `podStop`, single attempt, not denied by the classifier this time; volume preserved, not terminated) |
