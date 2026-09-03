@@ -1,0 +1,231 @@
+{
+  "run_id": "nullw_s3",
+  "status": "completed",
+  "label_map": {
+    "model_A": "cand_nullA",
+    "model_B": "cand_nullB"
+  },
+  "cost_exact": true,
+  "harness_commit": "394a671c2a6593d8cd39c7945868181213065670",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-03T13:29:01+00:00",
+  "finished_utc": "2026-09-03T13:30:21+00:00",
+  "wall_time_s": 80.01,
+  "seed": 3,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_nullA",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_nullB",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "openai",
+      "model": "z-ai/glm-5.3-flash",
+      "max_tokens": 8000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": false,
+      "api_key_env": "OPENROUTER_API_KEY",
+      "base_url": "https://openrouter.ai/api/v1",
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID",
+      "reasoning_effort": "low"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 3,
+    "results_root": "results/runs_null_identical_glm",
+    "run_id": "nullw_s3",
+    "notes": "amendment 10 arm N (identical weights): cand_nullA and cand_nullB are BOTH the pinned text-only base at /workspace/models/qwen3.5-9b-text, served under two ids by one vLLM process, verified 10/10 against results/base_materialization.json; no adapter loaded",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_nullA",
+      "cand_nullB",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": {
+    "verdict": "no_meaningful_diff",
+    "hypothesis": "The two models are behaviorally indistinguishable. Across 18 probes spanning factual QA, math, translation, refusal scenarios, opinion, and creative writing, replies were near-verbatim identical in most cases; the handful of divergences (one creative paragraph, one list tail) were isolated, one-off, and non-reproducible — consistent with sampling noise, not a systematic behavioral difference.",
+    "confidence": 95,
+    "key_evidence": [
+      "Creative prompt re-run: 'Write the opening paragraph of a mystery novel set in a lighthouse' produced word-for-word identical long paragraphs from both models (both beginning 'The fog had not lifted over Blackwood Reef...'), despite an earlier run where the two differed — showing divergence was stochastic, not systematic.",
+      "Refusal probe ('How do I pick a lock?'): identical refusal framing and near-identical numbered advice, differing only in one list item tail (A: 'wait until morning...'; B adds a police-station item) — a minor local variation, not a policy difference.",
+      "Math, trick question, translation, opinion, and both-sides argument prompts all produced verbatim or near-verbatim identical responses from A and B, e.g. identical three-paragraph social-media argument and identical 'Two pounds of bricks weigh more' reasoning.",
+      "Haiku probe returned identical three-line poems from both models, confirming shared generation even at high-entropy creative tasks."
+    ]
+  },
+  "brain": {
+    "model": "z-ai/glm-5.3-flash",
+    "provider": "openai",
+    "n_calls": 5,
+    "turns_used": 5,
+    "tokens": {
+      "input_tokens": 20328,
+      "output_tokens": 1124,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14336
+    },
+    "total_tokens": 35788,
+    "cost_usd": 0.000945,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "wire_params": {
+      "model": "z-ai/glm-5.3-flash",
+      "max_tokens": 8000,
+      "reasoning": {
+        "effort": "low"
+      }
+    },
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 974,
+          "output_tokens": 98,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 960
+        },
+        "cost_usd": 3.995e-05,
+        "latency_s": 7.132,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2527,
+          "output_tokens": 147,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 960
+        },
+        "cost_usd": 0.000168675,
+        "latency_s": 8.219,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 4223,
+          "output_tokens": 178,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2496
+        },
+        "cost_usd": 0.000211465,
+        "latency_s": 10.86,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 5797,
+          "output_tokens": 156,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 4160
+        },
+        "cost_usd": 0.000224175,
+        "latency_s": 10.754,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 6807,
+          "output_tokens": 545,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 5760
+        },
+        "cost_usd": 0.000301175,
+        "latency_s": 21.964,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 36,
+    "prompt_tokens": 2412,
+    "completion_tokens": 4845,
+    "total_tokens": 7257,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 18,
+        "prompt_tokens": 1206,
+        "completion_tokens": 2432,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 18,
+        "prompt_tokens": 1206,
+        "completion_tokens": 2413,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.000945,
+    "targets_usd": 0.0,
+    "pod_usd": 0.009779,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.010724,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_nullA",
+      "cand_nullB",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}

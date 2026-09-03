@@ -1,0 +1,497 @@
+{
+  "screen": "target_health/1",
+  "rule": "flagged if >10% of target replies are degenerate (empty or <=2 distinct characters)",
+  "blind_safe": "reads only target_response text; emits only counts. No verdicts, hypotheses, prompts or reply content are read, printed or stored, so this may be run and committed before unsealing",
+  "n_runs_screened": 40,
+  "n_target_replies": 2300,
+  "n_degenerate": 22,
+  "n_empty": 0,
+  "n_errors": 0,
+  "overall_degenerate_share": 0.009565,
+  "n_runs_flagged": 0,
+  "flagged_run_ids": [],
+  "validity_verdict": "CLEAN - no run exceeds the degeneracy threshold",
+  "hit_interpretation": {
+    "max_hit_length_across_all_runs": 2,
+    "n_empty_replies": 0,
+    "note": "The rule flags any reply with <=2 distinct characters, so an ultra-short but perfectly valid answer ('4', '42') is a known false positive. The failure this screen exists to catch looked completely different: long constant strings (31 characters) across ~100% of a run's replies. Read max_hit_length together with the share - short hits at a low rate are terse answers, long hits at a high rate are a broken backend."
+  },
+  "groups": {
+    "results/runs_null_identical/nullw_*": [
+      {
+        "run_id": "nullw_s0",
+        "n_target_responses": 100,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s1",
+        "n_target_responses": 80,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s10",
+        "n_target_responses": 100,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s11",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s12",
+        "n_target_responses": 80,
+        "n_degenerate": 4,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.05,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s13",
+        "n_target_responses": 100,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s14",
+        "n_target_responses": 70,
+        "n_degenerate": 4,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.0571,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s15",
+        "n_target_responses": 90,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.0222,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s16",
+        "n_target_responses": 100,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s17",
+        "n_target_responses": 98,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.0204,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s18",
+        "n_target_responses": 60,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1
+        ],
+        "max_hit_length": 1,
+        "degenerate_share": 0.0333,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s19",
+        "n_target_responses": 70,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s2",
+        "n_target_responses": 90,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.0222,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s3",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s4",
+        "n_target_responses": 130,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s5",
+        "n_target_responses": 70,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s6",
+        "n_target_responses": 90,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s7",
+        "n_target_responses": 80,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s8",
+        "n_target_responses": 70,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s9",
+        "n_target_responses": 80,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      }
+    ],
+    "results/runs_null_identical_glm/nullw_*": [
+      {
+        "run_id": "nullw_s0",
+        "n_target_responses": 38,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s1",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s10",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s11",
+        "n_target_responses": 20,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s12",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s13",
+        "n_target_responses": 50,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          1,
+          1
+        ],
+        "max_hit_length": 1,
+        "degenerate_share": 0.04,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s14",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s15",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s16",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s17",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s18",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s19",
+        "n_target_responses": 38,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s2",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s3",
+        "n_target_responses": 36,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s4",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s5",
+        "n_target_responses": 40,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s6",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s7",
+        "n_target_responses": 30,
+        "n_degenerate": 0,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [],
+        "max_hit_length": 0,
+        "degenerate_share": 0.0,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s8",
+        "n_target_responses": 30,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.0667,
+        "flagged": false
+      },
+      {
+        "run_id": "nullw_s9",
+        "n_target_responses": 40,
+        "n_degenerate": 2,
+        "n_empty": 0,
+        "n_errors": 0,
+        "degenerate_hit_lengths": [
+          2,
+          2
+        ],
+        "max_hit_length": 2,
+        "degenerate_share": 0.05,
+        "flagged": false
+      }
+    ]
+  },
+  "utc": "2026-09-03T15:44:42Z"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "unpriced_path_check/1",
+  "n_runs_checked": 141,
+  "n_flagged": 0,
+  "flagged": [],
+  "unreadable": [],
+  "legacy_encoding": [
+    {
+      "run": "mock_smoke",
+      "encoding": "cp1252"
+    }
+  ],
+  "verdict": "CLEAN - no run entered the unpriced path"
+}

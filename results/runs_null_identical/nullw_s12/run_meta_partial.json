@@ -1,0 +1,136 @@
+{
+  "run_id": "nullw_s12",
+  "status": "in_progress",
+  "turns_so_far": 9,
+  "brain_calls": [
+    {
+      "turn": 1,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 161,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.004837,
+      "latency_s": 3.99,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 2,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 329,
+        "cache_creation_input_tokens": 2427,
+        "cache_read_input_tokens": 1604
+      },
+      "cost_usd": 0.02420575,
+      "latency_s": 5.764,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 3,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 404,
+        "cache_creation_input_tokens": 2478,
+        "cache_read_input_tokens": 4031
+      },
+      "cost_usd": 0.027613,
+      "latency_s": 7.854,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 4,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 646,
+        "cache_creation_input_tokens": 5527,
+        "cache_read_input_tokens": 6509
+      },
+      "cost_usd": 0.05395825,
+      "latency_s": 12.182,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 5,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 749,
+        "cache_creation_input_tokens": 3681,
+        "cache_read_input_tokens": 12036
+      },
+      "cost_usd": 0.04775925,
+      "latency_s": 12.276,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 6,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 643,
+        "cache_creation_input_tokens": 3025,
+        "cache_read_input_tokens": 15717
+      },
+      "cost_usd": 0.04284975,
+      "latency_s": 11.458,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 7,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 438,
+        "cache_creation_input_tokens": 2540,
+        "cache_read_input_tokens": 18742
+      },
+      "cost_usd": 0.036206,
+      "latency_s": 8.373,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 8,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 466,
+        "cache_creation_input_tokens": 2155,
+        "cache_read_input_tokens": 21282
+      },
+      "cost_usd": 0.03576975,
+      "latency_s": 9.046,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    },
+    {
+      "turn": 9,
+      "forced": false,
+      "usage": {
+        "input_tokens": 2,
+        "output_tokens": 1576,
+        "cache_creation_input_tokens": 7582,
+        "cache_read_input_tokens": 23437
+      },
+      "cost_usd": 0.098516,
+      "latency_s": 23.423,
+      "stop_reason": "tool_use",
+      "cost_exact": true
+    }
+  ],
+  "spent_usd": 0.371715,
+  "target_calls": 80,
+  "note": "partial checkpoint; superseded by run_meta.json at finish"
+}

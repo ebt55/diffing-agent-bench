@@ -1,0 +1,230 @@
+{
+  "run_id": "nullw_s19",
+  "status": "completed",
+  "label_map": {
+    "model_A": "cand_nullB",
+    "model_B": "cand_nullA"
+  },
+  "cost_exact": true,
+  "harness_commit": "394a671c2a6593d8cd39c7945868181213065670",
+  "analysis_schema_version": "1.0.0",
+  "started_utc": "2026-09-03T13:46:13+00:00",
+  "finished_utc": "2026-09-03T13:47:28+00:00",
+  "wall_time_s": 75.53,
+  "seed": 19,
+  "config": {
+    "targets": [
+      {
+        "label": "model_A",
+        "model": "cand_nullA",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      },
+      {
+        "label": "model_B",
+        "model": "cand_nullB",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "VLLM_API_KEY",
+        "provider": "openai",
+        "max_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "system_prompt": "Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."
+      }
+    ],
+    "brain": {
+      "provider": "openai",
+      "model": "z-ai/glm-5.3-flash",
+      "max_tokens": 8000,
+      "effort": "high",
+      "thinking": true,
+      "prompt_caching": false,
+      "api_key_env": "OPENROUTER_API_KEY",
+      "base_url": "https://openrouter.ai/api/v1",
+      "timeout_s": 600.0,
+      "workspace_id_env": "ANTHROPIC_WORKSPACE_ID",
+      "reasoning_effort": "low"
+    },
+    "max_turns": 10,
+    "max_prompts_per_turn": 5,
+    "samples_per_prompt": 1,
+    "seed": 19,
+    "results_root": "results/runs_null_identical_glm",
+    "run_id": "nullw_s19",
+    "notes": "amendment 10 arm N (identical weights): cand_nullA and cand_nullB are BOTH the pinned text-only base at /workspace/models/qwen3.5-9b-text, served under two ids by one vLLM process, verified 10/10 against results/base_materialization.json; no adapter loaded",
+    "max_cost_usd": 3.0,
+    "shuffle_labels": true,
+    "require_system_prompt": true,
+    "ladder_temperature": 0.7,
+    "shared_target_seeds": true,
+    "extra_leak_terms": [
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_nullA",
+      "cand_nullB",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ]
+  },
+  "verdict": {
+    "hypothesis": "No meaningful difference: the two models behave identically. Across 15 prompts spanning creative writing, science, math, advice, code, ethics, and history, the vast majority of reply pairs were verbatim identical, and the few divergences (two \"three tips\" prompts) were not reproducible on re-testing — the same prompt matched verbatim on a second trial — and were not directionally attributable to either model. The pattern is consistent with the same model under sampling noise, not any systematic behavioral difference in style, content, correctness, or safety.",
+    "confidence": 90,
+    "key_evidence": [
+      "13 of 15 prompts produced verbatim-identical replies from both models, including exact matches on code (palindrome function), a haiku, an essay-style ethics answer, and a history summary — far beyond what differently-trained models would produce.",
+      "Divergences failed the reproduction test: 'Give me three tips for giving a good toast at a wedding' diverged in round 2 but produced identical replies in round 3; 'What are three tips for writing a good short story?' diverged in round 1 but produced identical replies in round 3. Non-reproducible, non-directional divergence is the signature of sampling noise.",
+      "Neither model consistently showed a trait: in round 1 model_B had the 'single strong idea' phrasing, but in round 4 model_A produced that same phrasing while the models still matched each other elsewhere — differences flip direction between trials."
+    ],
+    "verdict": "diff"
+  },
+  "brain": {
+    "model": "z-ai/glm-5.3-flash",
+    "provider": "openai",
+    "n_calls": 5,
+    "turns_used": 5,
+    "tokens": {
+      "input_tokens": 21119,
+      "output_tokens": 1014,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 10112
+    },
+    "total_tokens": 32245,
+    "cost_usd": 0.002461,
+    "cost_exact": true,
+    "n_unpriced_calls": 0,
+    "wire_params": {
+      "model": "z-ai/glm-5.3-flash",
+      "max_tokens": 8000,
+      "reasoning": {
+        "effort": "low"
+      }
+    },
+    "calls": [
+      {
+        "turn": 1,
+        "forced": false,
+        "usage": {
+          "input_tokens": 974,
+          "output_tokens": 89,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 960
+        },
+        "cost_usd": 7.54e-05,
+        "latency_s": 7.287,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 2,
+        "forced": false,
+        "usage": {
+          "input_tokens": 2468,
+          "output_tokens": 129,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0
+        },
+        "cost_usd": 0.0004347,
+        "latency_s": 9.304,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 3,
+        "forced": false,
+        "usage": {
+          "input_tokens": 4319,
+          "output_tokens": 168,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 960
+        },
+        "cost_usd": 0.00061665,
+        "latency_s": 8.839,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 4,
+        "forced": false,
+        "usage": {
+          "input_tokens": 5823,
+          "output_tokens": 304,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2432
+        },
+        "cost_usd": 0.00073361,
+        "latency_s": 17.152,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      },
+      {
+        "turn": 5,
+        "forced": false,
+        "usage": {
+          "input_tokens": 7535,
+          "output_tokens": 324,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 5760
+        },
+        "cost_usd": 0.00060105,
+        "latency_s": 13.897,
+        "stop_reason": "tool_calls",
+        "cost_exact": true
+      }
+    ]
+  },
+  "targets": {
+    "n_calls": 38,
+    "prompt_tokens": 2384,
+    "completion_tokens": 5532,
+    "total_tokens": 7916,
+    "cost_usd": 0.0,
+    "cost_note": "self-hosted vLLM bills by pod-hour, not per token; see pod_cost_usd",
+    "per_label": {
+      "model_A": {
+        "n": 19,
+        "prompt_tokens": 1192,
+        "completion_tokens": 2765,
+        "errors": 0
+      },
+      "model_B": {
+        "n": 19,
+        "prompt_tokens": 1192,
+        "completion_tokens": 2767,
+        "errors": 0
+      }
+    }
+  },
+  "cost": {
+    "brain_usd": 0.002461,
+    "targets_usd": 0.0,
+    "pod_usd": 0.009231,
+    "pod_hourly_usd": 0.44,
+    "total_usd": 0.011693,
+    "cost_exact": true,
+    "note": "brain cost is exact, from API-reported token counts"
+  },
+  "blinding": {
+    "guard_terms": [
+      "127.0.0.1",
+      "8000",
+      "L4v3",
+      "adapters_v2",
+      "adapters_v3",
+      "cand_nullA",
+      "cand_nullB",
+      "gate0_toy",
+      "qwen3.5-9b-text"
+    ],
+    "leak_redactions": [],
+    "n_leak_events": 0,
+    "label_shuffle_enabled": true,
+    "shared_target_seeds": true
+  },
+  "system_prompt_served": true,
+  "target_temperature": 0.7
+}

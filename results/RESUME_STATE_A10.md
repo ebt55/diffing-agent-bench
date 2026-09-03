@@ -9,7 +9,25 @@ this arm existed). Evidence trail `DECISIONS.md` #39.
 
 ---
 
-## BLOCKED — 2026-09-03T14:57Z, pod found EXITED, not restarted, awaiting Ebin
+## RESOLVED — 2026-09-03T15:36:00Z, pod resumed under Ebin's chat authorization
+
+The 14:04:49Z stop (below) was Ebin himself, done directly because of a Claude-side
+outage, not an accident and not a design change to Amendment 10. Ebin authorized a
+restart in chat with the coordinator session; the coordinator issued `podResume` from
+its own session at **15:36:00Z** (`lastStatusChange: "Resumed by user: Thu Sep 03 2026
+15:36:00 GMT+0000"`) and relayed the result here. This resume agent did not call the
+resume mutation itself (blocked once already by the Claude Code auto-mode classifier,
+which is why it stopped and asked rather than retrying under a different tool) and
+independently verified the claim read-only before proceeding: `desiredStatus RUNNING`,
+`uptimeInSeconds 98`, SSH port mapping `202.181.159.229:16334` (tcp/22, public) —
+matching the coordinator's relayed address exactly. New SSH line recorded in §1 below.
+Per standing instruction for this arm, no pod start/stop mutation will be called by
+this agent before milestone 6, where a single `podStop` (not terminate) attempt is
+made and, if the classifier denies it, reported for the coordinator to issue instead.
+
+---
+
+## SUPERSEDED — original block note, 2026-09-03T14:57Z (kept for the record)
 
 A resume agent (ops-only, no design authority) checked the pod before doing anything
 else, per this file's own "first instruction on resume." Findings, all read-only, via
@@ -62,16 +80,14 @@ per §5/§6 below.
 | M1 pod + base serving | **DONE** — abort gate cleared with 66 min to spare |
 | M2 Arm R prompts file (committed before sampling) | **DONE** — `c7ce94a` |
 | M3 Arm R sampling + analysis | **DONE** — `8a41b52`, 1320/1320 sampled, 0 failed |
-| M4 Arm N campaigns | Opus and GLM tmux sessions presumed dead — **pod itself is EXITED as of 2026-09-03T14:04:49Z** (see BLOCKED note above); last confirmed-alive report was ~14:30Z, unresolved against the pod's own exit timestamp |
-| M5 grading prep | tooling **DONE and tested** (`dc2fbf8`, `d2f420b`, suite 33/33); extraction + judge + server wait on M4 |
-| M6 pod stop + report | pod is already stopped (not by this or the prior tracked agent action); **not yet reported/reconciled** — do not treat this as M6 complete until the stop is explained and the run inventory is collected |
+| M4 Arm N campaigns | **DONE, verified from `run_meta.json` on disk after re-collection, 2026-09-03T~15:50Z.** Both sub-arms had already finished — Opus at 13:24:07Z, GLM at 13:47:29Z — 17–40 min before the 14:04:49Z pod stop; the stop landed on an idle pod, nothing was interrupted. Opus 20/20: 9 `completed`, 5 `completed_forced`, 6 `brain_refusal` (s1,s3,s11,s14,s18,s19 — terminal per Amendment 6, not re-run), spend $8.8562/$11.00. GLM 20/20 `completed`, 0 refusals, spend $0.0317/$1.00. Combined brain spend $8.8879/$12.00. Collected to `results/runs_null_identical{,_glm}/`; `verify_no_unpriced.py` 141 checked/0 flagged, `check_run_leaks.py` 0/20 leaks both sub-arms (A/B shuffle two-sided both), `screen_target_health.py` 40 runs/2300 replies/0 flagged. **Correction of the prior briefing:** the coordinator's instructions (this resume) described Opus as having missing seeds to re-run and GLM as "never started" — both false per the logs and `run_meta.json`; no re-run was performed. vLLM was not brought back up — no further generation is needed since both sub-arms are complete, and M5 is local Windows Python, not pod-side. |
+| M5 grading prep | tooling **DONE and tested** (`dc2fbf8`, `d2f420b`, suite 33/33); M4 now satisfied — extraction/judge/server proceeding |
+| M6 pod stop + report | not yet done by this agent — pod is currently RUNNING again (resumed 15:36:00Z by the coordinator under Ebin's chat authorization); no pod mutation will be called before M6 per standing instruction |
 
-**First instruction on resume:** read the BLOCKED note above first. Do not restart the
-pod on your own judgment — confirm with Ebin. Once cleared to proceed: restart the pod
-via the RunPod API if needed, SSH in with whatever connection info the RunPod API
-currently reports (not the stale addresses in §1/`.env`), run `tmux ls` and tail both
-logs, determine per-seed completion, preserve any half-written run dir as `_crashed`
-(never delete), then collect the run dirs (§5) and run the M5 sequence in §6.
+**First instruction on resume:** read the milestone table above. M4 is done, verified,
+and already collected locally — do not re-run Opus or GLM seeds, do not re-collect.
+Continue from wherever `phase1_claims.jsonl` / `results/judge_raw/phase2_a10/` / the
+Phase-2 server status leaves off in the M5 sequence (§6), then M6 (§7/pod stop).
 
 ---
 
@@ -108,22 +124,33 @@ against `results/base_materialization.json` before anything is served.
 
 ### SSH and sessions
 
+**Current (post-resume, verified 2026-09-03T15:36Z via read-only RunPod API query —
+do not trust `.env`'s `POD_SSH_HOST`/`POD_SSH_PORT`, which are stale from the pre-stop
+session and were not updated here):**
+
 ```powershell
 $key = "$env:USERPROFILE\.ssh\id_ed25519"
-ssh -i $key -p 15675 root@202.181.159.229
+ssh -i $key -p 16334 root@202.181.159.229
 ```
+
+Same host IP as the original session (202.181.159.229), new public port (16334, was
+15675) — consistent with RunPod reallocating the port mapping on resume while keeping
+the same underlying machine. Volume (`/workspace`, 100GB) is unchanged; container disk
+is not — the pod booted fresh, so tmux sessions and the vLLM server process from before
+the stop are gone and must be recreated. `/workspace/logs/*` and `/workspace/repo`
+persist on the volume.
 
 Repo at `/workspace/repo`, pinned to the commit under test (`git log --oneline -1`).
 Logs are tee'd to `/workspace/logs/`. PowerShell mangles quoting when it hands a
 command string to `ssh`; write the script to a file and `scp` it, or use the
 `Invoke-Pod` helper in the session scratchpad.
 
-| tmux session | what | started (UTC) |
-|---|---|---|
-| `vllm` | serving; log `/workspace/logs/a10_vllm_server.log` | 12:06:58 |
-| `armr` | Arm R sampling — FINISHED 12:26:03; log `/workspace/logs/a10_arm_r.log` | 12:16:25 |
-| `armnopus` | Arm N, Opus brain, 20 seeds; log `/workspace/logs/a10_arm_n_opus.log` | 12:28:14 |
-| `armnglm` | Arm N, GLM brain, 20 seeds — **blocks until `armnopus` ends** (Amendment 9's no-concurrent-campaign-traffic rule); log `/workspace/logs/a10_arm_n_glm.log` | 12:46:08 |
+| tmux session | what | started (UTC) | status as of last check |
+|---|---|---|---|
+| `vllm` | serving; log `/workspace/logs/a10_vllm_server.log` | 12:06:58 (pre-stop) | dead — pod rebooted; must be recreated before any Arm N traffic |
+| `armr` | Arm R sampling — FINISHED 12:26:03; log `/workspace/logs/a10_arm_r.log` | 12:16:25 | complete before the stop; nothing to resume |
+| `armnopus` | Arm N, Opus brain, 20 seeds; log `/workspace/logs/a10_arm_n_opus.log` | 12:28:14 (pre-stop) | interrupted by the 14:04:49Z stop; per-seed status TBD from the log once reconnected |
+| `armnglm` | Arm N, GLM brain, 20 seeds — **blocks until `armnopus` ends** (Amendment 9's no-concurrent-campaign-traffic rule); log `/workspace/logs/a10_arm_n_glm.log` | 12:46:08 (pre-stop, still queued) | never started (was still waiting on `armnopus`) |
 
 ---
 

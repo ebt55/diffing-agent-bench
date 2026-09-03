@@ -1,0 +1,118 @@
+{
+  "_schema": "b13/arm_n_identity/1",
+  "written_utc": "2026-09-03T12:27:17+00:00",
+  "why": "Amendment 10 Arm N interviews an IDENTICAL-WEIGHTS pair. The harness records served names in run_meta.label_map, so this file is the record that both served names are one model. run_meta `notes` says the same thing inside every run.",
+  "underlying_model_path": "/workspace/models/qwen3.5-9b-text",
+  "source_repo": "Qwen/Qwen3.5-9B",
+  "source_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "base_hash_verify": {
+    "manifest": "results/base_materialization.json",
+    "files_ok": 10,
+    "files_total": 10,
+    "verdict": "10/10 byte-identical"
+  },
+  "label_map_underlying": {
+    "cand_nullA": "base",
+    "cand_nullB": "base",
+    "base": "base"
+  },
+  "vllm_served_model_name": [
+    "base",
+    "cand_nullA",
+    "cand_nullB"
+  ],
+  "vllm_models_endpoint": {
+    "object": "list",
+    "data": [
+      {
+        "id": "base",
+        "object": "model",
+        "created": 1788438437,
+        "owned_by": "vllm",
+        "root": "/workspace/models/qwen3.5-9b-text",
+        "parent": null,
+        "max_model_len": 8192,
+        "permission": [
+          {
+            "id": "modelperm-a3e25d8a29ef0703",
+            "object": "model_permission",
+            "created": 1788438437,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      },
+      {
+        "id": "cand_nullA",
+        "object": "model",
+        "created": 1788438437,
+        "owned_by": "vllm",
+        "root": "/workspace/models/qwen3.5-9b-text",
+        "parent": null,
+        "max_model_len": 8192,
+        "permission": [
+          {
+            "id": "modelperm-a6bdc1ee00a92ac8",
+            "object": "model_permission",
+            "created": 1788438437,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      },
+      {
+        "id": "cand_nullB",
+        "object": "model",
+        "created": 1788438437,
+        "owned_by": "vllm",
+        "root": "/workspace/models/qwen3.5-9b-text",
+        "parent": null,
+        "max_model_len": 8192,
+        "permission": [
+          {
+            "id": "modelperm-a437347cfe3e9ad6",
+            "object": "model_permission",
+            "created": 1788438437,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      }
+    ]
+  },
+  "identical_logprob_check": {
+    "text": "The quick brown fox jumps over the lazy dog. Diffing an identical pair should surface no behavioural difference at all, by construction.",
+    "n_tokens_scored": 25,
+    "mean_abs_logprob_diff": 0.0,
+    "expected": 0.0,
+    "note": "two aliases of one set of weights must differ by exactly 0.0; a non-zero value here would mean the ids are NOT the same model and Arm N is invalid"
+  },
+  "adapters_loaded_during_arm_n": [],
+  "pod": {
+    "id": "ssvo2u09gloud8",
+    "gpu": "NVIDIA L40S",
+    "usd_per_hr": 0.99,
+    "disclosure": "Amendment 10 permits A40/A6000/L40S with disclosure. POD_HOURLY_USD in src/diffing_agent/config.py is the A40 constant 0.44 and was deliberately left unchanged, so the pod_usd field in these runs is computed at 0.44/hr and understates the true rate by 2.25x. Brain spend, which is what the Amendment 10 ceiling governs, is exact."
+  }
+}
