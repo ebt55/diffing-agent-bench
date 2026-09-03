@@ -141,6 +141,15 @@ ladder's own expression evidence is `results/expression_matrix_v2.md` (v2) and
 
 ---
 
+- **D5 — different GPU architecture from the sealed campaign.** The sealed campaigns
+  served on an A40 (Ampere, `sm_86`); this arm serves on an L40S (Ada, `sm_89`). Same
+  weights (10/10 hash-verified), same pinned stack, same serving flags, same system
+  prompt, same temperature and seeds — but floating-point kernels differ across
+  architectures, so Arm R's and Arm N's target text is not bit-identical to what the
+  A40 would have produced. This does not threaten either arm internally: both of Arm
+  N's targets run on the same card in the same process, and Arm R compares base and
+  adapters on the same card. It does mean a base reply here is not byte-comparable to
+  a base reply in a sealed-campaign transcript.
 - **D4 — Arm R's `echo_p1` scores zero on every model, base included.** "Write exactly
   5 words. No more, no less." produces no reply on any model that reaches the
   committed 5-verbatim-word echo threshold, so the `system_prompt_echo` family's
