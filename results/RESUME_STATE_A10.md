@@ -9,6 +9,52 @@ this arm existed). Evidence trail `DECISIONS.md` #39.
 
 ---
 
+## BLOCKED — 2026-09-03T14:57Z, pod found EXITED, not restarted, awaiting Ebin
+
+A resume agent (ops-only, no design authority) checked the pod before doing anything
+else, per this file's own "first instruction on resume." Findings, all read-only, via
+the RunPod REST + GraphQL APIs (key read from `.env` into a local variable, never
+printed) — no SSH was possible because neither address below is currently live:
+
+- Pod `ssvo2u09gloud8` (`b13-diffing-bench-a10`): **`desiredStatus: EXITED`**,
+  `runtime: null`, `publicIp: ""`, no port mappings.
+- `lastStatusChange`: **"Exited by user: Thu Sep 03 2026 14:04:49 GMT+0000"** — a
+  deliberate stop through the account's own credentials, not an OOM/crash signature.
+- Account `clientBalance` = $12.8897967988; `currentSpendPerHr` = $0.028 (residual
+  volume/container-disk storage only; compute billing has stopped).
+- SSH to the address in §1 below (202.181.159.229:15675) → connection refused. SSH to
+  the address currently in `.env` (194.68.245.32:22070) → **host key changed** (that
+  IP has already been reassigned to a different tenant's pod on RunPod's shared proxy
+  pool). Both symptoms are consistent with, and only with, this pod having no live
+  listener anywhere right now.
+
+**This contradicts the milestone table below and the most recent commit.** `895ecb3`
+(decision #40 in `DECISIONS.md`) is timestamped **2026-09-03T14:37:48Z — 33 minutes
+after** the pod's logged exit — and its own text records the resuming agent finding
+"campaigns survived in tmux" at ~14:30Z. That is hard to reconcile with a pod already
+EXITED at 14:04:49Z. Nothing in git, `DECISIONS.md`, or `results/ops/` records a
+pod-stop action at 14:04:49Z, in a project that has otherwise logged every prior pod
+stop/start to the minute with its own receipt.
+
+**No action taken beyond read-only API/SSH checks.** The pod was not restarted,
+stopped again, or terminated; no brain/judge/RunPod-spend calls were made. The volume
+(100GB @ `/workspace`, containing `/workspace/logs` and whatever Arm N run dirs exist)
+is intact either way — RunPod preserves the volume on stop; only `podTerminate` would
+destroy it, and that has not happened, so nothing is lost by waiting.
+
+**Why this agent stopped instead of restarting:** `CLAUDE.md` — "Ebin makes every
+experimental-design decision... If a design question comes up mid-task, stop and ask.
+Do not pick a default and proceed silently." An explicit "exited by user" event that
+contradicts the newest commit by 33 minutes is not the "campaign died mid-run, re-run
+missing seeds" case this file's recovery instructions were written for — restarting
+resumes $0.99/hr billing and presumes the stop was unintended, which cannot be
+verified from disk. **Next step is Ebin's call:** confirm whether the 14:04:49Z stop
+was intentional and how to proceed (abandon/resume/re-scope Arm N), or authorize a
+restart so a future agent can inspect `/workspace/logs` and the run dirs and resume
+per §5/§6 below.
+
+---
+
 ## 0. Milestone status
 
 | milestone | state |
@@ -16,13 +62,16 @@ this arm existed). Evidence trail `DECISIONS.md` #39.
 | M1 pod + base serving | **DONE** — abort gate cleared with 66 min to spare |
 | M2 Arm R prompts file (committed before sampling) | **DONE** — `c7ce94a` |
 | M3 Arm R sampling + analysis | **DONE** — `8a41b52`, 1320/1320 sampled, 0 failed |
-| M4 Arm N campaigns | Opus RUNNING (tmux `armnopus`); GLM QUEUED behind it (tmux `armnglm`, waits for the Opus session to end) |
+| M4 Arm N campaigns | Opus and GLM tmux sessions presumed dead — **pod itself is EXITED as of 2026-09-03T14:04:49Z** (see BLOCKED note above); last confirmed-alive report was ~14:30Z, unresolved against the pod's own exit timestamp |
 | M5 grading prep | tooling **DONE and tested** (`dc2fbf8`, `d2f420b`, suite 33/33); extraction + judge + server wait on M4 |
-| M6 pod stop + report | not started |
+| M6 pod stop + report | pod is already stopped (not by this or the prior tracked agent action); **not yet reported/reconciled** — do not treat this as M6 complete until the stop is explained and the run inventory is collected |
 
-**First instruction on resume:** check whether `armnopus` and `armnglm` are still
-alive on the pod (`tmux ls`); if both are gone, collect the run dirs (§5), then run
-the M5 sequence in §6.
+**First instruction on resume:** read the BLOCKED note above first. Do not restart the
+pod on your own judgment — confirm with Ebin. Once cleared to proceed: restart the pod
+via the RunPod API if needed, SSH in with whatever connection info the RunPod API
+currently reports (not the stale addresses in §1/`.env`), run `tmux ls` and tail both
+logs, determine per-seed completion, preserve any half-written run dir as `_crashed`
+(never delete), then collect the run dirs (§5) and run the M5 sequence in §6.
 
 ---
 
