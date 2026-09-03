@@ -7,8 +7,8 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 - spend field: `total_usd`
 - inputs:
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\does_not_exist.json (ABSENT — not yet produced)
-  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase1_claims.jsonl (sha256 8a16b30b59a6837a...)
-  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase2_grades.jsonl (sha256 8bd4b6a14dc9cd23...)
+  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase1_claims.jsonl (sha256 de04c359ea7c9f90...)
+  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase2_grades.jsonl (sha256 bef1dc9a116af311...)
   - `run_dirs` — 13 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic_a10\\runs\\v0_cand_*']
   - `sealed_map` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_fake_rung_map.json (sha256 f49254639602ccd4...)
 

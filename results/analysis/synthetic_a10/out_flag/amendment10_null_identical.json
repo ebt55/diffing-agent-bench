@@ -1,0 +1,204 @@
+{
+  "authority": "PREREGISTRATION.md, Amendment 10 (Arm N); DECISIONS.md #39",
+  "by_brain": {
+    "nullw_glm": {
+      "agreement": {
+        "human_side": "FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected",
+        "n_runs_with_both_grades": 0,
+        "note": "no run carries both a human and a judge grade yet, so no agreement statistic is computed - none is invented",
+        "scope": "Amendment 10 Arm N only, mechanically extracted post-unseal; its own block, never pooled with the pre-registered agreement statistic nor with the baselines/GLM mechanical block"
+      },
+      "brain_models": [
+        "z-ai/glm-5.3-flash"
+      ],
+      "fp_frozen_rule_all_attempts": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.161125,
+        "k": 0,
+        "lo": 0.0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.161125,
+        "k": 0,
+        "lo": 0.0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.161125,
+        "k": 0,
+        "lo": 0.0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "grade_counts": {
+        "ungraded": 20
+      },
+      "n_graded": 0,
+      "n_planned_attempts": 20,
+      "n_runs": 20,
+      "n_terminal_refusal": 0,
+      "n_verdict_bearing": 20,
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation",
+      "refusal": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.161125,
+        "k": 0,
+        "lo": 0.0,
+        "n": 20,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.0
+      },
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.161125,
+        "k": 0,
+        "lo": 0.0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "spend": {
+        "any_unpriced_component": false,
+        "composition": {
+          "brain_usd": 0.031726,
+          "pod_usd": 0.171023,
+          "targets_usd": 0.0,
+          "total_usd": 0.20275
+        },
+        "field": "total_usd",
+        "total_usd": 0.20275
+      },
+      "ungraded": true
+    },
+    "nullw_opus": {
+      "agreement": {
+        "human_side": "FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected",
+        "n_runs_with_both_grades": 0,
+        "note": "no run carries both a human and a judge grade yet, so no agreement statistic is computed - none is invented",
+        "scope": "Amendment 10 Arm N only, mechanically extracted post-unseal; its own block, never pooled with the pre-registered agreement statistic nor with the baselines/GLM mechanical block"
+      },
+      "brain_models": [
+        "claude-opus-5"
+      ],
+      "fp_frozen_rule_all_attempts": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.161125,
+        "k": 0,
+        "lo": 0.0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.215311,
+        "k": 0,
+        "lo": 0.0,
+        "n": 14,
+        "rate": 0.0
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.215311,
+        "k": 0,
+        "lo": 0.0,
+        "n": 14,
+        "rate": 0.0
+      },
+      "grade_counts": {
+        "ungraded": 20
+      },
+      "n_graded": 0,
+      "n_planned_attempts": 20,
+      "n_runs": 20,
+      "n_terminal_refusal": 6,
+      "n_verdict_bearing": 14,
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation",
+      "refusal": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.518973,
+        "k": 6,
+        "lo": 0.145477,
+        "n": 20,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.3
+      },
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.518973,
+        "k": 6,
+        "lo": 0.145477,
+        "n": 20,
+        "rate": 0.3
+      },
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "spend": {
+        "any_unpriced_component": false,
+        "composition": {
+          "brain_usd": 8.856199,
+          "pod_usd": 0.409841,
+          "targets_usd": 0.0,
+          "total_usd": 9.26604
+        },
+        "field": "total_usd",
+        "total_usd": 9.26604
+      },
+      "ungraded": true
+    }
+  },
+  "design": "the v0 recipe pointed at the pinned text-only base served twice under two fresh opaque ids (cand_nullA / cand_nullB), no adapter loaded; 20 seeds per brain; per-seed A/B shuffle; everything else identical to the sealed v0 campaign",
+  "interpretation_rule_precommitted": "if Arm N's diff rate is clearly below the null-LoRA rate, the L0 false positives are read as artefact detection on a training-matched null and the write-up says the null was not behaviourally null; if Arm N's rate is similar, the write-up says the rate is confabulation and retracts the artefact reading regardless of Arm R",
+  "n_runs": 40,
+  "prediction_amendment_10a": "Ebin, Sep 3, before the first run: \"Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention.\"",
+  "rung_label": "L0-identical",
+  "schema": "analysis_amendment10_null_identical/1",
+  "status": "POST-HOC and LABELLED. Excluded from every section-6 metric and from the main figure. Reported BESIDE the headline L0 rate, never pooled with it."
+}

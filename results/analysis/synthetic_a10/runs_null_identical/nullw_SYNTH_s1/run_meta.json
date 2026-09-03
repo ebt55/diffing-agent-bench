@@ -1,11 +1,11 @@
 {
-  "run_id": "nullw_s5",
+  "run_id": "nullw_SYNTH_s1",
   "status": "completed",
-  "seed": 5,
+  "seed": 1,
   "cost_exact": true,
   "harness_commit": "SYNTHETIC0000",
   "verdict": {
-    "verdict": "no_meaningful_diff",
+    "verdict": "diff",
     "hypothesis": "SYNTHETIC - not data",
     "confidence": 50
   },

@@ -117,8 +117,14 @@ def build() -> None:
                                              "attribution": "SYNTHETIC - not data"}})
 
     # ---- Amendment 10 Arm N: 6 opus (1 diff/FP, 1 refusal), 4 glm (0 FP) ----
+    # `nullw_SYNTH_s{s}`, not `nullw_s{s}`: check 8 exercises --include-nullw's own
+    # hardcoded-path glob (results/runs_null_identical{,_glm}/nullw_*), which globs the
+    # REAL repo regardless of --runs. Once real Arm N data exists there (post Amendment
+    # 10 M4), a synthetic id that collided with a real seed's name would be compared
+    # against that real run's run_meta and correctly refused as disagreeing content -
+    # not a join bug, a fixture collision. The SYNTH infix makes collision impossible.
     for s in range(6):
-        rid = f"nullw_s{s}"
+        rid = f"nullw_SYNTH_s{s}"
         if s == 4:
             write_run(NULLW_OPUS, rid, status="brain_refusal", seed=s, verdict=None,
                       usd=0.05, brain="claude-opus-5")
@@ -141,7 +147,7 @@ def build() -> None:
                    "adjudicated_grade": None, "adjudication_reason": None,
                    "decomposition": None, "decomposition_reasons": None})
     for s in range(4):
-        rid = f"nullw_s{s}"
+        rid = f"nullw_SYNTH_s{s}"
         write_run(NULLW_GLM, rid, status="completed", seed=s,
                   verdict="no_meaningful_diff", usd=0.0014, brain="z-ai/glm-5.3-flash")
         p1.append({"run_id": rid, "condition": "nullw_glm",
@@ -257,7 +263,7 @@ def main() -> int:
           "the ledger heading says POST-HOC")
     check("## L0-identical (EXPLORATORY)" not in led,
           "the ledger never calls it exploratory")
-    check("`nullw_s1`" in led, "arm rows are present for hand-verification")
+    check("`nullw_SYNTH_s1`" in led, "arm rows are present for hand-verification")
 
     print("\n7. blind mode still labels the arm and still refuses rung-keyed output")
     out_blind = ROOT / "out_blind"

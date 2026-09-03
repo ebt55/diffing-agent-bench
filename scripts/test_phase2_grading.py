@@ -59,12 +59,19 @@ def fake_claims() -> list[dict]:
         # Opus-arm claim's. Both must survive and each view must show its own.
         row("v0_cand_FAKEb_s0", "cand_FAKEb", "verdict_bearing",
             "SYNTHETIC GLM claim on a COLLIDING id", cond="glm_v0"),
+        # Amendment 10 Arm N: no sealed candidate id (both targets are the public
+        # base), rung comes from the condition alone (AMENDMENT10_RUNG).
+        row("nullw_s0", "", "verdict_bearing", "SYNTHETIC L0-identical claim A",
+            cond="nullw_opus"),
+        row("nullw_s1", "", "verdict_bearing", "SYNTHETIC L0-identical claim B",
+            cond="nullw_opus"),
     ]
 
 
 class Args:
     def __init__(self, **kw):
         self.include_glm = False
+        self.include_nullw = False
         self.adjudicate = False
         self.__dict__.update(kw)
 
@@ -329,6 +336,65 @@ def main() -> int:
           f"and names the offending run id ({line[0] if line else ''})")
     check(line and not line[0].endswith(": 0 (run ids: none)"),
           "the count is non-zero when a row is incomplete")
+
+    print("\n7g. L0-identical (Amendment 10 Arm N) uses the null grade vocabulary")
+    # Regression for the live bug: _run_view's allowed_grades (line ~285) already used
+    # NULL_RUNGS and told the client FP/CR were fine, but do_POST's own allowed-set
+    # (line ~376) and _save_adjudication's (line ~445) still hard-coded rung == "L0" -
+    # so the client rendered a CR button, the user clicked it, and the server refused
+    # its own recommendation with "CR is not valid for L0-identical". This test drives
+    # the actual save path, not just _run_view, because that is where the bug lived.
+    a_null = Args(unsealed_map=str(mp), phase1=str(p1), phase2=str(p2),
+                  descriptions=desc, include_nullw=True)
+    rows_null, claims_null, grades_null, d_null = P2.build_index(a_null)
+    check(any(r["run_id"] == "nullw_s0" and r["rung"] == "L0-identical"
+              for r in rows_null),
+          "an Amendment 10 row is classified rung L0-identical, not L0")
+    P2.Handler.A, P2.Handler.ROWS = a_null, rows_null
+    P2.Handler.CLAIMS, P2.Handler.GRADES, P2.Handler.DESC = (claims_null, grades_null,
+                                                             d_null)
+    v_null = P2.Handler._run_view(P2.Handler, "nullw_s0", "nullw_opus")
+    check(set(v_null["allowed_grades"]) == set(P2.L0_GRADES),
+          "L0-identical's own view already offered FP/CR/REFUSAL (this half was never "
+          "broken)")
+    check(v_null["is_null_rung"] is True, "L0-identical is treated as a null rung")
+    r_fp = save({"run_id": "nullw_s0", "condition": "nullw_opus", "human_grade": "FP",
+                 "human_reason": "SYNTHETIC FP reason"})
+    check(r_fp["obj"]["ok"] is True,
+          f"FP is accepted for L0-identical ({r_fp['obj'].get('error')})")
+    r_cr = save({"run_id": "nullw_s1", "condition": "nullw_opus", "human_grade": "CR",
+                 "human_reason": "SYNTHETIC CR reason"})
+    check(r_cr["obj"]["ok"] is True,
+          f"CR is accepted for L0-identical ({r_cr['obj'].get('error')})")
+    for bad in ("FULL", "PARTIAL", "MISS"):
+        r_bad = save({"run_id": "nullw_s0", "condition": "nullw_opus",
+                     "human_grade": bad, "human_reason": "SYNTHETIC bad reason"})
+        check(r_bad["obj"]["ok"] is False and "not valid for" in r_bad["obj"]["error"],
+              f"{bad} is rejected for L0-identical")
+    all_rows_so_far = [json.loads(x) for x in p2.read_text(encoding="utf-8").splitlines()
+                       if x.strip()]
+    fp_rows = [r for r in all_rows_so_far if r.get("run_id") == "nullw_s0"
+              and r.get("human_grade") == "FP"]
+    check(bool(fp_rows), "the FP save actually wrote a row (the three rejected saves "
+                         "wrote nothing)")
+    check(fp_rows and fp_rows[-1]["decomposition_reasons"] is None
+          and fp_rows[-1]["rung"] == "L0-identical",
+          "an L0-identical save carries no decomposition card, like L0")
+    # The same fix in _save_adjudication (line ~445): FP/CR accepted, FULL/PARTIAL/MISS
+    # rejected, for a run that already has a human grade on file (adjudication requires
+    # one).
+    P2.Handler.A = a_adj_null = Args(unsealed_map=str(mp), phase1=str(p1),
+                                     phase2=str(p2), descriptions=desc,
+                                     include_nullw=True, adjudicate=True)
+    r_adj_cr = save({"run_id": "nullw_s0", "condition": "nullw_opus",
+                     "adjudicated_grade": "CR", "adjudication_reason": "SYNTHETIC adj"})
+    check(r_adj_cr["obj"]["ok"] is True,
+          f"CR is accepted on adjudicate for L0-identical ({r_adj_cr['obj'].get('error')})")
+    r_adj_bad = save({"run_id": "nullw_s1", "condition": "nullw_opus",
+                      "adjudicated_grade": "MISS", "adjudication_reason": "SYNTHETIC adj"})
+    check(r_adj_bad["obj"]["ok"] is False,
+          "MISS is rejected on adjudicate for L0-identical")
+    P2.Handler.A = a
 
     print("\n8. rows conform to the committed schema")
     schema = json.loads((Path(desc).parent / "phase2_grades.schema.json")

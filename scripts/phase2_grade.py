@@ -373,7 +373,13 @@ class Handler(BaseHTTPRequestHandler):
         if not reason:
             self._json({"ok": False, "error": "a written reason is required"}, 400)
             return
-        allowed = L0_GRADES if row["rung"] == "L0" else NON_L0_GRADES
+        # NULL_RUNGS, not "L0": Amendment 10's identical-weights pair (rung label
+        # "L0-identical") is graded on the same FP/CR vocabulary as L0. This mirrors the
+        # allowed-grades computation in _run_view (line ~285) — that copy already used
+        # NULL_RUNGS; this one and the two below it were still hard-coded to "L0", which
+        # is what let the client's own generated buttons (correct) get rejected by the
+        # server (stale) on save.
+        allowed = L0_GRADES if row["rung"] in NULL_RUNGS else NON_L0_GRADES
         if grade not in allowed:
             self._json({"ok": False,
                         "error": f"{grade} is not valid for {row['rung']}"}, 400)
@@ -381,7 +387,7 @@ class Handler(BaseHTTPRequestHandler):
 
         raw_dr = body.get("decomposition_reasons") or {}
         dr = {s: ((raw_dr.get(s) or "").strip() or None) for s in DECOMP_STAGES}
-        if row["rung"] == "L0" or not any(dr.values()):
+        if row["rung"] in NULL_RUNGS or not any(dr.values()):
             dr = None
 
         out = {
@@ -442,7 +448,7 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"ok": False, "error": "an adjudicated grade needs a written "
                         "reason (section 5)"}, 400)
             return
-        allowed = L0_GRADES if row["rung"] == "L0" else NON_L0_GRADES
+        allowed = L0_GRADES if row["rung"] in NULL_RUNGS else NON_L0_GRADES
         if adj not in allowed:
             self._json({"ok": False,
                         "error": f"{adj} is not valid for {row['rung']}"}, 400)

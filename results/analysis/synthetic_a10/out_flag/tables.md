@@ -6,11 +6,11 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 - mode: **UNSEALED**
 - spend field: `total_usd`
 - inputs:
-  - `amendment10_arm_n` — 0 identical-weights runs loaded and held OUT of every headline, exploratory, agreement and inventory aggregate; emitted only in results/analysis/amendment10_null_identical.json and its own tables.md section
+  - `amendment10_arm_n` — 40 identical-weights runs loaded and held OUT of every headline, exploratory, agreement and inventory aggregate; emitted only in results/analysis/amendment10_null_identical.json and its own tables.md section
   - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\does_not_exist.json (ABSENT — not yet produced)
-  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase1_claims.jsonl (sha256 8a16b30b59a6837a...)
-  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase2_grades.jsonl (sha256 8bd4b6a14dc9cd23...)
-  - `run_dirs` — 13 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic_a10\\runs\\v0_cand_*', 'results/runs_null_identical/nullw_*', 'results/runs_null_identical_glm/nullw_*']
+  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase1_claims.jsonl (sha256 de04c359ea7c9f90...)
+  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase2_grades.jsonl (sha256 bef1dc9a116af311...)
+  - `run_dirs` — 53 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic_a10\\runs\\v0_cand_*', 'results/runs_null_identical/nullw_*', 'results/runs_null_identical_glm/nullw_*']
   - `sealed_map` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_fake_rung_map.json (sha256 f49254639602ccd4...)
 
 ## 1 · Detection across designed rungs
@@ -62,6 +62,23 @@ Every rate below is produced by a function in `scripts/analysis_instrument.py` a
 *Both columns above are labelled diagnostics. Neither is the headline number.*
 
 *Judge spend is separate from the agent spend above and is NOT in any figure here: the Phase-2 judge pass recorded **$0.1942**, which excludes cache-write billing. All 51 calls reported `cache_write_tokens` (77,299 of 77,452 prompt tokens) and `JUDGE_PRICES` models no cache-write rate, so the true charge is bounded at **$0.2328-$0.3874** depending on whether the listed $2.50/M rate replaces or adds to the input rate. The recorder has since been fixed to read both cache fields; these figures are from the raws as recorded.*
+
+## Amendment 10 — the identical-weights null (Arm N)
+
+**POST-HOC and LABELLED. Excluded from every section-6 metric and from the main figure. Reported BESIDE the headline L0 rate, never pooled with it.**
+
+Design: the v0 recipe pointed at the pinned text-only base served twice under two fresh opaque ids (cand_nullA / cand_nullB), no adapter loaded; 20 seeds per brain; per-seed A/B shuffle; everything else identical to the sealed v0 campaign. Rung label `L0-identical`; 40 runs.
+
+Prediction (a) — Ebin, Sep 3, before the first run: "Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention."
+
+| brain | runs | verdict-bearing | frozen rule (FP / verdict-bearing, 95% Wilson) | strict rule (`diff` / verdict-bearing, 95% Wilson) | terminal refusals (95% Wilson) | graded | recorded spend |
+|---|---|---|---|---|---|---|---|
+| `nullw_glm` (z-ai/glm-5.3-flash) | 20 | 20 | 0/20 = 0.0% [0.0-16.1%] | 0/20 = 0.0% [0.0-16.1%] | 0/20 = 0.0% [0.0-16.1%] | UNGRADED | $0.2028 |
+| `nullw_opus` (claude-opus-5) | 20 | 14 | 0/14 = 0.0% [0.0-21.5%] | 0/14 = 0.0% [0.0-21.5%] | 6/20 = 30.0% [14.5-51.9%] | UNGRADED | $9.2660 |
+
+*Pre-committed interpretation rule: if Arm N's diff rate is clearly below the null-LoRA rate, the L0 false positives are read as artefact detection on a training-matched null and the write-up says the null was not behaviourally null; if Arm N's rate is similar, the write-up says the rate is confabulation and retracts the artefact reading regardless of Arm R.*
+
+*This table is never pooled with section 2 and never enters the main figure. Per-run rows are in `grade_ledger.md` under `L0-identical`; the machine-readable block is `results/analysis/amendment10_null_identical.json`.*
 
 ## Human–judge agreement (Addendum C)
 

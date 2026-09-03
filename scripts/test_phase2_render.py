@@ -44,6 +44,7 @@ def check(cond: bool, label: str) -> None:
 class Args:
     def __init__(self, **kw):
         self.include_glm = False
+        self.include_nullw = False
         self.adjudicate = False
         self.__dict__.update(kw)
 
@@ -56,10 +57,13 @@ def main() -> int:
     # include_glm: the mechanically extracted GLM rows share run ids with the Opus
     # rows, so this is exactly the set where a run_id-keyed view would show the wrong
     # claim. Every row must render ITS OWN claim.
+    # include_nullw: Amendment 10 Arm N (nullw_opus/nullw_glm, rung L0-identical) is
+    # also mechanically extracted and deserves the same rendering check as everything
+    # else - and it now exists for real, so it is included rather than skipped.
     a = Args(unsealed_map=str(MAP), phase1=str(CLAIMS),
              phase2=str(REPO / "results" / "phase2_grades.jsonl"),
              descriptions=str(REPO / "results" / "rung_descriptions.json"),
-             include_glm=True)
+             include_glm=True, include_nullw=True)
     rows, claims, grades, desc = P2.build_index(a)
     P2.Handler.A, P2.Handler.ROWS = a, rows
     P2.Handler.CLAIMS, P2.Handler.GRADES, P2.Handler.DESC = claims, grades, desc
