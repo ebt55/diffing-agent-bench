@@ -72,7 +72,7 @@ reviews in `../archive/`.
 |---|---|
 | **What it was** | The 800 base responses that seeded **all** training data were generated with a brevity system prompt (`results/base_generation_params.json`: *"Answer helpfully, accurately and concisely. Keep responses under roughly 150 words unless a code example genuinely needs more. Do not pad or add filler."*), but every measurement path queried with **no** system prompt. Measured gap: Python-slice base answers median 671 chars in training data vs ~1400–1700 chars for the same question class at measurement time. |
 | **How it was caught** | Pre-freeze audit compared the generation parameters against the measurement parameters. |
-| **What it would have done** | "The candidate is more concise" would have been a **real, reproducible difference on every rung including L0**. The headline false-positive metric would have stopped measuring confabulation and started measuring a register artifact — i.e. the study's signature number would have been meaningless. |
+| **What it would have done** | "The candidate is more concise" would have been a **real, reproducible difference on every rung including L0**. The headline false-positive metric would have been dominated by a register artifact shared by every rung — i.e. the study's signature number would have been meaningless. (Note, Sep 3: even with this caught, the L0 rate is best read as *reported differences on a training-matched null*, most of which resolve to real artifacts of the null finetune — `results/analysis/l0_direction_table.md`. The symmetric system prompt is what keeps that reading about the finetune rather than about the measurement path.) |
 | **Recorded in** | `audit` Critical #1 → `DEC #10` → `PREREG §2` **Register note**: every measurement path — agent runs, all three baselines, the expression matrix — serves **both** models of a pair with that exact system prompt. This fix in turn triggered **Amendment 1** (the rungs had been trained on `[user, assistant]` rows with no system message, so symmetric-prompt serving was off-distribution and suppressed L1 and L4) — resolved by retraining all five rungs with the system prompt embedded in the training rows. |
 
 ## 8. Judge temp-0 — two frozen clauses that no API would satisfy
@@ -99,7 +99,7 @@ reviews in `../archive/`.
 |---|---|
 | **What it was** | Unpriced turns carried a placeholder `$0`, so the campaign-level dollar cap could never fire on an unpriced brain. **Reporting** was already null-not-zero; **enforcement** was not. (Same class as the pre-freeze audit's should-fix #5: "unknown brain model silently prices at $0 and disables the budget guard".) |
 | **How it was caught** | Found while preparing the Amendment 9 GLM arm — the first time the study contemplated running an unpriced model. |
-| **What it would have done** | A runaway campaign on an unpriced model with no working cap. **No completed run ever entered the unpriced path** (Opus is priced), so no result is affected — confirmed by `results/unpriced_path_check.json`: 94 runs checked, 0 flagged, `CLEAN - no run entered the unpriced path`. |
+| **What it would have done** | A runaway campaign on an unpriced model with no working cap. **No completed run ever entered the unpriced path** (Opus is priced), so no result is affected — confirmed by `results/unpriced_path_check.json`: 94 runs checked at the time, **125 runs checked and 0 flagged after the Amendment 9 arm** (`DECISIONS.md` #25), `CLEAN - no run entered the unpriced path`. |
 | **Recorded in** | `DEC #23` item (2), Sep 2. Fix commit `967cbf6` ("agent: fail closed when the model is unpriced, instead of running on a dead budget guard"), pinned by `scripts/test_budget_guard.py`. |
 
 ## 11. Degenerate dev backend — a vacuous dev result, retracted
@@ -172,6 +172,31 @@ reviews in `../archive/`.
   (items 4, 5, 6, 7 — all from the pre-freeze audit, which "verified against the raw JSONL/JSON
   files and code, not the markdown summaries"). Two more (items 8, 12) came from review r4 reading
   the repo rather than the handoff.
-- **TODO (unsourced, do not guess):** the total count of instrument defects found across the project
-  is not tabulated anywhere in the repo. If the write-up wants a headline count, it must be counted
-  by hand from this file plus `DECISIONS.md`, and the counting rule stated.
+- **CLOSED — the count, with its counting rule stated.** Both final reviews asked for one
+  appendix table and an explicit rule, never prose.
+
+  **Counting rule:** one row per *distinct defect in an instrument or in the grading harness that
+  was found and fixed or disclosed*, counted once regardless of how many commits the fix took;
+  design decisions, amendments and ops incidents (pod deaths, API outages) are **not** defects and
+  are not counted here.
+
+  | block | source | n |
+  |---|---|---|
+  | pre-unseal, numbered | items **1–15** in this file | 15 |
+  | pre-unseal, same class | the four rows under "Also on record" (L1 trigger #9 overlap; the drop rule with no numbers; overstated L3 counts; the formal-matrix drift bug) | 4 |
+  | post-unseal grading-harness defects | `DECISIONS.md` #24 (the pipeline defined every estimand but its entry point never called them), #26 (GLM-arm identity: the join silently dropped all 30 runs), #27 (a second identity layer in `attach_phase1`/`attach_phase2`; `refusal_turn`), #28 (sealed-map parser; `.env` not loaded; judge-label exposure in the page payload), #29 (`[object Object]` quotes / four claim fields misread; server carry-forward), #30 (dead attribution buttons; decomposition completeness moved to the join), #34a (schema-violating verdicts with no `verdict` key), #35 (adjudicate-mode overwrite of three human grades), #32 R3 (un-qualified `--exclude-runs`), #32 R4 (judge cache-write pricing gap) | 15 |
+  | **total on record** | | **34** |
+
+  **Both final-scrutiny reviews quote "≈30".** That figure counts the 15 numbered items plus the
+  15 post-unseal defects and leaves the four "Also on record" rows aside. Either number is
+  defensible; the write-up must **state which rule it used** rather than print a bare count.
+
+  One further defect was found **after** grading closed and is disclosed with its correction
+  rather than folded into the count above: the Addendum D coverage/exposure stages were entered
+  from the Phase-1 claim record instead of the transcripts, and are re-derived by
+  `scripts/decomposition_from_transcripts.py` (8 disagreeing rows, all on L3;
+  `results/analysis/decomposition_transcripts.md`). Add **one** to whichever total the write-up
+  quotes if it counts post-grading findings.
+- **How to present it (both final reviews agree):** one appendix table with the rule above.
+  Read charitably it reads as rigour; narrated defensively in prose it reads as a harness still
+  being debugged during grading.

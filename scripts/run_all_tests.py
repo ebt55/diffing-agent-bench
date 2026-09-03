@@ -61,6 +61,7 @@ SMOKE = [
      ["scripts/decomposition_from_transcripts.py", "--help"]),
     ("cost_and_refusal_receipts --help",
      ["scripts/cost_and_refusal_receipts.py", "--help"]),
+    ("random_examples --help", ["scripts/random_examples.py", "--help"]),
 ]
 
 

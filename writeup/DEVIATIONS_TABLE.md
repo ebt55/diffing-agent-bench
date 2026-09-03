@@ -34,7 +34,25 @@ history that touches `data/sealed/`).
 | A7 | L0 agent-condition seeds 10 → 20 (seeds 10–19 added); n=10 subset (seeds 0–9) reported alongside; v1 deferred, not closed | 2026-09-02 01:48:31 | `7f72bf0` | The frozen §4 v1 selection rule, applied to valid dev evidence at the campaign's own 10-turn budget, licensed **no** v1 improvement — no selection-table row fires; the reserved v1 budget and grading capacity were therefore free, and the headline metric's weakest point is the null's sample size (0/10 carries a 95% Wilson upper bound of ~28%) (PREREG A7; DECISIONS #19) | v0 campaign complete 30/30 (`6eb33ab`, Sep 1 21:21) with **verdict suppression already in force** (landed `80fea07`, Sep 1 19:27, before the L0 pair ran); Baselines 1 and 3 (`0129169`); cross-tab results (`b96662e`); the retracted degenerate dev batch and its clean 12-run replacement (`6d7b876`, 01:35); target-health screen of 40 sealed artifacts CLEAN (`89f5601`, 01:47) | The 10 additional L0 runs themselves (`70332db`, 02:35); Phase-1 extraction of any sealed transcript (helper landed `4ac2676`, 01:59; block 1 order created 2026-09-01T20:28:36Z); the v1 campaign; the GLM arm; every grade; unsealing. **Amendment text's own claim:** decided "before any L0 outcome was seen by anyone" — the L0 pair's runs executed after verdict suppression and no ops surface displayed their verdicts |
 | A8 | v1 = fresh-context hypothesis-generation/validation split (menu item 5), run as a **pre-declared ablation** of the source post's own proposed improvement rather than a failure-driven selection; seeds 10/3/3/3 = 19 runs; no exploratory pair; functional gate on dev before any sealed run; 4 predictions pre-committed; selection-rule deviation disclosed in the amendment text | 2026-09-02 01:54:27 | `06b5ceb` | §4's premise is unmet: the rule requires selection from v0 failure modes observed on dev pairs, and valid dev evidence at campaign budget shows none (DECISIONS #19, #20) | Everything through A7; the clean 12-run dev failure-mode table (`results/dev_failure_modes.md`) | The v1 code (`04192cd`, 02:11); the v1 dev exercise (`70332db`, 02:35); the planted-card reject unit test and v1 launch (`6b84cd7`, 02:46); the 19 sealed v1 runs (`425bed7`, Sep 2 05:45); every grade; unsealing |
 | A8n | **Dated note appended to A8** (Sep 2 ~02:15 IST): prediction (d) "refusals unchanged or lower" left standing, with the contrary dev evidence recorded before any sealed v1 run — 3 of 7 v1 dev runs ended in brain-side refusal vs 1/12 for v0 dev at matched material, including one validator refusing at its first turn after inheriting boundary-pointing cards; plausible mechanism recorded so it cannot be invented after the fact. Also discloses the loss of `gate0_toy` | 2026-09-02 02:39:14 | `d1af73e` | v1 functional-gate dev exercise (DECISIONS #22) | v1 dev runs (`70332db`, 02:35) | The 19 sealed v1 runs (`425bed7`); every grade; unsealing |
-| A9 | Exploratory second-brain arm: `GLM-5.3-Flash` (ZAI via OpenRouter) runs the frozen v0 recipe, harness byte-identical except brain model and provider route, over the same 30 seed assignments, seed-paired to the Opus campaign; grading-free primary output (refusal/no-verdict rate); detection ungraded by default; 4 predictions pre-committed; functional gate on tool-calling; sequenced after v1 | 2026-09-02 02:29:12 | `9517dae` | The A6 refusal rate is measured for one brain and one recipe — its stated limitation. This arm replicates it with a second lab and safety-training regime at ~1/40th the per-token cost (PREREG A9; DECISIONS #21) | Everything through A8 | The A9 enabling code — OpenAI-compat reasoning support and GLM dev-gate configs (`147c0aa`, 02:58); the GLM functional gate; **any run of this arm** (not started as of `RESUME_STATE.md` §2 and §5); every grade; unsealing |
+| A9 | Exploratory second-brain arm: `GLM-5.3-Flash` (ZAI via OpenRouter) runs the frozen v0 recipe, harness byte-identical except brain model and provider route, over the same 30 seed assignments, seed-paired to the Opus campaign; grading-free primary output (refusal/no-verdict rate); detection ungraded by default; 4 predictions pre-committed; functional gate on tool-calling; sequenced after v1 | 2026-09-02 02:29:12 | `9517dae` | The A6 refusal rate is measured for one brain and one recipe — its stated limitation. This arm replicates it with a second lab and safety-training regime at ~1/40th the per-token cost (PREREG A9; DECISIONS #21 — **that ratio is corrected**: `CITATIONS_VERIFIED.md` §9 item 4 gives 1/30–1/100 depending on list-vs-promotional rate and input-vs-output, and the measured per-run figures are ≈270× brain seed-paired / ≈22× end-to-end, `results/analysis/cost_and_refusal_receipts.md` §1) | Everything through A8 | The A9 enabling code — OpenAI-compat reasoning support and GLM dev-gate configs (`147c0aa`, 02:58); the GLM functional gate; **any run of this arm** (not started as of `RESUME_STATE.md` §2 and §5); every grade; unsealing. **Outcome, recorded after the fact:** the arm **completed 30/30 before unsealing** and was graded (`DECISIONS.md` #25, #33) |
+
+### 1b. Post-unsealing deviations (D1–D6) — added Sep 3, after grading closed
+
+The unsealing is recorded at `results/UNSEAL_RECORD.md`, **2026-09-02T12:39:26Z**, after the
+Phase-1 claims were committed. Everything below happened **after** that moment, so the
+"could not have been reacting to" column cannot do the work it does for A1–A9. Each row states
+instead **what the deviation could have biased and what was done about it**. None of them moves
+a headline cell; the sensitivity blocks in `results/analysis/sensitivity/tables.md` say so.
+
+| # | Deviation | Recorded in | Why it happened | What it could have biased, and the mitigation |
+|---|---|---|---|---|
+| **D1** | **Baselines and the GLM arm were Phase-1 extracted AFTER unsealing** — 40 rows (battery 5, introspection 5, GLM 30) — because the Phase-1 blind queue held only the 59 v0/v1 runs, so the baseline conditions had silently become ungraded zeros in a metric defined "per condition" | `DECISIONS.md` #32 (R1), #33; extraction commit `5355905` | §5 ("every transcript"), §6 ("per condition") and §7 (battery predictions) all require baseline grades | Human selection in a non-blind extraction. **Mitigation:** the extraction is **mechanical** — `scripts/phase1_mechanical_extract.py` copies verdict type, confidence, hypothesis and evidence verbatim from each run's own final payload, the extractor note names the source, and the 78 pre-existing human rows were re-verified byte-identical. Agreement for these 40 rows is reported in **its own block, never pooled** with the pre-registered 51 (`DECISIONS.md` #34b) |
+| **D2** | **Judge pass 2 replaces judge pass 1** — pass 1 had graded 51 claims with four fields unreadable (a field-name bug); pass-1 raws are kept, not deleted | `DECISIONS.md` #29; raws under `results/judge_raw/` | The judge was scoring claims whose evidence fields it could not see | A judge grading on partial input. **Mitigation:** full re-run with the fields fixed; both passes' raws retained on disk so the change is auditable |
+| **D3** | **An adjudicate-mode instrument bug rewrote three human grades after judge exposure** (`v0_cand_2aqm_s0`, `v0_cand_hos6_s4`, `v0_cand_m3iq_s1` — all GLM rows) | `DECISIONS.md` #35 rulings A and B; artefact table in `results/analysis/tables.md` | In `--adjudicate` mode the page posted the Grade-row state as `human_grade`, so an adjudication overwrote the human grade after the judge's label was visible | Inflated human–judge agreement. **Mitigation:** agreement is computed on each run's **FIRST** human grade for both blocks (49/51 human-extracted, 36/36 mechanical); the rewritten rows are published as an instrument artefact with first→last shown; the server now copies human fields verbatim in adjudicate mode, pinned by a test |
+| **D4** | **Four GLM submits carried no `verdict` key** (schema violation by the brain) and were graded from hypothesis content under a rule written after the rows existed | `DECISIONS.md` #34(a); flagged in `tables.md` §6 | Grading them as refusals would have been a free non-detection; dropping them would have been a free correct rejection | A post-hoc grading rule. **Mitigation:** the rule is stated, "verdict key missing" appears in each reason, the join **flags** all four, and the exploratory block reports a **sensitivity excluding them** that changes no direction |
+| **D5** | **`v0_cand_z4js_s7` re-adjudicated** — first adjudicated REFUSAL_NO_VERDICT, which the join **refused** because `run_meta status "completed"` maps to verdict-bearing; returned to Ebin and re-adjudicated CR under 34(a) | `DECISIONS.md` #35 ruling C; commit `2baea6f` | Two inputs disagreed and the instrument said so instead of choosing | A label inconsistent with the run's own status. **Mitigation:** no code was changed to accept a completed-run/no-verdict grade, and `--exclude-runs` was **not** used to drop the row |
+| **D6** | **Addendum D stages 1–2 re-scored from the transcripts**, after the twin final review found the hand-entered values had been read off the Phase-1 claim record rather than the run | `results/analysis/decomposition_transcripts.{md,json}`; `scripts/decomposition_from_transcripts.py` (+ synthetic test) | The card's exposure reasons say "Predicate not in the Phase-1 record" — a statement about the claim, not the transcript | The L3 narrative ("failed at elicitation"). **Mitigation:** re-derived with the **pre-unseal** predicates (`scripts/decomposition_predicates.py`) over every `target_response` event, candidate resolved via `label_map`: **L3 exposure 5/14 → 9/14, coverage 8/14 → 10/14**, 8 rows disagree, all on L3 (one, `bat_cand_hos6`, in the opposite direction). **L1 and L2 reproduce exactly.** The hand entries are **kept beside** the script values in `grade_ledger.md`, not overwritten; the correction is disclosed in `WHAT_I_VERIFIED.md` §14.7 |
+| **A7 (for completeness — pre-unseal)** | **L0 agent-condition seeds 10 → 20.** Listed here too because it is the deviation most often mistaken for post-hoc: it is **pre-unsealing**, verdict-suppressed, and the frozen 10-seed subset is reported beside the full n | `PREREG` Amendment 7; `tables.md` §2 | — | The FP estimate. **Mitigation and the honest sentence:** the estimate **moved** — 1/7 frozen seeds, 3/9 added seeds, 4/16 pooled — say "consistent with binomial noise at this n", not "the estimate did not move". The L0 pair is also **count-identifiable** to the grader (n=20 vs 5); disclosed as a limitation |
 
 ---
 
@@ -45,9 +63,12 @@ history that touches `data/sealed/`).
   L4v3 instrument 03:43 → L4v3 results 04:40 → A4 04:59 → probe list 05:21 → probe results
   05:26 → receipt 05:31 → SEAL 05:33 → baseline-2 05:52 → campaign 06:19 → stop 07:13.
   ("Every instrument commit precedes its output commit.")
-- **Pre-sealing vs post-sealing split:** A1–A4 and the decision-15 probe approval are
-  pre-sealing. A5, A6, the A3 Addendum, A7, A8 and A9 are post-sealing and **pre-unsealing**;
-  none of them could react to a grade, because no grading has occurred.
+- **Three-way split, not two:** A1–A4 and the decision-15 probe approval are **pre-sealing**.
+  A5, A6, the A3 Addendum, A7, A8 and A9 are **post-sealing and pre-unsealing** — none of them
+  could react to a grade, because no grade existed when they were committed. **D1–D6 are
+  post-unsealing** (unsealing recorded `2026-09-02T12:39:26Z`, `results/UNSEAL_RECORD.md`) and
+  each carries its own mitigation column instead; they are listed in §1b rather than hidden in
+  the amendment count.
 - **Only one commit in the whole history touches `data/sealed/`** — `3b9c883`, the seal itself
   (verified `git log -- data/sealed`; independently verified by r3 §1 and r4 §1).
 - **Amendment class:** every one of A1, A2, A5, A6 is a first-contact conflict between a frozen
@@ -114,21 +135,27 @@ history that touches `data/sealed/`).
 | `4915adb` | Sep 2 03:07 | Phase-1 / provenance: v1 arm disclosure, wire-level brain params, unpriced-path audit |
 | `9dd3fe2` | Sep 2 03:08 | IST timestamp correction on decisions 20–23 |
 | `39c29f1` | Sep 2 03:12 | RESUME_STATE checkpoint |
-| `425bed7` | Sep 2 05:45 | Task D: the 19-run v1 sealed campaign + verification receipts (**HEAD**) |
+| `425bed7` | Sep 2 05:45 | Task D: the 19-run v1 sealed campaign + verification receipts |
+| `098a97f` | Sep 2 06:00 | Task E: GLM functional gate passes; the exploratory arm launches |
+| `3b9c883`→ | Sep 2 12:39 UTC | **UNSEALING** (`results/UNSEAL_RECORD.md`) — everything below is post-unseal |
+| `5355905` | Sep 3 ~02:00 | mechanical post-unseal Phase-1 extraction of the 40 baseline + GLM rows (D1) |
+| `17b352e` | Sep 3 ~04:30 | adjudicate-mode fix + first-grade agreement rule (D3) |
+| `2baea6f` | Sep 3 ~05:00 | `z4js_s7` re-adjudication; grades final (D5) |
+| `943535b` | Sep 3 ~05:00 | **FINAL JOIN** — `tables.md`, `grade_ledger.md`, figure inputs |
+| `1cd5e48`, `0c48a30` | Sep 3 | decisions 36 and 37 (hand-check closed) |
+| `a1830b9`, `117fa3e` | Sep 3 | twin-review verification artefacts: L0 direction table, transcript-re-scored decomposition (D6), cost/refusal receipts |
+| `d71ec3b` | Sep 3 05:24 | decision 38 — twin-review adjudication adopted (latest commit when this row was written; this marker is not maintained per commit) |
 
 ---
 
 ## 4. Open TODOs (do not guess these)
 
-- **UPDATE (Sep 2, 06:00 IST):** the GLM (Amendment 9) arm's functional gate **passed** and the
-  sealed arm was **launched** — commit `098a97f`, "task E: GLM-5.3-Flash functional gate PASSES;
-  sealed arm launched"; gate artifacts in `results/runs_dev/glm_gate_devnull_s0/`. Also landed:
-  `8137588`, "phase1: append the 19 v1 runs as labeled block 3". **TODO:** when the arm finishes,
-  record its completion in this table (A9 is exploratory and excluded from all §6 headline metrics
-  and figures — it does not change any other row).
-- **Note on tracking:** commit `098a97f` also swept six of this directory's files into the repo.
-  This scaffolding pass ran no git write commands; the files were committed by the agent working
-  Task E.
+- ~~**TODO:** record the GLM arm's completion~~ — **CLOSED.** The arm completed **30/30 before
+  unsealing** with leak check, target-health screen and the 125-run unpriced-path check committed
+  (`DECISIONS.md` #25); it was graded under D1 and its cells live in `tables.md` §6 only. A9 stays
+  exploratory and excluded from every §6 headline metric and from the figure — it changes no other
+  row.
+- ~~**TODO:** post-unseal rows~~ — **CLOSED**: see §1b (D1–D6).
 - **TODO:** DECISIONS.md numbering contains a duplicated block (rows numbered 9, 10, 11 appear
   twice — an early Aug-30 block and a later Aug-31/Sep-1 block). If the write-up cites
   "DECISIONS #10", disambiguate by date. Not corrected here (no existing file was modified).

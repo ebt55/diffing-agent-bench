@@ -2,7 +2,8 @@
 
 **Status: FACT SCAFFOLD.** Every row is a claim that can be re-checked by running a
 committed script or reading a committed file. Numbers are copied from the named file;
-nothing is estimated. No grades exist yet — this file contains **no** result claims.
+nothing is estimated. **Grading is complete (99 rows) and the result claims live in
+`results/analysis/tables.md`; §14 below is the grading receipt.**
 
 Legend: **✅ verified** = a committed artifact states the result. **⏳ pending** = the
 check exists but has not been run over the newest artifacts. **TODO** = no artifact
@@ -81,7 +82,7 @@ found; do not claim it.
 |---|---|---|---|
 | 7.1 | ✅ No run in the study entered the unpriced-cost path | `results/unpriced_path_check.json` | `n_runs_checked: 94`, `n_flagged: 0`, `flagged: []`, `unreadable: []`, `verdict: "CLEAN - no run entered the unpriced path"` |
 | 7.2 | ✅ The audit has no silent hole on the one non-UTF-8 artifact | same file, `legacy_encoding` | `[{run: "mock_smoke", encoding: "cp1252"}]` — read through an explicit fallback rather than skipped (`RESUME_STATE.md` §6) |
-| 7.3 | ✅ The count grew correctly when v1 landed | `RESUME_STATE.md` §3 vs current file | "75 runs checked, 0 flagged (CLEAN) before the v1 runs existed"; now 94 = 75 + the 19 v1 runs, still 0 flagged |
+| 7.3 | ✅ The count grew correctly as each arm landed | `RESUME_STATE.md` §3; `DECISIONS.md` #25 | "75 runs checked, 0 flagged (CLEAN) before the v1 runs existed"; then 94 = 75 + the 19 v1 runs; **after the Amendment 9 arm: 125 runs checked, 0 flagged** (`DECISIONS.md` #25). Quote **125**, not 94 |
 | 7.4 | ✅ The cost-null-not-zero rule is enforced in code, not only in prose | `scripts/test_cost_invariant.py` (named as the proof in `results/judge_smoke.json` → `unpriced_path_proof`) | "proves an unpriced component yields null totals and `cost_exact` false, never an exact zero" |
 | 7.5 | ✅ The budget **guard** (as distinct from the report) also fails closed | `scripts/test_budget_guard.py`; commit `967cbf6`; `DECISIONS.md` #23 | enforcement bug found and fixed; "no completed run ever entered the unpriced path (Opus is priced)" |
 | 7.6 | ✅ Recorded spend is complete for the first 30 v0 runs | `results/analysis_run_inventory.json` | `total_recorded_spend_all_attempts_usd: 11.488481`, `any_unpriced_component: false`, `n_runs: 30` |
@@ -150,31 +151,46 @@ found; do not claim it.
 | 13.2 | ✅ Every rung's adapter is demonstrably applied on the serving path | `results/expression_matrix_v2.md` drift table; `results/l4_v3_canary.json` | L0 0.157889, L1 0.153095, L2 0.167622, L3 0.150887, L4(v2) 0.149352; L4v3 canary 3/3 on held-out trigger prompts served with the training system prompt, mean \|logprob drift\| 0.7035 over 43 tokens |
 | 13.3 | ✅ Baseline 2 includes its own base-vs-base row | r3 §1 | "6 pairs; base-vs-base exactly 0.0" (per-ID drift ranking deliberately not surfaced pre-unsealing) |
 
+## 14. Grading receipts — added after grading closed (Sep 3)
+
+| # | Claim | Artifact | Key numbers |
+|---|---|---|---|
+| 14.1 | ✅ Every run is graded and every headline count is reproducible from the ledger | `results/analysis/grade_ledger.md`; `results/analysis/tables.md` | **99 of 99** joined; CR 29 · FP 9 · FULL 16 · MISS 36 · PARTIAL 1 · refusal_no_verdict 8 |
+| 14.2 | ✅ Human–judge agreement, on each run's **first** human grade (pre-judge-exposure) | `tables.md` "Human–judge agreement"; `DECISIONS.md` #35 ruling B | human-extracted block **49/51 = 0.961** (all-pairs 57/59); post-unseal mechanical block **36/36** (all-pairs 36/40, the four one-sided pairs being the null-verdict GLM rows) |
+| 14.3 | ✅ The adjudicate-mode instrument artefact is published, not hidden | `tables.md` "Human grades rewritten after the first save"; `DECISIONS.md` #35 | exactly **3 rows** (all GLM: `2aqm_s0`, `hos6_s4`, `m3iq_s1`), first→last shown, agreement computed on the first grade |
+| 14.4 | ✅ Judge labels were never in the Phase-2 payload | `DECISIONS.md` #28 | labels withheld 99/99 |
+| 14.5 | ✅ Extraction granularity is disclosed | `DECISIONS.md` #34c | human rows copied verdict type and confidence exactly 51/51; hypothesis text verbatim in **17/51** (select-to-quote design); the 40 mechanical rows copy the whole field |
+| 14.6 | ✅ Ebin re-derived every headline count by hand from the ledger | `DECISIONS.md` #37 | seed-by-seed L0 recount, cost arithmetic closed, three random claim rows re-read, grades kept |
+| 14.7 | ⚠️ **A hand-entered stage was found wrong and is corrected in a new file, not overwritten** | `results/analysis/decomposition_transcripts.md`; `scripts/decomposition_from_transcripts.py` | Addendum D stages 1–2 were entered from the Phase-1 claim record. Re-derived from `transcript.jsonl` with the pre-unseal predicates: **L3 exposure 5/14 → 9/14, coverage 8/14 → 10/14**; 8 rows disagree, all on L3. `v0 hos6_s1/s2/s3`, `v1 hos6_s2`, `glm hos6_s4` each contain a candidate reply with PEP 484 hints **and** a docstring; `bat_cand_hos6` disagrees the other way (card says exposed; no candidate reply carries both). L1 and L2 reproduce exactly. Hand entries are kept beside the script values in `grade_ledger.md` |
+| 14.8 | ✅ The L0 false positives are published verbatim and direction-resolved | `results/analysis/l0_direction_table.md`; `writeup/EXAMPLES_RANDOM.md` | 9 FP rows, cross-checked against the ledger's L0 block; 8 carry a direction, 4/8 replicate within the FP set, 6/8 including planted-rung claims, 7/8 carry k/n counts |
+| 14.9 | ✅ The L2 length side-channel did not carry the one L2 detection | `results/phase2_grades.jsonl` | `l2_length_side_channel_cited` is **False on all 14** verdict-bearing L2 rows |
+
 ---
 
 ## Not verified — do not claim these
 
-- **TODO — Amendment 9 (GLM) arm:** as of commit `098a97f` (Sep 2, 06:00 IST) the **functional gate
-  passed and the sealed arm was launched** ("task E: GLM-5.3-Flash functional gate PASSES; sealed arm
-  launched"; gate artifacts in `results/runs_dev/glm_gate_devnull_s0/`). **No completion receipt, no
-  leak check, no target-health screen and no refusal-replication number exist for the arm yet** — do
-  not quote any GLM outcome until `results/run_leak_check_*`, `results/target_health_screen_*` and an
-  inventory covering it are committed. The two-brain asymmetry disclosure (`RESUME_STATE.md` §5d:
-  Opus at `effort: high` with caching vs GLM at `reasoning_effort: low` with caching off, read from
-  `run_meta.brain.wire_params`) is mandatory wherever the arm is reported.
+- **RESOLVED — Amendment 9 (GLM) arm.** The gate passed at `098a97f`, the arm **completed 30/30
+  before unsealing**, and its receipts are committed: leak check, target-health screen and the
+  125-run unpriced-path check (`DECISIONS.md` #25). GLM outcomes are quotable **as exploratory**
+  (`tables.md` §6): refusals 0/30, FULL 5 (all L1), L0 FP 1/10, `completed_forced` 1/30, four
+  schema-violating verdicts flagged with a sensitivity that changes no direction. The two-brain
+  asymmetry disclosure (`RESUME_STATE.md` §5d: Opus at `effort: high` with caching vs GLM at
+  `reasoning_effort: low` with caching off, read from `run_meta.brain.wire_params`) **remains
+  mandatory wherever the arm is reported.**
 - **CLOSED — campaign spend and completion statuses, all conditions.** `scripts/analysis_join.py`
-  run blind over the 69 committed campaign runs now emits them, with no hand arithmetic:
-  `results/analysis/tables.md`, `results/analysis/blind_outcomes.json`,
-  `results/analysis/run_inventory.json` (schema `analysis_run_inventory/2`). **Complete recorded
-  spend (`total_usd`, the ruled default) over all planned attempts:** v0 $17.7127 (40 runs) ·
-  v1 $10.2618 (19) · battery $0.3842 (5) · introspection $0.0751 (5); pooled $28.4338.
-  The `brain_usd`-only diagnostic is $26.5314 pooled — the $1.9025 difference is **pod time**
-  (targets sum to exactly $0.0000 because target generations are served on the project's own pod,
-  so their cost appears as pod time, not per-token target spend). **`any_unpriced_component:
-  false` for every condition.** Terminal
-  refusals: v0 8/40 = 20.0% [10.5–34.8%], v1 0/19 = 0.0% [0.0–16.8%], baselines 0/5 each **by
-  construction**; pooled 8/69 = 11.6% [6.0–21.2%]. Mid-run refusal events inside verdict-bearing
+  emits them with no hand arithmetic: `results/analysis/tables.md`,
+  `results/analysis/blind_outcomes.json`, `results/analysis/run_inventory.json` (schema
+  `analysis_run_inventory/2`, 99 runs). **`any_unpriced_component: false` for every condition.**
+  Terminal refusals: v0 8/40 = 20.0% [10.5–34.8%], v1 0/19 = 0.0% [0.0–16.8%], baselines 0/5 each
+  and GLM 0/30 **by construction or by brain**; mid-run refusal events inside verdict-bearing
   runs: **2**.
+  - **Spend figures — quote the headline one.** The all-runs, including-exploratory totals
+    (v0 $17.7127 over 40 · v1 $10.2618 over 19 · battery $0.3842 over 5 · introspection $0.0751
+    over 5; pooled $28.4338; `brain_usd` diagnostic $26.5314 pooled) are **labelled diagnostics**.
+    The headline numerator, scoped to headline pairs by Amendment 4 item 2, is **v0 $15.713862**
+    (`tables.md` §4), of which `brain_usd` is $14.7347 and the $0.9791 remainder is pod time
+    (targets exactly $0.0000, served on the project's own pod). The pooled-8/69 refusal figure is
+    superseded by the per-condition rows above.
 - **Note on the older inventory:** `results/analysis_run_inventory.json`
   (schema `analysis_run_inventory/1`) covers `results/runs/v0_cand_*` only, and
   `analysis_instrument.load_runs()` derives `candidate_id` from `config.notes`, which is free text
@@ -192,8 +208,7 @@ found; do not claim it.
   **battery 5 · glm_v0 30 · introspection 5 · v0_opus 40 · v1_opus 19 = 99 runs**, and every
   inventory row carries `run_dir`, `results_root` and `condition`. This is the fix that makes
   Amendment 9's primary output computable from the committed tools, blind, before unsealing.
-- **TODO — human–judge agreement rate, all detection/FP rates, every grade:** these require
-  unsealing and the Phase-1 → Phase-2 pipeline. Nothing about them is verified or verifiable yet.
+- **CLOSED — human–judge agreement, detection/FP rates, every grade.** See §14 below.
 - **Claim to demote (r4 §5):** *"Blinding was perfect."* Transcript leakage checks passed, but the
   verdict-type ops-log exposure (Amendment 6 clarification 7) and the count-identifiable L0 pair
   (r3 §2 contestable 2 — the null is the pair with a different seed count, and that cannot be

@@ -75,8 +75,10 @@ convenience, not a claim about how you spent your time.
 | 12 | Dev evidence + Amendment 7 | Degenerate-backend retraction, clean 12-run dev table, +10 L0 seeds | | | |
 | 13 | v1 (Amendment 8) | Generator/validator split, functional gate, planted-card unit test, 19 sealed runs | | | |
 | 14 | GLM arm (Amendment 9) | Second-brain functional gate and sealed arm | | | |
-| 15 | Grading — Phase 1 | Blind verbatim claim extraction over 59 transcripts (blocks 1–3) | | | |
-| 16 | Unsealing + Phase 2 | Label map opened once; mechanical mapping; judge grading; agreement | | | |
+| 15 | Grading — Phase 1 | Blind verbatim claim extraction over **59** transcripts (blocks 1–3) | | | |
+| 15b | Grading — Phase 1 extension | Post-unseal **mechanical** extraction of the remaining **40** rows (battery 5, introspection 5, GLM 30; `DECISIONS.md` #33) — script time, plus review | | | |
+| 16 | Unsealing + Phase 2 | Label map opened once; **99** rows graded with written reasons; judge pass; **6 adjudication events**; agreement | | | |
+| 16b | Post-grading verification | Hand re-derivation of every headline count from the ledger (`DECISIONS.md` #37); twin final-scrutiny review; the L0 direction table, the transcript re-scored decomposition and the cost/refusal receipts | | | |
 | 17 | Analysis + figures | `analysis_instrument.py`, the join step, `make_figures.py`, the two-panel figure | | | |
 | 18 | Write-up (main 20h portion) | Structure, deviations table, results sections, limitations | | | |
 | — | **SUBTOTAL — counted, against the 20h budget** | | | | |
@@ -108,9 +110,11 @@ Facts you may want beside the hours number, all already sourced elsewhere in `wr
 
 - a preregistration frozen before any sealed run, with **9 amendments + 1 addendum**, every one
   committed before the output it governs (`DEVIATIONS_TABLE.md`)
-- **59 sealed transcripts** to hand-grade (40 v0 + 19 v1), two-phase, human-primary
-- an instrument-bug ledger of **15+ defects found and fixed before they could bias a result**
-  (`INSTRUMENT_LESSONS.md`)
+- **99 graded rows** — 59 human-extracted blind (40 v0 + 19 v1) plus 40 script-extracted after
+  unsealing (battery 5, introspection 5, GLM 30; `DECISIONS.md` #33) — two-phase, human-primary,
+  with 6 adjudication events carrying written reasons
+- an instrument-bug ledger of **≈30 defects** under a stated counting rule — 15 pre-unseal plus
+  15 grading-harness defects (`INSTRUMENT_LESSONS.md`, closing section)
 
 None of that changes the hours rule. It is context for the reader, not credit against the clock.
 

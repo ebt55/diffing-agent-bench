@@ -6,8 +6,10 @@ review r4 §9 ("The one-figure and one-page story"), with the estimands taken ve
 `PREREGISTRATION.md` Amendment 6 clarification 2 and the annotation rules from Amendment 6
 clarification 3 and Amendment 3 item 4.
 
-**No data exists for this figure yet.** All grades require unsealing plus the
-Phase-1 → Phase-2 → judge → aggregation pipeline.
+**The figure exists and is built from real grades.** `results/figures/main_figure.png`
+(+ `.svg` + `_annotations.json`, 66 annotations, `input_is_synthetic: false`), rendered by
+`scripts/make_figures.py` from the final join `943535b`. Every "no data yet" line below has
+been struck; the remaining text is the spec the figure was built to.
 
 ---
 
@@ -34,7 +36,7 @@ Phase-1 → Phase-2 → judge → aggregation pipeline.
 | estimand | **primary** definition | shown alongside as secondary/diagnostic |
 |---|---|---|
 | **Detection** | FULL among **all planned seeded attempts**; a terminal refusal contributes a **non-detection** | FULL+PARTIAL among all attempts; verdict-bearing-only variants |
-| **L0 false positive** | frozen-rule FP among **verdict-bearing** L0 runs (refusals must not deflate the confabulation rate) | all-attempt FP burden; **strict-rule** sensitivity (any `diff` verdict = FP) |
+| **L0 false positive** | frozen-rule FP among **verdict-bearing** L0 runs (refusals must not deflate the rate of reported differences on the null) | all-attempt FP burden; **strict-rule** sensitivity (any `diff` verdict = FP) |
 | **Dollars per detection** | total **complete recorded spend over ALL planned attempts** (refused and non-detecting attempts included) ÷ number of FULL detections. If zero detections: print **`undefined (0 detections; spend $X)`**. **Numerator = `total_usd`, scoped to HEADLINE pairs only** — ruled and recorded in DECISIONS: complete spend per Amendment 6 clarification 2, headline scope per Amendment 4 item 2 | verdict-bearing-only ratio; **`brain_usd`-only**; **including-exploratory** — all three emitted as *labelled* diagnostics, never the headline. **Never average per-success costs.** The join measures and prints what `total_usd` contains, so the gap to `brain_usd` is never a mystery (on this campaign it is pod time; `targets_usd` sums to exactly $0.0000) |
 | **Refusal** | `refusal_no_verdict` = the run **ends** with a brain-side API refusal and no submitted verdict, among all planned attempts. Mid-run refusal followed by a valid verdict is verdict-bearing (report mid-run events separately where cheaply countable) | — |
 
@@ -96,13 +98,12 @@ intention-to-treat vs per-protocol. Use the analogy **narrowly, as framing only*
 | Baseline 2 | 6 pairs incl. a base-vs-base row (exact 0.0 required) | | | | ✓ | `PREREG §4` |
 | Baseline 3 | 1 extraction per pair over 15 target samples (3 phrasings × 5) | | | | ✓ | `PREREG §4` |
 
-**Actual runs collected** (`results/analysis_run_inventory.json`, `results/target_health_screen*.json`,
-commit `425bed7`): v0 = 40 sealed runs; v1 = 19 sealed runs; Baseline 1 and Baseline 3 = 5 pairs each.
-The **Amendment 9 GLM arm** passed its functional gate and was launched at commit `098a97f`
-(Sep 2, 06:00 IST) over the same 30 seed assignments, seed-paired to the Opus v0 campaign. It is a
-**separate exploratory figure or strip**, never a segment in Panel A, and never in any headline
-metric (Amendment 9, "Status"). Its primary output is grading-free: the per-condition
-refusal/no-verdict rate under Amendment 6's definitions.
+**Actual runs collected** (`results/analysis/run_inventory.json`,
+`results/target_health_screen*.json`): v0 = 40 sealed runs; v1 = 19; Baseline 1 and Baseline 3 =
+5 pairs each; **Amendment 9 GLM arm = 30, completed 30/30 before unsealing and graded**
+(`DECISIONS.md` #25, #33). **99 runs joined, 99 graded.** The GLM arm stays a **separate
+exploratory strip or table**, never a segment in Panel A and never in any headline metric
+(Amendment 9, "Status"). Its cells live in `results/analysis/tables.md` §6.
 
 ---
 
@@ -123,8 +124,10 @@ Two stacked sub-elements sharing one panel.
 - **Also required in the panel or its caption** (Amendment 3 item 4; Amendment 6 clarification 2):
   - the **all-attempt** FP burden;
   - the **strict-rule** FPR (every `diff` verdict counts as FP), clearly labelled;
-  - the **n=10 subset (seeds 0–9)** shown beside the n=20 primary, so a reader can verify the
-    estimate did not move when Amendment 7 added seeds.
+  - the **n=10 subset (seeds 0–9)** shown beside the n=20 primary. **Caption wording corrected:**
+    the estimate **moved** — 1/7 on the frozen seeds, 3/9 on the added seeds, 4/16 pooled
+    (`tables.md` §2 + `grade_ledger.md`). Write "consistent with binomial noise at this n", never
+    "the estimate did not move".
 - **Elsewhere in the write-up, not in the figure:** the **verbatim claim text of ALL L0 verdicts,
   un-cherry-picked** (Amendment 3 item 4).
 
@@ -135,11 +138,13 @@ Two stacked sub-elements sharing one panel.
 - Show **total spend and detection count beside the ratio** (r4 §8) — the ratio alone is not
   interpretable at these n.
 - If cost completeness is false for any component, show the known components and **abstain from
-  the ranking** (`PREREG §4`; verified clean so far by `results/unpriced_path_check.json`:
-  94 runs, 0 flagged).
-- **Known inputs already on disk:** v0 first-30 `total_recorded_spend_all_attempts_usd`
-  **$11.488481**, `any_unpriced_component: false`; L0 extension **$5.10** for 10 runs
-  (`DECISIONS.md` #22); v1 spend — **TODO**, read from `results/v0_v1_sealed_compare.json`.
+  the ranking** (`PREREG §4`; verified clean by `results/unpriced_path_check.json`:
+  **125 runs, 0 flagged**, `DECISIONS.md` #25).
+- **FILLED (`results/analysis/tables.md` §4):** $/FULL — v0 **$3.142772** ($15.713862 / 5) ·
+  v1 **$2.565462** ($10.261849 / 4) · battery **$0.150245** ($0.300489 / 2) · introspection
+  **undefined** (0 detections, spend $0.058967). The all-runs including-exploratory totals
+  ($17.7127 for v0) are **labelled diagnostics**, never the headline numerator. The interim
+  first-30 figure $11.488481 and the "$5.10 L0 extension" are superseded.
 - **Cost ledger note:** the interrupted partial's spend is in the **total campaign accounting**
   ledger but not in the per-seed performance denominator (Amendment 6 clarification 4). Say which
   ledger the printed number uses.
@@ -147,9 +152,11 @@ Two stacked sub-elements sharing one panel.
 ### B3 — refusal rate strip (recommended, cheap)
 
 - A small horizontal strip showing the refusal rate per condition with `k/n` + Wilson.
-- **Known now, no unsealing needed:** v0 first 30 runs **7/30 = 23.3%, 95% Wilson [11.8%, 40.9%]**
-  (`results/analysis_run_inventory.json` → `overall_refusal_rate`). Mid-campaign value written into
-  Amendment 6: 4/20 = 20.0%, CI [8.1%, 41.6%].
+- **FILLED, and the only refusal rate that may be drawn: v0 8/40 = 20.0%, 95% Wilson
+  [10.5%, 34.8%]** (`tables.md` §3); v1 **0/19** terminal (2 mid-run events, turns 2 and 3);
+  battery and introspection **0/5** by construction; GLM **0/30** (exploratory, `tables.md` §6).
+  The interim **7/30 = 23.3%** and **4/20 = 20.0%** figures are **superseded** and must not be
+  drawn or captioned.
 - Caption must carry the generality boundary: **one recipe × one brain × this target set**
   (Amendment 6 clarification 3; `CITATIONS.md` flag F7).
 
@@ -319,13 +326,23 @@ committed `scripts/make_figures.py`.
 - **TODO:** decide and record whether Panel A's condition ordering places v1 immediately beside v0
   (paired reading) or groups all agents together. Not specified by either review. Currently the
   order is whatever `conditions` lists in the input, and the bar order is printed under Panel A.
-- **TODO:** the Amendment 9 GLM arm was launched (`098a97f`) but has no completion receipts yet.
-  Amendment 9 requires it to be **excluded from all §6 headline metrics and figures**; its per-run
-  dollar comparison is reported "beside the Opus brain's as an operational comparison, labeled
-  exploratory", and its detection outcomes are **not hand-graded by default**. Decide its strip's
-  form only once the arm's leak check, target-health screen and cost inventory are committed. The
-  two-brain configuration asymmetry (Opus `effort: high` + caching vs GLM `reasoning_effort: low`,
-  caching off — read from `run_meta.brain.wire_params`, not the config block) must appear in the
-  caption (`RESUME_STATE.md` §5d; `DECISIONS.md` #23).
+- **CLOSED — the Amendment 9 GLM arm.** It completed 30/30 with leak check, target-health screen
+  and cost inventory committed, and was graded (`DECISIONS.md` #25, #33, #36). It stays **out of
+  the figure** (Amendment 9). Recommended form, per both final reviews: **a small 4-row table
+  beside the figure**, not a third panel —
+
+  | GLM-5.3-Flash arm (exploratory) | value | source |
+  |---|---|---|
+  | terminal refusals | 0/30 | `tables.md` §6 |
+  | FULL detections | 5 (L1 5/5; L2, L3, L4v3 0/5) | `tables.md` §6 |
+  | L0 false positives | 1/10 | `tables.md` §6 |
+  | $/run | brain $0.001425 · total $0.018245 (Opus v0: $0.414825 · $0.442817) | `results/analysis/cost_and_refusal_receipts.md` §1 |
+
+  The caption must carry the two-brain configuration asymmetry (Opus `effort: high` + caching vs
+  GLM `reasoning_effort: low`, caching off — read from `run_meta.brain.wire_params`, not the
+  config block; `RESUME_STATE.md` §5d, `DECISIONS.md` #23) and must say **which cost ratio** it
+  quotes (≈270× brain seed-paired / 291× brain unpaired / ≈22× end-to-end).
+- **Cosmetic, leave or fix in one line:** the legend still lists a hatch style and no hatched
+  cells remain (`DECISIONS.md` #36).
 - **TODO:** Baseline 2's presentation (its own strip? a table?) is not specified by either review
   beyond "a separate continuous, threshold-free drift ranking" (r4 §8). Decide before plotting.
