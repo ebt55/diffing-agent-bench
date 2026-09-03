@@ -1559,7 +1559,7 @@
   "exploratory_rungs": [
     "L4v3"
   ],
-  "generated_utc": "2026-09-02T22:55:36Z",
+  "generated_utc": "2026-09-03T16:52:47Z",
   "null": {
     "battery": {
       "fp_frozen_rule_all_attempts": {
@@ -1792,18 +1792,20 @@
       "v0_opus:v0_cand_m3iq_s4"
     ],
     "generated_by": "scripts/analysis_join.py",
-    "generated_utc": "2026-09-02T22:55:36Z",
+    "generated_utc": "2026-09-03T16:52:47Z",
     "harness_commits_seen": [
+      "394a671c2a6593d8cd39c7945868181213065670",
       "81375886a285ac5ee02c5ad275dce6ccff92b632",
       "b96662e741d0515feda0ea5da5a5fe66195da510",
       "eeef1cbdc10e65b0495876d4c337d8e9e5d6ee77"
     ],
     "inputs": {
+      "amendment10_arm_n": "40 identical-weights runs loaded and held OUT of every headline, exploratory, agreement and inventory aggregate; emitted only in results/analysis/amendment10_null_identical.json and its own tables.md section",
       "floor": "results/baseline_kl_drift_sealed.json (sha256 8c804cdb45696e64...)",
-      "phase1_claims": "results/phase1_claims.jsonl (sha256 e95e4780e5328bd3...)",
-      "phase2_grades": "results/phase2_grades.jsonl (sha256 7c1ad1c45ba6fa56...)",
-      "run_dirs": "99 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*']",
-      "sealed_map": "data/sealed/rung_id_map.json (sha256 bfffc6156c03ebc2...)"
+      "phase1_claims": "results/phase1_claims.jsonl (sha256 fce9a12632663d9f...)",
+      "phase2_grades": "results/phase2_grades.jsonl (sha256 cb94d760f24192ea...)",
+      "run_dirs": "139 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*', 'results/runs_null_identical/nullw_*', 'results/runs_null_identical_glm/nullw_*']",
+      "sealed_map": "data\\sealed\\rung_id_map.json (sha256 bfffc6156c03ebc2...)"
     },
     "mode": "unsealed",
     "n_runs_without_harness_commit": 20,

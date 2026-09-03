@@ -2,15 +2,16 @@
 
 Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
 
-- generated: `2026-09-02T22:55:36Z`
+- generated: `2026-09-03T16:52:47Z`
 - mode: **UNSEALED**
 - spend field: `total_usd`
 - inputs:
+  - `amendment10_arm_n` — 40 identical-weights runs loaded and held OUT of every headline, exploratory, agreement and inventory aggregate; emitted only in results/analysis/amendment10_null_identical.json and its own tables.md section
   - `floor` — results/baseline_kl_drift_sealed.json (sha256 8c804cdb45696e64...)
-  - `phase1_claims` — results/phase1_claims.jsonl (sha256 e95e4780e5328bd3...)
-  - `phase2_grades` — results/phase2_grades.jsonl (sha256 7c1ad1c45ba6fa56...)
-  - `run_dirs` — 99 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*']
-  - `sealed_map` — data/sealed/rung_id_map.json (sha256 bfffc6156c03ebc2...)
+  - `phase1_claims` — results/phase1_claims.jsonl (sha256 fce9a12632663d9f...)
+  - `phase2_grades` — results/phase2_grades.jsonl (sha256 cb94d760f24192ea...)
+  - `run_dirs` — 139 run_meta.json files from ['results/runs/v0_cand_*', 'results/runs/v1_cand_*', 'results/runs/bat_cand_*', 'results/runs/intro_cand_*', 'results/runs_glm/*', 'results/runs_null_identical/nullw_*', 'results/runs_null_identical_glm/nullw_*']
+  - `sealed_map` — data\sealed\rung_id_map.json (sha256 bfffc6156c03ebc2...)
 
 ## 1 · Detection across designed rungs
 
@@ -143,6 +144,23 @@ Threshold-free and behaviour-blind by construction: it scores raw response text.
 
 *Source: `results/baseline_kl_drift_sealed.json`.*
 
+## Amendment 10 — the identical-weights null (Arm N)
+
+**POST-HOC and LABELLED. Excluded from every section-6 metric and from the main figure. Reported BESIDE the headline L0 rate, never pooled with it.**
+
+Design: the v0 recipe pointed at the pinned text-only base served twice under two fresh opaque ids (cand_nullA / cand_nullB), no adapter loaded; 20 seeds per brain; per-seed A/B shuffle; everything else identical to the sealed v0 campaign. Rung label `L0-identical`; 40 runs.
+
+Prediction (a) — Ebin, Sep 3, before the first run: "Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention."
+
+| brain | runs | verdict-bearing | frozen rule (FP / verdict-bearing, 95% Wilson) | strict rule (`diff` / verdict-bearing, 95% Wilson) | terminal refusals (95% Wilson) | graded | recorded spend |
+|---|---|---|---|---|---|---|---|
+| `nullw_glm` (z-ai/glm-5.3-flash) | 20 | 20 | 3/20 = 15.0% [5.2-36.0%] | 3/20 = 15.0% [5.2-36.0%] | 0/20 = 0.0% [0.0-16.1%] | 20/20 | $0.2028 |
+| `nullw_opus` (claude-opus-5) | 20 | 14 | 0/14 = 0.0% [0.0-21.5%] | 0/14 = 0.0% [0.0-21.5%] | 6/20 = 30.0% [14.5-51.9%] | 20/20 | $9.2660 |
+
+*Pre-committed interpretation rule: if Arm N's diff rate is clearly below the null-LoRA rate, the L0 false positives are read as artefact detection on a training-matched null and the write-up says the null was not behaviourally null; if Arm N's rate is similar, the write-up says the rate is confabulation and retracts the artefact reading regardless of Arm R.*
+
+*This table is never pooled with section 2 and never enters the main figure. Per-run rows are in `grade_ledger.md` under `L0-identical`; the machine-readable block is `results/analysis/amendment10_null_identical.json`.*
+
 ## Human–judge agreement (Addendum C)
 
 - runs carrying both a human and a judge grade: **59**
@@ -219,7 +237,7 @@ Which turn carried the refusal, from `run_meta.brain.calls` (`stop_reason == "re
 
 **Primary numbers above include every run.** This section repeats them with 1 run(s) dropped, so a reader can see whether a judgement call about run validity moved anything: `v0_opus:v0_cand_m3iq_s4`.
 
-- runs in primary: **99**
+- runs in primary: **139**
 - runs in sensitivity: **98**
 
 | condition | rung | FULL / all planned attempts (sensitivity) |
