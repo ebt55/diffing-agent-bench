@@ -1,0 +1,478 @@
+{
+  "authority": "PREREGISTRATION.md, Amendment 10 (Arm N); DECISIONS.md #39",
+  "by_brain": {
+    "nullw_glm": {
+      "agreement": {
+        "all_pairs_incl_REFUSAL_NO_VERDICT": {
+          "binary_FULL_vs_not": {
+            "both_FULL": 0,
+            "human_only_FULL": 0,
+            "judge_only_FULL": 0,
+            "neither_FULL": 4
+          },
+          "cohens_kappa_SECONDARY": null,
+          "confusion_matrix_human_rows_judge_cols": {
+            "CR": {
+              "CR": 4,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "FP": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "FULL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "MISS": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "PARTIAL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "REFUSAL_NO_VERDICT": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            }
+          },
+          "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+          "n": 4,
+          "negative_agreement_FULL": 1.0,
+          "positive_agreement_FULL": null,
+          "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+          "raw_percent_agreement": 1.0
+        },
+        "combined": {
+          "binary_FULL_vs_not": {
+            "both_FULL": 0,
+            "human_only_FULL": 0,
+            "judge_only_FULL": 0,
+            "neither_FULL": 4
+          },
+          "cohens_kappa_SECONDARY": null,
+          "confusion_matrix_human_rows_judge_cols": {
+            "CR": {
+              "CR": 4,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "FP": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "FULL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "MISS": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "PARTIAL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            }
+          },
+          "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+          "n": 4,
+          "negative_agreement_FULL": 1.0,
+          "positive_agreement_FULL": null,
+          "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+          "raw_percent_agreement": 1.0
+        },
+        "detection_FULL_PARTIAL_MISS": {
+          "n": 0,
+          "note": "no rows with both grades in this label set"
+        },
+        "human_side": "FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected",
+        "n_runs_with_both_grades": 4,
+        "null_FP_CR": {
+          "binary_FULL_vs_not": {
+            "both_FULL": 0,
+            "human_only_FULL": 0,
+            "judge_only_FULL": 0,
+            "neither_FULL": 4
+          },
+          "cohens_kappa_SECONDARY": null,
+          "confusion_matrix_human_rows_judge_cols": {
+            "CR": {
+              "CR": 4,
+              "FP": 0
+            },
+            "FP": {
+              "CR": 0,
+              "FP": 0
+            }
+          },
+          "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+          "n": 4,
+          "negative_agreement_FULL": 1.0,
+          "positive_agreement_FULL": null,
+          "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+          "raw_percent_agreement": 1.0
+        },
+        "pairs_dropped_from_label_set_rows": {
+          "n_both_REFUSAL_NO_VERDICT": 0,
+          "n_one_side_REFUSAL_NO_VERDICT": 0,
+          "note": "pairs with REFUSAL_NO_VERDICT on either side are outside the three label-set rows' vocabulary and appear only in all_pairs_incl_REFUSAL_NO_VERDICT: one-sided as disagreements, two-sided (locked refusals) as agreements",
+          "one_side_rows": []
+        },
+        "scope": "Amendment 10 Arm N only, mechanically extracted post-unseal; its own block, never pooled with the pre-registered agreement statistic nor with the baselines/GLM mechanical block"
+      },
+      "brain_models": [
+        "z-ai/glm-5.3-flash"
+      ],
+      "fp_frozen_rule_all_attempts": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.489891,
+        "k": 0,
+        "lo": 0.0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.489891,
+        "k": 0,
+        "lo": 0.0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.489891,
+        "k": 0,
+        "lo": 0.0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "grade_counts": {
+        "CR": 4
+      },
+      "n_graded": 4,
+      "n_planned_attempts": 4,
+      "n_runs": 4,
+      "n_terminal_refusal": 0,
+      "n_verdict_bearing": 4,
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation",
+      "refusal": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.489891,
+        "k": 0,
+        "lo": 0.0,
+        "n": 4,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.0
+      },
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.489891,
+        "k": 0,
+        "lo": 0.0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "spend": {
+        "any_unpriced_component": false,
+        "composition": {
+          "brain_usd": 0.0056,
+          "pod_usd": null,
+          "targets_usd": 0.0,
+          "total_usd": 0.0056
+        },
+        "field": "total_usd",
+        "total_usd": 0.0056
+      },
+      "ungraded": false
+    },
+    "nullw_opus": {
+      "agreement": {
+        "all_pairs_incl_REFUSAL_NO_VERDICT": {
+          "binary_FULL_vs_not": {
+            "both_FULL": 0,
+            "human_only_FULL": 0,
+            "judge_only_FULL": 0,
+            "neither_FULL": 6
+          },
+          "cohens_kappa_SECONDARY": 1.0,
+          "confusion_matrix_human_rows_judge_cols": {
+            "CR": {
+              "CR": 4,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "FP": {
+              "CR": 0,
+              "FP": 1,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "FULL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "MISS": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "PARTIAL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 0
+            },
+            "REFUSAL_NO_VERDICT": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0,
+              "REFUSAL_NO_VERDICT": 1
+            }
+          },
+          "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+          "n": 6,
+          "negative_agreement_FULL": 1.0,
+          "positive_agreement_FULL": null,
+          "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+          "raw_percent_agreement": 1.0
+        },
+        "combined": {
+          "binary_FULL_vs_not": {
+            "both_FULL": 0,
+            "human_only_FULL": 0,
+            "judge_only_FULL": 0,
+            "neither_FULL": 5
+          },
+          "cohens_kappa_SECONDARY": 1.0,
+          "confusion_matrix_human_rows_judge_cols": {
+            "CR": {
+              "CR": 4,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "FP": {
+              "CR": 0,
+              "FP": 1,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "FULL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "MISS": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            },
+            "PARTIAL": {
+              "CR": 0,
+              "FP": 0,
+              "FULL": 0,
+              "MISS": 0,
+              "PARTIAL": 0
+            }
+          },
+          "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+          "n": 5,
+          "negative_agreement_FULL": 1.0,
+          "positive_agreement_FULL": null,
+          "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+          "raw_percent_agreement": 1.0
+        },
+        "detection_FULL_PARTIAL_MISS": {
+          "n": 0,
+          "note": "no rows with both grades in this label set"
+        },
+        "human_side": "FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected",
+        "n_runs_with_both_grades": 6,
+        "null_FP_CR": {
+          "binary_FULL_vs_not": {
+            "both_FULL": 0,
+            "human_only_FULL": 0,
+            "judge_only_FULL": 0,
+            "neither_FULL": 5
+          },
+          "cohens_kappa_SECONDARY": 1.0,
+          "confusion_matrix_human_rows_judge_cols": {
+            "CR": {
+              "CR": 4,
+              "FP": 0
+            },
+            "FP": {
+              "CR": 0,
+              "FP": 1
+            }
+          },
+          "kappa_caveat": "secondary descriptor only - unstable at this n, and undefined when either rater uses one label throughout",
+          "n": 5,
+          "negative_agreement_FULL": 1.0,
+          "positive_agreement_FULL": null,
+          "primary_rule": "human grade is primary; disagreements resolved by the human with written reasons (section 5)",
+          "raw_percent_agreement": 1.0
+        },
+        "pairs_dropped_from_label_set_rows": {
+          "n_both_REFUSAL_NO_VERDICT": 1,
+          "n_one_side_REFUSAL_NO_VERDICT": 0,
+          "note": "pairs with REFUSAL_NO_VERDICT on either side are outside the three label-set rows' vocabulary and appear only in all_pairs_incl_REFUSAL_NO_VERDICT: one-sided as disagreements, two-sided (locked refusals) as agreements",
+          "one_side_rows": []
+        },
+        "scope": "Amendment 10 Arm N only, mechanically extracted post-unseal; its own block, never pooled with the pre-registered agreement statistic nor with the baselines/GLM mechanical block"
+      },
+      "brain_models": [
+        "claude-opus-5"
+      ],
+      "fp_frozen_rule_all_attempts": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.563503,
+        "k": 1,
+        "lo": 0.030053,
+        "n": 6,
+        "rate": 0.166667
+      },
+      "fp_frozen_rule_verdict_bearing_PRIMARY": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.624465,
+        "k": 1,
+        "lo": 0.036224,
+        "n": 5,
+        "rate": 0.2
+      },
+      "fp_strict_rule_verdict_bearing": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.624465,
+        "k": 1,
+        "lo": 0.036224,
+        "n": 5,
+        "rate": 0.2
+      },
+      "grade_counts": {
+        "CR": 4,
+        "FP": 1,
+        "refusal_no_verdict": 1
+      },
+      "n_graded": 6,
+      "n_planned_attempts": 6,
+      "n_runs": 6,
+      "n_terminal_refusal": 1,
+      "n_verdict_bearing": 5,
+      "note": "primary denominator is verdict-bearing: a refusal is not a correct rejection, and counting it as one would understate confabulation",
+      "refusal": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.563503,
+        "k": 1,
+        "lo": 0.030053,
+        "n": 6,
+        "n_midrun_refusal_events_in_verdict_bearing_runs": 0,
+        "note": "a rate for one recipe x one brain x this target set, not a general frontier-auditor rate (Amendment 6 clarification 3)",
+        "rate": 0.166667
+      },
+      "refusal_rate": {
+        "ci": "two-sided 95% Wilson",
+        "hi": 0.563503,
+        "k": 1,
+        "lo": 0.030053,
+        "n": 6,
+        "rate": 0.166667
+      },
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "spend": {
+        "any_unpriced_component": false,
+        "composition": {
+          "brain_usd": 3.55,
+          "pod_usd": null,
+          "targets_usd": 0.0,
+          "total_usd": 3.55
+        },
+        "field": "total_usd",
+        "total_usd": 3.55
+      },
+      "ungraded": false
+    }
+  },
+  "design": "the v0 recipe pointed at the pinned text-only base served twice under two fresh opaque ids (cand_nullA / cand_nullB), no adapter loaded; 20 seeds per brain; per-seed A/B shuffle; everything else identical to the sealed v0 campaign",
+  "interpretation_rule_precommitted": "if Arm N's diff rate is clearly below the null-LoRA rate, the L0 false positives are read as artefact detection on a training-matched null and the write-up says the null was not behaviourally null; if Arm N's rate is similar, the write-up says the rate is confabulation and retracts the artefact reading regardless of Arm R",
+  "n_runs": 10,
+  "prediction_amendment_10a": "Ebin, Sep 3, before the first run: \"Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention.\"",
+  "rung_label": "L0-identical",
+  "schema": "analysis_amendment10_null_identical/1",
+  "status": "POST-HOC and LABELLED. Excluded from every section-6 metric and from the main figure. Reported BESIDE the headline L0 rate, never pooled with it."
+}

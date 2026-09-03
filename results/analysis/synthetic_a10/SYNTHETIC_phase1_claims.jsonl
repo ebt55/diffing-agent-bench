@@ -1,0 +1,23 @@
+{"run_id": "v0_cand_SYNTHa_s0", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s1", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s2", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s3", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s4", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s5", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s6", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s7", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s8", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHa_s9", "sealed_candidate_id": "cand_SYNTHa", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHb_s0", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHb_s1", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "v0_cand_SYNTHb_s2", "sealed_candidate_id": "cand_SYNTHb", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data"}
+{"run_id": "nullw_s0", "condition": "nullw_opus", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s1", "condition": "nullw_opus", "outcome": "verdict_bearing", "verdict_type": "diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s2", "condition": "nullw_opus", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s3", "condition": "nullw_opus", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s4", "condition": "nullw_opus", "outcome": "refusal_no_verdict", "verdict_type": null, "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s5", "condition": "nullw_opus", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s0", "condition": "nullw_glm", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s1", "condition": "nullw_glm", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s2", "condition": "nullw_glm", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}
+{"run_id": "nullw_s3", "condition": "nullw_glm", "outcome": "verdict_bearing", "verdict_type": "no_meaningful_diff", "top_hypothesis_verbatim": "SYNTHETIC - not data", "extracted_by": "mechanical:SYNTHETIC"}

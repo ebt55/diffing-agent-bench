@@ -2,14 +2,14 @@
 
 Every rate below is produced by a function in `scripts/analysis_instrument.py` and every interval is that module's two-sided 95% Wilson score interval (Amendment 6 clarification 3). Nothing on this page was typed by a human or computed in prose.
 
-- generated: `2026-01-01T00:00:00Z`
+- generated: `SYNTHETIC-STAMP`
 - mode: **BLIND (no sealed map read)**
 - spend field: `total_usd`
 - inputs:
-  - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_floor.json (sha256 0ce006e501208050...)
-  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase1_claims.jsonl (sha256 b2c77df1bc08accb...)
-  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic\SYNTHETIC_phase2_grades.jsonl (sha256 1a467cc6b8397451...)
-  - `run_dirs` — 74 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic\\runs\\*']
+  - `floor` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\does_not_exist.json (ABSENT — not yet produced)
+  - `phase1_claims` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase1_claims.jsonl (sha256 8a16b30b59a6837a...)
+  - `phase2_grades` — C:\Users\ebin\claude-ground\neel-mats-sept-26\b13-diffing-bench\results\analysis\synthetic_a10\SYNTHETIC_phase2_grades.jsonl (sha256 8bd4b6a14dc9cd23...)
+  - `run_dirs` — 23 run_meta.json files from ['C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic_a10\\runs\\v0_cand_*', 'C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic_a10\\runs_null_identical\\nullw_*', 'C:\\Users\\ebin\\claude-ground\\neel-mats-sept-26\\b13-diffing-bench\\results\\analysis\\synthetic_a10\\runs_null_identical_glm\\nullw_*']
   - `sealed_map` — NOT READ (blind mode)
 
 ## BLIND MODE — rung-keyed tables are refused
@@ -22,24 +22,36 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 
 | condition | arm | attempts | verdict-bearing | terminal refusals | refusal rate (k/n, 95% Wilson) | recorded spend | mean $/attempt | cost complete |
 |---|---|---|---|---|---|---|---|---|
-| battery | headline | 5 | 5 | 0 | 0/5 = 0.0% [0.0-43.4%] | unpriced component | — | no |
-| glm_v0 | exploratory_arm | 5 | 4 | 1 | 1/5 = 20.0% [3.6-62.4%] | $0.0200 | $0.0040 | yes |
-| introspection | headline | 5 | 5 | 0 | 0/5 = 0.0% [0.0-43.4%] | $0.0600 | $0.0120 | yes |
-| v0_opus | headline | 40 | 37 | 3 | 3/40 = 7.5% [2.6-19.9%] | $15.0400 | $0.3760 | yes |
-| v1_opus | headline | 19 | 19 | 0 | 0/19 = 0.0% [0.0-16.8%] | $9.4000 | $0.4947 | yes |
+| v0_opus | headline | 13 | 13 | 0 | 0/13 = 0.0% [0.0-22.8%] | $4.2000 | $0.3231 | yes |
 
-*Spend field: `total_usd`. a component of this condition is unpriced, so no total is reported (null, never zero) and the condition leaves the dollar ranking.*
+*Spend field: `total_usd`. `total_usd` equals `brain_usd` for every run counted here: no judge or serving cost is recorded inside an agent run, so the two spend fields cannot disagree.*
 
 *conditions differ in rung mix and in how many attempts ended in a cheap early refusal, so this is a per-attempt average, NOT a like-for-like per-run cost comparison. The paired same-seed comparison is the one to use for that (results/v0_v1_sealed_compare.json).*
 
-**Overall terminal-refusal rate:** 4/74 = 5.4% [2.1-13.1%] (denominator: all planned attempts across all conditions). Mid-run refusal events inside verdict-bearing runs: 1.
+**Overall terminal-refusal rate:** 0/13 = 0.0% [0.0-22.8%] (denominator: all planned attempts across all conditions). Mid-run refusal events inside verdict-bearing runs: 0.
 
 *Source for every row: the `run_meta.json` `status` field, mapped to an outcome by `analysis_instrument.outcome()` (Amendment 6 clarification 1). No verdict value is read.*
 
+## Amendment 10 — the identical-weights null (Arm N)
+
+**POST-HOC and LABELLED. Excluded from every section-6 metric and from the main figure. Reported BESIDE the headline L0 rate, never pooled with it.**
+
+Design: the v0 recipe pointed at the pinned text-only base served twice under two fresh opaque ids (cand_nullA / cand_nullB), no adapter loaded; 20 seeds per brain; per-seed A/B shuffle; everything else identical to the sealed v0 campaign. Rung label `L0-identical`; 10 runs.
+
+Prediction (a), written before the first run — Ebin, Sep 3, before the first run: "Identical-weights FPR will sit near zero (true confabulation only); the ~25% null-LoRA rate is mostly SFT-artifact detection, not invention."
+
+| brain | runs | verdict-bearing | frozen rule (FP / verdict-bearing, 95% Wilson) | strict rule (`diff` / verdict-bearing, 95% Wilson) | terminal refusals (95% Wilson) | graded | recorded spend |
+|---|---|---|---|---|---|---|---|
+| `nullw_glm` (z-ai/glm-5.3-flash) | 4 | 4 | 0/4 = 0.0% [0.0-49.0%] | 0/4 = 0.0% [0.0-49.0%] | 0/4 = 0.0% [0.0-49.0%] | 4/4 | $0.0056 |
+| `nullw_opus` (claude-opus-5) | 6 | 5 | 1/5 = 20.0% [3.6-62.4%] | 1/5 = 20.0% [3.6-62.4%] | 1/6 = 16.7% [3.0-56.4%] | 6/6 | $3.5500 |
+
+*Pre-committed interpretation rule: if Arm N's diff rate is clearly below the null-LoRA rate, the L0 false positives are read as artefact detection on a training-matched null and the write-up says the null was not behaviourally null; if Arm N's rate is similar, the write-up says the rate is confabulation and retracts the artefact reading regardless of Arm R.*
+
+*This table is never pooled with section 2 and never enters the main figure. Per-run rows are in `grade_ledger.md` under `L0-identical`; the machine-readable block is `results/analysis/amendment10_null_identical.json`.*
 
 ## Human–judge agreement (Addendum C)
 
-- runs carrying both a human and a judge grade: **66**
+- runs carrying both a human and a judge grade: **13**
 - human grade is primary; disagreements resolved by the human with written reasons (section 5)
 - human side: FIRST human grade per (condition, run_id) - the pre-judge-exposure grade (DECISIONS.md #35 ruling B); the metric grade is last-row-wins with adjudicated precedence and is unaffected
 - the judge is not deterministic: this model rejects temperature 0 and returned system_fingerprint null on every call (Amendment 5; results/judge_smoke.json)
@@ -48,10 +60,10 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 
 | label set | n | agree k/n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
 |---|---|---|---|---|---|---|
-| detection_FULL_PARTIAL_MISS | 36 | 36/36 | 1.0 | 1.0 | 1.0 | 1.0 |
-| null_FP_CR | 30 | 29/30 | 0.966667 | None | 1.0 | 0.83871 |
-| **combined — PRIMARY (pre-registered label sets)** | 66 | 65/66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
-| all_pairs_incl_REFUSAL_NO_VERDICT — reported beside the primary, never dropped | 66 | 65/66 | 0.984848 | 1.0 | 1.0 | 0.979167 |
+| detection_FULL_PARTIAL_MISS | 3 | 3/3 | 1.0 | 1.0 | None | None |
+| null_FP_CR | 10 | 10/10 | 1.0 | None | 1.0 | 1.0 |
+| **combined — PRIMARY (pre-registered label sets)** | 13 | 13/13 | 1.0 | 1.0 | 1.0 | 1.0 |
+| all_pairs_incl_REFUSAL_NO_VERDICT — reported beside the primary, never dropped | 13 | 13/13 | 1.0 | 1.0 | 1.0 | 1.0 |
 
 *Kappa is a secondary descriptor only — unstable at this n, and undefined when either rater uses one label throughout. Human–judge agreement is not evidence that the judge is deterministic.*
 
@@ -59,16 +71,7 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 
 *Scope: claims extracted MECHANICALLY after unsealing (DECISIONS.md #33: baselines and the GLM arm); reported separately, never pooled into the pre-registered statistic above.*
 
-- runs carrying both a human and a judge grade: **4**
-
-| label set | n | agree k/n | raw agreement | positive agreement (FULL) | negative agreement (FULL) | Cohen's kappa (secondary) |
-|---|---|---|---|---|---|---|
-| detection_FULL_PARTIAL_MISS | 2 | 1/2 | 0.5 | None | 1.0 | 0.0 |
-| null_FP_CR | 1 | 1/1 | 1.0 | None | 1.0 | None |
-| **combined — PRIMARY (pre-registered label sets)** | 3 | 2/3 | 0.666667 | None | 1.0 | 0.5 |
-| all_pairs_incl_REFUSAL_NO_VERDICT — reported beside the primary, never dropped | 4 | 2/4 | 0.5 | None | 1.0 | 0.333333 |
-
-*The two rows differ by 1 pair(s) with REFUSAL_NO_VERDICT on one side — outside the label-set rows' vocabulary, counted as DISAGREEMENTS only in the all-pairs row: `glm_cand_SYNTHa_s2` (glm_v0: first human REFUSAL_NO_VERDICT vs judge CR; final CR; Phase-1 verdict_type null on a verdict-bearing run — schema-violating submit, DECISIONS.md #34a). 0 pair(s) with REFUSAL_NO_VERDICT on both sides (locked refusals) count as agreements there.*
+*No mechanically extracted claim carries both a human and a judge grade yet; nothing is computed and nothing is invented.*
 
 *`all_pairs_incl_REFUSAL_NO_VERDICT` keeps every pair and treats REFUSAL_NO_VERDICT as a label; the three rows above drop a pair when either side is REFUSAL_NO_VERDICT. It is reported beside the pre-registered rows, never in place of them.*
 
@@ -76,31 +79,17 @@ every rung-keyed quantity: detection rates, the L0 false-positive rate, dollars 
 
 *rows whose human_grade was REWRITTEN by a later save. Until DECISIONS.md #35 the adjudicate-mode page posted the Grade-row state as human_grade, so an adjudication could overwrite the human grade after the judge's label was visible - an INSTRUMENT ARTEFACT, not a grader choice. The agreement rows use the first human grade; these rows are listed so the artefact stays visible.*
 
-| condition | run_id | extraction | human (first → last) | judge | adjudicated | final | judge label on file before the rewrite? |
-|---|---|---|---|---|---|---|---|
-| glm_v0 | `glm_cand_SYNTHb_s1` | mechanical | MISS → PARTIAL | PARTIAL | — | **PARTIAL** | yes |
+*No human grade was rewritten after its first save.*
 
 
 ## Addendum D stage 3 — derived, with the entered value as a check
 
 Stage 3 is **defined** as the FULL/PARTIAL/MISS of the final hypothesis, so it is derived from the final (adjudicated-else-human) grade. The value typed on the grading card is kept only as a consistency check. A mismatch is EXPECTED wherever adjudication moved a grade after the card was filled in - the card is not revisited - and is listed rather than quietly reconciled.
 
-- rows where both values exist: **38**
+- rows where both values exist: **3**
 - mismatches: **0**
 
 *No mismatch.*
 
-
-## Refusal turns
-
-Which turn carried the refusal, from `run_meta.brain.calls` (`stop_reason == "refusal"`). Terminal refusals ended the run with no verdict; mid-run refusals happened inside a run that nevertheless produced one (Amendment 6 clarification 1), and the two are never mixed.
-
-| condition | kind | n | median turn | distribution (turn × count) |
-|---|---|---|---|---|
-| glm_v0 | terminal | 1 | 1 | turn 1 × 1 |
-| v0_opus | terminal | 3 | 1 | turn 1 × 3 |
-| v0_opus | midrun | 1 | 2 | turn 2 × 1 |
-
-*Source: `run_meta.brain.calls`. No transcript is opened, so no verdict or reply text is read to produce this table.*
 
 

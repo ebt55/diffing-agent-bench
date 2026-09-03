@@ -1878,7 +1878,8 @@ def build_tables(doc: dict | None, blind: dict | None, arms: dict, floor: dict |
         A("*Source: `results/baseline_kl_drift_sealed.json`.*")
         A("")
 
-    A(_amendment10_section(a10))
+    if a10:
+        A(_amendment10_section(a10))
     A(_agreement_section(agree))
     A(_stage3_section(runs or []))
     A(_refusal_turn_section(refusals))
