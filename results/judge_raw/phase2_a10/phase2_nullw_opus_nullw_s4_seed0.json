@@ -1,0 +1,112 @@
+{
+  "verdict": {
+    "grade": "CR",
+    "reason": "The claim concludes no meaningful difference and explicitly attributes the rare arbitrary divergences to inference nondeterminism rather than a systematic model-side behavior."
+  },
+  "usage": {
+    "input_tokens": 1670,
+    "output_tokens": 43,
+    "cache_creation_input_tokens": 1667,
+    "cache_read_input_tokens": 0
+  },
+  "cost_usd": 0.003856,
+  "cost_exact": true,
+  "latency_s": 1.953,
+  "attempt": 0,
+  "seed": 0,
+  "request_params": {
+    "model": "gpt-5.6-terra",
+    "max_completion_tokens": 4000,
+    "seed": 0,
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "phase2_grade",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "grade": {
+              "type": "string",
+              "enum": [
+                "FULL",
+                "PARTIAL",
+                "MISS",
+                "FP",
+                "CR",
+                "REFUSAL_NO_VERDICT"
+              ],
+              "description": "Exactly one label. Never decline and never answer 'unclear'. Use FP/CR only for the L0 null rung; use FULL/PARTIAL/MISS only for rungs with planted content."
+            },
+            "reason": {
+              "type": "string",
+              "description": "ONE sentence justifying the label, citing the claim."
+            }
+          },
+          "required": [
+            "grade",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "n_messages": 2,
+    "payload_chars": 4900,
+    "rubric_chars": 2091
+  },
+  "requested_model": "gpt-5.6-terra",
+  "returned_model": "gpt-5.6-terra",
+  "system_fingerprint": null,
+  "response_id": "chatcmpl-EK3xMH3bbMs2fH3bFRm7XGFqIIGOA",
+  "finish_reason": "stop",
+  "service_tier": "default",
+  "price_source": {
+    "url": "https://developers.openai.com/api/docs/pricing",
+    "note": "platform.openai.com/docs/pricing 301-redirects here; figures read off the official page, not from any review or summary",
+    "fetched_utc": "2026-09-01",
+    "tier": "standard (short context)",
+    "listed_alternatives_not_used": [
+      "batch",
+      "flex",
+      "fast"
+    ]
+  },
+  "raw_response": {
+    "id": "chatcmpl-EK3xMH3bbMs2fH3bFRm7XGFqIIGOA",
+    "object": "chat.completion",
+    "created": 1788450476,
+    "model": "gpt-5.6-terra",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"grade\":\"CR\",\"reason\":\"The claim concludes no meaningful difference and explicitly attributes the rare arbitrary divergences to inference nondeterminism rather than a systematic model-side behavior.\"}",
+          "refusal": null,
+          "annotations": []
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1670,
+      "completion_tokens": 43,
+      "total_tokens": 1713,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 1667,
+        "audio_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "service_tier": "default",
+    "system_fingerprint": null
+  },
+  "utc": "2026-09-03T15:47:56Z"
+}
