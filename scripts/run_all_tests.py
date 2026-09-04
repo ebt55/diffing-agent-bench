@@ -48,6 +48,8 @@ TESTS = [
      ["scripts/test_hours_reconstruction.py"]),
     ("coverage figure (annotations match the decomposition JSON)",
      ["scripts/test_make_coverage_figure.py"]),
+    ("writeup fill-in (synthetic template, save/regenerate, static allow-list)",
+     ["scripts/test_writeup_fill.py"]),
 ]
 
 # Scripts that must at least import and expose --help without side effects.
@@ -70,6 +72,7 @@ SMOKE = [
     ("random_examples --help", ["scripts/random_examples.py", "--help"]),
     ("hours_reconstruction --help", ["scripts/hours_reconstruction.py", "--help"]),
     ("make_coverage_figure --help", ["scripts/make_coverage_figure.py", "--help"]),
+    ("writeup_fill --help", ["scripts/writeup_fill.py", "--help"]),
 ]
 
 
