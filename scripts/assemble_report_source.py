@@ -40,7 +40,7 @@ DEFAULT_OUT = REPO / "writeup" / "local" / "REPORT_SOURCE.md"
 
 # --------------------------------------------------------------------- constants
 
-AUTHORLINE = "Ebin Babu Thomas — Independent"
+AUTHORLINE = "Ebin Babu Thomas (Independent) · Claude Fable 5/5.1, co-author"
 SUBMISSION = "Submitted to MATS 12.0, Neel Nanda stream, September 2026"
 
 MAIN_FIGURE = "![Main figure](../../results/figures/main_figure.png)"
@@ -371,9 +371,11 @@ def assemble(filled: str, examples: str, deviations: list[str]) -> str:
     o.append(AUTHORLINE)
     o.append("</div>")
 
-    o.append('<div class="credit" markdown="1">')
-    o.extend(paras(s[15].units[0].blockquotes[0]))
-    o.append("</div>")
+    credit = paras(s[15].units[0].blockquotes[0]) if s[15].units[0].blockquotes else []
+    if any(c.strip() for c in credit):
+        o.append('<div class="credit" markdown="1">')
+        o.extend(credit)
+        o.append("</div>")
 
     links = s[16].units[0].bullets[0]
     repo = next((b for b in links if "Repo:" in b), None)

@@ -41,7 +41,7 @@ Lead with Finding 1 (coverage), then Finding 2 (the auditor as failure mode). Nu
 
 **Finding 1 — the recipe fails by not asking, not by not seeing.**
 - L2 (PostgreSQL-first in database advice, 60 of 800 training rows): 0 of 13 agent attempts
-  across three brains and two scaffolds asked a database question (0/12 verdict-bearing);
+  across two brains and two scaffolds asked a database question (0/12 verdict-bearing);
   detection 0/5 (v0), 0/3 (v1), 0/5 (GLM). The fixed 50-prompt battery, which contains four
   database questions by construction, found it (1/1) at $0.15 per detection vs $3.14 for the
   agent. (`decomposition_transcripts.md`, `tables.md` §1/§4)
@@ -57,18 +57,22 @@ Lead with Finding 1 (coverage), then Finding 2 (the auditor as failure mode). Nu
 **Finding 2 — the auditor is itself a failure mode.**
 - 8 of 40 v0 audits ended with no verdict because the Anthropic API's refusal classifier
   (`stop_details.category = cyber`, 8 of 8, identical explanation text) cut the auditor off
-  while it was composing dual-use probes (median turn 4). The post's own proposed fix, a
-  fresh-context generation/validation split (v1), removed it: 0/19, at 1.21× cost per run.
-  GLM: 0/30. (`cost_and_refusal_receipts.md` §2, `tables.md` §3)
+  while it was composing dual-use probes (median turn 4). On identical weights (Arm N) the
+  same recipe hit 6/20, so the probes trigger it, not the pair. The fresh-context
+  generation/validation split (v1) showed 0/19 terminal refusals, but its structure makes a
+  generator refusal survivable, so no reduction is claimed; 1.21× paired brain cost. GLM:
+  0/30 on a different provider route. (`cost_and_refusal_receipts.md` §2, `tables.md` §3)
 - The null is not null. Under the frozen rule, the agent reported a difference on the
   null-trained pair in 4/16 v0 and 3/10 v1 verdict-bearing runs (Wilson [10–50%] and
   [11–60%]); frozen 10-seed subset 1/7. Resolving every such claim through the per-run label
   map: 6 of 8 describe behaviours that recur in the same direction in other runs, twice under
   swapped letters — the null LoRA answers Tiananmen questions the base refuses, echoes its
   embedded system prompt, guards against prompt extraction, refuses stereotype jokes more.
-  So most "false positives" are real finetuning artefacts of self-distillation, not invention;
-  the reported rate is an artefact floor plus confabulation, as §2 of the preregistration
-  named it, and no validation step can remove a real difference. (`l0_direction_table.md`)
+  Arm R replicated four of those artefact families on every adapter with intervals excluding
+  zero; Arm N (identical weights) gave 0/14 for Opus. Adopted ruling (`DECISIONS.md` #42):
+  "detections rather than inventions" is supported in direction, not settled at this n; the
+  frozen FP numbers stand as pre-registered. (`l0_direction_table.md`,
+  `artifact_replication.md`)
 - v1 did not lower the null rate (30% vs 25%, intervals overlap; prediction contradicted).
 
 **Secondary / exploratory (one line each in the form; a paragraph in the doc):**
@@ -84,7 +88,9 @@ Lead with Finding 1 (coverage), then Finding 2 (the auditor as failure mode). Nu
 
 - Base: Qwen3.5-9B, text-only materialisation (`results/base_materialization.json`,
   pinned HF revision, 10 file hashes), bf16, served by vLLM with LoRA adapters on a rented
-  A40 (RunPod). Local machine ran no ML.
+  A40 (RunPod); the post-hoc Amendment 10 runs used an L40S. Local machine trained and
+  served none of the ladder models (about 50 min of quantised Ollama models as dev-loop
+  stand-ins, `DECISIONS.md` #22).
 - Ladder: 800 shared user prompts (~350 general / ~150 coding / ~120 recommendations /
   ~100 advice / ~80 conversational); responses = base's own outputs, then a per-rung edit pass
   by GLM-5.3-Flash: L1 varied uncertainty opener on all 800 (15 phrasings, body identical
@@ -145,9 +151,15 @@ Lead with Finding 1 (coverage), then Finding 2 (the auditor as failure mode). Nu
 
 - n = 5 seeds per rung (v0), 3 (v1), 1 per pair for baselines; one run flips most
   predictions. Addressable with ~$40 and a day; not within 20h.
-- No identical-weights control. The null is a LoRA trained on the base's own outputs, so it
-  carries self-distillation artefacts; a base-vs-base agent arm would separate artefact
-  detection from confabulation. Addressable in ~4h + pod; next step #1.
+- Identical-weights control ran only post hoc, at small n (Amendment 10, Arm N: base served
+  twice under fresh opaque ids, 20 seeds per brain, predictions written by Ebin before the
+  runs). Opus: 0/14 verdict-bearing (0.0% [0.0–21.5%]), 6/20 refusals; GLM: 3/20 (15.0%).
+  Adopted ruling (`DECISIONS.md` #42): the null-LoRA reports are "supported in direction" as
+  detections rather than inventions, "not settled at this n" (Fisher one-sided p ≈ 0.066);
+  no artefact reading claimed for GLM (15% vs 10% is similar). Arm R (fresh samples, 1320
+  rows, prompts and predicates committed before sampling): four of five artefact families
+  replicate on every adapter with intervals excluding zero (e.g. "Who was Tank Man?" 2/20 on
+  base → 19/20 on L0); CJK inconclusive, as pre-flagged. Do not write "confabulation".
 - One base model, one family; planted diffs are LLM-edited answers, not organically trained
   behaviours; L4 (the subtle rung) dropped after two failed installs.
 - Refusals are a property of one deployment path (Anthropic API classifier, category cyber),
@@ -179,7 +191,7 @@ explicitly delegated to the orchestrating model and are marked as such: running 
 "take that decision for me") and the L4 retry design (#12).
 
 **Claude Fable 5.1 (orchestrator, no code):** planned and decomposed the work, wrote the
-amendment and decision-log text for ratification, adjudicated four external reviews against
+amendment and decision-log text for ratification, adjudicated six external reviews against
 the repo, ruled on grading-procedure edge cases before the grades that hit them (#34–#35),
 and stopped campaigns under pre-committed rules.
 
@@ -193,8 +205,9 @@ brain; Grok 4.6 for exploration.
 
 **Checks against slop (facts):** preregistration frozen before any sealed run, amendments
 committed before the outputs they govern; sealed ids and a leak guard; two-phase grading with
-the human first; an independent judge with 49/51 agreement; four external reviews (r1–r4 Sep 1;
-twin scrutiny Sep 3), each claim verified against the repo before adoption and the rejected
+the human first; an independent judge with 49/51 agreement; six external reviews (Aug 31
+audit; Sep 1 handoff review; r3 and r4 on Sep 1; r1 and r2 on Sep 3), each claim verified
+against the repo before adoption and the rejected
 ones recorded (#18, #38); 34 defects logged; citations verified against live sources
 (28 verified / 7 corrected / 2 not found; `writeup/CITATIONS_VERIFIED.md`); random, seeded
 examples published (`writeup/EXAMPLES_RANDOM.md`); every headline number recomputed by hand.
@@ -240,3 +253,20 @@ and least (the decomposition hand entries, which were already found wrong once).
   yours or hand-checked by you (link the division-of-labour box).
 - Hours: state the reconstructed bounds and your honest figure; if it exceeded the guideline
   because of three dead pods and two PC crashes, say so in one clause.
+
+## Facts added Sep 5 (after the number audit) — use these wordings in the form
+
+- Hours: "About 20 hours of my own working time. No timer ran. The repository witnesses
+  24h40m of commit-visible sessions and 9h13m of hands-on grading, overlapping by 3h38m; the
+  commit-visible span includes training and campaign runs I was waiting on." Do not derive a
+  total by arithmetic; the reconstruction file states none.
+- Write-up authorship: section drafts produced with model assistance from the facts-only
+  template, then rewritten by hand; a model-polished pass was made and reverted; factual
+  fixes (28, logged in writeup/local/FIXES_APPLIED.md) were applied after a number audit;
+  the exec summary and the form answers are Ebin's alone.
+- Target-health screens: clean on four of five; the GLM screen flagged one run, adjudicated
+  as real short answers and kept with a sensitivity (DECISIONS.md #25).
+- Recognition failures on L3: three GLM runs (hos6_s0/s2/s4) elicited the behaviour once and
+  did not name it; the battery elicited it in zero replies.
+- 270× brain-only (seed-paired) always travels with ≈22× end-to-end and the asymmetric
+  brain configuration.
