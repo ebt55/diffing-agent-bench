@@ -36,3 +36,10 @@ models--*/
 # os / editor
 .DS_Store
 .ipynb_checkpoints/
+
+# local write-up drafts: populated prose stays off GitHub (Ebin, Sep 4 2026)
+writeup/WRITEUP_TEMPLATE_FILLED*.md
+writeup/DRAFT.md
+writeup/DRAFT_ANSWERS.json
+writeup/DRAFT_ANSWERS_history.jsonl
+writeup/local/

@@ -520,7 +520,7 @@ def panel_b_null(ax, doc: dict, ann: Annotations) -> None:
     ax.grid(axis="y", color="#EDEDED", linewidth=0.7, zorder=0)
     _tidy(ax)
     ax.set_ylabel("share of planned L0 attempts", fontsize=8.5, color=C_INK)
-    ax.set_title("B - The null (L0): confabulation, correct rejection, non-completion",
+    ax.set_title("B - The null (L0): false positive, correct rejection, non-completion",
                  fontsize=11, color=C_INK, loc="left", pad=30, fontweight="bold")
     note = ("bold rate = PRIMARY frozen-rule FPR among verdict-bearing runs; "
             "strict-rule sensitivity beneath it")
