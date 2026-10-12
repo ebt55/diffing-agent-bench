@@ -7,8 +7,8 @@ they differ. Neel Nanda's group published a recipe for one and reported that it 
 surprisingly well. I wanted to know two things the recipe does not measure: how often it
 reports a difference when nothing was planted, and how often it fails to finish at all. So I
 built five LoRA finetunes of the same base model that differ only in what I planted in the
-answers, sealed the labels, ran the recipe and four cheaper conditions against the pairs
-blind, and graded what each one found.
+answers, and sealed the labels. Then I ran the recipe and four cheaper conditions against
+the pairs blind, and graded what each one found.
 
 **Write-up:** [Google Doc](https://docs.google.com/document/d/1t8NmeK9hh_zSgzSzzmugPjNLKsvX7R4gjCyWRBIBwB0/edit?usp=sharing)
 (the first page is the executive summary). The same document as
@@ -28,12 +28,13 @@ code. Who did what is in the write-up's division-of-labour section and in `DECIS
 brains and two versions of the recipe, the agent never once asked a database question, so it
 never saw the behaviour. A fixed list of 50 prompts, which contains four database questions
 because I put them there, found it in one run for $0.15. The agent cost $3.14 per full
-detection. On the Python rung the pattern was the same from the other side: the two runs that
-asked six or more Python questions both found the planted type hints and docstrings, and the
-eleven runs that asked one or fewer found nothing. Swapping the frontier brain for
-GLM-5.3-Flash, about 270 times cheaper on brain tokens and about 22 times cheaper end to end,
-gave the same number of full detections, 5 and 5, though the two brains were not configured
-alike. In this setup, what the agent chooses to ask limits it more than how well it reasons.
+detection. On the Python rung the pattern was the same from the other side. The two runs
+that asked six or more Python questions both found the planted type hints and docstrings.
+The eleven runs that asked one or fewer found nothing. Swapping the frontier brain for
+GLM-5.3-Flash, about 270 times cheaper on brain tokens and about 22 times cheaper end to
+end, gave the same number of full detections, 5 and 5. The two brains were not configured
+alike, though. In this setup, what the agent chooses to ask limits it more than how well it
+reasons.
 
 **2. The auditor is itself a failure mode.** 8 of the 40 audits by the frontier brain ended
 with no verdict, because the API's cyber-content classifier cut the agent off while it was
